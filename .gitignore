@@ -18,6 +18,9 @@ hs_err_pid*
 /.settings/*
 !gradle/wrapper/gradle-wrapper.jar
 
+#Minecraft
+/run/*
+
 # Eclipse
 *.classpath
 *.project
@@ -27,3 +30,5 @@ hs_err_pid*
 *.idea/*
 *.iml
 /bin/
+/.gradle/
+/build/
