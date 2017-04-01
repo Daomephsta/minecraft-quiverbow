@@ -21,9 +21,6 @@ public class ColdIronClip extends _AmmoBase
 		list.add("Cool to the touch."); 
 	}
 	
-	@Override
-	public String getItemStackDisplayName(ItemStack par1ItemStack) { return "Cold Iron Clip"; }
-	
 	
 	@Override
 	public void addRecipes() 

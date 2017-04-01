@@ -15,7 +15,7 @@ public class BoxOfFlintDust extends _AmmoBase
 	public BoxOfFlintDust()
 	{
 		this.setMaxDamage(16);
-		this.setCreativeTab(CreativeTabs.tabTools);	// On the combat tab by default, since this is amunition
+		this.setCreativeTab(CreativeTabs.tabTools);
 		
 		this.setHasSubtypes(true);
 	}
@@ -30,10 +30,6 @@ public class BoxOfFlintDust extends _AmmoBase
 	{
 		list.add("All boxed up.");
 	}
-	
-	
-	@Override
-	public String getItemStackDisplayName(ItemStack par1ItemStack) { return "Box of Flint Dust"; }
 	
 	
 	@Override

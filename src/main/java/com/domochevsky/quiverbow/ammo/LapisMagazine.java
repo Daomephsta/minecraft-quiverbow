@@ -8,7 +8,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -161,9 +160,6 @@ public class LapisMagazine extends _AmmoBase
 		if (!player.inventory.hasItem(Item.getItemFromBlock(Blocks.lapis_block))) { list.add(EnumChatFormatting.RED + "You don't have Lapis Blocks."); }
 		if (player.capabilities.isCreativeMode) { list.add(EnumChatFormatting.RED + "Does not work in creative mode."); }
 	}
-	
-	@Override
-	public String getItemStackDisplayName(ItemStack par1ItemStack) { return "Lapis Magazine"; }
 	
 	
 	@Override

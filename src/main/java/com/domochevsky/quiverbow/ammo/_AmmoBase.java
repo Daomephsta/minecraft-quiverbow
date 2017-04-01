@@ -18,18 +18,18 @@ public class _AmmoBase extends Item
 	
 	
 	@SideOnly(Side.CLIENT)
-	private IIcon Icon;
+	protected IIcon Icon;
 	
 	
 	@SideOnly(Side.CLIENT)
 	@Override
-    public void registerIcons(IIconRegister par1IconRegister)
+	public void registerIcons(IIconRegister par1IconRegister)
 	{ 
 		this.Icon = par1IconRegister.registerIcon("quiverchevsky:ammo/" + this.getIconPath());
 	}
 	
 	@Override
-    public IIcon getIconFromDamage(int meta) { return this.Icon; }
+	public IIcon getIconFromDamage(int meta) { return this.Icon; }
 	
 	
 	String getIconPath() { return "Unknown"; }

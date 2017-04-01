@@ -19,9 +19,6 @@ public class RocketBundle extends _AmmoBase
 		list.add("Holds 8 rockets. Highly volatile.");
 	}
 	
-	@Override
-	public String getItemStackDisplayName(ItemStack par1ItemStack) { return "Rocket Bundle"; }
-	
 	
 	@Override
 	public void addRecipes() 

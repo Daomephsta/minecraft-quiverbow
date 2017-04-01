@@ -23,9 +23,6 @@ public class ArrowBundle extends _AmmoBase
 		list.add("Holds 8 arrows, tightly packed.");
 	}
 	
-	@Override
-	public String getItemStackDisplayName(ItemStack par1ItemStack) { return "Arrow Bundle"; }
-	
 	
 	@Override
 	public void addRecipes() 

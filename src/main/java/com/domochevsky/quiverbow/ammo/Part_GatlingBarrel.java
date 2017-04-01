@@ -2,13 +2,12 @@ package com.domochevsky.quiverbow.ammo;
 
 import java.util.List;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class Part_GatlingBarrel extends _AmmoBase
 {	
@@ -26,12 +25,6 @@ public class Part_GatlingBarrel extends _AmmoBase
 	{
 		list.add("A barrel, waiting for 3 companions");
 		list.add("and a main body."); 
-	}
-	
-	@Override
-	public String getItemStackDisplayName(ItemStack stack)
-	{ 
-		return "Sugar Engine Barrel";
 	}
 	
 	

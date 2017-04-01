@@ -2,6 +2,13 @@ package com.domochevsky.quiverbow.ammo;
 
 import java.util.List;
 
+import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.Main;
+import com.domochevsky.quiverbow.AI.AI_Properties;
+import com.domochevsky.quiverbow.ArmsAssistant.Entity_AA;
+import com.domochevsky.quiverbow.recipes.*;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -11,29 +18,11 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.RecipeSorter;
 
-import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.AI.AI_Properties;
-import com.domochevsky.quiverbow.ArmsAssistant.Entity_AA;
-import com.domochevsky.quiverbow.recipes.Recipe_AA_Armor;
-import com.domochevsky.quiverbow.recipes.Recipe_AA_Communication;
-import com.domochevsky.quiverbow.recipes.Recipe_AA_Mobility;
-import com.domochevsky.quiverbow.recipes.Recipe_AA_Plating;
-import com.domochevsky.quiverbow.recipes.Recipe_AA_Riding;
-import com.domochevsky.quiverbow.recipes.Recipe_AA_Storage;
-import com.domochevsky.quiverbow.recipes.Recipe_AA_Weapon;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-
 
 public class PackedUpAA extends _AmmoBase
 {
 	@Override
 	String getIconPath() { return "WitherStand"; }
-	
-	
-	@Override
-	public String getItemStackDisplayName(ItemStack par1ItemStack) { return "Packed Up Arms Assistant"; }
 	
 	
 	@Override

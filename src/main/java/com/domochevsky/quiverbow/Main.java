@@ -2,6 +2,25 @@ package com.domochevsky.quiverbow;
 
 import java.util.ArrayList;
 
+import com.domochevsky.quiverbow.Main.Constants;
+import com.domochevsky.quiverbow.ArmsAssistant.Entity_AA;
+import com.domochevsky.quiverbow.ammo.*;
+import com.domochevsky.quiverbow.blocks.FenLight;
+import com.domochevsky.quiverbow.models.*;
+import com.domochevsky.quiverbow.net.PacketHandler;
+import com.domochevsky.quiverbow.projectiles.*;
+import com.domochevsky.quiverbow.recipes.*;
+import com.domochevsky.quiverbow.weapons.*;
+
+import cpw.mods.fml.common.*;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.model.ModelBase;
@@ -12,32 +31,15 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.RecipeSorter;
 
-import com.domochevsky.quiverbow.ArmsAssistant.Entity_AA;
-import com.domochevsky.quiverbow.ammo.*;
-import com.domochevsky.quiverbow.blocks.FenLight;
-import com.domochevsky.quiverbow.models.*;
-import com.domochevsky.quiverbow.net.PacketHandler;
-import com.domochevsky.quiverbow.projectiles.*;
-import com.domochevsky.quiverbow.recipes.Recipe_Ammo;
-import com.domochevsky.quiverbow.recipes.Recipe_ERA;
-import com.domochevsky.quiverbow.recipes.Recipe_Weapon;
-import com.domochevsky.quiverbow.weapons.*;
-
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInterModComms;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-@Mod(modid="quiverchevsky", name="QuiverBow", version="b102")
+@Mod(modid=Constants.MODID, name=Constants.NAME, version="b102")
 public class Main
 {
+public static class Constants
+{
+    public static final String MODID = "quiverchevsky";
+    public static final String NAME = "QuiverBow";
+}
+    
 	@Instance("quiverchevsky")
 	public static Main instance;
 	
@@ -300,7 +302,7 @@ public class Main
 	private void addAmmo(_AmmoBase ammoBase, String name)
 	{
 		Main.ammo.add(ammoBase);
-		
+		ammoBase.setUnlocalizedName(Constants.MODID + ".ammo." + name);
 		GameRegistry.registerItem(ammoBase, "ammochevsky_" + name); // And register it
 	}
 	

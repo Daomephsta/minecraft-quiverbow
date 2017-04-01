@@ -20,9 +20,6 @@ public class LargeRocket extends _AmmoBase
 		list.add("A big rocket. Very dangerous.");
 	}
 	
-	@Override
-	public String getItemStackDisplayName(ItemStack par1ItemStack) { return "Big Rocket"; }
-	
 	
 	@Override
 	public void addRecipes() 
