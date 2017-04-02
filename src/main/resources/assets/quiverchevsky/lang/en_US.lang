@@ -8,60 +8,64 @@ quiverchevsky.ammo.nocreative=Does not work in creative mode.
 quiverchevsky.ammo.missingitems=You do not have the necessary items
 
 item.quiverchevsky.ammo.SugarMagazine.name=Clip of Sugar Rods
-quiverchevsky.ammo.GatlingAmmo.clipstatus=Sugar Rods: %d / %d
-quiverchevsky.ammo.GatlingAmmo.filltext=Use magazine to fill it with Sugar Cane and Sticks.
-quiverchevsky.ammo.GatlingAmmo.description=A loading helper, full of sugar cane-wrapped sticks.
+quiverchevsky.ammo.GatlingAmmo.clipstatus=§9Sugar Rods: %d / %d
+quiverchevsky.ammo.GatlingAmmo.filltext=§eUse magazine to fill it#n§ewith Sugar Cane and Sticks.
+quiverchevsky.ammo.GatlingAmmo.description=A loading helper, full of#nsugar cane-wrapped sticks.
 
-//By Jeb's ponytail, why?
 item.quiverchevsky.ammo.SeedJar.name=Seed Jar
-quiverchevsky.ammo.SeedJar.clipstatus=Seeds: %d / %d
-quiverchevsky.ammo.SeedJar.filltext=Use jar to fill it with Seeds.
+quiverchevsky.ammo.SeedJar.clipstatus=§9Seeds: %d / %d
+quiverchevsky.ammo.SeedJar.filltext=§eUse jar to fill it with Seeds.
 quiverchevsky.ammo.SeedJar.description=You could preserve apples with this, too.
 
 item.quiverchevsky.ammo.ObsidianMagazine.name=Obsidian Magazine
-quiverchevsky.ammo.ObsidianAmmo.clipstatus=Splints: %d / %d
-quiverchevsky.ammo.ObsidianAmmo.filltext=Use magazine to fill it with Gunpowder and Obsidian.
-quiverchevsky.ammo.ObsidianAmmo.description=A loading helper, full of obsidian splints.
+quiverchevsky.ammo.ObsidianAmmo.clipstatus=§9Splints: %d / %d
+quiverchevsky.ammo.ObsidianAmmo.filltext=§eUse magazine to fill it with#n§eGunpowder and Obsidian.
+quiverchevsky.ammo.ObsidianAmmo.description=A loading helper, full of#nobsidian splints.
 
 item.quiverchevsky.ammo.GoldMagazine.name=Gold Magazine
-quiverchevsky.ammo.GoldAmmo.clipstatus=Gold Nuggets: %d / %d
-quiverchevsky.ammo.GoldAmmo.filltext=Use magazine to fill it with Gold Nuggets.
-\nCrouch-use to fill it with 8 Gold Nuggets.
+quiverchevsky.ammo.GoldAmmo.clipstatus=§9Gold Nuggets: %d / %d
+quiverchevsky.ammo.GoldAmmo.filltext=§eUse magazine to fill it with Gold Nuggets.#n§eCrouch-use to fill it with 8 Gold Nuggets.
 quiverchevsky.ammo.GoldAmmo.description=A loading helper, full of gold nuggets.
 
 item.quiverchevsky.ammo.LapisMagazine.name=Lapis Magazine
 
 item.quiverchevsky.ammo.ThornMagazine.name=Thorn Magazine
-quiverchevsky.ammo.NeedleAmmo.clipstatus=Thorns: %d / %d
-quiverchevsky.ammo.NeedleAmmo.filltext=Use magazine to fill it with Cacti.
-\nUse magazine to fill it with 8 Cacti.
+quiverchevsky.ammo.NeedleAmmo.clipstatus=§9Thorns: %d / %d
+quiverchevsky.ammo.NeedleAmmo.filltext=§eUse magazine to fill it with Cacti.#n§eCrouch-use magazine to fill it with 8 Cacti.
 quiverchevsky.ammo.NeedleAmmo.description=A loading helper, full of cactus thorns.
 
 item.quiverchevsky.ammo.RedstoneMagazine.name=Redstone Magazine
-quiverchevsky.ammo.RedstoneAmmo.clipstatus=Redstone: %d / %d
-quiverchevsky.ammo.RedstoneAmmo.filltext=Use magazine to fill it with Redstone.
-\nCrouch-use to fill it with 8 Redstone.
+quiverchevsky.ammo.RedstoneAmmo.clipstatus=§9Redstone: %d / %d
+quiverchevsky.ammo.RedstoneAmmo.filltext=§eUse magazine to fill it with Redstone.#n§eCrouch-use to fill it with 8 Redstone.
 quiverchevsky.ammo.RedstoneAmmo.description=A loading helper, full of red dust.
 
 item.quiverchevsky.ammo.LargeNetherrackMagazine.name=Large Netherrack Magazine
-quiverchevsky.ammo.LargeNetherAmmo.clipstatus=Netherrack: %d / %d
-quiverchevsky.ammo.LargeNetherAmmo.filltext=Use magazine to fill it with Netherrack.
-\nCrouch-use to fill it with 8 Netherrack.
+quiverchevsky.ammo.LargeNetherAmmo.clipstatus=§9Netherrack: %d / %d
+quiverchevsky.ammo.LargeNetherAmmo.filltext=§eUse magazine to fill it with Netherrack.#n§eCrouch-use to fill it with 8 Netherrack.
 quiverchevsky.ammo.LargeNetherAmmo.description=A loading helper, full of Netherrack.
 
 item.quiverchevsky.ammo.LargeRedstoneMagazine.name=Large Redstone Magazine
-quiverchevsky.ammo.LargeRedstoneAmmo.clipstatus=Redstone: %d / %d
-quiverchevsky.ammo.LargeRedstoneAmmo.filltext=Use magazine to fill it with Redstone.
-\nCrouch-use to fill it with 8 Redstone.
+quiverchevsky.ammo.LargeRedstoneAmmo.clipstatus=§9Redstone: %d / %d
+quiverchevsky.ammo.LargeRedstoneAmmo.filltext=Use magazine to fill it with Redstone.#n§eCrouch-use to fill it with 8 Redstone.
 quiverchevsky.ammo.LargeRedstoneAmmo.description=A loading helper, full of red dust.
 
 item.quiverchevsky.ammo.EnderQuartzMagazine.name=Ender Quartz Clip
-quiverchevsky.ammo.EnderAmmo.clipstatus=Ender Quartz: %d / %d
-quiverchevsky.ammo.EnderAmmo.filltext=Use magazine to fill it with Ender Pearls and Quartz.
-quiverchevsky.ammo.EnderAmmo.description=A loading helper, full of quartz-encased ender pearls.
+quiverchevsky.ammo.EnderAmmo.clipstatus=§9Ender Quartz: %d / %d
+quiverchevsky.ammo.EnderAmmo.filltext=§eUse magazine to fill it#n§ewith Ender Pearls and Quartz.
+quiverchevsky.ammo.EnderAmmo.description=A loading helper, full of#nquartz-encased ender pearls.
 
 item.quiverchevsky.ammo.ArrowBundle.name=Arrow Bundle
 item.quiverchevsky.ammo.RocketBundle.name=Rocket Bundle
 item.quiverchevsky.ammo.LargeRocket.name=Big Rocket
 item.quiverchevsky.ammo.ColdIronClip.name=Cold Iron Clip
 item.quiverchevsky.ammo.BoxOfFlintDust.name=Box of Flint Dust
+
+//Misc
+item.quiverchevsky.misc.Part_SEBarrel.name=Sugar Engine Barrel
+quiverchevsky.parts.gatling_barrel.description=A barrel, waiting for 3 companions#nand a main body.
+
+item.quiverchevsky.misc.Part_SEBody.name=Sugar Engine Main Body
+
+item.quiverchevsky.misc.TurretSpawner.name=Packed Up Arms Assistant
+
+item.quiverchevsky.misc.FlyingAASpawner.name=Packed Up BB (WIP) 

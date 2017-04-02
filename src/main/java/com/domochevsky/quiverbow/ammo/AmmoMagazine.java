@@ -1,8 +1,10 @@
 package com.domochevsky.quiverbow.ammo;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.domochevsky.quiverbow.Main.Constants;
+import com.domochevsky.quiverbow.util.Newliner;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -49,7 +51,7 @@ public abstract class AmmoMagazine extends _AmmoBase
     }
 
     @Override
-    abstract String getIconPath();
+    public abstract String getIconPath();
 
     @Override
     public IIcon getIconFromDamage(int meta) 
@@ -92,9 +94,9 @@ public abstract class AmmoMagazine extends _AmmoBase
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) 
     {
-	list.add(EnumChatFormatting.BLUE + I18n.format(Constants.MODID + ".ammo." + this.getIconPath() + ".clipstatus", this.getMaxDamage() - stack.getItemDamage(), this.getMaxDamage()));
-	list.add(EnumChatFormatting.YELLOW + I18n.format(Constants.MODID + ".ammo." + this.getIconPath() + ".filltext"));
-	list.add(I18n.format(Constants.MODID + ".ammo." + this.getIconPath() + ".description"));
+	Collections.addAll(list, Newliner.translateAndParse(Constants.MODID + ".ammo." + this.getIconPath() + ".clipstatus", this.getMaxDamage() - stack.getItemDamage(), this.getMaxDamage()));
+	Collections.addAll(list, Newliner.translateAndParse(Constants.MODID + ".ammo." + this.getIconPath() + ".filltext"));
+	Collections.addAll(list, Newliner.translateAndParse(Constants.MODID + ".ammo." + this.getIconPath() + ".description"));
     }
 
     @Override
