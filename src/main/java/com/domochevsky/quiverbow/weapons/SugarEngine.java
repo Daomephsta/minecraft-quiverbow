@@ -15,8 +15,8 @@ import net.minecraftforge.common.config.Configuration;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.GatlingAmmo;
-import com.domochevsky.quiverbow.ammo.Part_GatlingBarrel;
-import com.domochevsky.quiverbow.ammo.Part_GatlingBody;
+import com.domochevsky.quiverbow.miscitems.Part_GatlingBarrel;
+import com.domochevsky.quiverbow.miscitems.Part_GatlingBody;
 import com.domochevsky.quiverbow.projectiles.SugarRod;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -259,7 +259,7 @@ public class SugarEngine extends _WeaponBase
 	@Override
 	public void addRecipes()
 	{
-		if (this.Enabled)
+		/*if (this.Enabled)
 		{
 			// One Sugar Gatling (empty)
 			GameRegistry.addRecipe(new ItemStack(this, 1 , this.getMaxDamage()), "b b", "b b", " m ",
@@ -270,7 +270,7 @@ public class SugarEngine extends _WeaponBase
 		else if (Main.noCreative) { this.setCreativeTab(null); }	// Not enabled and not allowed to be in the creative menu
 
 		// Reloading with gatling ammo, setting its clip metadata as ours (Need to be empty for that)
-		Helper.registerAmmoRecipe(GatlingAmmo.class, this);
+		Helper.registerAmmoRecipe(GatlingAmmo.class, this);*/
 	}
 
 

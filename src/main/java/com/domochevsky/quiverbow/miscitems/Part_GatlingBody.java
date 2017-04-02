@@ -1,6 +1,8 @@
-package com.domochevsky.quiverbow.ammo;
+package com.domochevsky.quiverbow.miscitems;
 
 import java.util.List;
+
+import com.domochevsky.quiverbow.ammo._AmmoBase;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
@@ -9,17 +11,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-public class Part_GatlingBody extends _AmmoBase
+public class Part_GatlingBody extends QuiverBowItem
 {	
 	public Part_GatlingBody()
 	{
 		this.setMaxStackSize(1);
 		this.setCreativeTab(CreativeTabs.tabMaterials);	// On the combat tab by default, but this isn't ammo. It's a building part
 	}
-	
-	
-	@Override
-	String getIconPath() { return "Gatling_Body"; }
 	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean unknown) 
@@ -42,5 +40,11 @@ public class Part_GatlingBody extends _AmmoBase
         		'p', Blocks.planks,
         		'b', Blocks.piston
     	);
+	}
+	
+	@Override
+	public String getIconPath()
+	{
+	    return "misc/Part_SEBody";
 	}
 }

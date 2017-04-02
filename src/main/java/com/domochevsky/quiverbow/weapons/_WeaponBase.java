@@ -2,6 +2,8 @@ package com.domochevsky.quiverbow.weapons;
 
 import java.util.List;
 
+import com.domochevsky.quiverbow.miscitems.QuiverBowItem;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,7 +20,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 
 @cpw.mods.fml.common.Optional.Interface(modid = "battlegear2", iface = "mods.battlegear2.api.IUsableItem", striprefs = true)
-public class _WeaponBase extends Item //implements mods.battlegear2.api.IUsableItem
+public class _WeaponBase extends QuiverBowItem
 {
     	public String uniqueName = "WEAPON BASE";				// To be identified by
 	public String namePublic = "QuiverBow Weapon Base";	// Default values
@@ -186,7 +188,6 @@ public class _WeaponBase extends Item //implements mods.battlegear2.api.IUsableI
 	
 
 	public void addProps(FMLPreInitializationEvent event, Configuration config) { }
-	public void addRecipes() { }
 	
 	
 	public String getModelTexPath(ItemStack stack) { return null; }	// The model texture path

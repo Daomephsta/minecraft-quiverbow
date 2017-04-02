@@ -1,4 +1,4 @@
-package com.domochevsky.quiverbow.ammo;
+package com.domochevsky.quiverbow.miscitems;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.AI.AI_Properties;
 import com.domochevsky.quiverbow.ArmsAssistant.Entity_AA;
+import com.domochevsky.quiverbow.ammo._AmmoBase;
 import com.domochevsky.quiverbow.recipes.*;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -19,12 +20,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.RecipeSorter;
 
 
-public class PackedUpAA extends _AmmoBase
-{
-	@Override
-	String getIconPath() { return "WitherStand"; }
-	
-	
+public class PackedUpAA extends QuiverBowItem
+{	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean unknown) 
 	{
@@ -137,6 +134,11 @@ public class PackedUpAA extends _AmmoBase
 		this.registerCommunicationRecipe();
 	}
 	
+	@Override
+	public String getIconPath()
+	{
+	    return "misc/TurretSpawner";
+	}
 	
 	private void registerArmorRecipe()
 	{

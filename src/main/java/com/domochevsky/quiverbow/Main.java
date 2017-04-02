@@ -6,10 +6,12 @@ import com.domochevsky.quiverbow.Main.Constants;
 import com.domochevsky.quiverbow.ArmsAssistant.Entity_AA;
 import com.domochevsky.quiverbow.ammo.*;
 import com.domochevsky.quiverbow.blocks.FenLight;
+import com.domochevsky.quiverbow.miscitems.*;
 import com.domochevsky.quiverbow.models.*;
 import com.domochevsky.quiverbow.net.PacketHandler;
 import com.domochevsky.quiverbow.projectiles.*;
 import com.domochevsky.quiverbow.recipes.*;
+import com.domochevsky.quiverbow.util.RegistryHelper;
 import com.domochevsky.quiverbow.weapons.*;
 
 import cpw.mods.fml.common.*;
@@ -48,13 +50,17 @@ public static class Constants
 	
 	protected Configuration config;										// Accessible from other files this way
 	
-	// TODO: Overhaul all of this to use arraylist.
 	public static ArrayList<_WeaponBase> weapons = new ArrayList<_WeaponBase>();	// Holder array for all (fully set up) possible weapons
 	public static ArrayList<_AmmoBase> ammo = new ArrayList<_AmmoBase>();			// Same with ammo, since they got recipes as well
 	//private static String[] weaponType = new String[60];		// For Battle Gear 2
 	
 	@SideOnly(Side.CLIENT)
 	public static ArrayList<ModelBase> models;	// Client side only
+	
+	public static Item gatlingBody = null;
+	public static Item gatlingBarrel = null;
+	public static Item packedAA = null;
+	public static Item packedBB = null;
 	
 	public static Block fenLight = null;
 	
@@ -90,6 +96,7 @@ public static class Constants
 		this.registerWeapons(event.getSide().isClient());
 		this.registerProjectiles();
 		this.registerBlocks();
+		this.registerMiscItems();
 		
 		addAllProps(event, this.config);	// All items are registered now. Making recipes and recording props
 		
@@ -152,8 +159,6 @@ public static class Constants
 		this.addAmmo(new RocketBundle(), "RocketBundle");
 		
 		this.addAmmo(new GatlingAmmo(), "SugarMagazine");
-		this.addAmmo(new Part_GatlingBody(), "Part_SEBody");
-		this.addAmmo(new Part_GatlingBarrel(), "Part_SEBarrel");
 		
 		this.addAmmo(new LargeRocket(), "LargeRocket");
 		this.addAmmo(new ColdIronClip(), "ColdIronClip");
@@ -168,9 +173,6 @@ public static class Constants
 		
 		this.addAmmo(new LargeNetherrackMagazine(), "LargeNetherrackMagazine");
 		this.addAmmo(new LargeRedstoneMagazine(), "LargeRedstoneMagazine");
-		
-		this.addAmmo(new PackedUpAA(), "TurretSpawner");
-		//this.addAmmo(new PackedUpBB(), "FlyingAASpawner");
 		
 		this.addAmmo(new EnderQuartzClip(), "EnderQuartzMagazine");
 	}
@@ -298,6 +300,13 @@ public static class Constants
 		GameRegistry.registerBlock(fenLight, "quiverchevsky_FenLight");
 	}
 	
+	private void registerMiscItems()
+	{
+	    gatlingBody = RegistryHelper.registerItem(new Part_GatlingBody(), "Part_SEBody");
+	    gatlingBarrel = RegistryHelper.registerItem(new Part_GatlingBarrel(), "Part_SEBarrel");
+	    packedAA = RegistryHelper.registerItem(new PackedUpAA(), "TurretSpawner");
+	    //packedBB = RegistryHelper.registerItem(new PackedUpBB(), "FlyingAASpawner");
+	}
 	
 	private void addAmmo(_AmmoBase ammoBase, String name)
 	{

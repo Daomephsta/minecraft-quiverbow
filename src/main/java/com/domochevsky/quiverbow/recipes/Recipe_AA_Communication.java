@@ -2,13 +2,13 @@ package com.domochevsky.quiverbow.recipes;
 
 import java.util.List;
 
+import com.domochevsky.quiverbow.miscitems.PackedUpAA;
+
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.nbt.NBTTagCompound;
-
-import com.domochevsky.quiverbow.ammo.PackedUpAA;
 
 public class Recipe_AA_Communication extends ShapelessRecipes implements IRecipe
 {

@@ -1,15 +1,22 @@
-package com.domochevsky.quiverbow.ammo;
+package com.domochevsky.quiverbow.miscitems;
 
+import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.ArrayUtils;
+
+import com.domochevsky.quiverbow.Main.Constants;
+import com.domochevsky.quiverbow.util.Newliner;
+
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-public class Part_GatlingBarrel extends _AmmoBase
+public class Part_GatlingBarrel extends QuiverBowItem
 {	
 	public Part_GatlingBarrel()
 	{
@@ -18,13 +25,9 @@ public class Part_GatlingBarrel extends _AmmoBase
 	}
 	
 	@Override
-	String getIconPath() { return "Gatling_Barrel"; }
-	
-	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean unknown) 
 	{
-		list.add("A barrel, waiting for 3 companions");
-		list.add("and a main body."); 
+	    	Collections.addAll(list, Newliner.translateAndParse(Constants.MODID + ".parts.gatling_barrel.description"));
 	}
 	
 	
@@ -39,5 +42,10 @@ public class Part_GatlingBarrel extends _AmmoBase
                 's', Blocks.sticky_piston
     	);
 	}
-
+	
+	@Override
+	public String getIconPath()
+	{
+	    return "misc/Part_SEBarrel";
+	}
 }

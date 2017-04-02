@@ -1,13 +1,13 @@
 package com.domochevsky.quiverbow.recipes;
 
+import com.domochevsky.quiverbow.miscitems.PackedUpAA;
+
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-
-import com.domochevsky.quiverbow.ammo.PackedUpAA;
 
 public class Recipe_AA_Storage extends ShapedRecipes implements IRecipe 
 {

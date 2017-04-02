@@ -1,22 +1,19 @@
-package com.domochevsky.quiverbow.ammo;
+package com.domochevsky.quiverbow.miscitems;
 
 import java.util.List;
 
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.AI.AI_Properties;
 import com.domochevsky.quiverbow.FlyingAA.Entity_BB;
+import com.domochevsky.quiverbow.ammo._AmmoBase;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-public class PackedUpBB extends _AmmoBase
+public class PackedUpBB extends QuiverBowItem
 {
-	@Override
-	String getIconPath() { return "PackedUpBB"; }
-	
-	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean unknown) 
 	{
