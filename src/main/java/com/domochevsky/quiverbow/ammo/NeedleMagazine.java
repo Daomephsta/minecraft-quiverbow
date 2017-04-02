@@ -19,7 +19,7 @@ public class NeedleMagazine extends AmmoMagazine
     }
 
     @Override
-    String getIconPath()
+    public String getIconPath()
     {
 	return "NeedleAmmo";
     }

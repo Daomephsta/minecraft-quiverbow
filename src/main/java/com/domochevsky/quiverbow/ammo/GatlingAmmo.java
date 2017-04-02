@@ -20,7 +20,7 @@ public class GatlingAmmo extends AmmoMagazine
 
 
     @Override
-    String getIconPath() { return "GatlingAmmo"; }
+    public String getIconPath() { return "GatlingAmmo"; }
 
 
     @Override

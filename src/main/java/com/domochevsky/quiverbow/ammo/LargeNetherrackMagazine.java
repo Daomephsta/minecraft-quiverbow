@@ -19,7 +19,7 @@ public class LargeNetherrackMagazine extends AmmoMagazine
     }	
 
     @Override
-    String getIconPath()
+    public String getIconPath()
     {
 	return "LargeNetherAmmo";
     }

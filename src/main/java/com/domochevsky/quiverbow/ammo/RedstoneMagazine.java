@@ -18,7 +18,7 @@ public class RedstoneMagazine extends AmmoMagazine
     }
 
     @Override
-    String getIconPath()
+    public String getIconPath()
     {
 	return "RedstoneAmmo";
     }

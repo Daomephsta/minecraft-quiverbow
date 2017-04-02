@@ -29,7 +29,7 @@ public class EnderQuartzClip extends AmmoMagazine
 
 
 	@Override
-	String getIconPath()
+	public String getIconPath()
 	{
 	    return "EnderAmmo";
 	}

@@ -12,7 +12,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class ColdIronClip extends _AmmoBase
 {	
 	@Override
-	String getIconPath() { return "Bundle_Frost"; }
+	public String getIconPath() { return "Bundle_Frost"; }
 	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean unknown) 

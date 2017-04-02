@@ -20,7 +20,7 @@ public class SeedJar extends AmmoMagazine
 
 
     @Override
-    String getIconPath() { return "SeedJar"; }
+    public String getIconPath() { return "SeedJar"; }
 
 
     @Override

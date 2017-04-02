@@ -15,7 +15,7 @@ import net.minecraft.util.IIcon;
 public class ArrowBundle extends _AmmoBase
 {	
 	@Override
-	String getIconPath() { return "Bundle_Arrows"; }
+	public String getIconPath() { return "Bundle_Arrows"; }
 	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean unknown) 

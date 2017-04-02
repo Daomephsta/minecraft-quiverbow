@@ -20,7 +20,7 @@ public class ObsidianMagazine extends AmmoMagazine
 
 
     @Override
-    String getIconPath()
+    public String getIconPath()
     {
 	return "ObsidianAmmo";
     }

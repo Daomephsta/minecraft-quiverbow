@@ -22,7 +22,7 @@ public class BoxOfFlintDust extends _AmmoBase
 	
 	
 	@Override
-	String getIconPath() { return "Bundle_Flint"; }
+	public String getIconPath() { return "Bundle_Flint"; }
 	
 	
 	@Override

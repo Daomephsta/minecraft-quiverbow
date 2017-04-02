@@ -12,7 +12,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public class LargeRocket extends _AmmoBase
 {	
 	@Override
-	String getIconPath() { return "Bundle_BigRocket"; }
+	public String getIconPath() { return "Bundle_BigRocket"; }
 	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean unknown) 

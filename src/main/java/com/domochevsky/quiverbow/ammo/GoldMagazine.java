@@ -18,7 +18,7 @@ public class GoldMagazine extends AmmoMagazine
     }
 
     @Override
-    String getIconPath()
+    public String getIconPath()
     {
 	return "GoldAmmo";
     }
