@@ -40,7 +40,7 @@ public class _AmmoBase extends QuiverBowItem
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean unknown)
 	{
-	    Collections.addAll(list, Newliner.translateAndParse(Constants.MODID + ".ammo." + this.getIconPath() + ".description"));
+	    Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".description"));
 	}
 	
 	@Override

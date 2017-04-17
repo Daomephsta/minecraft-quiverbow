@@ -93,9 +93,9 @@ public abstract class AmmoMagazine extends _AmmoBase
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) 
     {
-	Collections.addAll(list, Newliner.translateAndParse(Constants.MODID + ".ammo." + this.getIconPath() + ".clipstatus", this.getMaxDamage() - stack.getItemDamage(), this.getMaxDamage()));
-	Collections.addAll(list, Newliner.translateAndParse(Constants.MODID + ".ammo." + this.getIconPath() + ".filltext"));
-	Collections.addAll(list, Newliner.translateAndParse(Constants.MODID + ".ammo." + this.getIconPath() + ".description"));
+	Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".clipstatus", this.getMaxDamage() - stack.getItemDamage(), this.getMaxDamage()));
+	Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".filltext"));
+	Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".description"));
     }
 
     @Override
