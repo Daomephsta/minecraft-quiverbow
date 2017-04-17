@@ -29,6 +29,9 @@ quiverchevsky.ammo.GoldAmmo.filltext=§eUse magazine to fill it with Gold Nugget
 quiverchevsky.ammo.GoldAmmo.description=A loading helper, full of gold nuggets.
 
 item.quiverchevsky.ammo.LapisMagazine.name=Lapis Magazine
+quiverchevsky.ammo.LapisAmmo.clipstatus=§9Lapis: %d / %d
+quiverchevsky.ammo.LapisAmmo.filltext=§eUse magazine to fill it with Lapis Blocks.
+quiverchevsky.ammo.LapisAmmo.description=A loading helper, full of toxic blue stuff.
 
 item.quiverchevsky.ammo.ThornMagazine.name=Thorn Magazine
 quiverchevsky.ammo.NeedleAmmo.clipstatus=§9Thorns: %d / %d

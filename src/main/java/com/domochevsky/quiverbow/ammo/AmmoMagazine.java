@@ -15,14 +15,13 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 public abstract class AmmoMagazine extends _AmmoBase
 {	
     @SideOnly(Side.CLIENT)
-    private IIcon iconEmpty;
+    protected IIcon iconEmpty;
     //How much should this magazine attempt to fill when sneak-clicked?
     private int sneakFillQuantity;
     //How much should this magazine attempt to fill when not sneak-clicked?
