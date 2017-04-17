@@ -1,14 +1,10 @@
 package com.domochevsky.quiverbow.ammo;
 
-import java.util.List;
-
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BoxOfFlintDust extends _AmmoBase
 {	
@@ -23,14 +19,6 @@ public class BoxOfFlintDust extends _AmmoBase
 	
 	@Override
 	public String getIconPath() { return "Bundle_Flint"; }
-	
-	
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean unknown) 
-	{
-		list.add("All boxed up.");
-	}
-	
 	
 	@Override
 	public void addRecipes() 

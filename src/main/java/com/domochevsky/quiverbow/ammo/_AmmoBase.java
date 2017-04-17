@@ -1,11 +1,17 @@
 package com.domochevsky.quiverbow.ammo;
 
+import java.util.Collections;
+import java.util.List;
+
+import com.domochevsky.quiverbow.Main.Constants;
 import com.domochevsky.quiverbow.miscitems.QuiverBowItem;
+import com.domochevsky.quiverbow.util.Newliner;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
@@ -31,6 +37,11 @@ public class _AmmoBase extends QuiverBowItem
 	@Override
 	public IIcon getIconFromDamage(int meta) { return this.Icon; }
 	
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean unknown)
+	{
+	    Collections.addAll(list, Newliner.translateAndParse(Constants.MODID + ".ammo." + this.getIconPath() + ".description"));
+	}
 	
 	@Override
 	public boolean showDurabilityBar(ItemStack stack) { return false; }	// Don't care about durabilities

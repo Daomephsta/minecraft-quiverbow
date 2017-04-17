@@ -1,25 +1,14 @@
 package com.domochevsky.quiverbow.ammo;
 
-import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayer;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-
 public class LargeRocket extends _AmmoBase
 {	
 	@Override
-	public String getIconPath() { return "Bundle_BigRocket"; }
-	
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean unknown) 
-	{
-		list.add("A big rocket. Very dangerous.");
-	}
-	
+	public String getIconPath() { return "Bundle_BigRocket"; }	
 	
 	@Override
 	public void addRecipes() 

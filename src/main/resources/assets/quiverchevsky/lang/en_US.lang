@@ -59,10 +59,15 @@ quiverchevsky.ammo.EnderAmmo.filltext=§eUse magazine to fill it#n§ewith Ender 
 quiverchevsky.ammo.EnderAmmo.description=A loading helper, full of#nquartz-encased ender pearls.
 
 item.quiverchevsky.ammo.ArrowBundle.name=Arrow Bundle
+quiverchevsky.ammo.Bundle_Arrows.description=Holds 8 arrows, tightly packed.
 item.quiverchevsky.ammo.RocketBundle.name=Rocket Bundle
+quiverchevsky.ammo.Bundle_Rockets.description=Holds 8 rockets. Highly volatile.
 item.quiverchevsky.ammo.LargeRocket.name=Big Rocket
+quiverchevsky.ammo.Bundle_BigRocket.description=A big rocket. Very dangerous.
 item.quiverchevsky.ammo.ColdIronClip.name=Cold Iron Clip
+quiverchevsky.ammo.Bundle_Frost.description=Holds 4 ice-laced iron ingots.#nCool to the touch.
 item.quiverchevsky.ammo.BoxOfFlintDust.name=Box of Flint Dust
+quiverchevsky.ammo.Bundle_Flint.description=All boxed up.
 
 //Misc
 item.quiverchevsky.misc.Part_SEBarrel.name=Sugar Engine Barrel

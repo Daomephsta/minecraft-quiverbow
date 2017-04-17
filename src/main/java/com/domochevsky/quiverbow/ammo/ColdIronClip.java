@@ -1,26 +1,14 @@
 package com.domochevsky.quiverbow.ammo;
 
-import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayer;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ColdIronClip extends _AmmoBase
 {	
 	@Override
 	public String getIconPath() { return "Bundle_Frost"; }
-	
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean unknown) 
-	{
-		list.add("Holds 4 ice-laced iron ingots."); 
-		list.add("Cool to the touch."); 
-	}
-	
 	
 	@Override
 	public void addRecipes() 
