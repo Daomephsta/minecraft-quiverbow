@@ -19,12 +19,6 @@ public class Part_GatlingBody extends QuiverBowItem
 		this.setCreativeTab(CreativeTabs.tabMaterials);	// On the combat tab by default, but this isn't ammo. It's a building part
 	}
 	
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean unknown) 
-	{
-		list.add("To be outfitted with 4 barrels.");
-	}
-	
 	
 	@Override
 	public void addRecipes() 

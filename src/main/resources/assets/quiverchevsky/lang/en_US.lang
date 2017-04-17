@@ -6,6 +6,7 @@ entity.quiverchevsky.projectilechevsky_Ano.name=the End
 //Ammo
 quiverchevsky.ammo.nocreative=Does not work in creative mode.
 quiverchevsky.ammo.missingitems=You do not have the necessary items
+quiverchevsky.misc.sneakformore=Press [%s] for more
 
 item.quiverchevsky.ammo.SugarMagazine.name=Clip of Sugar Rods
 quiverchevsky.ammo.GatlingAmmo.clipstatus=§9Sugar Rods: %d / %d
@@ -62,10 +63,12 @@ item.quiverchevsky.ammo.BoxOfFlintDust.name=Box of Flint Dust
 
 //Misc
 item.quiverchevsky.misc.Part_SEBarrel.name=Sugar Engine Barrel
-quiverchevsky.parts.gatling_barrel.description=A barrel, waiting for 3 companions#nand a main body.
+item.quiverchevsky.misc.Part_SEBarrel.description=A barrel, waiting for 3 companions#nand a main body.
 
 item.quiverchevsky.misc.Part_SEBody.name=Sugar Engine Main Body
+item.quiverchevsky.misc.Part_SEBody.description=To be outfitted with 4 barrels.
 
 item.quiverchevsky.misc.TurretSpawner.name=Packed Up Arms Assistant
+item.quiverchevsky.misc.TurretSpawner.description=It's sizing you up
 
 item.quiverchevsky.misc.FlyingAASpawner.name=Packed Up BB (WIP) 

@@ -11,7 +11,7 @@ public class RegistryHelper
 {
     public static Item registerItem(QuiverBowItem item, String name)
     {
-	item.setTextureName(Constants.MODID + ":" + item.getIconPath() == null ? name : item.getIconPath());
+	item.setTextureName(Constants.MODID + ":" + (item.getIconPath() == null ? name : item.getIconPath()));
 	item.setUnlocalizedName(Constants.MODID + ".misc." + name);
 	GameRegistry.registerItem(item, name);
 	return item;
