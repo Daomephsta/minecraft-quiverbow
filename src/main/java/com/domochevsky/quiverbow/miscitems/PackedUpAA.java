@@ -22,7 +22,7 @@ import net.minecraftforge.oredict.RecipeSorter;
 
 public class PackedUpAA extends QuiverBowItem
 {	
-	@Override
+	@Override //TODO Figure out how to localise this
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean unknown) 
 	{
 		list.add(EnumChatFormatting.BLUE + "Use to deploy.");
