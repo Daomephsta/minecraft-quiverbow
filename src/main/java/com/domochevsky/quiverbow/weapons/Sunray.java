@@ -1,8 +1,10 @@
 package com.domochevsky.quiverbow.weapons;
 
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +18,9 @@ import net.minecraftforge.common.config.Configuration;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
+import com.domochevsky.quiverbow.Main.Constants;
 import com.domochevsky.quiverbow.projectiles.SunLight;
+import com.domochevsky.quiverbow.util.Newliner;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -25,9 +29,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class Sunray extends _WeaponBase
 {
-	public Sunray() { super(1); }
+	public Sunray() { super("sunray", 1); }
 
-	private String nameInternal = "Sunray";
+	
 	
 	private int MaxTicks;
 	private int LightMin;
@@ -113,54 +117,27 @@ public class Sunray extends _WeaponBase
 	{ 
 		world.playSoundAtEntity(entity, "random.fizz", 1.0F, 0.5F);
 		world.playSoundAtEntity(entity, "mob.cat.hiss", 0.6F, 2.0F);
-	} 
-	
-	
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-	{
-	    super.addInformation(stack, player, list, par4);
-	    
-	    if (stack.stackTagCompound != null)
-	    {
-	    	double dur = (1d / Cooldown) * (Cooldown - this.getCooldown(stack));
-	    	double displayDur = (dur * 100);	// Casting to int. We only need the full digits
-	    	
-	    	list.add(EnumChatFormatting.BLUE + "Charge: " + (int) displayDur + "%");
-	    }
-	    
-	    list.add(EnumChatFormatting.BLUE + "Damage: " + DmgMin + " - " + DmgMax);
-	    
-	    list.add(EnumChatFormatting.GREEN + "Sets target on fire for " + FireDur + " sec.");
-	    list.add(EnumChatFormatting.GREEN + "Passes through walls.");
-	   
-	    list.add(EnumChatFormatting.RED + "Charges for " + this.displayInSec(Cooldown) + " sec after use.");
-	    list.add(EnumChatFormatting.RED + "Requires strong light to charge.");
-	    
-	    list.add("The refurbished beacon emits a low hum.");
-    }
+	}
 	
 	
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config) 
 	{ 
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
-		
-		this.DmgMin = config.get(this.nameInternal, "What damage are my arrows dealing, at least? (default 14)", 14).getInt();
-		this.DmgMax = config.get(this.nameInternal, "What damage are my arrows dealing, tops? (default 20)", 20).getInt();
-		
-		this.Speed = 4.0f;
-    	this.Kickback = (byte) config.get(this.nameInternal, "How hard do I kick the user back when firing? (default 3)", 3).getInt();
-    	
-    	this.Cooldown = config.get(this.nameInternal, "How long until I can fire again? (default 120 ticks)", 120).getInt();
-    	
-    	this.FireDur = config.get(this.nameInternal, "How long is what I hit on fire? (default 10s)", 10).getInt();
-    	this.MaxTicks = config.get(this.nameInternal, "How long does my beam exist, tops? (default 60 ticks)", 60).getInt();
-    	this.LightMin = config.get(this.nameInternal, "What light level do I need to recharge, at least? (default 12)", 12).getInt();
-    	
-    	this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default false. Too damn bright for their taste.)", false).getBoolean();
+	    this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+
+	    this.DmgMin = config.get(this.name, "What damage are my arrows dealing, at least? (default 14)", 14).getInt();
+	    this.DmgMax = config.get(this.name, "What damage are my arrows dealing, tops? (default 20)", 20).getInt();
+
+	    this.Speed = 4.0f;
+	    this.Kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 3)", 3).getInt();
+
+	    this.Cooldown = config.get(this.name, "How long until I can fire again? (default 120 ticks)", 120).getInt();
+
+	    this.FireDur = config.get(this.name, "How long is what I hit on fire? (default 10s)", 10).getInt();
+	    this.MaxTicks = config.get(this.name, "How long does my beam exist, tops? (default 60 ticks)", 60).getInt();
+	    this.LightMin = config.get(this.name, "What light level do I need to recharge, at least? (default 12)", 12).getInt();
+
+	    this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default false. Too damn bright for their taste.)", false).getBoolean();
 	}
     
 	

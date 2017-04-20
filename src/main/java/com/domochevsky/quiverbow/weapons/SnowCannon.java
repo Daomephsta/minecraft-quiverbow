@@ -24,10 +24,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class SnowCannon extends _WeaponBase
 {
-	public SnowCannon() { super(64); }
+	public SnowCannon() { super("snow_cannon", 64); }
 
 
-	private String nameInternal = "Snow Cannon";
+	
 
 	private int Effect = 2;			// The id of the effect
 	private int Slow_Strength;		// -15% speed per level. Lvl 3 = -45%
@@ -106,52 +106,22 @@ public class SnowCannon extends _WeaponBase
 	}
 
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-	{
-		super.addInformation(stack, player, list, par4);
-
-		if (player.capabilities.isCreativeMode)
-		{
-			list.add(EnumChatFormatting.BLUE + "Snow: INFINITE / " + this.getMaxDamage());
-		}
-		else
-		{
-			int ammo = this.getMaxDamage() - this.getDamage(stack);
-			list.add(EnumChatFormatting.BLUE + "Snow: " + ammo + " / " + this.getMaxDamage());
-		}
-
-		list.add(EnumChatFormatting.BLUE + "Damage: " + this.DmgMin + " - " + this.DmgMax + " per Snowball");
-
-		list.add(EnumChatFormatting.GREEN + "Scatter 4 when firing.");
-		list.add(EnumChatFormatting.GREEN + "Slowness " + this.Slow_Strength + " for " + this.displayInSec(this.Slow_Duration) + " sec on hit.");
-
-		list.add(EnumChatFormatting.RED + "Cooldown for " + this.displayInSec(this.Cooldown) + " sec on use.");
-
-		list.add(EnumChatFormatting.YELLOW + "Craft with up to 8 Snow Blocks to reload.");
-
-		list.add("Hoarfrost is forming around the trigger.");
-	}
-
-
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.DmgMin = config.get(this.nameInternal, "What damage am I dealing, at least? (default 1)", 1).getInt();
-		this.DmgMax = config.get(this.nameInternal, "What damage am I dealing, tops? (default 2)", 2).getInt();
+		this.DmgMin = config.get(this.name, "What damage am I dealing, at least? (default 1)", 1).getInt();
+		this.DmgMax = config.get(this.name, "What damage am I dealing, tops? (default 2)", 2).getInt();
 
-		this.Speed = config.get(this.nameInternal, "How fast are my projectiles? (default 1.5 BPT (Blocks Per Tick))", 1.5).getDouble();
-		this.Kickback = (byte) config.get(this.nameInternal, "How hard do I kick the user back when firing? (default 2)", 2).getInt();
-		this.Cooldown = config.get(this.nameInternal, "How long until I can fire again? (default 15 ticks)", 15).getInt();
+		this.Speed = config.get(this.name, "How fast are my projectiles? (default 1.5 BPT (Blocks Per Tick))", 1.5).getDouble();
+		this.Kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 2)", 2).getInt();
+		this.Cooldown = config.get(this.name, "How long until I can fire again? (default 15 ticks)", 15).getInt();
 
-		this.Slow_Strength = config.get(this.nameInternal, "How strong is my Slowness effect? (default 3)", 3).getInt();
-		this.Slow_Duration = config.get(this.nameInternal, "How long does my Slowness effect last? (default 40 ticks)", 40).getInt();
+		this.Slow_Strength = config.get(this.name, "How strong is my Slowness effect? (default 3)", 3).getInt();
+		this.Slow_Duration = config.get(this.name, "How long does my Slowness effect last? (default 40 ticks)", 40).getInt();
 
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
 	}
 
 

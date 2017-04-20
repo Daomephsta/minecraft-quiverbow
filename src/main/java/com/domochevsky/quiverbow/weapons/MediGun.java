@@ -25,13 +25,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class MediGun extends _WeaponBase
 {
-	public MediGun() { super(320); }	// 20 per regen potion, for 2x 8 potions (or 1x 8 Regen 2 potions)
+	public MediGun() { super("ray_of_hope", 320); }	// 20 per regen potion, for 2x 8 potions (or 1x 8 Regen 2 potions)
 
-	private String nameInternal = "Ray Of Hope";
-
-
-	@Override
-	public String getItemStackDisplayName(ItemStack stack) { return this.namePublic; }
+	
 
 
 	@SideOnly(Side.CLIENT)
@@ -74,41 +70,14 @@ public class MediGun extends _WeaponBase
 	}
 
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips)	// Seems to be true when the F3 + H screen is up
-	{
-		super.addInformation(stack, player, list, advancedTooltips);
-
-		if (player.capabilities.isCreativeMode)
-		{
-			list.add(EnumChatFormatting.BLUE + "Potion: INFINITE / " + this.getMaxDamage() + " mb");
-		}
-		else
-		{
-			int ammo = this.getMaxDamage() - this.getDamage(stack);
-			list.add(EnumChatFormatting.BLUE + "Potion: " + ammo + " / " + this.getMaxDamage() + " mb");
-		}
-
-		list.add(EnumChatFormatting.GREEN + "Regeneration 3 for 1 sec on hit.");
-		list.add(EnumChatFormatting.GREEN + "Sustained.");
-
-		list.add(EnumChatFormatting.YELLOW + "Craft with up to 8 Regeneration");
-		list.add(EnumChatFormatting.YELLOW + "Potions (I or II) to reload.");
-
-		list.add("The beacon shimmers encouragingly.");
-	}
-
-
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.Speed = config.get(this.nameInternal, "How fast are my beams? (default 5.0 BPT (Blocks Per Tick))", 5.0).getDouble();
+		this.Speed = config.get(this.name, "How fast are my beams? (default 5.0 BPT (Blocks Per Tick))", 5.0).getDouble();
 
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default false. They don't know what friends are.)", false).getBoolean(true);
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default false. They don't know what friends are.)", false).getBoolean(true);
 	}
 
 

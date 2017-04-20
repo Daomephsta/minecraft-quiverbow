@@ -24,10 +24,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class EnderRifle extends _WeaponBase
 {
-	public EnderRifle() { super(8); }
+	public EnderRifle() { super("ender_rifle", 8); }
 
 
-	private String nameInternal = "Ender Rifle";
+	
 
 	public int ZoomMax;
 	private double DmgIncrease;
@@ -102,54 +102,26 @@ public class EnderRifle extends _WeaponBase
 	}
 
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-	{
-		super.addInformation(stack, player, list, par4);
-
-		if (player.capabilities.isCreativeMode)
-		{
-			list.add(EnumChatFormatting.BLUE + "Iron: INFINITE / " + this.getMaxDamage());
-		}
-		else
-		{
-			int ammo = this.getMaxDamage() - this.getDamage(stack);
-			list.add(EnumChatFormatting.BLUE + "Iron: " + ammo + " / " + this.getMaxDamage());
-		}
-
-		list.add(EnumChatFormatting.BLUE + "Damage: " + this.DmgMin + " - " + this.DmgMax);
-		list.add(EnumChatFormatting.GREEN + "Knockback " + this.Knockback + " on hit.");
-		list.add(EnumChatFormatting.GREEN + "Deals more damage the longer it travels.");
-		list.add(EnumChatFormatting.RED + "Cooldown for " + this.displayInSec(this.Cooldown) + " sec on use.");
-		list.add(EnumChatFormatting.YELLOW + "Crouch to zoom.");
-		list.add(EnumChatFormatting.YELLOW + "Craft with up to 8 Iron Ingots to reload.");
-		list.add("An ender-eye scope is attached.");
-		list.add("It's staring at you.");
-	}
-
-
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.DmgMin = config.get(this.nameInternal, "What damage am I dealing, at least? (default 4)", 4).getInt();
-		this.DmgMax = config.get(this.nameInternal, "What damage am I dealing, tops? (default 16)", 16).getInt();
+		this.DmgMin = config.get(this.name, "What damage am I dealing, at least? (default 4)", 4).getInt();
+		this.DmgMax = config.get(this.name, "What damage am I dealing, tops? (default 16)", 16).getInt();
 
-		this.DmgIncrease = config.get(this.nameInternal, "By what amount does my damage rise? (default 1.0, for +1.0 DMG per tick of flight)", 1.0).getDouble();
+		this.DmgIncrease = config.get(this.name, "By what amount does my damage rise? (default 1.0, for +1.0 DMG per tick of flight)", 1.0).getDouble();
 
-		this.Speed = config.get(this.nameInternal, "How fast are my projectiles? (default 3.0 BPT (Blocks Per Tick))", 3.0).getDouble();
+		this.Speed = config.get(this.name, "How fast are my projectiles? (default 3.0 BPT (Blocks Per Tick))", 3.0).getDouble();
 
-		this.Knockback = config.get(this.nameInternal, "How hard do I knock the target back when firing? (default 1)", 1).getInt();
-		this.Kickback = (byte) config.get(this.nameInternal, "How hard do I kick the user back when firing? (default 3)", 3).getInt();
+		this.Knockback = config.get(this.name, "How hard do I knock the target back when firing? (default 1)", 1).getInt();
+		this.Kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 3)", 3).getInt();
 
-		this.Cooldown = config.get(this.nameInternal, "How long until I can fire again? (default 25 ticks)", 25).getInt();
+		this.Cooldown = config.get(this.name, "How long until I can fire again? (default 25 ticks)", 25).getInt();
 
-		this.ZoomMax = (config.get(this.nameInternal, "How far can I zoom in? (default 30. Less means more zoom)", 30).getInt());
+		this.ZoomMax = (config.get(this.name, "How far can I zoom in? (default 30. Less means more zoom)", 30).getInt());
 
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);
 	}
 
 

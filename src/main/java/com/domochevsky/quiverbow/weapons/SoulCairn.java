@@ -27,11 +27,11 @@ public class SoulCairn extends _WeaponBase
 {
 	public SoulCairn()
 	{
-		super(1);
+		super("soul_cairn", 1);
 		this.setCreativeTab(CreativeTabs.tabTools);		// Tool, so on the tool tab
 	}
 
-	private String nameInternal = "Soul Cairn";
+	
 
 
 	@SideOnly(Side.CLIENT)
@@ -77,42 +77,14 @@ public class SoulCairn extends _WeaponBase
 	}
 
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-	{
-		super.addInformation(stack, player, list, par4);
-
-		if (player.capabilities.isCreativeMode)
-		{
-			list.add(EnumChatFormatting.BLUE + "Soul Battery: INFINITE / " + this.getMaxDamage());
-		}
-		else
-		{
-			int ammo = this.getMaxDamage() - this.getDamage(stack);
-			list.add(EnumChatFormatting.BLUE + "Soul Battery: " + ammo + " / " + this.getMaxDamage());
-		}
-
-		list.add(EnumChatFormatting.GREEN + "Kills target on hit.");
-		list.add(EnumChatFormatting.GREEN + "Gain mob egg on hit.");
-
-		list.add(EnumChatFormatting.RED + "Do not aim at sentient beings.");
-
-		list.add(EnumChatFormatting.YELLOW + "Craft with 1 Diamond to reload.");
-
-		list.add("A tool to End (and start) all life.");
-	}
-
-
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
-		this.Speed = config.get(this.nameInternal, "How fast are my projectiles? (default 3.0 BPT (Blocks Per Tick))", 3.0).getDouble();
-		this.Kickback = (byte) config.get(this.nameInternal, "How hard do I kick the user back when firing? (default 4)", 4).getInt();
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+		this.Speed = config.get(this.name, "How fast are my projectiles? (default 3.0 BPT (Blocks Per Tick))", 3.0).getDouble();
+		this.Kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 4)", 4).getInt();
 
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default false. This is easily abusable.)", false).getBoolean(true);
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default false. This is easily abusable.)", false).getBoolean(true);
 	}
 
 

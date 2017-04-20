@@ -25,13 +25,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class CoinTosser_Mod extends _WeaponBase
 {
-	private String nameInternal = "Modified Coin Tosser";
+	
 	private boolean shouldDrop;
 
 
 	public CoinTosser_Mod()
 	{
-		super(72);	// 18 shots, meaning scatter 4 with 72 nuggets
+		super("coin_tosser_mod", 72);	// 18 shots, meaning scatter 4 with 72 nuggets
 
 		ItemStack gold = Helper.getAmmoStack(GoldMagazine.class, 0);
 		this.setMaxDamage(gold.getMaxDamage());	// Fitting our max capacity to the magazine
@@ -151,50 +151,23 @@ public class CoinTosser_Mod extends _WeaponBase
 	}
 
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-	{
-		super.addInformation(stack, player, list, par4);
-
-		if (player.capabilities.isCreativeMode)
-		{
-			list.add(EnumChatFormatting.BLUE + "Gold Nuggets: INFINITE / " + this.getMaxDamage());
-		}
-		else
-		{
-			int ammo = this.getMaxDamage() - this.getDamage(stack);
-			list.add(EnumChatFormatting.BLUE + "Gold Nuggets: " + ammo + " / " + this.getMaxDamage());
-		}
-
-		list.add(EnumChatFormatting.BLUE + "Damage: " + this.DmgMin + " - " + this.DmgMax + " per Nugget");
-		list.add(EnumChatFormatting.GREEN + "Scatter 3 when firing.");
-		list.add(EnumChatFormatting.RED + "Cooldown for " + this.displayInSec(this.Cooldown) + " sec on use.");
-		list.add(EnumChatFormatting.YELLOW + "Crouch-use to drop the current magazine.");
-		list.add(EnumChatFormatting.YELLOW + "Craft with a Gold Magazine to reload.");
-		list.add("Retrofit with double-piston tech.");
-		list.add("More efficient, but just as heavy.");
-	}
-
-
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.DmgMin = config.get(this.nameInternal, "What damage am I dealing per nugget, at least? (default 1)", 1).getInt();
-		this.DmgMax = config.get(this.nameInternal, "What damage am I dealing per nugget, tops? (default 3)", 3).getInt();
+		this.DmgMin = config.get(this.name, "What damage am I dealing per nugget, at least? (default 1)", 1).getInt();
+		this.DmgMax = config.get(this.name, "What damage am I dealing per nugget, tops? (default 3)", 3).getInt();
 
-		this.Speed = config.get(this.nameInternal, "How fast are my projectiles? (default 2.5 BPT (Blocks Per Tick))", 2.5).getDouble();
+		this.Speed = config.get(this.name, "How fast are my projectiles? (default 2.5 BPT (Blocks Per Tick))", 2.5).getDouble();
 
-		this.Kickback = (byte) config.get(this.nameInternal, "How hard do I kick the user back when firing? (default 1)", 1).getInt();
+		this.Kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 1)", 1).getInt();
 
-		this.Cooldown = config.get(this.nameInternal, "How long until I can fire again? (default 15 ticks)", 15).getInt();
+		this.Cooldown = config.get(this.name, "How long until I can fire again? (default 15 ticks)", 15).getInt();
 
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
 
-		this.shouldDrop = config.get(this.nameInternal, "Do I drop gold nuggets on misses? (default true)", true).getBoolean(true);
+		this.shouldDrop = config.get(this.name, "Do I drop gold nuggets on misses? (default true)", true).getBoolean(true);
 	}
 
 

@@ -23,9 +23,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class Potatosser extends _WeaponBase
 {
-	public Potatosser() { super(14); }
+	public Potatosser() { super("potatosser", 14); }
 
-	private String nameInternal = "Potatosser";
+	
 	private boolean shouldDrop;
 
 
@@ -81,54 +81,20 @@ public class Potatosser extends _WeaponBase
 	}
 
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-	{
-		super.addInformation(stack, player, list, par4);
-
-		if (player.capabilities.isCreativeMode)
-		{
-			list.add(EnumChatFormatting.BLUE + "Potatoes: INFINITE / " + this.getMaxDamage());
-		}
-		else
-		{
-			int ammo = this.getMaxDamage() - this.getDamage(stack);
-			list.add(EnumChatFormatting.BLUE + "Potatoes: " + ammo + " / " + this.getMaxDamage());
-		}
-
-		list.add(EnumChatFormatting.BLUE + "Damage: " + this.DmgMin + " - " + this.DmgMax);
-
-		list.add(EnumChatFormatting.GREEN + "Missed potatoes are edible.");
-
-		list.add(EnumChatFormatting.RED + "Cooldown for " + this.displayInSec(this.Cooldown) + " sec on use.");
-
-		list.add(EnumChatFormatting.YELLOW + "Craft with up to 7 Potatoes and");
-		list.add(EnumChatFormatting.YELLOW + "1 Coal/Charcoal to reload.");
-
-		list.add("It smells kinda appetizing.");
-
-		int cool = this.getCooldown(stack);
-
-		if (cool > 0) { list.add(EnumChatFormatting.RED + "COOKING (" + cool + ")"); }
-	}
-
-
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.DmgMin = config.get(this.nameInternal, "What damage am I dealing, at least? (default 2)", 2).getInt();
-		this.DmgMax = config.get(this.nameInternal, "What damage am I dealing, tops? (default 5)", 5).getInt();
+		this.DmgMin = config.get(this.name, "What damage am I dealing, at least? (default 2)", 2).getInt();
+		this.DmgMax = config.get(this.name, "What damage am I dealing, tops? (default 5)", 5).getInt();
 
-		this.Speed = config.get(this.nameInternal, "How fast are my projectiles? (default 1.5 BPT (Blocks Per Tick))", 1.5).getDouble();
-		this.Cooldown = config.get(this.nameInternal, "How long until I can fire again? (default 15)", 15).getInt();
+		this.Speed = config.get(this.name, "How fast are my projectiles? (default 1.5 BPT (Blocks Per Tick))", 1.5).getDouble();
+		this.Cooldown = config.get(this.name, "How long until I can fire again? (default 15)", 15).getInt();
 
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);
 
-		this.shouldDrop = config.get(this.nameInternal, "Do I drop naked potatoes on misses? (default true)", true).getBoolean(true);
+		this.shouldDrop = config.get(this.name, "Do I drop naked potatoes on misses? (default true)", true).getBoolean(true);
 	}
 
 

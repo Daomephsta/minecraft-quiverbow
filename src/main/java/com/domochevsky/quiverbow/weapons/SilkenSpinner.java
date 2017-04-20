@@ -26,11 +26,11 @@ public class SilkenSpinner extends _WeaponBase
 {
 	public SilkenSpinner()
 	{
-		super(8);
+		super("silken_spinner", 8);
 		this.setCreativeTab(CreativeTabs.tabTools);		// This is a tool
 	}
 
-	private String nameInternal = "Silken Spinner";
+	
 
 
 	@SideOnly(Side.CLIENT)
@@ -70,43 +70,16 @@ public class SilkenSpinner extends _WeaponBase
 	}
 
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-	{
-		super.addInformation(stack, player, list, par4);
-
-		if (player.capabilities.isCreativeMode)
-		{
-			list.add(EnumChatFormatting.BLUE + "Webs: INFINITE / " + this.getMaxDamage());
-		}
-		else
-		{
-			int ammo = this.getMaxDamage() - this.getDamage(stack);
-			list.add(EnumChatFormatting.BLUE + "Webs: " + ammo + " / " + this.getMaxDamage());
-		}
-
-		list.add(EnumChatFormatting.GREEN + "Places cobweb on hit.");
-
-		list.add(EnumChatFormatting.RED + "Cooldown for " + this.displayInSec(this.Cooldown) + " sec on use.");
-
-		list.add(EnumChatFormatting.YELLOW + "Craft with up to 8 Cobwebs to reload.");
-
-		list.add("Feels vaguely sticky.");
-	}
-
-
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.Speed = config.get(this.nameInternal, "How fast are my projectiles? (default 1.5 BPT (Blocks Per Tick))", 1.5).getDouble();
+		this.Speed = config.get(this.name, "How fast are my projectiles? (default 1.5 BPT (Blocks Per Tick))", 1.5).getDouble();
 
-		this.Cooldown = config.get(this.nameInternal, "How long until I can fire again? (default 20 ticks)", 20).getInt();
+		this.Cooldown = config.get(this.name, "How long until I can fire again? (default 20 ticks)", 20).getInt();
 
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default false. Potentially abusable for free cobwebs.)", false).getBoolean(true);
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default false. Potentially abusable for free cobwebs.)", false).getBoolean(true);
 	}
 
 

@@ -155,156 +155,156 @@ public static class Constants
 	
 	void registerAmmo()		// Items with which weapons can be reloaded
 	{
-		this.addAmmo(new ArrowBundle(), "ArrowBundle");
-		this.addAmmo(new RocketBundle(), "RocketBundle");
+		this.addAmmo(new ArrowBundle(), "arrow_bundle");
+		this.addAmmo(new RocketBundle(), "rocket_bundle");
 		
-		this.addAmmo(new GatlingAmmo(), "SugarMagazine");
+		this.addAmmo(new GatlingAmmo(), "sugar_magazine");
 		
-		this.addAmmo(new LargeRocket(), "LargeRocket");
-		this.addAmmo(new ColdIronClip(), "ColdIronClip");
-		this.addAmmo(new BoxOfFlintDust(),"BoxOfFlintDust");
-		this.addAmmo(new SeedJar(), "SeedJar");
+		this.addAmmo(new LargeRocket(), "large_rocket");
+		this.addAmmo(new ColdIronClip(), "cold_iron_clip");
+		this.addAmmo(new BoxOfFlintDust(),"box_of_flint_dust");
+		this.addAmmo(new SeedJar(), "seed_jar");
 		
-		this.addAmmo(new ObsidianMagazine(), "ObsidianMagazine");
-		this.addAmmo(new GoldMagazine(), "GoldMagazine");
-		this.addAmmo(new NeedleMagazine(), "ThornMagazine");
-		this.addAmmo(new LapisMagazine(), "LapisMagazine");
-		this.addAmmo(new RedstoneMagazine(), "RedstoneMagazine");
+		this.addAmmo(new ObsidianMagazine(), "obsidian_magazine");
+		this.addAmmo(new GoldMagazine(), "gold_magazine");
+		this.addAmmo(new NeedleMagazine(), "thorn_magazine");
+		this.addAmmo(new LapisMagazine(), "lapis_magazine");
+		this.addAmmo(new RedstoneMagazine(), "redstone_magazine");
 		
-		this.addAmmo(new LargeNetherrackMagazine(), "LargeNetherrackMagazine");
-		this.addAmmo(new LargeRedstoneMagazine(), "LargeRedstoneMagazine");
+		this.addAmmo(new LargeNetherrackMagazine(), "large_netherrack_magazine");
+		this.addAmmo(new LargeRedstoneMagazine(), "large_redstone_magazine");
 		
-		this.addAmmo(new EnderQuartzClip(), "EnderQuartzMagazine");
+		this.addAmmo(new EnderQuartzClip(), "ender_quartz_magazine");
 	}
 	
 	
 	void registerWeapons(boolean isClient)	// The weapons themselves
 	{
-		this.addWeapon(new Crossbow_Compact(), new Crossbow_Model(), "Crossbow", isClient, "dual");
-		this.addWeapon(new Crossbow_Double(), new CrossbowDouble_Model(), "CrossbowDouble", isClient, "mainhand");
-		this.addWeapon(new Crossbow_Blaze(), new Crossbow_Model(), "CrossbowBlaze", isClient, "mainhand");
-		this.addWeapon(new Crossbow_Auto(), new CrossbowAuto_Model(), "CrossbowAuto", isClient, "mainhand");
-		this.addWeapon(new Crossbow_AutoImp(), new CrossbowAutoImp_Model(), "CrossbowAutoImp", isClient, "mainhand");
+		this.addWeapon(new Crossbow_Compact(), new Crossbow_Model(), isClient, "dual");
+		this.addWeapon(new Crossbow_Double(), new CrossbowDouble_Model(), isClient, "mainhand");
+		this.addWeapon(new Crossbow_Blaze(), new Crossbow_Model(), isClient, "mainhand");
+		this.addWeapon(new Crossbow_Auto(), new CrossbowAuto_Model(), isClient, "mainhand");
+		this.addWeapon(new Crossbow_AutoImp(), new CrossbowAutoImp_Model(), isClient, "mainhand");
 		
-		this.addWeapon(new CoinTosser(), new CoinTosser_Model(), "CoinTosser", isClient, "mainhand");
-		this.addWeapon(new CoinTosser_Mod(), new CoinTosser_Mod_Model(), "CoinTosser_Mod", isClient, "mainhand");
+		this.addWeapon(new CoinTosser(), new CoinTosser_Model(), isClient, "mainhand");
+		this.addWeapon(new CoinTosser_Mod(), new CoinTosser_Mod_Model(), isClient, "mainhand");
 		
-		this.addWeapon(new DragonBox(), new DragonBox_Model(), "DragonBox", isClient, "mainhand");
-		this.addWeapon(new DragonBox_Quad(), new QuadBox_Model(), "DragonBox_Quad", isClient, "mainhand");
+		this.addWeapon(new DragonBox(), new DragonBox_Model(), isClient, "mainhand");
+		this.addWeapon(new DragonBox_Quad(), new QuadBox_Model(), isClient, "mainhand");
 		
-		this.addWeapon(new LapisCoil(), new LapisCoil_Model(), "LapisCoil", isClient, "mainhand");
-		this.addWeapon(new ThornSpitter(), new ThornSpitter_Model(), "ThornSpitter", isClient, "dual");
-		this.addWeapon(new ProximityNeedler(), new PTT_Model(), "ProxyNeedler", isClient, "mainhand");
-		this.addWeapon(new SugarEngine(), new SugarEngine_Model(), "SugarEngine", isClient, "mainhand");
+		this.addWeapon(new LapisCoil(), new LapisCoil_Model(), isClient, "mainhand");
+		this.addWeapon(new ThornSpitter(), new ThornSpitter_Model(), isClient, "dual");
+		this.addWeapon(new ProximityNeedler(), new PTT_Model(), isClient, "mainhand");
+		this.addWeapon(new SugarEngine(), new SugarEngine_Model(), isClient, "mainhand");
 		
-		this.addWeapon(new RPG(), new RPG_Model(), "RPG", isClient, "mainhand");
-		this.addWeapon(new RPG_Imp(), new RPG_Model(), "RPG_Imp", isClient, "mainhand");
+		this.addWeapon(new RPG(), new RPG_Model(), isClient, "mainhand");
+		this.addWeapon(new RPG_Imp(), new RPG_Model(), isClient, "mainhand");
 		
-		this.addWeapon(new Mortar_Arrow(), new Mortar_Model(), "MortarArrow", isClient, "mainhand");
-		this.addWeapon(new Mortar_Dragon(), new Mortar_Model(), "MortarRocket", isClient, "mainhand");
+		this.addWeapon(new Mortar_Arrow(), new Mortar_Model(), isClient, "mainhand");
+		this.addWeapon(new Mortar_Dragon(), new Mortar_Model(), isClient, "mainhand");
 		
-		this.addWeapon(new Seedling(), new Seedling_Model(), "Seedling", isClient, "dual");
-		this.addWeapon(new Potatosser(), new Potatosser_Model(), "Potatosser", isClient, "mainhand");
-		this.addWeapon(new SnowCannon(), new SnowCannon_Model(), "SnowCannon", isClient, "dual");
+		this.addWeapon(new Seedling(), new Seedling_Model(), isClient, "dual");
+		this.addWeapon(new Potatosser(), new Potatosser_Model(), isClient, "mainhand");
+		this.addWeapon(new SnowCannon(), new SnowCannon_Model(), isClient, "dual");
 		
-		this.addWeapon(new QuiverBow(), null, "QuiverBow", isClient, "mainhand");
+		this.addWeapon(new QuiverBow(), null, isClient, "mainhand");
 		
-		this.addWeapon(new EnderBow(), null, "EnderBow", isClient, "mainhand");
-		this.addWeapon(new EnderRifle(), new EnderRifle_Model(), "EnderRifle", isClient, "mainhand");
-		this.addWeapon(new FrostLancer(), new FrostLancer_Model(), "FrostLancer", isClient, "mainhand");
+		this.addWeapon(new EnderBow(), null, isClient, "mainhand");
+		this.addWeapon(new EnderRifle(), new EnderRifle_Model(), isClient, "mainhand");
+		this.addWeapon(new FrostLancer(), new FrostLancer_Model(), isClient, "mainhand");
 		
-		this.addWeapon(new OSP(), new OSP_Model(), "OSP", isClient, "dual");
-		this.addWeapon(new OSR(), new OSR_Model(), "OSR", isClient, "mainhand");
-		this.addWeapon(new OWR(), new OWR_Model(), "OWR", isClient, "mainhand");
+		this.addWeapon(new OSP(), new OSP_Model(), isClient, "dual");
+		this.addWeapon(new OSR(), new OSR_Model(), isClient, "mainhand");
+		this.addWeapon(new OWR(), new OWR_Model(), isClient, "mainhand");
 		
-		this.addWeapon(new FenFire(), new FenFire_Model(), "FenFire", isClient, "dual");
-		this.addWeapon(new FlintDuster(), new FlintDuster_Model(), "FlintDuster", isClient, "mainhand");
+		this.addWeapon(new FenFire(), new FenFire_Model(), isClient, "dual");
+		this.addWeapon(new FlintDuster(), new FlintDuster_Model(), isClient, "mainhand");
 		
-		this.addWeapon(new LightningRed(), new LightningRed_Model(), "LightningRed", isClient, "mainhand");
-		this.addWeapon(new Sunray(), new Sunray_Model(), "Sunray", isClient, "mainhand");
+		this.addWeapon(new LightningRed(), new LightningRed_Model(), isClient, "mainhand");
+		this.addWeapon(new Sunray(), new Sunray_Model(), isClient, "mainhand");
 		
-		this.addWeapon(new PowderKnuckle(), null, "PowderKnuckle", isClient, "dual");
-		this.addWeapon(new PowderKnuckle_Mod(), null, "PowderKnuckle_Mod", isClient, "dual");
+		this.addWeapon(new PowderKnuckle(), null, isClient, "dual");
+		this.addWeapon(new PowderKnuckle_Mod(), null, isClient, "dual");
 		
-		this.addWeapon(new NetherBellows(), new NetherBellows_Model(), "NetherBellows", isClient, "mainhand");
-		this.addWeapon(new RedSprayer(), new RedSprayer_Model(), "Redsprayer", isClient, "mainhand");
+		this.addWeapon(new NetherBellows(), new NetherBellows_Model(), isClient, "mainhand");
+		this.addWeapon(new RedSprayer(), new RedSprayer_Model(), isClient, "mainhand");
 		
-		this.addWeapon(new SoulCairn(), new SoulCairn_Model(), "SoulCairn", isClient, "dual");
-		this.addWeapon(new AquaAccelerator(), new AquaAcc_Model(), "AquaAccelerator", isClient, "dual");
-		this.addWeapon(new SilkenSpinner(), new AquaAcc_Model(), "SilkenSpinner", isClient, "dual");
+		this.addWeapon(new SoulCairn(), new SoulCairn_Model(), isClient, "dual");
+		this.addWeapon(new AquaAccelerator(), new AquaAcc_Model(), isClient, "dual");
+		this.addWeapon(new SilkenSpinner(), new AquaAcc_Model(), isClient, "dual");
 		
-		this.addWeapon(new SeedSweeper(), new SeedSweeper_Model(), "SeedSweeper", isClient, "mainhand");
-		this.addWeapon(new MediGun(), new MediGun_Model(), "RayOfHope", isClient, "mainhand");
+		this.addWeapon(new SeedSweeper(), new SeedSweeper_Model(), isClient, "mainhand");
+		this.addWeapon(new MediGun(), new MediGun_Model(), isClient, "mainhand");
 		
-		this.addWeapon(new ERA(), new ERA_Model(), "ERA", isClient, "mainhand");
+		this.addWeapon(new ERA(), new ERA_Model(), isClient, "mainhand");
 		
-		this.addWeapon(new AA_Targeter(), new AATH_Model(), "AATargeter", isClient, "dual");
+		this.addWeapon(new AA_Targeter(), new AATH_Model(), isClient, "dual");
 		
-		this.addWeapon(new Endernymous(), new EnderNymous_Model(), "EnderNymous", isClient, "dual");
+		this.addWeapon(new Endernymous(), new EnderNymous_Model(), isClient, "dual");
 	}
 	
 	
 	void registerProjectiles()	// Entities that get shot out of weapons as projectiles
 	{
-		this.addProjectile(RegularArrow.class, true, "Arrow");
-		this.addProjectile(BlazeShot.class, true, "Blaze");
-		this.addProjectile(CoinShot.class, true, "Coin");
-		this.addProjectile(SmallRocket.class, true, "RocketSmall");
+		this.addProjectile(RegularArrow.class, true, "arrow");
+		this.addProjectile(BlazeShot.class, true, "blaze");
+		this.addProjectile(CoinShot.class, true, "coin");
+		this.addProjectile(SmallRocket.class, true, "rocket_small");
 		
-		this.addProjectile(LapisShot.class, true, "Lapis");
-		this.addProjectile(Thorn.class, true, "Thorn");
-		this.addProjectile(ProxyThorn.class, true, "ProxyThorn");
-		this.addProjectile(SugarRod.class, true, "Sugar");
+		this.addProjectile(LapisShot.class, true, "lapis");
+		this.addProjectile(Thorn.class, true, "thorn");
+		this.addProjectile(ProxyThorn.class, true, "proximity_thorn");
+		this.addProjectile(SugarRod.class, true, "sugar");
 		
-		this.addProjectile(BigRocket.class, true, "RocketBig");
+		this.addProjectile(BigRocket.class, true, "rocket_big");
 		
-		this.addProjectile(Sabot_Arrow.class, true, "SabotArrow");
-		this.addProjectile(Sabot_Rocket.class, true, "SabotRocket");
+		this.addProjectile(Sabot_Arrow.class, true, "sabot_arrow");
+		this.addProjectile(Sabot_Rocket.class, true, "sabot_rocket");
 		
-		this.addProjectile(Seed.class, true, "Seed");
-		this.addProjectile(PotatoShot.class, true, "Potato");
-		this.addProjectile(SnowShot.class, true, "Snow");
+		this.addProjectile(Seed.class, true, "seed");
+		this.addProjectile(PotatoShot.class, true, "potato");
+		this.addProjectile(SnowShot.class, true, "snow");
 		
-		this.addProjectile(ScopedPredictive.class, true, "Predictive");
-		this.addProjectile(EnderShot.class, true, "Ender");
-		this.addProjectile(ColdIron.class, true, "ColdIron");
+		this.addProjectile(ScopedPredictive.class, true, "predictive");
+		this.addProjectile(EnderShot.class, true, "ender");
+		this.addProjectile(ColdIron.class, true, "cold_iron");
 		
-		this.addProjectile(OSP_Shot.class, true, "OSP");
-		this.addProjectile(OSR_Shot.class, true, "OSR");
-		this.addProjectile(OWR_Shot.class, true, "OWR");
+		this.addProjectile(OSP_Shot.class, true, "osp_shot");
+		this.addProjectile(OSR_Shot.class, true, "osr_shot");
+		this.addProjectile(OWR_Shot.class, true, "owr_shot");
 		
-		this.addProjectile(FenGoop.class, true, "FenLight");
-		this.addProjectile(FlintDust.class, true, "FlintDust");
+		this.addProjectile(FenGoop.class, true, "fen_light");
+		this.addProjectile(FlintDust.class, true, "flint_dust");
 		
-		this.addProjectile(RedLight.class, true, "RedLight");
-		this.addProjectile(SunLight.class, true, "SunLight");
+		this.addProjectile(RedLight.class, true, "red_light");
+		this.addProjectile(SunLight.class, true, "sunlight");
 		
-		this.addProjectile(NetherFire.class, true, "NetherFire");
-		this.addProjectile(RedSpray.class, true, "RedSpray");
+		this.addProjectile(NetherFire.class, true, "nether_fire");
+		this.addProjectile(RedSpray.class, true, "red_spray");
 		
-		this.addProjectile(SoulShot.class, true, "Soul");
+		this.addProjectile(SoulShot.class, true, "soul");
 		
-		this.addProjectile(WaterShot.class, true, "Water");
-		this.addProjectile(WebShot.class, true, "Web");
+		this.addProjectile(WaterShot.class, true, "water");
+		this.addProjectile(WebShot.class, true, "web");
 		
-		this.addProjectile(HealthBeam.class, true, "Health");
+		this.addProjectile(HealthBeam.class, true, "health");
 		
-		this.addProjectile(EnderAccelerator.class, true, "ERA");
-		this.addProjectile(EnderAno.class, true, "Ano");
+		this.addProjectile(EnderAccelerator.class, true, "era_shot");
+		this.addProjectile(EnderAno.class, true, "ano");
 	}
 	
 	
 	private void registerBlocks()		// Blocks we can place
 	{
 		fenLight = new FenLight(Material.glass);
-		GameRegistry.registerBlock(fenLight, "quiverchevsky_FenLight");
+		GameRegistry.registerBlock(fenLight, "fen_light");
 	}
 	
 	private void registerMiscItems()
 	{
-	    gatlingBody = RegistryHelper.registerItem(new Part_GatlingBody(), "Part_SEBody");
-	    gatlingBarrel = RegistryHelper.registerItem(new Part_GatlingBarrel(), "Part_SEBarrel");
-	    packedAA = RegistryHelper.registerItem(new PackedUpAA(), "TurretSpawner");
+	    gatlingBody = RegistryHelper.registerItem(new Part_GatlingBody(), ".misc.",  "part_se_body");
+	    gatlingBarrel = RegistryHelper.registerItem(new Part_GatlingBarrel(), ".misc.", "part_se_barrel");
+	    packedAA = RegistryHelper.registerItem(new PackedUpAA(), ".misc.", "turret_spawner");
 	    //packedBB = RegistryHelper.registerItem(new PackedUpBB(), "FlyingAASpawner");
 	}
 	
@@ -312,19 +312,17 @@ public static class Constants
 	{
 		Main.ammo.add(ammoBase);
 		ammoBase.setUnlocalizedName(Constants.MODID + ".ammo." + name);
-		GameRegistry.registerItem(ammoBase, "ammochevsky_" + name); // And register it
+		RegistryHelper.registerItem(ammoBase, ".ammo.", name);
 	}
 	
 	// Helper function for taking care of weapon registration
-	private void addWeapon(_WeaponBase weapon, ModelBase model, String weaponName, boolean isClient, String handedness)
+	private void addWeapon(_WeaponBase weapon, ModelBase model, boolean isClient, String handedness)
 	{
 		if (Main.weapons == null) { Main.weapons = new ArrayList<_WeaponBase>(); }
 		
 		Main.weapons.add(weapon);
 		
-		GameRegistry.registerItem(weapon, "weaponchevsky_" + weaponName);	// And register it
-		
-		weapon.setUniqueName(weaponName);
+		RegistryHelper.registerItem(weapon, ".weapon.", weapon.getName());
 		
 		if (isClient && useModels && model != null)	// Do we care about models? And if we do, do we got a custom weapon model? :O
 		{

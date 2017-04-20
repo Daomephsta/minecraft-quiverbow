@@ -1,5 +1,6 @@
 package com.domochevsky.quiverbow.weapons;
 
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -19,6 +20,7 @@ import com.domochevsky.quiverbow.ShotPotion;
 import com.domochevsky.quiverbow.ammo.ColdIronClip;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.ColdIron;
+import com.domochevsky.quiverbow.util.Newliner;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -27,9 +29,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class FrostLancer extends _WeaponBase
 {
-	public FrostLancer() { super(4); }
+	public FrostLancer() { super("frost_lancer", 4); }
 
-	private String nameInternal = "Frost Lancer";
+	
 
 	public int ZoomMax;
 
@@ -135,61 +137,33 @@ public class FrostLancer extends _WeaponBase
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
 	{
 		super.addInformation(stack, player, list, par4);
-
-		if (player.capabilities.isCreativeMode)
-		{
-			list.add(EnumChatFormatting.BLUE + "Cold Iron: INFINITE / " + this.getMaxDamage());
-		}
-		else
-		{
-			int ammo = this.getMaxDamage() - this.getDamage(stack);
-			list.add(EnumChatFormatting.BLUE + "Cold Iron: " + ammo + " / " + this.getMaxDamage());
-		}
-
-		list.add(EnumChatFormatting.BLUE + "Damage: " + this.DmgMin + " - " + this.DmgMax);
-
-		list.add(EnumChatFormatting.GREEN + "Slowness " + this.Slowness_Str + " for " + this.displayInSec(this.Slowness_Dur) + " sec on hit.");
-		list.add(EnumChatFormatting.GREEN + "Nausea 1 for " + this.displayInSec(this.Nausea_Dur) + " sec on hit.");
-
-		list.add(EnumChatFormatting.RED + "Cooldown for " + this.displayInSec(this.Cooldown) + " sec on use.");
-
-		list.add(EnumChatFormatting.YELLOW + "Craft with 1 Cold Iron Clip to reload.");
-		list.add(EnumChatFormatting.YELLOW + "Crouch to zoom.");
-
-		list.add("A quartz ender-eye scope is attached.");
-		list.add("It's staring past you with aloof disdain.");
-
-		if (this.getCooldown(stack) > 0)
-		{
-			list.add(EnumChatFormatting.RED + "COOLING DOWN! (" + this.getCooldown(stack) + ")");
-		}
+		if (this.getCooldown(stack) > 0) Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".cooldown", this.displayInSec(this.getCooldown(stack))));
 	}
 
 
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.DmgMin = config.get(this.nameInternal, "What damage am I dealing, at least? (default 9)", 9).getInt();
-		this.DmgMax = config.get(this.nameInternal, "What damage am I dealing, tops? (default 18)", 18).getInt();
+		this.DmgMin = config.get(this.name, "What damage am I dealing, at least? (default 9)", 9).getInt();
+		this.DmgMax = config.get(this.name, "What damage am I dealing, tops? (default 18)", 18).getInt();
 
-		this.Speed = config.get(this.nameInternal, "How fast are my projectiles? (default 3.5 BPT (Blocks Per Tick))", 3.5).getDouble();
+		this.Speed = config.get(this.name, "How fast are my projectiles? (default 3.5 BPT (Blocks Per Tick))", 3.5).getDouble();
 
-		this.Knockback = config.get(this.nameInternal, "How hard do I knock the target back when firing? (default 3)", 3).getInt();
-		this.Kickback = (byte) config.get(this.nameInternal, "How hard do I kick the user back when firing? (default 4)", 4).getInt();
+		this.Knockback = config.get(this.name, "How hard do I knock the target back when firing? (default 3)", 3).getInt();
+		this.Kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 4)", 4).getInt();
 
-		this.Cooldown = config.get(this.nameInternal, "How long until I can fire again? (default 40 ticks)", 40).getInt();
+		this.Cooldown = config.get(this.name, "How long until I can fire again? (default 40 ticks)", 40).getInt();
 
-		this.ZoomMax = config.get(this.nameInternal, "How far can I zoom in? (default 20. Lower means more zoom)", 20).getInt();
+		this.ZoomMax = config.get(this.name, "How far can I zoom in? (default 20. Lower means more zoom)", 20).getInt();
 
-		this.Slowness_Str = config.get(this.nameInternal, "How strong is my Slowness effect? (default 3)", 3).getInt();
-		this.Slowness_Dur = config.get(this.nameInternal, "How long does my Slowness effect last? (default 120 ticks)", 120).getInt();
+		this.Slowness_Str = config.get(this.name, "How strong is my Slowness effect? (default 3)", 3).getInt();
+		this.Slowness_Dur = config.get(this.name, "How long does my Slowness effect last? (default 120 ticks)", 120).getInt();
 
-		this.Nausea_Dur = config.get(this.nameInternal, "How long does my Nausea effect last? (default 120 ticks)", 120).getInt();
+		this.Nausea_Dur = config.get(this.name, "How long does my Nausea effect last? (default 120 ticks)", 120).getInt();
 
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);
 	}
 
 

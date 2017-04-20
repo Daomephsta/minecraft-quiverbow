@@ -24,9 +24,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class RPG_Imp extends _WeaponBase
 {
-	public RPG_Imp() { super(1); }
+	public RPG_Imp() { super("rocket_launcher_imp", 1); }
 
-	private String nameInternal = "Improved Rocket Launcher";
+	
 	public double ExplosionSize;
 	private boolean dmgTerrain;		// Can our projectile damage terrain?
 
@@ -72,43 +72,16 @@ public class RPG_Imp extends _WeaponBase
 	}
 
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-	{
-		super.addInformation(stack, player, list, par4);
-
-		if (player.capabilities.isCreativeMode)
-		{
-			list.add(EnumChatFormatting.BLUE + "Rockets: INFINITE / " + this.getMaxDamage());
-		}
-		else
-		{
-			int ammo = this.getMaxDamage() - this.getDamage(stack);
-			list.add(EnumChatFormatting.BLUE + "Rockets: " + ammo + " / " + this.getMaxDamage());
-		}
-
-		list.add(EnumChatFormatting.GREEN + "Explosion with radius " + this.ExplosionSize + " on hit.");
-		list.add(EnumChatFormatting.GREEN + "Loads pre-made rockets.");
-
-		list.add(EnumChatFormatting.YELLOW + "Craft with 1 Big Rocket to reload.");
-
-		list.add("Detonates on impact.");
-		list.add("This seems fairly safe.");
-	}
-
-
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
-		this.Speed = config.get(this.nameInternal, "How fast are my projectiles? (default 2.0 BPT (Blocks Per Tick))", 2.0).getDouble();
-		this.Kickback = (byte) config.get(this.nameInternal, "How hard do I kick the user back when firing? (default 3)", 3).getInt();
-		this.ExplosionSize = config.get(this.nameInternal, "How big are my explosions? (default 4.0 blocks, like TNT)", 4.0).getDouble();
-		this.dmgTerrain = config.get(this.nameInternal, "Can I damage terrain, when in player hands? (default true)", true).getBoolean(true);
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+		this.Speed = config.get(this.name, "How fast are my projectiles? (default 2.0 BPT (Blocks Per Tick))", 2.0).getDouble();
+		this.Kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 3)", 3).getInt();
+		this.ExplosionSize = config.get(this.name, "How big are my explosions? (default 4.0 blocks, like TNT)", 4.0).getDouble();
+		this.dmgTerrain = config.get(this.name, "Can I damage terrain, when in player hands? (default true)", true).getBoolean(true);
 
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
 	}
 
 

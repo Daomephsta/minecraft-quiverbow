@@ -28,13 +28,11 @@ public class LightningRed extends _WeaponBase
 {
 	public LightningRed() // At 4 redstone used per shot that's 64 redstone per magazine
 	{
-		super(16);
+		super("lightning_red", 16);
 
 		ItemStack ammo = Helper.getAmmoStack(RedstoneMagazine.class, 0);
 		this.setMaxDamage(ammo.getMaxDamage());	// Fitting our max capacity to the magazine
 	}
-
-	private String nameInternal = "Lightning Red";
 
 	private int PassThroughMax;
 	private int MaxTicks;
@@ -134,54 +132,22 @@ public class LightningRed extends _WeaponBase
 	}
 
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-	{
-		super.addInformation(stack, player, list, par4);
-
-		if (player.capabilities.isCreativeMode)
-		{
-			list.add(EnumChatFormatting.BLUE + "Redstone: INFINITE / " + this.getMaxDamage());
-		}
-		else
-		{
-			int ammo = this.getMaxDamage() - this.getDamage(stack);
-			list.add(EnumChatFormatting.BLUE + "Redstone: " + ammo + " / " + this.getMaxDamage());
-		}
-
-		list.add(EnumChatFormatting.BLUE + "Damage: " + this.DmgMin + " - " + this.DmgMax);
-
-		list.add(EnumChatFormatting.GREEN + "Punches through up to " + this.PassThroughMax  + " targets.");
-		list.add(EnumChatFormatting.GREEN + "Lightning strike on hit.");
-
-		list.add(EnumChatFormatting.RED + "Cooldown for " + this.displayInSec(this.Cooldown) + " sec on use.");
-		list.add(EnumChatFormatting.RED + "Consumes 4 Redstone per shot.");
-
-		list.add(EnumChatFormatting.YELLOW + "Crouch-use to drop the current magazine.");
-		list.add(EnumChatFormatting.YELLOW + "Craft with a Redstone Magazine to reload.");
-
-		list.add("The twin prongs are crackling.");
-	}
-
-
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.DmgMin = config.get(this.nameInternal, "What damage am I dealing, at least? (default 8)", 8).getInt();
-		this.DmgMax = config.get(this.nameInternal, "What damage am I dealing, tops? (default 16)", 16).getInt();
+		this.DmgMin = config.get(this.name, "What damage am I dealing, at least? (default 8)", 8).getInt();
+		this.DmgMax = config.get(this.name, "What damage am I dealing, tops? (default 16)", 16).getInt();
 
-		this.Speed = config.get(this.nameInternal, "How fast are my projectiles? (default 5.0 BPT (Blocks Per Tick))", 5.0).getDouble();
-		this.Kickback = (byte) config.get(this.nameInternal, "How hard do I kick the user back when firing? (default 3)", 3).getInt();
-		this.Cooldown = config.get(this.nameInternal, "How long until I can fire again? (default 40 ticks. That's 2 sec)", 40).getInt();
+		this.Speed = config.get(this.name, "How fast are my projectiles? (default 5.0 BPT (Blocks Per Tick))", 5.0).getDouble();
+		this.Kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 3)", 3).getInt();
+		this.Cooldown = config.get(this.name, "How long until I can fire again? (default 40 ticks. That's 2 sec)", 40).getInt();
 
-		this.PassThroughMax = config.get(this.nameInternal, "Through how many entities and blocks can I punch, tops? (default 5)", 5).getInt();
-		this.MaxTicks = config.get(this.nameInternal, "How long does my beam exist, tops? (default 60 ticks)", 60).getInt();
+		this.PassThroughMax = config.get(this.name, "Through how many entities and blocks can I punch, tops? (default 5)", 5).getInt();
+		this.MaxTicks = config.get(this.name, "How long does my beam exist, tops? (default 60 ticks)", 60).getInt();
 
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);
 	}
 
 

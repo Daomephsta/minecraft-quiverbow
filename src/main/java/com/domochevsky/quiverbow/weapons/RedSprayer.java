@@ -29,13 +29,13 @@ public class RedSprayer extends _WeaponBase
 {
 	public RedSprayer()
 	{
-		super(200);
+		super("redstone_sprayer", 200);
 
 		ItemStack ammo = Helper.getAmmoStack(LargeRedstoneMagazine.class, 0);
 		this.setMaxDamage(ammo.getMaxDamage());	// Fitting our max capacity to the magazine
 	}
 
-	private String nameInternal = "Redstone Sprayer";
+	
 
 	private int Wither_Strength;
 	private int Wither_Duration;
@@ -147,48 +147,18 @@ public class RedSprayer extends _WeaponBase
 	}
 
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-	{
-		super.addInformation(stack, player, list, par4);
-
-		if (player.capabilities.isCreativeMode)
-		{
-			list.add(EnumChatFormatting.BLUE + "Redstone: INFINITE / " + this.getMaxDamage());
-		}
-		else
-		{
-			int ammo = this.getMaxDamage() - this.getDamage(stack);
-			list.add(EnumChatFormatting.BLUE + "Redstone: " + ammo + " / " + this.getMaxDamage());
-		}
-
-		list.add(EnumChatFormatting.GREEN + "Wither " + this.Wither_Strength + " for " + this.displayInSec(this.Wither_Duration) + " sec on hit.");
-		list.add(EnumChatFormatting.GREEN + "Blindness 1 for " + this.displayInSec(this.Blindness_Duration) + " sec on hit.");
-
-		list.add(EnumChatFormatting.RED + "Does not deal direct damage.");
-
-		list.add(EnumChatFormatting.YELLOW + "Crouch-use to drop the current magazine.");
-		list.add(EnumChatFormatting.YELLOW + "Craft with a Large Redstone Magazine");
-		list.add(EnumChatFormatting.YELLOW + "to reload.");
-
-		list.add("The muzzle is slightly corroded.");
-	}
-
-
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.Speed = config.get(this.nameInternal, "How fast are my projectiles? (default 0.5 BPT (Blocks Per Tick))", 0.5).getDouble();
+		this.Speed = config.get(this.name, "How fast are my projectiles? (default 0.5 BPT (Blocks Per Tick))", 0.5).getDouble();
 
-		this.Wither_Strength = config.get(this.nameInternal, "How strong is my Wither effect? (default 2)", 2).getInt();
-		this.Wither_Duration = config.get(this.nameInternal, "How long does my Wither effect last? (default 20 ticks)", 20).getInt();
-		this.Blindness_Duration = config.get(this.nameInternal, "How long does my Blindness effect last? (default 20 ticks)", 20).getInt();
+		this.Wither_Strength = config.get(this.name, "How strong is my Wither effect? (default 2)", 2).getInt();
+		this.Wither_Duration = config.get(this.name, "How long does my Wither effect last? (default 20 ticks)", 20).getInt();
+		this.Blindness_Duration = config.get(this.name, "How long does my Blindness effect last? (default 20 ticks)", 20).getInt();
 
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
 	}
 
 

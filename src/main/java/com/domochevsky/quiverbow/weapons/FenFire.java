@@ -26,11 +26,9 @@ public class FenFire extends _WeaponBase
 {
 	public FenFire()
 	{
-		super(32);
+		super("fen_fire", 32);
 		this.setCreativeTab(CreativeTabs.tabTools);		// Tool, so on the tool tab
 	}
-
-	private String nameInternal = "Fen Fire";
 
 	private int FireDur;
 	private int LightTick;
@@ -81,46 +79,17 @@ public class FenFire extends _WeaponBase
 	void doCooldownSFX(World world, Entity entity) { world.playSoundAtEntity(entity, "random.click", 0.8F, 2.0F); }
 
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-	{
-		super.addInformation(stack, player, list, par4);
-
-		if (player.capabilities.isCreativeMode)
-		{
-			list.add(EnumChatFormatting.BLUE + "Lights: INFINITE / " + this.getMaxDamage());
-		}
-		else
-		{
-			int ammo = this.getMaxDamage() - this.getDamage(stack);
-			list.add(EnumChatFormatting.BLUE + "Lights: " + ammo + " / " + this.getMaxDamage());
-		}
-
-		list.add(EnumChatFormatting.GREEN + "Fire for " + this.FireDur + " sec on hit.");
-		list.add(EnumChatFormatting.GREEN + "Places glowstone on terrain hit.");
-
-		list.add(EnumChatFormatting.RED + "Cooldown for " + this.displayInSec(this.Cooldown) + " sec on use.");	// 2 digits after the comma only
-
-		list.add(EnumChatFormatting.YELLOW + "Craft with up to 8 Glowstone Blocks");
-		list.add(EnumChatFormatting.YELLOW + "to reload.");
-
-		list.add("It's emanating a warm light.");
-	}
-
-
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.Speed = config.get(this.nameInternal, "How fast are my projectiles? (default 1.5 BPT (Blocks Per Tick))", 1.5).getDouble();
-		this.Cooldown = config.get(this.nameInternal, "How long until I can fire again? (default 20 ticks)", 20).getInt();
-		this.FireDur = config.get(this.nameInternal, "How long is what I hit on fire? (default 1s)", 1).getInt();
-		this.LightTick = config.get(this.nameInternal, "How long do my lights stay lit? (default 0 ticks for infinite. 20 ticks = 1 sec)", 0).getInt();
+		this.Speed = config.get(this.name, "How fast are my projectiles? (default 1.5 BPT (Blocks Per Tick))", 1.5).getDouble();
+		this.Cooldown = config.get(this.name, "How long until I can fire again? (default 20 ticks)", 20).getInt();
+		this.FireDur = config.get(this.name, "How long is what I hit on fire? (default 1s)", 1).getInt();
+		this.LightTick = config.get(this.name, "How long do my lights stay lit? (default 0 ticks for infinite. 20 ticks = 1 sec)", 0).getInt();
 
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default false. They despise light.)", false).getBoolean(true);
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default false. They despise light.)", false).getBoolean(true);
 	}
 
 

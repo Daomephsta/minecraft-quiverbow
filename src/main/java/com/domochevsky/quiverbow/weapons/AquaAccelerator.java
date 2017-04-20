@@ -29,11 +29,11 @@ public class AquaAccelerator extends _WeaponBase
 {
 	public AquaAccelerator() 
 	{ 
-		super(1); 
+		super("aqua_accelerator", 1); 
 		this.setCreativeTab(CreativeTabs.tabTools);		// This is a tool
 	}
 	
-	private String nameInternal = "Aqua Accelerator";
+	
 	
 	
 	@SideOnly(Side.CLIENT)
@@ -117,34 +117,12 @@ public class AquaAccelerator extends _WeaponBase
     }
 	
 	
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-	{
-	    super.addInformation(stack, player, list, par4);
-	    
-	    if (player.capabilities.isCreativeMode)
-	    {
-		    list.add(EnumChatFormatting.BLUE + "Buckets: INFINITE / " + this.getMaxDamage());
-	    }
-	    else
-	    {
-	    	int ammo = this.getMaxDamage() - this.getDamage(stack);
-		    list.add(EnumChatFormatting.BLUE + "Buckets: " + ammo + " / " + this.getMaxDamage());
-	    }
-	    
-	    list.add(EnumChatFormatting.YELLOW + "Craft with 1 Water Bucket to reload.");
-	    list.add("Kinda slippery.");
-    }
-	
-	
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config) 
 	{ 
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
-		this.Speed = config.get(this.nameInternal, "How fast are my projectiles? (default 1.5 BPT (Blocks Per Tick))", 1.5).getDouble();
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default false)", false).getBoolean(true);
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+		this.Speed = config.get(this.name, "How fast are my projectiles? (default 1.5 BPT (Blocks Per Tick))", 1.5).getDouble();
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default false)", false).getBoolean(true);
 	}
     
 	

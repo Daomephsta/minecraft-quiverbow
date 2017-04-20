@@ -5,73 +5,292 @@ entity.quiverchevsky.projectilechevsky_Ano.name=the End
 
 //Ammo
 quiverchevsky.ammo.nocreative=Does not work in creative mode.
+quiverchevsky.ammo.infinite=§9Infinite Ammo
 quiverchevsky.ammo.missingitems=You do not have the necessary items
 quiverchevsky.misc.sneakformore=Press [%s] for more
 
-item.quiverchevsky.ammo.SugarMagazine.name=Clip of Sugar Rods
-item.quiverchevsky.ammo.SugarMagazine.clipstatus=§9Sugar Rods: %d / %d
-item.quiverchevsky.ammo.SugarMagazine.filltext=§eUse magazine to fill it#n§ewith Sugar Cane and Sticks.
-item.quiverchevsky.ammo.SugarMagazine.description=A loading helper, full of#nsugar cane-wrapped sticks.
+item.quiverchevsky.ammo.sugar_magazine.name=Clip of Sugar Rods
+item.quiverchevsky.ammo.sugar_magazine.clipstatus=§9Sugar Rods: %d / %d
+item.quiverchevsky.ammo.sugar_magazine.filltext=§eUse magazine to fill it with Sugar Cane and Sticks.
+item.quiverchevsky.ammo.sugar_magazine.description=A loading helper, full of#nsugar cane-wrapped sticks.
 
-item.quiverchevsky.ammo.SeedJar.name=Seed Jar
-item.quiverchevsky.ammo.SeedJar.clipstatus=§9Seeds: %d / %d
-item.quiverchevsky.ammo.SeedJar.filltext=§eUse jar to fill it with Seeds.
-item.quiverchevsky.ammo.SeedJar.description=You could preserve apples with this, too.
+item.quiverchevsky.ammo.seed_jar.name=Seed Jar
+item.quiverchevsky.ammo.seed_jar.clipstatus=§9Seeds: %d / %d
+item.quiverchevsky.ammo.seed_jar.filltext=§eUse jar to fill it with Seeds.
+item.quiverchevsky.ammo.seed_jar.description=You could preserve apples with this, too.
 
-item.quiverchevsky.ammo.ObsidianMagazine.name=Obsidian Magazine
-item.quiverchevsky.ammo.ObsidianMagazine.clipstatus=§9Splints: %d / %d
-item.quiverchevsky.ammo.ObsidianMagazine.filltext=§eUse magazine to fill it with#n§eGunpowder and Obsidian.
-item.quiverchevsky.ammo.ObsidianMagazine.description=A loading helper, full of#nobsidian splints.
+item.quiverchevsky.ammo.obsidian_magazine.name=Obsidian Magazine
+item.quiverchevsky.ammo.obsidian_magazine.clipstatus=§9Splints: %d / %d
+item.quiverchevsky.ammo.obsidian_magazine.filltext=§eUse magazine to fill it with Gunpowder and Obsidian.
+item.quiverchevsky.ammo.obsidian_magazine.description=A loading helper, full of#nobsidian splints.
 
-item.quiverchevsky.ammo.GoldMagazine.name=Gold Magazine
-item.quiverchevsky.ammo.GoldMagazine.clipstatus=§9Gold Nuggets: %d / %d
-item.quiverchevsky.ammo.GoldMagazine.filltext=§eUse magazine to fill it with Gold Nuggets.#n§eCrouch-use to fill it with 8 Gold Nuggets.
-item.quiverchevsky.ammo.GoldMagazine.description=A loading helper, full of gold nuggets.
+item.quiverchevsky.ammo.gold_magazine.name=Gold Magazine
+item.quiverchevsky.ammo.gold_magazine.clipstatus=§9Gold Nuggets: %d / %d
+item.quiverchevsky.ammo.gold_magazine.filltext=§eUse magazine to fill it with Gold Nuggets.#n§eCrouch-use to fill it with 8 Gold Nuggets.
+item.quiverchevsky.ammo.gold_magazine.description=A loading helper, full of gold nuggets.
 
-item.quiverchevsky.ammo.LapisMagazine.name=Lapis Magazine
-item.quiverchevsky.ammo.LapisMagazine.clipstatus=§9Lapis: %d / %d
-item.quiverchevsky.ammo.LapisMagazine.filltext=§eUse magazine to fill it with Lapis Blocks.
-item.quiverchevsky.ammo.LapisMagazine.description=A loading helper, full of toxic blue stuff.
+item.quiverchevsky.ammo.lapis_magazine.name=Lapis Magazine
+item.quiverchevsky.ammo.lapis_magazine.clipstatus=§9Lapis: %d / %d
+item.quiverchevsky.ammo.lapis_magazine.filltext=§eUse magazine to fill it with Lapis Blocks.
+item.quiverchevsky.ammo.lapis_magazine.description=A loading helper, full of toxic blue stuff.
 
-item.quiverchevsky.ammo.ThornMagazine.name=Thorn Magazine
-item.quiverchevsky.ammo.ThornMagazine.clipstatus=§9Thorns: %d / %d
-item.quiverchevsky.ammo.ThornMagazine.filltext=§eUse magazine to fill it with Cacti.#n§eCrouch-use magazine to fill it with 8 Cacti.
-item.quiverchevsky.ammo.ThornMagazine.description=A loading helper, full of cactus thorns.
+item.quiverchevsky.ammo.thorn_magazine.name=Thorn Magazine
+item.quiverchevsky.ammo.thorn_magazine.clipstatus=§9Thorns: %d / %d
+item.quiverchevsky.ammo.thorn_magazine.filltext=§eUse magazine to fill it with Cacti.#n§eCrouch-use magazine to fill it with 8 Cacti.
+item.quiverchevsky.ammo.thorn_magazine.description=A loading helper, full of cactus thorns.
 
-item.quiverchevsky.ammo.RedstoneMagazine.name=Redstone Magazine
-item.quiverchevsky.ammo.RedstoneMagazine.clipstatus=§9Redstone: %d / %d
-item.quiverchevsky.ammo.RedstoneMagazine.filltext=§eUse magazine to fill it with Redstone.#n§eCrouch-use to fill it with 8 Redstone.
-item.quiverchevsky.ammo.RedstoneMagazine.description=A loading helper, full of red dust.
+item.quiverchevsky.ammo.redstone_magazine.name=Redstone Magazine
+item.quiverchevsky.ammo.redstone_magazine.clipstatus=§9Redstone: %d / %d
+item.quiverchevsky.ammo.redstone_magazine.filltext=§eUse magazine to fill it with Redstone.#n§eCrouch-use to fill it with 8 Redstone.
+item.quiverchevsky.ammo.redstone_magazine.description=A loading helper, full of red dust.
 
-item.quiverchevsky.ammo.LargeNetherrackMagazine.name=Large Netherrack Magazine
-item.quiverchevsky.ammo.LargeNetherrackMagazine.clipstatus=§9Netherrack: %d / %d
-item.quiverchevsky.ammo.LargeNetherrackMagazine.filltext=§eUse magazine to fill it with Netherrack.#n§eCrouch-use to fill it with 8 Netherrack.
-item.quiverchevsky.ammo.LargeNetherrackMagazine.description=A loading helper, full of Netherrack.
+item.quiverchevsky.ammo.large_netherrack_magazine.name=Large Netherrack Magazine
+item.quiverchevsky.ammo.large_netherrack_magazine.clipstatus=§9Netherrack: %d / %d
+item.quiverchevsky.ammo.large_netherrack_magazine.filltext=§eUse magazine to fill it with Netherrack.#n§eCrouch-use to fill it with 8 Netherrack.
+item.quiverchevsky.ammo.large_netherrack_magazine.description=A loading helper, full of Netherrack.
 
-item.quiverchevsky.ammo.LargeRedstoneMagazine.name=Large Redstone Magazine
-item.quiverchevsky.ammo.LargeRedstoneMagazine.clipstatus=§9Redstone: %d / %d
-item.quiverchevsky.ammo.LargeRedstoneMagazine.filltext=Use magazine to fill it with Redstone.#n§eCrouch-use to fill it with 8 Redstone.
-item.quiverchevsky.ammo.LargeRedstoneMagazine.description=A loading helper, full of red dust.
+item.quiverchevsky.ammo.large_redstone_magazine.name=Large Redstone Magazine
+item.quiverchevsky.ammo.large_redstone_magazine.clipstatus=§9Redstone: %d / %d
+item.quiverchevsky.ammo.large_redstone_magazine.filltext=Use magazine to fill it with Redstone.#n§eCrouch-use to fill it with 8 Redstone.
+item.quiverchevsky.ammo.large_redstone_magazine.description=A loading helper, full of red dust.
 
-item.quiverchevsky.ammo.EnderQuartzMagazine.name=Ender Quartz Clip
-item.quiverchevsky.ammo.EnderQuartzMagazine.clipstatus=§9Ender Quartz: %d / %d
-item.quiverchevsky.ammo.EnderQuartzMagazine.filltext=§eUse magazine to fill it#n§ewith Ender Pearls and Quartz.
-item.quiverchevsky.ammo.EnderQuartzMagazine.description=A loading helper, full of#nquartz-encased ender pearls.
+item.quiverchevsky.ammo.ender_quartz_magazine.name=Ender Quartz Clip
+item.quiverchevsky.ammo.ender_quartz_magazine.clipstatus=§9Ender Quartz: %d / %d
+item.quiverchevsky.ammo.ender_quartz_magazine.filltext=§eUse magazine to fill it with Ender Pearls and Quartz.
+item.quiverchevsky.ammo.ender_quartz_magazine.description=A loading helper, full of quartz-encased ender pearls.
 
-item.quiverchevsky.ammo.ArrowBundle.name=Arrow Bundle
-item.quiverchevsky.ammo.ArrowBundle.description=Holds 8 arrows, tightly packed.
-item.quiverchevsky.ammo.RocketBundle.name=Rocket Bundle
-item.quiverchevsky.ammo.RocketBundle.description=Holds 8 rockets. Highly volatile.
-item.quiverchevsky.ammo.LargeRocket.name=Big Rocket
-item.quiverchevsky.ammo.LargeRocket.description=A big rocket. Very dangerous.
-item.quiverchevsky.ammo.ColdIronClip.name=Cold Iron Clip
-item.quiverchevsky.ammo.ColdIronClip.description=Holds 4 ice-laced iron ingots.#nCool to the touch.
-item.quiverchevsky.ammo.BoxOfFlintDust.name=Box of Flint Dust
-item.quiverchevsky.ammo.BoxOfFlintDust.description=All boxed up.
+item.quiverchevsky.ammo.arrow_bundle.name=Arrow Bundle
+item.quiverchevsky.ammo.arrow_bundle.description=Holds 8 arrows, tightly packed.
+item.quiverchevsky.ammo.rocket_bundle.name=Rocket Bundle
+item.quiverchevsky.ammo.rocket_bundle.description=Holds 8 rockets. Highly volatile.
+item.quiverchevsky.ammo.large_rocket.name=Big Rocket
+item.quiverchevsky.ammo.large_rocket.description=A big rocket. Very dangerous.
+item.quiverchevsky.ammo.cold_iron_clip.name=Cold Iron Clip
+item.quiverchevsky.ammo.cold_iron_clip.description=Holds 4 ice-laced iron ingots.#nCool to the touch.
+item.quiverchevsky.ammo.box_of_flint_dust.name=Box of Flint Dust
+item.quiverchevsky.ammo.box_of_flint_dust.description=All boxed up.
+
+//Weapons
+item.quiverchevsky.weapon.aa_target_assist.name=AA Target Designator
+item.quiverchevsky.weapon.aa_target_assist.description=§9Used to set AA targets, and fire weapons of ridden AAs#nOver there!
+
+item.quiverchevsky.weapon.coin_tosser_mod.name=Modified Coin Tosser
+item.quiverchevsky.weapon.coin_tosser_mod.ammostatus=§9Gold Nuggets: %d / %d
+item.quiverchevsky.weapon.coin_tosser_mod.loadtext=§eCraft with a Gold Magazine to reload.
+item.quiverchevsky.weapon.coin_tosser_mod.description=Retrofitted with double-piston tech.#nMore efficient, but just as heavy.
+
+item.quiverchevsky.weapon.seed_sweeper.name=Seed Sweeper
+item.quiverchevsky.weapon.seed_sweeper.ammostatus=§9Seeds: %d / %d
+item.quiverchevsky.weapon.seed_sweeper.loadtext=§eCraft with 1 Seed Jar to reload.
+item.quiverchevsky.weapon.seed_sweeper.description=Git off my farm!
+
+item.quiverchevsky.weapon.ray_of_hope.name=Ray Of Hope
+item.quiverchevsky.weapon.ray_of_hope.ammostatus=§9Potion: %dmb/ %dmb
+item.quiverchevsky.weapon.ray_of_hope.loadtext=§eCraft with up to 8 Regeneration Potions (I or II) to reload.
+item.quiverchevsky.weapon.ray_of_hope.description=The beacon shimmers encouragingly.
+
+item.quiverchevsky.weapon.quad_dragon_box.name=Four-headed Dragonbox
+item.quiverchevsky.weapon.quad_dragon_box.ammostatus=§9Rocket Sets: %d / %d
+item.quiverchevsky.weapon.quad_dragon_box.loadtext=§eCraft with up to 8 Rocket Bundles to reload.
+item.quiverchevsky.weapon.quad_dragon_box.description=Four Dragonboxes strapped together.#n§cWhat could go wrong?
+
+item.quiverchevsky.weapon.compact_crossbow.name=Compact Crossbow
+item.quiverchevsky.weapon.compact_crossbow.ammostatus=§9Bolts: %d / %d
+item.quiverchevsky.weapon.compact_crossbow.loadtext=§eCraft with 1 Arrow to reload.
+item.quiverchevsky.weapon.compact_crossbow.description=A simple yet effective design.
+
+item.quiverchevsky.weapon.potatosser.name=Potatosser
+item.quiverchevsky.weapon.potatosser.ammostatus=§9Potatoes: %d / %d
+item.quiverchevsky.weapon.potatosser.loadtext=§eCraft with up to 7 potatoes and 1 Coal/Charcoal to reload.
+item.quiverchevsky.weapon.potatosser.description=It smells kinda appetizing.
+
+item.quiverchevsky.weapon.coin_tosser.name=Coin Tosser
+item.quiverchevsky.weapon.coin_tosser.ammostatus=§9Gold Nuggets: %d / %d
+item.quiverchevsky.weapon.coin_tosser.loadtext=§eCraft with a Gold Magazine to reload.
+item.quiverchevsky.weapon.coin_tosser.description=Spring-loaded. It's pretty heavy.
+
+item.quiverchevsky.weapon.dragon_mortar.name=Dragon Mortar
+item.quiverchevsky.weapon.dragon_mortar.ammostatus=§9Rocket Bundles: %d / %d
+item.quiverchevsky.weapon.dragon_mortar.loadtext=§eCraft with up to 8 Rocket Bundles to reload.
+item.quiverchevsky.weapon.dragon_mortar.description=Filled with rockets, strapped to more rockets.
+
+item.quiverchevsky.weapon.quiverbow.name=Bow With Quiver
+item.quiverchevsky.weapon.quiverbow.ammostatus=§9Quiver: %d / %d Arrows
+item.quiverchevsky.weapon.quiverbow.loadtext=§eCraft with up to 8 Arrow Bundles to reload.
+item.quiverchevsky.weapon.quiverbow.description=A quiver has been sewn to this bow.
+
+item.quiverchevsky.weapon.flint_duster.name=Flint Duster
+item.quiverchevsky.weapon.flint_duster.ammostatus=§9Flint Dust: %d / %d
+item.quiverchevsky.weapon.flint_duster.loadtext=§eCraft with up to 8 Boxes of Flint Dust to reload.
+item.quiverchevsky.weapon.flint_duster.description=The quartz is barely visible beneath the dust coating.
+
+item.quiverchevsky.weapon.dragon_box.name=Dragonbox
+item.quiverchevsky.weapon.dragon_box.ammostatus=§9Rockets: %d / %d
+item.quiverchevsky.weapon.dragon_box.loadtext=§eCraft with up to 8 Rocket Bundles to reload.
+item.quiverchevsky.weapon.dragon_box.description=Crank-powered. The metal is bent.
+
+item.quiverchevsky.weapon.seedling.name=Seedling
+item.quiverchevsky.weapon.seedling.ammostatus=§9Melon Seeds: %d / %d
+item.quiverchevsky.weapon.seedling.loadtext=§cCannot be reloaded.
+item.quiverchevsky.weapon.seedling.description=A small weapon made out of sugar cane.#n§a80%% biologically degradable.
+
+item.quiverchevsky.weapon.snow_cannon.name=Snow Cannon
+item.quiverchevsky.weapon.snow_cannon.ammostatus=§9Snow: %d / %d
+item.quiverchevsky.weapon.snow_cannon.loadtext=§eCraft with up to 8 Snow Blocks to reload.
+item.quiverchevsky.weapon.snow_cannon.description=Hoarfrost is forming around the trigger.
+
+item.quiverchevsky.weapon.ender_rifle.name=Ender Rifle
+item.quiverchevsky.weapon.ender_rifle.ammostatus=§9Iron: %d / %d
+item.quiverchevsky.weapon.ender_rifle.loadtext=§eCraft with up to 8 Iron Ingots to reload.
+item.quiverchevsky.weapon.ender_rifle.description=§eCrouch to zoom.#nAn ender-eye scope is attached.#nIt's staring at you.
+
+item.quiverchevsky.weapon.sugar_engine.name=Sugar Engine
+item.quiverchevsky.weapon.sugar_engine.ammostatus=§9Sugar Rods: %d / %d
+item.quiverchevsky.weapon.sugar_engine.loadtext=§eCraft with a Sugar Magazine to reload.
+item.quiverchevsky.weapon.sugar_engine.description=So many barrels. Why so many barrels?
+
+item.quiverchevsky.weapon.splinter_pistol.name=Obsidian Splinter Pistol
+item.quiverchevsky.weapon.splinter_pistol.ammostatus=§9Small Splints: %d / %d
+item.quiverchevsky.weapon.splinter_pistol.loadtext=§eCraft with an Obsidian Magazine to reload.
+item.quiverchevsky.weapon.splinter_pistol.description=The barrel's inside is blackened.
+
+item.quiverchevsky.weapon.silken_spinner.name=Silken Spinner
+item.quiverchevsky.weapon.silken_spinner.ammostatus=§9Webs: %d / %d
+item.quiverchevsky.weapon.silken_spinner.loadtext=§eCraft with up to 8 Cobwebs to reload.
+item.quiverchevsky.weapon.silken_spinner.description=Feels vaguely sticky.
+
+item.quiverchevsky.weapon.soul_cairn.name=Soul Cairn
+item.quiverchevsky.weapon.soul_cairn.ammostatus=§9Soul Battery: %d / %d
+item.quiverchevsky.weapon.soul_cairn.loadtext=§eCraft with 1 Diamond to reload.
+item.quiverchevsky.weapon.soul_cairn.description=A tool to End (and start) all life.
+
+item.quiverchevsky.weapon.redstone_sprayer.name=Redstone Sprayer
+item.quiverchevsky.weapon.redstone_sprayer.ammostatus=§9Redstone: %d / %d
+item.quiverchevsky.weapon.redstone_sprayer.loadtext=§eCraft with 1 a Large Redstone Magazine to reload.
+item.quiverchevsky.weapon.redstone_sprayer.description=The muzzle is slightly corroded.
+
+item.quiverchevsky.weapon.thorn_spitter.name=Thorn Spitter
+item.quiverchevsky.weapon.thorn_spitter.ammostatus=§9Thorns: %d / %d
+item.quiverchevsky.weapon.thorn_spitter.loadtext=§eCraft with a Thorn Magazine to reload.
+item.quiverchevsky.weapon.thorn_spitter.description=Built with experimental quad-piston tech.
+
+item.quiverchevsky.weapon.arrow_mortar.name=Arrow Mortar
+item.quiverchevsky.weapon.arrow_mortar.ammostatus=§9Arrow Bundles: %d / %d
+item.quiverchevsky.weapon.arrow_mortar.loadtext=§eCraft with up to 8 Arrow Bundles to reload.
+item.quiverchevsky.weapon.arrow_mortar.description=Arrow tips are poking out of the barrel.
+
+item.quiverchevsky.weapon.wither_rifle.name=Obsidian Wither Rifle
+item.quiverchevsky.weapon.wither_rifle.ammostatus=§9Splints: %d / %d
+item.quiverchevsky.weapon.wither_rifle.loadtext=§eCraft with an Obsidian Magazine to reload.
+item.quiverchevsky.weapon.wither_rifle.description=Disturbingly evil to the touch.
+item.quiverchevsky.weapon.wither_rifle.cooldown=§cEXORCISING (%d secs)
+
+item.quiverchevsky.weapon.rocket_launcher.name=Rocket Launcher
+item.quiverchevsky.weapon.rocket_launcher.ammostatus=§9Rockets: %d / %d
+item.quiverchevsky.weapon.rocket_launcher.loadtext=§cCannot be reloaded.
+item.quiverchevsky.weapon.rocket_launcher.description=The fuse is way too short.
+
+item.quiverchevsky.weapon.hidden_ender_pistol.name=Hidden Ender Pistol
+item.quiverchevsky.weapon.hidden_ender_pistol.ammostatus=§9Ender Quartz: %d / %d
+item.quiverchevsky.weapon.hidden_ender_pistol.loadtext=§eCraft with an Ender Quartz Magazine to reload.
+item.quiverchevsky.weapon.hidden_ender_pistol.description=A weapon for those desiring to stay unknown.
+
+item.quiverchevsky.weapon.lapis_coil.name=Lapis Coil
+item.quiverchevsky.weapon.lapis_coil.ammostatus=§9Lapis: %d / %d
+item.quiverchevsky.weapon.lapis_coil.loadtext=§eCraft with a Lapis Magazine to reload.
+item.quiverchevsky.weapon.lapis_coil.description=Redstone-powered and highly toxic. It's covered in blue dust.
+
+item.quiverchevsky.weapon.nether_bellows.name=Nether Bellows
+item.quiverchevsky.weapon.nether_bellows.ammostatus=§9Netherrack: %d / %d
+item.quiverchevsky.weapon.nether_bellows.loadtext=§eCraft with a Large Netherrack Magazine to reload.
+item.quiverchevsky.weapon.nether_bellows.description=Vague whispers of torment can be heard.
+
+item.quiverchevsky.weapon.splinter_rifle.name=Obsidian Splinter Rifle
+item.quiverchevsky.weapon.splinter_rifle.ammostatus=§9Splints: %d / %d
+item.quiverchevsky.weapon.splinter_rifle.loadtext=§eCraft with an Obsidian Magazine to reload.
+item.quiverchevsky.weapon.splinter_rifle.description=Deceptively cold to the touch.
+item.quiverchevsky.weapon.splinter_rifle.cooldown=§cCOOLING DOWN (%d secs)
+
+item.quiverchevsky.weapon.proximity_thorn_thrower.name=Proximity Thorn Thrower
+item.quiverchevsky.weapon.proximity_thorn_thrower.ammostatus=§9Thorns: %d / %d
+item.quiverchevsky.weapon.proximity_thorn_thrower.loadtext=§eCraft with a Thorn Magazine to reload
+item.quiverchevsky.weapon.proximity_thorn_thrower.description=Uses 8 thorns per shot.#nA bundle of pain, lying in wait.
+
+item.quiverchevsky.weapon.sunray.name=Sunray
+item.quiverchevsky.weapon.sunray.ammostatus=§9Charge: %d%
+item.quiverchevsky.weapon.sunray.loadtext=§eRequires strong light to charge.
+item.quiverchevsky.weapon.sunray.description=The refurbished beacon emits a low hum.
+
+item.quiverchevsky.weapon.auto_crossbow.name=Auto-crossbow
+item.quiverchevsky.weapon.auto_crossbow.ammostatus=§9Bolts: %d / %d
+item.quiverchevsky.weapon.auto_crossbow.loadtext=§eCraft with an Arrow Bundle to reload.
+item.quiverchevsky.weapon.auto_crossbow.description=Pistons power the bolt feeder.
+
+item.quiverchevsky.weapon.frost_lancer.name=Frost Lancer
+item.quiverchevsky.weapon.frost_lancer.ammostatus=§9Cold Iron: %d / %d
+item.quiverchevsky.weapon.frost_lancer.loadtext=§eCraft with a Cold Iron Clip to reload.
+item.quiverchevsky.weapon.frost_lancer.description=A quartz ender-eye scope is attached.#nIt's staring past you with aloof disdain.
+item.quiverchevsky.weapon.frost_lancer.cooldown=§cCOOLING DOWN (%d secs)
+
+item.quiverchevsky.weapon.blaze_crossbow.name=Blaze Crossbow
+item.quiverchevsky.weapon.blaze_crossbow.ammostatus=§9Blaze Rods: %d / %d
+item.quiverchevsky.weapon.blaze_crossbow.loadtext=§eCraft with 1 Blaze Rod to reload.
+item.quiverchevsky.weapon.blaze_crossbow.description=Black smoke is slowly curling up from it.
+
+item.quiverchevsky.weapon.fen_fire.name=Fen Fire
+item.quiverchevsky.weapon.fen_fire.ammostatus=§9Lights: %d / %d
+item.quiverchevsky.weapon.fen_fire.loadtext=§eCraft with up to 8 Glowstone Blocks to reload.
+item.quiverchevsky.weapon.fen_fire.description=It's emanating a warm light.
+
+item.quiverchevsky.weapon.ender_railgun.name=Ender Rail Accelerator
+item.quiverchevsky.weapon.ender_railgun.ammostatus=§cBurns out after one shot.
+item.quiverchevsky.weapon.ender_railgun.loadtext=§cCannot be reloaded.
+item.quiverchevsky.weapon.ender_railgun.description=27 blocks worth of powered rail#nrunning through a single ender chest.#nSo not safe for use.
+
+item.quiverchevsky.weapon.auto_crossbow_imp.name=Improved Auto-crossbow
+item.quiverchevsky.weapon.auto_crossbow_imp.ammostatus=§9Bolts: %d / %d
+item.quiverchevsky.weapon.auto_crossbow_imp.loadtext=§eCraft with up to 2 Arrow Bundles to reload.
+item.quiverchevsky.weapon.auto_crossbow_imp.description=Features a new and improved bolt feeder.
+
+item.quiverchevsky.weapon.powder_knuckle_mod.name=Modified Powder Knuckles
+item.quiverchevsky.weapon.powder_knuckle_mod.ammostatus=§9Gunpowder: %d / %d
+item.quiverchevsky.weapon.powder_knuckle_mod.loadtext=§eCraft with up to 8 gunpowder to reload.
+item.quiverchevsky.weapon.powder_knuckle_mod.description=Modified for blast mining.
+
+item.quiverchevsky.weapon.rocket_launcher_imp.name=Improved Rocket Launcher
+item.quiverchevsky.weapon.rocket_launcher_imp.ammostatus=§9Rockets: %d / %d
+item.quiverchevsky.weapon.rocket_launcher_imp.loadtext=§eCraft with a Big Rocket to reload.
+item.quiverchevsky.weapon.rocket_launcher_imp.description=Detonates on impact.#nThis seems fairly safe.
+
+item.quiverchevsky.weapon.double_crossbow.name=Double Crossbow
+item.quiverchevsky.weapon.double_crossbow.ammostatus=§9Bolts: %d / %d
+item.quiverchevsky.weapon.double_crossbow.loadtext=§eCraft with 1 or 2 Arrows to reload.
+item.quiverchevsky.weapon.double_crossbow.description=A sticky piston powers the reloading mechanism.
+item.quiverchevsky.weapon.double_crossbow.cooldown=§cDRAWING (%d secs)
+
+item.quiverchevsky.weapon.lightning_red.name=Lightning Red
+item.quiverchevsky.weapon.lightning_red.ammostatus=§9Redstone: %d / %d
+item.quiverchevsky.weapon.lightning_red.loadtext=§eCraft with a Redstone Magazine to reload.
+item.quiverchevsky.weapon.lightning_red.description=The twin prongs are crackling.
+
+item.quiverchevsky.weapon.aqua_accelerator.name=Aqua Accelerator
+item.quiverchevsky.weapon.aqua_accelerator.ammostatus=§9Buckets: %d / %d
+item.quiverchevsky.weapon.aqua_accelerator.loadtext=§eCraft with 1 Water Bucket to reload.
+item.quiverchevsky.weapon.aqua_accelerator.description=Kinda slippery.
+
+item.quiverchevsky.weapon.ender_bow.name=Ender Bow
+item.quiverchevsky.weapon.ender_bow.ammostatus=§9Durability: %d / %d
+item.quiverchevsky.weapon.ender_bow.loadtext=§eCraft with  to reload.
+item.quiverchevsky.weapon.ender_bow.description=§aZoom on use.#n§aPredictive arrow on use.#nAn ender-eye scope is attached.#nIt's staring at you.
+
+item.quiverchevsky.weapon.powder_knuckles.name=Powder Knuckles
+item.quiverchevsky.weapon.powder_knuckles.ammostatus=§9Gunpowder: %d / %d
+item.quiverchevsky.weapon.powder_knuckles.loadtext=§eCraft with up to 8 gunpowder to reload.
+item.quiverchevsky.weapon.powder_knuckles.description=§ePunch to attack mobs.Use to attack terrain.#nNot safe for use.
 
 //Misc
 item.quiverchevsky.misc.Part_SEBarrel.name=Sugar Engine Barrel
-item.quiverchevsky.misc.Part_SEBarrel.description=A barrel, waiting for 3 companions#nand a main body.
+item.quiverchevsky.misc.Part_SEBarrel.description=A barrel, waiting for 3 companions and a main body.
 
 item.quiverchevsky.misc.Part_SEBody.name=Sugar Engine Main Body
 item.quiverchevsky.misc.Part_SEBody.description=To be outfitted with 4 barrels.

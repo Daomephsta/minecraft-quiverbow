@@ -29,13 +29,13 @@ public class LapisCoil extends _WeaponBase
 {
 	public LapisCoil()
 	{
-		super(100);
+		super("lapis_coil", 100);
 
 		ItemStack ammo = Helper.getAmmoStack(LapisMagazine.class, 0);
 		this.setMaxDamage(ammo.getMaxDamage());	// Fitting our max capacity to the magazine
 	}
 
-	private String nameInternal = "Lapis Coil";
+	
 
 	int Weakness_Strength;
 	int Weakness_Duration;
@@ -143,54 +143,23 @@ public class LapisCoil extends _WeaponBase
 	}
 
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-	{
-		super.addInformation(stack, player, list, par4);
-
-		if (player.capabilities.isCreativeMode)
-		{
-			list.add(EnumChatFormatting.BLUE + "Lapis: INFINITE / " + this.getMaxDamage());
-		}
-		else
-		{
-			int ammo = this.getMaxDamage() - this.getDamage(stack);
-			list.add(EnumChatFormatting.BLUE + "Lapis: " + ammo + " / " + this.getMaxDamage());
-		}
-
-		list.add(EnumChatFormatting.BLUE + "Damage: " + this.DmgMin + " - " + this.DmgMax);
-
-		list.add(EnumChatFormatting.GREEN + "Weakness " + this.Weakness_Strength + " for " + this.displayInSec(this.Nausea_Duration) + " sec on hit.");
-		list.add(EnumChatFormatting.GREEN + "Nausea 1 for " + this.displayInSec(this.Nausea_Duration) + " sec on hit.");
-		list.add(EnumChatFormatting.GREEN + "Hunger " + this.Hunger_Strength + " for " + this.displayInSec(this.Hunger_Duration) + " sec on hit.");
-
-		list.add(EnumChatFormatting.YELLOW + "Crouch-use to drop the current magazine.");
-		list.add(EnumChatFormatting.YELLOW + "Craft with a Lapis Magazine to reload.");
-
-		list.add("Redstone-powered and highly toxic.");
-		list.add("It's covered in blue dust.");
-	}
-
-
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.DmgMin = config.get(this.nameInternal, "What damage am I dealing, at least? (default 1)", 1).getInt();
-		this.DmgMax = config.get(this.nameInternal, "What damage am I dealing, tops? (default 3)", 3).getInt();
+		this.DmgMin = config.get(this.name, "What damage am I dealing, at least? (default 1)", 1).getInt();
+		this.DmgMax = config.get(this.name, "What damage am I dealing, tops? (default 3)", 3).getInt();
 
-		this.Speed = config.get(this.nameInternal, "How fast are my projectiles? (default 2.5 BPT (Blocks Per Tick))", 2.5).getDouble();
+		this.Speed = config.get(this.name, "How fast are my projectiles? (default 2.5 BPT (Blocks Per Tick))", 2.5).getDouble();
 
-		this.Weakness_Strength = config.get(this.nameInternal, "How strong is my Weakness effect? (default 2)", 2).getInt();
-		this.Weakness_Duration = config.get(this.nameInternal, "How long does my Weakness effect last? (default 40 ticks)", 40).getInt();
-		this.Nausea_Duration = config.get(this.nameInternal, "How long does my Nausea effect last? (default 40 ticks)", 40).getInt();
-		this.Hunger_Strength = config.get(this.nameInternal, "How strong is my Hunger effect? (default 2)", 2).getInt();
-		this.Hunger_Duration = config.get(this.nameInternal, "How long does my Hunger effect last? (default 40 ticks)", 40).getInt();
+		this.Weakness_Strength = config.get(this.name, "How strong is my Weakness effect? (default 2)", 2).getInt();
+		this.Weakness_Duration = config.get(this.name, "How long does my Weakness effect last? (default 40 ticks)", 40).getInt();
+		this.Nausea_Duration = config.get(this.name, "How long does my Nausea effect last? (default 40 ticks)", 40).getInt();
+		this.Hunger_Strength = config.get(this.name, "How strong is my Hunger effect? (default 2)", 2).getInt();
+		this.Hunger_Duration = config.get(this.name, "How long does my Hunger effect last? (default 40 ticks)", 40).getInt();
 
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);
 	}
 
 

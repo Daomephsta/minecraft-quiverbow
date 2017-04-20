@@ -2,20 +2,6 @@ package com.domochevsky.quiverbow.weapons;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.EnumRarity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.net.NetHelper;
@@ -27,25 +13,26 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.*;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.common.config.Configuration;
 
 public class ERA extends _WeaponBase
 {
-	public ERA() { super(1); }
-	
-	private String nameInternal = "Ender Rail Accelerator";
+	public ERA() { super("ender_railgun", 1); }
 	
 	private double explosionSelf;
 	public double explosionTarget;
 	
 	private boolean dmgTerrain;	// Can our projectile damage terrain?
-	
-	
-	@Override
-	public String getItemStackDisplayName(ItemStack stack) 
-	{ 
-		if (stack.getItemDamage() == stack.getMaxDamage()) { return "Burnt Out " + this.namePublic; }
-		return this.namePublic; 
-	}
 	
 	
 	@SideOnly(Side.CLIENT)
@@ -196,50 +183,22 @@ public class ERA extends _WeaponBase
 	}
 	
 	
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-	{
-		super.addInformation(stack, player, list, par4);
-		
-		list.add(EnumChatFormatting.BLUE + "Damage: " + this.DmgMin + " - " + this.DmgMax + " to hit target.");
-		
-		list.add(EnumChatFormatting.GREEN + "Explosion with " + this.explosionTarget + " block radius on hit.");
-		
-		if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("hasEmeraldMuzzle"))
-		{
-			list.add(EnumChatFormatting.GREEN + "Has an emerald muzzle.");
-		}
-		else
-		{
-			list.add(EnumChatFormatting.RED + "Explosion with " + this.explosionSelf + " block radius on firing.");
-		}
-		
-		list.add(EnumChatFormatting.RED + "Burns out after one shot.");
-		
-		list.add("27 blocks worth of powered rail,");
-		list.add("running through a single ender chest.");
-		list.add("So not safe for use.");
-	}
-	
-	
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config) 
 	{ 
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 		
-		this.DmgMin = config.get(this.nameInternal, "What damage am I dealing with a direct hit, at least? (default 120)", 120).getInt();
-		this.DmgMax = config.get(this.nameInternal, "What damage am I dealing with a direct hit, tops? (default 150)", 150).getInt();
+		this.DmgMin = config.get(this.name, "What damage am I dealing with a direct hit, at least? (default 120)", 120).getInt();
+		this.DmgMax = config.get(this.name, "What damage am I dealing with a direct hit, tops? (default 150)", 150).getInt();
 		
-		this.explosionSelf = config.get(this.nameInternal, "How big are my explosions when leaving the barrel? (default 4.0 blocks. TNT is 4.0 blocks)", 4.0).getDouble();
-		this.explosionTarget = config.get(this.nameInternal, "How big are my explosions when hitting a target? (default 8.0 blocks. TNT is 4.0 blocks)", 8.0).getDouble();
+		this.explosionSelf = config.get(this.name, "How big are my explosions when leaving the barrel? (default 4.0 blocks. TNT is 4.0 blocks)", 4.0).getDouble();
+		this.explosionTarget = config.get(this.name, "How big are my explosions when hitting a target? (default 8.0 blocks. TNT is 4.0 blocks)", 8.0).getDouble();
 		
-		this.Kickback = (byte) config.get(this.nameInternal, "How hard do I kick the user back when firing? (default 30)", 30).getInt();
+		this.Kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 30)", 30).getInt();
 		
-		this.dmgTerrain = config.get(this.nameInternal, "Can I damage terrain, when in player hands? (default true)", true).getBoolean(true);
+		this.dmgTerrain = config.get(this.name, "Can I damage terrain, when in player hands? (default true)", true).getBoolean(true);
 		
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default false. Too high-power and suicidal.)", false).getBoolean();
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default false. Too high-power and suicidal.)", false).getBoolean();
 	}
 	
 	

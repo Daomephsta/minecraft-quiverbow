@@ -28,13 +28,13 @@ public class SugarEngine extends _WeaponBase
 {
 	public SugarEngine()
 	{
-		super(200); 	// Max ammo placeholder
+		super("sugar_engine", 200); 	// Max ammo placeholder
 
 		ItemStack ammo = Helper.getAmmoStack(GatlingAmmo.class, 0);
 		this.setMaxDamage(ammo.getMaxDamage());	// Fitting our max capacity to the magazine
 	}
 
-	private String nameInternal = "Sugar Engine";
+	
 
 	public float Spread;
 
@@ -208,51 +208,20 @@ public class SugarEngine extends _WeaponBase
 	}
 
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-	{
-		super.addInformation(stack, player, list, par4);
-
-		if (player.capabilities.isCreativeMode)
-		{
-			list.add(EnumChatFormatting.BLUE + "Sugar Rods: INFINITE / " + this.getMaxDamage());
-		}
-		else
-		{
-			int ammo = this.getMaxDamage() - this.getDamage(stack);
-			list.add(EnumChatFormatting.BLUE + "Sugar Rods: " + ammo + " / " + this.getMaxDamage());
-		}
-
-		list.add(EnumChatFormatting.BLUE + "Damage: " + this.DmgMin + " - " + this.DmgMax + " per rod.");
-
-		list.add(EnumChatFormatting.GREEN + "Fires ~20 rods per second.");
-
-		list.add(EnumChatFormatting.RED + "Start-up Time: " + this.displayInSec(this.getSpinupTime()) + " sec.");
-
-		list.add(EnumChatFormatting.YELLOW + "Crouch-use to drop the current clip.");
-		list.add(EnumChatFormatting.YELLOW + "Craft with 1 Clip of Sugar Rods");
-		list.add(EnumChatFormatting.YELLOW + "to reload when empty.");
-
-		list.add("So many barrels. Why so many barrels?");
-	}
-
-
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.DmgMin = config.get(this.nameInternal, "What damage am I dealing, at least? (default 1)", 1).getInt();
-		this.DmgMax = config.get(this.nameInternal, "What damage am I dealing, tops? (default 3)", 3).getInt();
+		this.DmgMin = config.get(this.name, "What damage am I dealing, at least? (default 1)", 1).getInt();
+		this.DmgMax = config.get(this.name, "What damage am I dealing, tops? (default 3)", 3).getInt();
 
-		this.Speed = config.get(this.nameInternal, "How fast are my projectiles? (default 2.0 BPT (Blocks Per Tick))", 2.0).getDouble();
+		this.Speed = config.get(this.name, "How fast are my projectiles? (default 2.0 BPT (Blocks Per Tick))", 2.0).getDouble();
 
-		this.Kickback = (byte) config.get(this.nameInternal, "How hard do I kick the user back when firing? (default 1)", 1).getInt();
-		this.Spread = (float) config.get(this.nameInternal, "How accurate am I? (default 10 spread)", 10).getDouble();
+		this.Kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 1)", 1).getInt();
+		this.Spread = (float) config.get(this.name, "How accurate am I? (default 10 spread)", 10).getDouble();
 
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default true. They'll probably figure it out.)", true).getBoolean(true);
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true. They'll probably figure it out.)", true).getBoolean(true);
 	}
 
 

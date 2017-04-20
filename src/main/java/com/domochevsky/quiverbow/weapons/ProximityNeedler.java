@@ -27,14 +27,14 @@ public class ProximityNeedler extends _WeaponBase
 {
 	public ProximityNeedler()
 	{
-		super(64); 	// Max ammo placeholder
+		super("proximity_thorn_thrower", 64); 	// Max ammo placeholder
 
 		ItemStack ammo = Helper.getAmmoStack(NeedleMagazine.class, 0);
 		this.setMaxDamage(ammo.getMaxDamage());	// Fitting our max capacity to the magazine
 	}
 
 
-	private String nameInternal = "Proximity Thorn Thrower";
+	
 	private int MaxTicks;
 	private int ProxyCheck;
 	private int ThornAmount;
@@ -142,61 +142,25 @@ public class ProximityNeedler extends _WeaponBase
 	}
 
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-	{
-		super.addInformation(stack, player, list, par4);
-
-		if (player.capabilities.isCreativeMode)
-		{
-			list.add(EnumChatFormatting.BLUE + "Thorns: INFINITE / " + this.getMaxDamage());
-		}
-		else
-		{
-			int ammo = this.getMaxDamage() - this.getDamage(stack);
-			list.add(EnumChatFormatting.BLUE + "Thorns: " + ammo + " / " + this.getMaxDamage());
-		}
-
-		list.add(EnumChatFormatting.BLUE + "Damage: " + this.DmgMin + " - " + this.DmgMax + " per thorn");
-
-		list.add(EnumChatFormatting.GREEN + "Scatters thorn splitters");
-		list.add(EnumChatFormatting.GREEN + "on proximity trigger.");
-		list.add(EnumChatFormatting.GREEN + "Trigger Range: " + this.triggerDist + " blocks");
-		list.add(EnumChatFormatting.GREEN + "Projectile duration: " + this.displayInSec(this.MaxTicks) + " sec");
-
-		list.add(EnumChatFormatting.RED + "Cooldown for " + this.displayInSec(this.Cooldown) + " sec on use.");
-		list.add(EnumChatFormatting.RED + "Uses 8 thorns per shot.");
-
-		list.add(EnumChatFormatting.YELLOW + "Crouch-use to drop the");
-		list.add(EnumChatFormatting.YELLOW + "current clip.");
-		list.add(EnumChatFormatting.YELLOW + "Craft with a Thorn");
-		list.add(EnumChatFormatting.YELLOW + "Magazine to reload.");
-
-		list.add("A bundle of pain, lying in wait.");
-	}
-
-
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.DmgMin = config.get(this.nameInternal, "What damage am I dealing per thorn, at least? (default 1)", 1).getInt();
-		this.DmgMax = config.get(this.nameInternal, "What damage am I dealing per thorn, tops? (default 2)", 2).getInt();
+		this.DmgMin = config.get(this.name, "What damage am I dealing per thorn, at least? (default 1)", 1).getInt();
+		this.DmgMax = config.get(this.name, "What damage am I dealing per thorn, tops? (default 2)", 2).getInt();
 
-		this.Speed = config.get(this.nameInternal, "How fast are my projectiles? (default 2.0 BPT (Blocks Per Tick))", 2.0).getDouble();
-		this.MaxTicks = config.get(this.nameInternal, "How long do my projectiles stick around, tops? (default 6000 ticks. That's 5 min.)", 6000).getInt();
+		this.Speed = config.get(this.name, "How fast are my projectiles? (default 2.0 BPT (Blocks Per Tick))", 2.0).getDouble();
+		this.MaxTicks = config.get(this.name, "How long do my projectiles stick around, tops? (default 6000 ticks. That's 5 min.)", 6000).getInt();
 
-		this.Kickback = (byte) config.get(this.nameInternal, "How hard do I kick the user back when firing? (default 2)", 2).getInt();
+		this.Kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 2)", 2).getInt();
 
-		this.Cooldown = config.get(this.nameInternal, "How long until I can fire again? (default 20 ticks)", 20).getInt();
-		this.ProxyCheck = config.get(this.nameInternal, "How long does my projectile wait inbetween each proximity check? (default 20 ticks)", 20).getInt();
-		this.ThornAmount = config.get(this.nameInternal, "How many thorns does my projectile burst into? (default 32)", 32).getInt();
-		this.triggerDist = config.get(this.nameInternal, "What is the trigger distance of my projectiles? (default 2.0 blocks)", 2.0).getDouble();
+		this.Cooldown = config.get(this.name, "How long until I can fire again? (default 20 ticks)", 20).getInt();
+		this.ProxyCheck = config.get(this.name, "How long does my projectile wait inbetween each proximity check? (default 20 ticks)", 20).getInt();
+		this.ThornAmount = config.get(this.name, "How many thorns does my projectile burst into? (default 32)", 32).getInt();
+		this.triggerDist = config.get(this.name, "What is the trigger distance of my projectiles? (default 2.0 blocks)", 2.0).getDouble();
 
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default false)", false).getBoolean();
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default false)", false).getBoolean();
 	}
 
 

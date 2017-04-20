@@ -23,10 +23,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class Seedling extends _WeaponBase
 {
-	public Seedling() { super(32); }
+	public Seedling() { super("seedling", 32); }
 	
 	
-	private String nameInternal = "Seedling";
+	
 	private int Dmg;
 	private float Spread;
 	
@@ -104,46 +104,16 @@ public class Seedling extends _WeaponBase
 		world.playSoundAtEntity(player, "random.break", 1.0F, 1.5F);
 	}
 	
-	
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-	{
-		super.addInformation(stack, player, list, par4);
-		
-		if (player.capabilities.isCreativeMode)
-		{
-			list.add(EnumChatFormatting.BLUE + "Melon Seeds: INFINITE / " + this.getMaxDamage());
-		}
-		else
-		{
-			int ammo = this.getMaxDamage() - this.getDamage(stack);
-			list.add(EnumChatFormatting.BLUE + "Melon Seeds: " + ammo + " / " + this.getMaxDamage());
-		}
-		
-		list.add(EnumChatFormatting.BLUE + "Damage: " + this.Dmg);
-		
-		list.add(EnumChatFormatting.GREEN + "80% biologically degradable.");
-		
-		list.add(EnumChatFormatting.RED + "Cannot be reloaded.");
-		
-		list.add(EnumChatFormatting.YELLOW + "It's pre-loaded with 2 melons.");
-		
-		list.add("A small weapon made out of sugar cane.");
-	}
-	
-	
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 		
-		this.Dmg = config.get(this.nameInternal, "What damage am I dealing per projectile? (default 1)", 1).getInt();
+		this.Dmg = config.get(this.name, "What damage am I dealing per projectile? (default 1)", 1).getInt();
 		
-		this.Speed = config.get(this.nameInternal, "How fast are my projectiles? (default 1.3 BPT (Blocks Per Tick))", 1.3).getDouble();
+		this.Speed = config.get(this.name, "How fast are my projectiles? (default 1.3 BPT (Blocks Per Tick))", 1.3).getDouble();
 		
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
 	}
 	
 	

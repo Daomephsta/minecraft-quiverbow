@@ -1,7 +1,16 @@
 package com.domochevsky.quiverbow.weapons;
 
+import java.util.Collections;
 import java.util.List;
 
+import com.domochevsky.quiverbow.Main;
+import com.domochevsky.quiverbow.miscitems.QuiverBowItem;
+import com.domochevsky.quiverbow.util.Newliner;
+
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -10,27 +19,19 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
-
-import com.domochevsky.quiverbow.Main;
-
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class AA_Targeter extends _WeaponBase
 {
 	public AA_Targeter() 
 	{ 
-		super(1); 
+		super("aa_target_assist", 1); 
 		this.setCreativeTab(CreativeTabs.tabTools);	// This is a tool
 	}	// Not consuming ammo	
 	
-	private String nameInternal = "Arms Assistant Targeting Helper";
+	
 	
 	public double targetingDistance = 64;
 	
@@ -88,22 +89,16 @@ public class AA_Targeter extends _WeaponBase
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
 	{
-	    super.addInformation(stack, player, list, par4);
-	    
-    	list.add(EnumChatFormatting.BLUE + "Use to let Arms Assistants fire at a common target.");
-    	list.add(EnumChatFormatting.BLUE + "When riding an AA: Use to fire weapon rails.");
-    	list.add(EnumChatFormatting.RED + "All involved AA need the Communications Upgrade.");
-    	list.add("'Over there!'");
-    }
+	    Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".description"));
+	}
 	
 	
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config) 
 	{ 
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 		
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default false. They're not friends with AAs.)", false).getBoolean(true);
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default false. They're not friends with AAs.)", false).getBoolean(true);
 	}
     
 	

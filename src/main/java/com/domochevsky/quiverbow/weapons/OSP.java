@@ -31,13 +31,10 @@ public class OSP extends _WeaponBase
 {
 	public OSP()
 	{
-		super(16);
+		super("splinter_pistol", 16);
 		ItemStack ammo = Helper.getAmmoStack(ObsidianMagazine.class, 0);
 		this.setMaxDamage(ammo.getMaxDamage() * 2);	// Fitting our max capacity to the magazine. EDIT: Experimental double capacity
 	}
-
-
-	private String nameInternal = "Obsidian Splinter Pistol";
 
 	private int Wither_Duration;	// 20 ticks to a second, let's start with 3 seconds
 	private int Wither_Strength;	// 2 dmg per second for 3 seconds = 6 dmg total
@@ -135,53 +132,22 @@ public class OSP extends _WeaponBase
 	}
 
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-	{
-		super.addInformation(stack, player, list, par4);
-
-		if (player.capabilities.isCreativeMode)
-		{
-			list.add(EnumChatFormatting.BLUE + "Small Splints: INFINITE / " + this.getMaxDamage());
-		}
-		else
-		{
-			int ammo = this.getMaxDamage() - this.getDamage(stack);
-			list.add(EnumChatFormatting.BLUE + "Small Splints: " + ammo + " / " + this.getMaxDamage());
-		}
-
-		list.add(EnumChatFormatting.BLUE + "Damage: " + this.DmgMin + " - " + this.DmgMax);
-
-		list.add(EnumChatFormatting.GREEN + "Wither " + this.Wither_Strength + " for " + this.displayInSec(this.Wither_Duration) + " sec on hit.");
-
-		list.add(EnumChatFormatting.RED + "Cooldown for " + this.displayInSec(this.Cooldown) + " sec on use.");
-
-		list.add(EnumChatFormatting.YELLOW + "Crouch-use to drop the current magazine.");
-		list.add(EnumChatFormatting.YELLOW + "Craft with 1 Obsidian Magazine to");
-		list.add(EnumChatFormatting.YELLOW + "reload when empty.");
-
-		list.add("The barrel's inside is blackened.");
-	}
-
-
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.DmgMin = config.get(this.nameInternal, "What damage am I dealing, at least? (default 4)", 4).getInt();
-		this.DmgMax = config.get(this.nameInternal, "What damage am I dealing, tops? (default 8)", 8).getInt();
+		this.DmgMin = config.get(this.name, "What damage am I dealing, at least? (default 4)", 4).getInt();
+		this.DmgMax = config.get(this.name, "What damage am I dealing, tops? (default 8)", 8).getInt();
 
-		this.Speed = config.get(this.nameInternal, "How fast are my projectiles? (default 1.7 BPT (Blocks Per Tick))", 1.7).getDouble();
+		this.Speed = config.get(this.name, "How fast are my projectiles? (default 1.7 BPT (Blocks Per Tick))", 1.7).getDouble();
 
-		this.Cooldown = config.get(this.nameInternal, "How long until I can fire again? (default 15 ticks)", 15).getInt();
+		this.Cooldown = config.get(this.name, "How long until I can fire again? (default 15 ticks)", 15).getInt();
 
-		this.Wither_Strength = config.get(this.nameInternal, "How strong is my Wither effect? (default 1)", 1).getInt();
-		this.Wither_Duration = config.get(this.nameInternal, "How long does my Wither effect last? (default 61 ticks)", 61).getInt();
+		this.Wither_Strength = config.get(this.name, "How strong is my Wither effect? (default 1)", 1).getInt();
+		this.Wither_Duration = config.get(this.name, "How long does my Wither effect last? (default 61 ticks)", 61).getInt();
 
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);
 	}
 
 

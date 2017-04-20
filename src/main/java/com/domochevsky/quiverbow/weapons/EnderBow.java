@@ -31,9 +31,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class EnderBow extends _WeaponBase 	// So archaic... I may have to overhaul this at some point. There's nothing standard about this
 {
-	public EnderBow() { super(256); }
+	public EnderBow() { super("ender_bow", 256); }
 
-	private String nameInternal = "Ender Bow";
+	
 	
 	//public String[] bowPullIconNameArray = new String[] {"pulling_0", "pulling_1", "pulling_2"};
 	
@@ -104,33 +104,14 @@ public class EnderBow extends _WeaponBase 	// So archaic... I may have to overha
     }
 	
 	
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-	{
-	    super.addInformation(stack, player, list, par4);
-	    
-	    int ammo = this.getMaxDamage() - this.getDamage(stack);
-	    
-	    list.add(EnumChatFormatting.BLUE + "Durability: " + ammo + " / " + this.getMaxDamage());
-	    
-	    list.add(EnumChatFormatting.GREEN + "Zoom on use.");
-	    list.add(EnumChatFormatting.GREEN + "Predictive arrow on use.");
-	    
-	    list.add("An ender-eye scope is attached.");
-	    list.add("It's staring at you.");
-    }
-	
-	
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config) 
 	{ 
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
-    	this.Ticks = config.get(this.nameInternal, "How often should I display the predictive projectile? (default every 5 ticks. That's 4 per second.)", 5).getInt();
-    	this.ZoomMax = config.get(this.nameInternal, "How far can I zoom in? (default 30. Lower equals more zoom.)", 30).getInt();
-    	
-    	this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default false. They don't know how to pull a string anymore.)", false).getBoolean();
+	    this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+	    this.Ticks = config.get(this.name, "How often should I display the predictive projectile? (default every 5 ticks. That's 4 per second.)", 5).getInt();
+	    this.ZoomMax = config.get(this.name, "How far can I zoom in? (default 30. Lower equals more zoom.)", 30).getInt();
+
+	    this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default false. They don't know how to pull a string anymore.)", false).getBoolean();
 	}
     
 	

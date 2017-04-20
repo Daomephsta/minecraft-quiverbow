@@ -28,13 +28,13 @@ public class ThornSpitter extends _WeaponBase
 {
 	public ThornSpitter() 
 	{ 
-		super(64); 
+		super("thorn_spitter", 64); 
 		
 		ItemStack ammo = Helper.getAmmoStack(NeedleMagazine.class, 0);
 		this.setMaxDamage(ammo.getMaxDamage());	// Fitting our max capacity to the magazine
 	}
 
-	private String nameInternal = "Thorn Spitter";
+	
 	
 	
 	@SideOnly(Side.CLIENT)
@@ -143,49 +143,19 @@ public class ThornSpitter extends _WeaponBase
 	}
 	
 	
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-	{
-	    super.addInformation(stack, player, list, par4);
-	    
-	    if (player.capabilities.isCreativeMode)
-	    {
-		    list.add(EnumChatFormatting.BLUE + "Thorns: INFINITE / " + this.getMaxDamage());
-	    }
-	    else
-	    {
-	    	int ammo = this.getMaxDamage() - this.getDamage(stack);
-		    list.add(EnumChatFormatting.BLUE + "Thorns: " + ammo + " / " + this.getMaxDamage());
-	    }
-	    
-    	list.add(EnumChatFormatting.BLUE + "Damage: " + DmgMin + " - " + DmgMax);
-    	
-    	list.add(EnumChatFormatting.GREEN + "Burst 4 when firing.");
-    	
-    	list.add(EnumChatFormatting.RED + "Cooldown for " + this.displayInSec(Cooldown) + " sec on use.");
-	    
-    	list.add(EnumChatFormatting.YELLOW + "Craft with a Thorn");
-	    list.add(EnumChatFormatting.YELLOW + "Magazine to reload.");
-	   
-	    list.add("Built with experimental quad-piston tech.");
-    }
-	
-	
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config) 
 	{ 
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
-		
-		this.DmgMin = config.get(this.nameInternal, "What damage am I dealing, at least? (default 1)", 1).getInt();
-		this.DmgMax = config.get(this.nameInternal, "What damage am I dealing, tops? (default 2)", 2).getInt();
-		
-		this.Speed = config.get(this.nameInternal, "How fast are my projectiles? (default 1.75 BPT (Blocks Per Tick))", 1.75).getDouble();
-    	
-    	this.Cooldown = config.get(this.nameInternal, "How long until I can fire again? (default 10 ticks)", 10).getInt();
-    	
-    	this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
+	    this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+
+	    this.DmgMin = config.get(this.name, "What damage am I dealing, at least? (default 1)", 1).getInt();
+	    this.DmgMax = config.get(this.name, "What damage am I dealing, tops? (default 2)", 2).getInt();
+
+	    this.Speed = config.get(this.name, "How fast are my projectiles? (default 1.75 BPT (Blocks Per Tick))", 1.75).getDouble();
+
+	    this.Cooldown = config.get(this.name, "How long until I can fire again? (default 10 ticks)", 10).getInt();
+
+	    this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
 	}
     
 	

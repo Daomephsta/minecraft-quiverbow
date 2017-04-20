@@ -32,9 +32,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class PowderKnuckle_Mod extends _WeaponBase
 {
-	public PowderKnuckle_Mod() { super(8); }
+	public PowderKnuckle_Mod() { super("powder_knuckle_mod", 8); }
 
-	private String nameInternal = "Modified Powder Knuckle";
+	
 
 	private double ExplosionSize;
 
@@ -160,48 +160,18 @@ public class PowderKnuckle_Mod extends _WeaponBase
 	}
 
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-	{
-		super.addInformation(stack, player, list, par4);
-
-		if (player.capabilities.isCreativeMode)
-		{
-			list.add(EnumChatFormatting.BLUE + "Gunpowder: INFINITE / " + this.getMaxDamage());
-		}
-		else
-		{
-			int ammo = this.getMaxDamage() - this.getDamage(stack);
-			list.add(EnumChatFormatting.BLUE + "Gunpowder: " + ammo + " / " + this.getMaxDamage());
-		}
-
-		list.add(EnumChatFormatting.BLUE + "Damage: " + (this.DmgMax + 1));
-
-		list.add(EnumChatFormatting.GREEN + "Explosion with radius " + this.ExplosionSize + " on hit.");
-		list.add(EnumChatFormatting.GREEN + "Mining 3x3x3 on use.");
-		list.add(EnumChatFormatting.GREEN + "Silktouch 1 on use.");
-
-		list.add(EnumChatFormatting.YELLOW + "Punch to attack mobs, Use to attack terrain.");
-		list.add(EnumChatFormatting.YELLOW + "Craft with up to 8 gunpowder to reload.");
-
-		list.add("Modified for blast mining.");
-	}
-
-
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.DmgMin = config.get(this.nameInternal, "What's my minimum damage, when I'm empty? (default 2)", 2).getInt();
-		this.DmgMax = config.get(this.nameInternal, "What's my maximum damage when I explode? (default 14)", 14).getInt();
+		this.DmgMin = config.get(this.name, "What's my minimum damage, when I'm empty? (default 2)", 2).getInt();
+		this.DmgMax = config.get(this.name, "What's my maximum damage when I explode? (default 14)", 14).getInt();
 
-		this.ExplosionSize = config.get(this.nameInternal, "How big are my explosions? (default 1.5 blocks. TNT is 4.0 blocks)", 1.5).getDouble();
-		this.dmgTerrain = config.get(this.nameInternal, "Can I damage terrain, when in player hands? (default true)", true).getBoolean(true);
+		this.ExplosionSize = config.get(this.name, "How big are my explosions? (default 1.5 blocks. TNT is 4.0 blocks)", 1.5).getDouble();
+		this.dmgTerrain = config.get(this.name, "Can I damage terrain, when in player hands? (default true)", true).getBoolean(true);
 
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default false. They don't know where the trigger on this thing is.)", false).getBoolean(false);
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default false. They don't know where the trigger on this thing is.)", false).getBoolean(false);
 	}
 
 

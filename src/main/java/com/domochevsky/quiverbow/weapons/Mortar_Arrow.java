@@ -26,9 +26,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class Mortar_Arrow extends _WeaponBase
 {
-	public Mortar_Arrow() { super(8); }
+	public Mortar_Arrow() { super("arrow_mortar", 8); }
 
-	private String nameInternal = "Arrow Mortar";
+	
 
 
 	@SideOnly(Side.CLIENT)
@@ -93,49 +93,20 @@ public class Mortar_Arrow extends _WeaponBase
 	}
 
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-	{
-		super.addInformation(stack, player, list, par4);
-
-		if (player.capabilities.isCreativeMode)
-		{
-			list.add(EnumChatFormatting.BLUE + "Arrow Bundles: INFINITE / " + this.getMaxDamage());
-		}
-		else
-		{
-			int ammo = this.getMaxDamage() - this.getDamage(stack);
-			list.add(EnumChatFormatting.BLUE + "Arrow Bundles: " + ammo + " / " + this.getMaxDamage());
-		}
-
-		list.add(EnumChatFormatting.BLUE + "Damage: " + this.DmgMin + " - " + this.DmgMax + " per arrow.");
-
-		list.add(EnumChatFormatting.GREEN + "Scatter 8 on impact.");
-
-		list.add(EnumChatFormatting.RED + "Cooldown for " + this.displayInSec(this.Cooldown) + " sec on use.");
-
-		list.add(EnumChatFormatting.YELLOW + "Craft with up to 8 Arrow Bundles to reload.");
-
-		list.add("Arrow tips are poking out of the barrel.");
-	}
-
-
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.DmgMin = config.get(this.nameInternal, "What damage are my arrows dealing, at least? (default 2)", 2).getInt();
-		this.DmgMax = config.get(this.nameInternal, "What damage are my arrows dealing, tops? (default 10)", 10).getInt();
+		this.DmgMin = config.get(this.name, "What damage are my arrows dealing, at least? (default 2)", 2).getInt();
+		this.DmgMax = config.get(this.name, "What damage are my arrows dealing, tops? (default 10)", 10).getInt();
 
-		this.Speed = config.get(this.nameInternal, "How fast are my projectiles? (default 1.5 BPT (Blocks Per Tick))", 1.5).getDouble();
-		this.Kickback = (byte) config.get(this.nameInternal, "How hard do I kick the user back when firing? (default 3)", 3).getInt();
+		this.Speed = config.get(this.name, "How fast are my projectiles? (default 1.5 BPT (Blocks Per Tick))", 1.5).getDouble();
+		this.Kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 3)", 3).getInt();
 
-		this.Cooldown = config.get(this.nameInternal, "How long until I can fire again? (default 20 ticks)", 20).getInt();
+		this.Cooldown = config.get(this.name, "How long until I can fire again? (default 20 ticks)", 20).getInt();
 
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);
 	}
 
 

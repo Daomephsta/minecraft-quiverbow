@@ -1,5 +1,6 @@
 package com.domochevsky.quiverbow.weapons;
 
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -16,6 +17,7 @@ import net.minecraftforge.common.config.Configuration;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.RegularArrow;
+import com.domochevsky.quiverbow.util.Newliner;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -24,10 +26,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class Crossbow_Double extends _WeaponBase
 {
-	public Crossbow_Double() { super(2); }
-
-	private String nameInternal = "Double Crossbow";
-
+	public Crossbow_Double() { super("double_crossbow", 2); }
 
 	// Icons
 	@SideOnly(Side.CLIENT)
@@ -112,42 +111,23 @@ public class Crossbow_Double extends _WeaponBase
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
 	{
 		super.addInformation(stack, player, list, par4);
-
-		if (player.capabilities.isCreativeMode)
-		{
-			list.add(EnumChatFormatting.BLUE + "Bolts: INFINITE / " + this.getMaxDamage());
-		}
-		else
-		{
-			int ammo = this.getMaxDamage() - this.getDamage(stack);
-			list.add(EnumChatFormatting.BLUE + "Bolts: " + ammo + " / " + this.getMaxDamage());
-		}
-
-		list.add(EnumChatFormatting.BLUE + "Damage: " + this.DmgMin + " - " + this.DmgMax);
-		list.add(EnumChatFormatting.GREEN + "Knockback " + this.Knockback + " on hit.");
-		list.add(EnumChatFormatting.RED + "Cooldown for " + this.displayInSec(this.Cooldown) + " sec on use.");
-		list.add(EnumChatFormatting.YELLOW + "Craft with 1 or 2 Arrows to reload.");
-		list.add("A sticky piston powers the");
-		list.add("reloading mechanism.");
-
-		if (this.getCooldown(stack) != 0) {list.add(EnumChatFormatting.RED + "RE-TAUTING! (" + this.getCooldown(stack) + ")"); }
+		if (this.getCooldown(stack) > 0) Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".cooldown", this.displayInSec(this.getCooldown(stack))));
 	}
 
 
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.DmgMin = config.get(this.nameInternal, "What damage am I dealing, at least? (default 14)", 14).getInt();
-		this.DmgMax = config.get(this.nameInternal, "What damage am I dealing, tops? (default 20)", 20).getInt();
+		this.DmgMin = config.get(this.name, "What damage am I dealing, at least? (default 14)", 14).getInt();
+		this.DmgMax = config.get(this.name, "What damage am I dealing, tops? (default 20)", 20).getInt();
 
-		this.Speed = config.get(this.nameInternal, "How fast are my projectiles? (default 2.5 BPT (Blocks Per Tick))", 2.5).getDouble();
-		this.Knockback = config.get(this.nameInternal, "How hard do I knock the target back when firing? (default 2)", 2).getInt();
-		this.Cooldown = config.get(this.nameInternal, "How long until I can fire again? (default 25 ticks)", 25).getInt();
+		this.Speed = config.get(this.name, "How fast are my projectiles? (default 2.5 BPT (Blocks Per Tick))", 2.5).getDouble();
+		this.Knockback = config.get(this.name, "How hard do I knock the target back when firing? (default 2)", 2).getInt();
+		this.Cooldown = config.get(this.name, "How long until I can fire again? (default 25 ticks)", 25).getInt();
 
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
 	}
 
 

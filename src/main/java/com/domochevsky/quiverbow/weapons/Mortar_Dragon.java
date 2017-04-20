@@ -26,10 +26,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class Mortar_Dragon extends _WeaponBase
 {
-	public Mortar_Dragon() { super(8); }
+	public Mortar_Dragon() { super("dragon_mortar", 8); }
 
 
-	private String nameInternal = "Dragon Mortar";
+	
 
 	private int FireDur;
 	private double ExplosionSize;
@@ -101,49 +101,23 @@ public class Mortar_Dragon extends _WeaponBase
 	}
 
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-	{
-		super.addInformation(stack, player, list, par4);
-
-		if (player.capabilities.isCreativeMode)
-		{
-			list.add(EnumChatFormatting.BLUE + "Rocket Bundles: INFINITE / " + this.getMaxDamage());
-		}
-		else
-		{
-			int ammo = this.getMaxDamage() - this.getDamage(stack);
-			list.add(EnumChatFormatting.BLUE + "Rocket Bundles: " + ammo + " / " + this.getMaxDamage());
-		}
-
-		list.add(EnumChatFormatting.BLUE + "Damage: " + this.DmgMin + " - " + this.DmgMax + " per rocket.");
-		list.add(EnumChatFormatting.GREEN + "Fire for " + this.FireDur + " sec on hit.");
-		list.add(EnumChatFormatting.GREEN + "Scatter 8 on impact.");
-		list.add(EnumChatFormatting.RED + "Cooldown for " + this.displayInSec(this.Cooldown) + " sec on use.");
-		list.add(EnumChatFormatting.YELLOW + "Craft with up to 8 Rocket Bundles to reload.");
-		list.add("Filled with rockets, strapped to more rockets.");
-	}
-
-
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.DmgMin = config.get(this.nameInternal, "What damage are my rockets dealing, at least? (default 4)", 4).getInt();
-		this.DmgMax = config.get(this.nameInternal, "What damage are my rockets dealing, tops? (default 6)", 6).getInt();
+		this.DmgMin = config.get(this.name, "What damage are my rockets dealing, at least? (default 4)", 4).getInt();
+		this.DmgMax = config.get(this.name, "What damage are my rockets dealing, tops? (default 6)", 6).getInt();
 
-		this.Speed = config.get(this.nameInternal, "How fast are my projectiles? (default 1.5 BPT (Blocks Per Tick))", 1.5).getDouble();
-		this.Kickback = (byte) config.get(this.nameInternal, "How hard do I kick the user back when firing? (default 3)", 3).getInt();
+		this.Speed = config.get(this.name, "How fast are my projectiles? (default 1.5 BPT (Blocks Per Tick))", 1.5).getDouble();
+		this.Kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 3)", 3).getInt();
 
-		this.Cooldown = config.get(this.nameInternal, "How long until I can fire again? (default 20 ticks)", 20).getInt();
+		this.Cooldown = config.get(this.name, "How long until I can fire again? (default 20 ticks)", 20).getInt();
 
-		this.FireDur = config.get(this.nameInternal, "How long is what I hit on fire? (default 6s)", 6).getInt();
-		this.ExplosionSize = config.get(this.nameInternal, "How big are my explosions? (default 1.0 blocks, for no terrain damage. TNT is 4.0 blocks)", 1.0).getDouble();
+		this.FireDur = config.get(this.name, "How long is what I hit on fire? (default 6s)", 6).getInt();
+		this.ExplosionSize = config.get(this.name, "How big are my explosions? (default 1.0 blocks, for no terrain damage. TNT is 4.0 blocks)", 1.0).getDouble();
 
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);
 	}
 
 

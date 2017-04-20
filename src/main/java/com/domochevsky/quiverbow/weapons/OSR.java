@@ -1,5 +1,6 @@
 package com.domochevsky.quiverbow.weapons;
 
+import java.util.Collections;
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -20,6 +21,7 @@ import com.domochevsky.quiverbow.ShotPotion;
 import com.domochevsky.quiverbow.ammo.ObsidianMagazine;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.OSR_Shot;
+import com.domochevsky.quiverbow.util.Newliner;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -30,13 +32,13 @@ public class OSR extends _WeaponBase
 {
 	public OSR()
 	{
-		super(16);
+		super("splinter_rifle", 16);
 
 		ItemStack ammo = Helper.getAmmoStack(ObsidianMagazine.class, 0);
 		this.setMaxDamage(ammo.getMaxDamage());	// Fitting our max capacity to the magazine
 	}
 
-	private String nameInternal = "Obsidian Spear Rifle";
+	
 
 	private int Wither_Duration;	// 20 ticks to a second, let's start with 3 seconds
 	private int Wither_Strength;	// 2 dmg per second for 3 seconds = 6 dmg total
@@ -142,57 +144,30 @@ public class OSR extends _WeaponBase
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
 	{
-		super.addInformation(stack, player, list, par4);
-
-		if (player.capabilities.isCreativeMode)
-		{
-			list.add(EnumChatFormatting.BLUE + "Splints: INFINITE / " + this.getMaxDamage());
-		}
-		else
-		{
-			int ammo = this.getMaxDamage() - this.getDamage(stack);
-			list.add(EnumChatFormatting.BLUE + "Splints: " + ammo + " / " + this.getMaxDamage());
-		}
-
-		list.add(EnumChatFormatting.BLUE + "Damage: " + this.DmgMin + " - " + this.DmgMax);
-
-		list.add(EnumChatFormatting.GREEN + "Wither " + this.Wither_Strength + " for " + this.displayInSec(this.Wither_Duration) + " sec on hit.");
-
-		list.add(EnumChatFormatting.RED + "Cooldown for " + this.displayInSec(this.Cooldown) + " sec on use.");
-
-		list.add(EnumChatFormatting.YELLOW + "Crouch-use to drop the current magazine.");
-		list.add(EnumChatFormatting.YELLOW + "Craft with 1 Obsidian Magazine to");
-		list.add(EnumChatFormatting.YELLOW + "reload when empty.");
-
-		list.add("Deceptively cold to the touch.");
-
-		if (this.getCooldown(stack) > 0)
-		{
-			list.add(EnumChatFormatting.RED + "COOLING DOWN (" + this.displayInSec(this.getCooldown(stack)) + " sec)");
-		}
+	    super.addInformation(stack, player, list, par4);
+	    if (this.getCooldown(stack) > 0) Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".cooldown", this.displayInSec(this.getCooldown(stack))));
 	}
 
 
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.DmgMin = config.get(this.nameInternal, "What damage am I dealing, at least? (default 7)", 7).getInt();
-		this.DmgMax = config.get(this.nameInternal, "What damage am I dealing, tops? (default 13)", 13).getInt();
+		this.DmgMin = config.get(this.name, "What damage am I dealing, at least? (default 7)", 7).getInt();
+		this.DmgMax = config.get(this.name, "What damage am I dealing, tops? (default 13)", 13).getInt();
 
-		this.Speed = config.get(this.nameInternal, "How fast are my projectiles? (default 3.0 BPT (Blocks Per Tick))", 3.0).getDouble();
+		this.Speed = config.get(this.name, "How fast are my projectiles? (default 3.0 BPT (Blocks Per Tick))", 3.0).getDouble();
 
-		this.Knockback = config.get(this.nameInternal, "How hard do I knock the target back when firing? (default 2)", 2).getInt();
-		this.Kickback = (byte) config.get(this.nameInternal, "How hard do I kick the user back when firing? (default 4)", 4).getInt();
+		this.Knockback = config.get(this.name, "How hard do I knock the target back when firing? (default 2)", 2).getInt();
+		this.Kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 4)", 4).getInt();
 
-		this.Cooldown = config.get(this.nameInternal, "How long until I can fire again? (default 100 ticks)", 100).getInt();
+		this.Cooldown = config.get(this.name, "How long until I can fire again? (default 100 ticks)", 100).getInt();
 
-		this.Wither_Strength = config.get(this.nameInternal, "How strong is my Wither effect? (default 3)", 3).getInt();
-		this.Wither_Duration = config.get(this.nameInternal, "How long does my Wither effect last? (default 61 ticks)", 61).getInt();
+		this.Wither_Strength = config.get(this.name, "How strong is my Wither effect? (default 3)", 3).getInt();
+		this.Wither_Duration = config.get(this.name, "How long does my Wither effect last? (default 61 ticks)", 61).getInt();
 
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);
 	}
 
 

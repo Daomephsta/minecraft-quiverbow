@@ -25,9 +25,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class SeedSweeper extends _WeaponBase
 {
-	public SeedSweeper() { super(512); }
+	public SeedSweeper() { super("seed_sweeper", 512); }
 
-	private String nameInternal = "Seed Sweeper";
+	
 
 	private int Dmg;
 	private float Spread;
@@ -126,49 +126,18 @@ public class SeedSweeper extends _WeaponBase
 	}
 
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-	{
-		super.addInformation(stack, player, list, par4);
-
-		if (player.capabilities.isCreativeMode)
-		{
-			list.add(EnumChatFormatting.BLUE + "Seeds: INFINITE / " + this.getMaxDamage());
-		}
-		else
-		{
-			int ammo = this.getMaxDamage() - this.getDamage(stack);
-			list.add(EnumChatFormatting.BLUE + "Seeds: " + ammo + " / " + this.getMaxDamage());
-		}
-
-		list.add(EnumChatFormatting.BLUE + "Damage: " + this.Dmg + " per seed.");
-
-		list.add(EnumChatFormatting.GREEN + "Scatter 8 when firing.");
-
-		list.add(EnumChatFormatting.RED + "Cooldown for " + this.displayInSec(this.Cooldown) + " sec on use.");
-
-		list.add(EnumChatFormatting.YELLOW + "Crouch-use to drop the current jar.");
-		list.add(EnumChatFormatting.YELLOW + "Craft with 1 Seed Jar to reload");
-		list.add(EnumChatFormatting.YELLOW + "when empty.");
-
-		list.add("Git off my farm!");
-	}
-
-
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.Dmg = config.get(this.nameInternal, "What damage am I dealing per projectile? (default 1)", 1).getInt();
-		this.Cooldown = config.get(this.nameInternal, "How long until I can fire again? (default 15 ticks)", 15).getInt();
+		this.Dmg = config.get(this.name, "What damage am I dealing per projectile? (default 1)", 1).getInt();
+		this.Cooldown = config.get(this.name, "How long until I can fire again? (default 15 ticks)", 15).getInt();
 
-		this.Speed = config.get(this.nameInternal, "How fast are my projectiles? (default 1.6 BPT (Blocks Per Tick))", 1.6).getDouble();
-		this.Spread = (float) config.get(this.nameInternal, "How accurate am I? (default 26 spread)", 26).getDouble();
+		this.Speed = config.get(this.name, "How fast are my projectiles? (default 1.6 BPT (Blocks Per Tick))", 1.6).getDouble();
+		this.Spread = (float) config.get(this.name, "How accurate am I? (default 26 spread)", 26).getDouble();
 
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
 	}
 
 

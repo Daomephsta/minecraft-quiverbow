@@ -27,12 +27,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class QuiverBow extends _WeaponBase
 {
-	public QuiverBow() { super(256); }
+	public QuiverBow() { super("quiverbow", 256); }
 
 
 	//public static final String[] bowPullIconNameArray = new String[] {"pulling_0", "pulling_1", "pulling_2"};
 
-	String nameInternal = "Bow with Quiver";
+	String name = "Bow with Quiver";
 
 	@SideOnly(Side.CLIENT)
 	private IIcon pull_0;
@@ -149,36 +149,13 @@ public class QuiverBow extends _WeaponBase
 	public EnumAction getItemUseAction(ItemStack stack) { return EnumAction.bow; }
 
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-	{
-		super.addInformation(stack, player, list, par4);
-
-		if (player.capabilities.isCreativeMode)
-		{
-			list.add(EnumChatFormatting.BLUE + "Quiver: INFINITE / " + this.getMaxDamage() + " Arrows");
-		}
-		else
-		{
-			int ammo = this.getMaxDamage() - this.getDamage(stack);
-			list.add(EnumChatFormatting.BLUE + "Quiver: " + ammo + " / " + this.getMaxDamage() + " Arrows");
-		}
-
-		list.add(EnumChatFormatting.GREEN + "Holds more Arrows.");
-
-		list.add("Craft with up to 8 arrow bundles to reload.");
-		list.add("A quiver has been sewn to this bow.");
-	}
-
 
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.nameInternal, "Am I enabled? (default true)", true).getBoolean(true);
-		this.namePublic = config.get(this.nameInternal, "What's my name?", this.nameInternal).getString();
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.isMobUsable = config.get(this.nameInternal, "Can I be used by QuiverMobs? (default false. They don't know how to span the string.)", false).getBoolean(true);
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default false. They don't know how to span the string.)", false).getBoolean(true);
 	}
 
 
