@@ -28,18 +28,12 @@ public class FenLight extends Block
 	this.setStepSound(soundTypeGlass);
 	this.setCreativeTab(CreativeTabs.tabDecorations);
 	this.setBlockTextureName("glowstone");
-	//this.setBlockBounds(sizeMin, sizeMin, sizeMin, sizeMax, sizeMax, sizeMax);
     }
 
 
     @Override
     public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z)
     {
-	// Let's try a small cube for starters EDIT: Let's not. No stepping stones here
-	/*return AxisAlignedBB.getAABBPool().getAABB(
-        		(double)x + this.getBlockBoundsMinX(), (double)y + this.getBlockBoundsMinY(), (double)z + this.getBlockBoundsMinZ(),
-        		(double)x + this.getBlockBoundsMaxX(), (double)y + this.getBlockBoundsMaxY(), (double)z + this.getBlockBoundsMaxZ()
-        );*/
 	return null;
     }
 

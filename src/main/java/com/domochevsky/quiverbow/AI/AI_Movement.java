@@ -81,8 +81,7 @@ public class AI_Movement
 	{
 		if (turret.getDistanceSqToEntity(owner) < (double) (10.0F * 10.0F)) { return; }	// Still close enough (min distance is 10² blocks)
 		
-		if (!turret.getNavigator().noPath() && turret.getDistanceSqToEntity(owner) > (double) (2.0 * 2.0)) { return; }		// Already moving and distance to owner is beyond max 
-		// !this.getNavigator().noPath() &&
+		if (!turret.getNavigator().noPath() && turret.getDistanceSqToEntity(owner) > (double) (2.0 * 2.0)) { return; }		// Already moving and distance to owner is beyond max
 
         if (!turret.getNavigator().tryMoveToEntityLiving(owner, turret.movementSpeed))
         {
@@ -181,9 +180,7 @@ public class AI_Movement
             distanceSq = (double)MathHelper.sqrt_double(distanceSq);
 
             if (isCourseTraversable(aa, aa.waypointX, aa.waypointY, aa.waypointZ, distanceSq))
-            {            	
-            	//aa.moveFlying((float) aa.waypointX, (float) aa.waypointY, (float) aa.waypointZ);
-            	
+            {   
                 aa.motionX += distanceX / distanceSq * 0.5D;
                 aa.motionY += distanceY / distanceSq * 0.5D;
                 aa.motionZ += distanceZ / distanceSq * 0.5D;
@@ -232,9 +229,6 @@ public class AI_Movement
 		turret.rotationYaw = turret.updateRotation(turret.rotationYaw, rider.rotationYaw, 30.0f);
 		
 		//System.out.println("[MOVEMENT] Pitch is " + turret.rotationPitch + " / rider pitch is " + rider.rotationPitch);
-		
-		//turret.rotationYaw = rider.rotationYaw;		// Face where the rider is facing // turret.prevRotationYaw = 
-		//turret.rotationPitch = rider.rotationPitch;	// Look where they're looking	//  * 0.5F
 		
 		// Assuming the rider's speed
 		float strafe = rider.moveStrafing;	// Half strafing?	//  * 0.5F

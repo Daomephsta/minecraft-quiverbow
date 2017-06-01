@@ -31,12 +31,12 @@ public class RecipeLoadMagazine extends ShapelessRecipes implements IRecipe
 	
 	@Override
 	public boolean matches(InventoryCrafting matrix, World world)	// Returns true if these components are what I'm looking for to make my item
-    {
-		if (!this.isInMatrix(matrix, this.weapon)) { return false; }// Weapon ain't in the matrix
-		if (!this.isInMatrix(matrix, this.ammo)) { return false; }	// Ammo ain't in the matrix
-		
-		return true;	// Checks out
-    }
+	{
+	    if (!this.isInMatrix(matrix, this.weapon)) { return false; }// Weapon ain't in the matrix
+	    if (!this.isInMatrix(matrix, this.ammo)) { return false; }	// Ammo ain't in the matrix
+
+	    return true;	// Checks out
+	}
 	
 	
 	// Returns true if the requested item is anywhere in the matrix

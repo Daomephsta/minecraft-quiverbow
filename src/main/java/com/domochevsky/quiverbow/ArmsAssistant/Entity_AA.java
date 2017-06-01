@@ -99,9 +99,7 @@ public class Entity_AA extends EntityLiving
 		
 		this.setCanPickUpLoot(false);
 		
-		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(this.movementSpeed);
-		
-		//if (!world.isRemote) { AI_RandomEquip.setupGear(this); }	// Hand me my gear! 
+		this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(this.movementSpeed); 
 	}
 	
 	
@@ -134,10 +132,9 @@ public class Entity_AA extends EntityLiving
 	
 	@Override
 	public double getMountedYOffset()
-    {
-        return (double) this.height;
-        // return (double) this.height * 0.75D;
-    }
+	{
+	    return (double) this.height;
+	}
 	
 	
 	@Override
@@ -164,57 +161,49 @@ public class Entity_AA extends EntityLiving
 	
 	
 	@Override
-    public void onLivingUpdate()
-    {
-		super.onLivingUpdate();
-		
-		if (this.worldObj.isRemote) { return; }	// Not doing this on client side
-		
-		this.riddenThisTick = this.hasRidingUpgrade && this.riddenByEntity != null;
-		
-		this.sendState();
-		this.tickWeapons();
-		this.useCommunication();
-		
-		this.updateEntityActionState();
-		this.rotationYawHead = this.rotationYaw;
-		
-		AI_Targeting.targetNearestEntity(this);	// Target whoever's closest
-		AI_Targeting.lookAtTarget(this, false);	// Eye them up
-		
-		if (!AI_Targeting.isNameOnWhitelist(this, Commands.cmdHoldFire))
+	public void onLivingUpdate()
+	{
+	    super.onLivingUpdate();
+
+	    if (this.worldObj.isRemote) { return; }	// Not doing this on client side
+
+	    this.riddenThisTick = this.hasRidingUpgrade && this.riddenByEntity != null;
+
+	    this.sendState();
+	    this.tickWeapons();
+	    this.useCommunication();
+
+	    this.updateEntityActionState();
+	    this.rotationYawHead = this.rotationYaw;
+
+	    AI_Targeting.targetNearestEntity(this);	// Target whoever's closest
+	    AI_Targeting.lookAtTarget(this, false);	// Eye them up
+
+	    if (!AI_Targeting.isNameOnWhitelist(this, Commands.cmdHoldFire))
+	    {
+		this.fireWeapons(false);	// Fire if you can
+	    }
+
+	    if (this.hasMobilityUpgrade)
+	    {
+		AI_Movement.handleMovement(this);
+		this.sendPositionUpdate();
+		//this.updateAITasks();	// For movement to actually happen
+	    }
+
+	    if (this.wasRiddenLastTick && !this.riddenThisTick)	// Not ridden anymore
+	    {
+		if (AI_Targeting.isNameOnWhitelist(this, Commands.cmdStayStationary))	// We've been ridden to another place, so refreshing our coords now
 		{
-			this.fireWeapons(false);	// Fire if you can
+		    this.stationaryX = this.posX;
+		    this.stationaryY = this.posY;
+		    this.stationaryZ = this.posZ;
 		}
-		
-		if (this.hasMobilityUpgrade)
-		{
-			AI_Movement.handleMovement(this);
-			this.sendPositionUpdate();
-			//this.updateAITasks();	// For movement to actually happen
-		}
-		
-		if (this.wasRiddenLastTick && !this.riddenThisTick)	// Not ridden anymore
-		{
-			if (AI_Targeting.isNameOnWhitelist(this, Commands.cmdStayStationary))	// We've been ridden to another place, so refreshing our coords now
-			{
-				this.stationaryX = this.posX;
-				this.stationaryY = this.posY;
-				this.stationaryZ = this.posZ;
-			}
-		}
-		
-		/*if (this.canFly)
-		{
-			if (!this.onGround && this.motionY < 0.0D)
-	        {
-	            this.motionY *= 0.2D;	// Slowfall
-	        }
-		}*/
-		
-		// Keeping track
-		this.wasRiddenLastTick = this.riddenThisTick;
-    }
+	    }
+
+	    // Keeping track
+	    this.wasRiddenLastTick = this.riddenThisTick;
+	}
 	
 	
 	// Done in regular intervals so players nearby know what we look like

@@ -123,10 +123,7 @@ public class AI_Properties
 	
 	// Only done in the field
 	public static void doRepair(EntityPlayer player, Entity_AA turret, ItemStack stack)
-	{
-		//if (this.hasArmorUpgrade) { return; }	// Already has an armor upgrade
-		//this.hasArmorUpgrade = true;			// Adding one
-		
+	{	
 		if (turret.getHealth() >= turret.getMaxHealth()) { return; }	// No repairs required
 		
 		turret.heal(20);
