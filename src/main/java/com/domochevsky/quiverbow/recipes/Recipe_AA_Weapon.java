@@ -11,7 +11,6 @@ import net.minecraft.world.World;
 
 public class Recipe_AA_Weapon extends ShapedRecipes implements IRecipe 
 {
-	private ItemStack[] components;
 	private ItemStack result;
 	
 	public Recipe_AA_Weapon(int sizeX, int sizeY, ItemStack[] components, ItemStack result) 
@@ -19,7 +18,6 @@ public class Recipe_AA_Weapon extends ShapedRecipes implements IRecipe
 		super(sizeX, sizeY, components, result);
 		
 		this.result = result;
-		this.components = components;
 	}
 	
 	

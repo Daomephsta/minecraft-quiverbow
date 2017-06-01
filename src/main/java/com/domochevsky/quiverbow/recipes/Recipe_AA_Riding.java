@@ -12,7 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class Recipe_AA_Riding extends ShapelessRecipes implements IRecipe
 {
-	public Recipe_AA_Riding(ItemStack result, List components) 
+	public Recipe_AA_Riding(ItemStack result, List<ItemStack> components) 
 	{
 		super(result, components);
 	}

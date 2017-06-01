@@ -6,7 +6,6 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.AI.AI_Properties;
 import com.domochevsky.quiverbow.ArmsAssistant.Entity_AA;
-import com.domochevsky.quiverbow.ammo._AmmoBase;
 import com.domochevsky.quiverbow.recipes.*;
 
 import cpw.mods.fml.common.registry.GameRegistry;

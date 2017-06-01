@@ -1,7 +1,5 @@
 package com.domochevsky.quiverbow.weapons;
 
-import java.util.List;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -9,11 +7,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 
-import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.FenGoop;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;

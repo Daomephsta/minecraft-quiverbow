@@ -8,11 +8,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ArmsAssistant.Entity_AA;
 import com.domochevsky.quiverbow.ammo._AmmoBase;
-import com.domochevsky.quiverbow.miscitems.PackedUpAA;
 import com.domochevsky.quiverbow.net.NetHelper;
 
 public class AI_Storage 

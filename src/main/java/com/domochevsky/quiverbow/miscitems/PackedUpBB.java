@@ -5,8 +5,6 @@ import java.util.List;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.AI.AI_Properties;
 import com.domochevsky.quiverbow.FlyingAA.Entity_BB;
-import com.domochevsky.quiverbow.ammo._AmmoBase;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;

@@ -72,8 +72,6 @@ public class Entity_AA extends EntityLiving
 	public double stationaryY;
 	public double stationaryZ;
 	
-	private int idleTime;
-	
 	private int sendStateDelay = 1;		// First init
 	private int sendInventoryDelay = 1;
 	
@@ -395,7 +393,6 @@ public class Entity_AA extends EntityLiving
         super.updateEntityActionState();
         this.moveStrafing = 0.0F;
         this.moveForward = 0.0F;
-        float f = 8.0F;
 
         if (this.rand.nextFloat() < 0.02F) { this.randomYawVelocity = (this.rand.nextFloat() - 0.5F) * 20.0F; }
 
@@ -406,21 +403,6 @@ public class Entity_AA extends EntityLiving
 
         if (this.isInWater() || this.handleLavaMovement()) { this.isJumping = this.rand.nextFloat() < 0.8F; }
     }
-	
-	
-	private void lookIdle()
-	{
-		if (this.getRNG().nextFloat() >= 0.02F) { return; }	// Not yet
-		if (this.idleTime >= 0) { return; }					// Still ticking down
-		
-		this.idleTime -= 1;	// Ticking down
-		
-		double d0 = (Math.PI * 2D) * this.getRNG().nextDouble();
-        double lookX = Math.cos(d0);
-        double lookZ = Math.sin(d0);
-        
-        this.idleTime = 20 + this.getRNG().nextInt(20);
-	}
 	
 	
 	protected void sendPositionUpdate()

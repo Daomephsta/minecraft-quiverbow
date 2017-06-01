@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 
 import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.miscitems.QuiverBowItem;
 import com.domochevsky.quiverbow.util.Newliner;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;

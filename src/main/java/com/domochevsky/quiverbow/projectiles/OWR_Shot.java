@@ -1,7 +1,6 @@
 package com.domochevsky.quiverbow.projectiles;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;

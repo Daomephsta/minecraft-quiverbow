@@ -1,13 +1,10 @@
 package com.domochevsky.quiverbow.weapons;
 
-import java.util.List;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 
@@ -27,9 +24,7 @@ public class Crossbow_Blaze extends _WeaponBase
 	
 
 	private int FireDur;
-	private int FireDurInGround;
-
-
+	
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void registerIcons(IIconRegister par1IconRegister)
@@ -94,7 +89,7 @@ public class Crossbow_Blaze extends _WeaponBase
 		this.Knockback = config.get(this.name, "How hard do I knock the target back when firing? (default 2)", 2).getInt();
 
 		this.FireDur = config.get(this.name, "How long is the target on fire? (default 15 sec)", 15).getInt();
-		this.FireDurInGround = config.get(this.name, "How long do I keep burning when stuck in the ground? (default 10 sec)", 10).getInt();
+		config.get(this.name, "How long do I keep burning when stuck in the ground? (default 10 sec)", 10).getInt();
 
 		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default false)", false).getBoolean(true);
 	}

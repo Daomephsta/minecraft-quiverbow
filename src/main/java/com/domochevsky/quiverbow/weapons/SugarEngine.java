@@ -1,26 +1,19 @@
 package com.domochevsky.quiverbow.weapons;
 
-import java.util.List;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.GatlingAmmo;
-import com.domochevsky.quiverbow.miscitems.Part_GatlingBarrel;
-import com.domochevsky.quiverbow.miscitems.Part_GatlingBody;
 import com.domochevsky.quiverbow.projectiles.SugarRod;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

@@ -18,7 +18,7 @@ public class NetHelper
 	public static void sendParticleMessageToAllPlayers(World world, int entityID, byte particle, byte strength)
 	{
 		if (world.isRemote) { return; }	// Server-use only
-		List players = world.playerEntities;
+		List<?> players = world.playerEntities;
 		
 		if (players.isEmpty()) { return; }	// No players? Who called this?
 		
@@ -47,7 +47,7 @@ public class NetHelper
 	public static void sendPositionMessageToAllPlayers(World world, int entityID, double x, double y, double z)
 	{
 		if (world.isRemote) { return; }	// Server-use only
-		List players = world.playerEntities;
+		List<?> players = world.playerEntities;
 		
 		if (players.isEmpty()) { return; }	// No players? Who called this? D:
 		
@@ -65,7 +65,7 @@ public class NetHelper
 	{
 		if (world.isRemote) { return; }	// Server-use only
 		AxisAlignedBB box = entity.boundingBox.expand(64, 64, 64);	
-		List list = world.getEntitiesWithinAABBExcludingEntity(entity, box);
+		List<?> list = world.getEntitiesWithinAABBExcludingEntity(entity, box);
 		
 		int counter = 0;
 		
@@ -111,7 +111,7 @@ public class NetHelper
 		if (world.isRemote) { return; }	// Server-use only
 		
 		AxisAlignedBB box = turret.boundingBox.expand(64, 64, 64);	
-		List list = world.getEntitiesWithinAABBExcludingEntity(turret, box);
+		List<?> list = world.getEntitiesWithinAABBExcludingEntity(turret, box);
 		
 		int counter = 0;
 		
@@ -136,7 +136,7 @@ public class NetHelper
 		if (world.isRemote) { return; }	// Server-use only
 		
 		AxisAlignedBB box = turret.boundingBox.expand(64, 64, 64);	
-		List list = world.getEntitiesWithinAABBExcludingEntity(turret, box);
+		List<?>list = world.getEntitiesWithinAABBExcludingEntity(turret, box);
 		
 		int counter = 0;
 		

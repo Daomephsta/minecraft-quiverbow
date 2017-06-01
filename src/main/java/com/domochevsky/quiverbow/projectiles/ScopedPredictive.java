@@ -3,8 +3,6 @@ package com.domochevsky.quiverbow.projectiles;
 import java.util.List;
 
 import com.domochevsky.quiverbow.Helper_Client;
-import com.domochevsky.quiverbow.net.NetHelper;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
@@ -103,7 +101,7 @@ public class ScopedPredictive extends _ProjectileBase
             }
 
             Entity hitEntity = null;
-            List candidateList = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+            List<?> candidateList = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
            
             double d0 = 0.0D;
             int iteratori;

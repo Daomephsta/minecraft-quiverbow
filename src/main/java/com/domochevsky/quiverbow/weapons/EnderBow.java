@@ -13,7 +13,6 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -271,8 +270,6 @@ public class EnderBow extends _WeaponBase 	// So archaic... I may have to overha
     @Override
     public void onUsingTick(ItemStack stack, EntityPlayer player, int count)
     {
-    	float yaw = player.rotationYaw;
-    	float pitch = player.rotationPitch;
     	if (player.worldObj.isRemote) 
     	{
     		// The projectile is only allowed to shoot every X ticks, so we're gonna make this happen here

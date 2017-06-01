@@ -118,7 +118,7 @@ public class ProxyThorn extends _ProjectileBase
 		
 		// Go time
 		AxisAlignedBB box = this.boundingBox.expand(this.triggerDistance, this.triggerDistance, this.triggerDistance);
-		List list = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, box);
+		List<?> list = this.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, box);
 		
 		Entity potentialEntity;
 		int counter = 0;

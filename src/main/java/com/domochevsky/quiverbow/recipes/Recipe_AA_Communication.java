@@ -12,7 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class Recipe_AA_Communication extends ShapelessRecipes implements IRecipe
 {
-	public Recipe_AA_Communication(ItemStack result, List components) 
+	public Recipe_AA_Communication(ItemStack result, List<ItemStack> components) 
 	{
 		super(result, components);
 	}

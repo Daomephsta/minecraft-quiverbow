@@ -2,8 +2,6 @@ package com.domochevsky.quiverbow;
 
 import java.util.ArrayList;
 
-import org.omg.PortableInterceptor.PolicyFactoryOperations;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -253,8 +251,6 @@ public class Helper
 		}
 		
 		Block block = world.getBlock(target.blockX, target.blockY, target.blockZ);
-		int meta = world.getBlockMetadata(target.blockX, target.blockY, target.blockZ);
-		
 		if (block == null) { return false; }	// Didn't hit a valid block? Do we continue? Stop?
 		
 		boolean breakThis = false;

@@ -243,7 +243,7 @@ public class _ProjectileBase extends Entity implements IProjectile
             }
 
             Entity hitEntity = null;
-            List candidateList = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+            List<?> candidateList = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
            
             double d0 = 0.0D;
             int iteratori;

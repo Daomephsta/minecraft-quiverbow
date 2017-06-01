@@ -1,6 +1,5 @@
 package com.domochevsky.quiverbow.projectiles;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -48,8 +47,6 @@ public class CoinShot extends _ProjectileBase
         }
         else 
         {        	
-        	Block block = this.worldObj.getBlock(hitPos.blockX, hitPos.blockY, hitPos.blockZ);
-			
         	// Glass breaking
             Helper.tryBlockBreak(this.worldObj, this, hitPos, 1);
             

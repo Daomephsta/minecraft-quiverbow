@@ -1,7 +1,5 @@
 package com.domochevsky.quiverbow.weapons;
 
-import java.util.List;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,7 +7,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 
@@ -30,7 +27,6 @@ public class SnowCannon extends _WeaponBase
 
 	
 
-	private int Effect = 2;			// The id of the effect
 	private int Slow_Strength;		// -15% speed per level. Lvl 3 = -45%
 	private int Slow_Duration;
 

@@ -9,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
@@ -17,7 +16,6 @@ import net.minecraftforge.common.config.Configuration;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.RegularArrow;
-import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 import com.domochevsky.quiverbow.util.Newliner;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;

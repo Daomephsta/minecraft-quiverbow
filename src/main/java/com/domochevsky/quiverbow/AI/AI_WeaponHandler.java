@@ -420,37 +420,6 @@ public class AI_WeaponHandler
 	}
 	
 	
-	// different weapons consume ammo in different amounts
-	// Not using their native methods, since that would drop magazines
-	private static void consumeAmmo(Entity_AA turret, boolean secondRail)
-	{
-		_WeaponBase currentWeapon = turret.firstWeapon;
-		ItemStack weaponStack = turret.getHeldItem();
-		
-		if (secondRail)
-		{
-			currentWeapon = turret.secondWeapon;
-			weaponStack = turret.getEquipmentInSlot(1);	// Slot 0 is the first weapon
-		}
-		
-		if (currentWeapon instanceof CoinTosser) { weaponStack.setItemDamage(weaponStack.getItemDamage() + 9); }
-		else if (currentWeapon instanceof CoinTosser_Mod) { weaponStack.setItemDamage(weaponStack.getItemDamage() + 3); }
-		else if (currentWeapon instanceof NetherBellows) { weaponStack.setItemDamage(weaponStack.getItemDamage() + 5); }
-		else if (currentWeapon instanceof RedSprayer) { weaponStack.setItemDamage(weaponStack.getItemDamage() + 5); }
-		else if (currentWeapon instanceof ThornSpitter) { weaponStack.setItemDamage(weaponStack.getItemDamage() + 4); }
-		else if (currentWeapon instanceof SeedSweeper) { weaponStack.setItemDamage(weaponStack.getItemDamage() + 8); }
-		else if (currentWeapon instanceof DragonBox_Quad) { weaponStack.setItemDamage(weaponStack.getItemDamage() + 4); }
-		else if (currentWeapon instanceof Sunray) { }
-		else 
-		{
-			weaponStack.setItemDamage(weaponStack.getItemDamage() + 1);	// Default, one shot consumed
-		}
-		
-		// Just making sure you're not going into space
-		if (weaponStack.getItemDamage() > weaponStack.getMaxDamage()) { weaponStack.setItemDamage(weaponStack.getMaxDamage()); }
-	}
-	
-	
 	public static void fireWithOwner(Entity_AA turret, boolean secondRail)
 	{
 		if (!(turret.riddenByEntity instanceof EntityPlayer)) { return; }	// Not a living thing riding us, so can't hold weapons

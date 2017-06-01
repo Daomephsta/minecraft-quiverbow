@@ -1,15 +1,12 @@
 package com.domochevsky.quiverbow.weapons;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.RecipeSorter;
@@ -99,7 +96,7 @@ public class MediGun extends _WeaponBase
 
 		RecipeSorter.register("quiverchevsky:recipehandler_roh_reload", Recipe_RayOfHope_Reload.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
 
-		ArrayList list = new ArrayList();
+		ArrayList<ItemStack> list = new ArrayList<ItemStack>();
 
 		list.add(new ItemStack(Items.potionitem, 1, 8193));
 		list.add(new ItemStack(Items.potionitem, 1, 8225));

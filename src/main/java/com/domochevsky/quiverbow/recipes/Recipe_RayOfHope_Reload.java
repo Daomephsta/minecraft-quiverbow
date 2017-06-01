@@ -16,9 +16,7 @@ public class Recipe_RayOfHope_Reload extends ShapelessRecipes implements IRecipe
 	private ItemStack regenPot_1;
 	private ItemStack regenPot_2;
 	
-	private int restoreAmount = 0;
-	
-	public Recipe_RayOfHope_Reload(ItemStack result, List components, ItemStack regenPot_1, ItemStack regenPot_2) 
+	public Recipe_RayOfHope_Reload(ItemStack result, List<ItemStack> components, ItemStack regenPot_1, ItemStack regenPot_2) 
 	{
 		super(result, components);
 		
@@ -41,8 +39,6 @@ public class Recipe_RayOfHope_Reload extends ShapelessRecipes implements IRecipe
 		medigun.getTagCompound().setInteger("reloadAmount", 0);
 		
 		boolean matches = false;
-		
-		this.restoreAmount = 0;	// Reset
 		
 		int counter = 0;
 		

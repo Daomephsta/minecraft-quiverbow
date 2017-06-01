@@ -2,8 +2,6 @@ package com.domochevsky.quiverbow.blocks;
 
 import java.util.Random;
 
-import com.domochevsky.quiverbow.Helper;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;

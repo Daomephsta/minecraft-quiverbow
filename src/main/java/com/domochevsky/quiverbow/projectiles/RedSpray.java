@@ -1,10 +1,8 @@
 package com.domochevsky.quiverbow.projectiles;
 
-import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.net.NetHelper;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;

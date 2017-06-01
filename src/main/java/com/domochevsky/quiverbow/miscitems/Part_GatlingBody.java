@@ -1,12 +1,7 @@
 package com.domochevsky.quiverbow.miscitems;
 
-import java.util.List;
-
-import com.domochevsky.quiverbow.ammo._AmmoBase;
-
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;

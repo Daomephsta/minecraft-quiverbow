@@ -20,7 +20,7 @@ public class RecipeLoadMagazine extends ShapelessRecipes implements IRecipe
 	private Item weapon;
 	private int metadata;
 	
-	public RecipeLoadMagazine(Item ammo, Item weapon, List recipe) 
+	public RecipeLoadMagazine(Item ammo, Item weapon, List<ItemStack> recipe) 
 	{
 		super(new ItemStack(weapon), recipe);
 		

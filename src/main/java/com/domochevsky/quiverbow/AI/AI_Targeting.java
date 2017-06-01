@@ -109,14 +109,12 @@ public class AI_Targeting
 			return;
 		}
 		
-		Entity previousTarget = turret.currentTarget;
-		
 		// Having a gander
 		turret.targetDelay = 20;	// Reset for next tick
 		
 		AxisAlignedBB box = turret.boundingBox.expand(turret.attackDistance, turret.attackDistance, turret.attackDistance);
 		
-		List list = turret.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, box);
+		List<?> list = turret.worldObj.getEntitiesWithinAABB(EntityLivingBase.class, box);
 		
 		int counter = 0;
 		
