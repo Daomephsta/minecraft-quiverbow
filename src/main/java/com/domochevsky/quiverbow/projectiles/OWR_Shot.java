@@ -2,17 +2,16 @@ package com.domochevsky.quiverbow.projectiles;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.ShotPotion;
 import com.domochevsky.quiverbow.net.NetHelper;
 
-public class OWR_Shot extends _ProjectileBase
+public class OWR_Shot extends ProjectilePotionEffect
 {
-	public ShotPotion pot1;
 	public int entitiesHit;
 	public int damage_Magic;
 	
@@ -21,11 +20,11 @@ public class OWR_Shot extends _ProjectileBase
 	
 	public OWR_Shot(World world) { super(world); }
 
-	public OWR_Shot(World world, Entity entity, float speed)
-    {
-        super(world);
-        this.doSetup(entity, speed);
-    }
+	public OWR_Shot(World world, Entity entity, float speed, PotionEffect... effects)
+	{
+	    super(world, effects);
+	    this.doSetup(entity, speed);
+	}
 	
 	
 	@Override
@@ -38,37 +37,28 @@ public class OWR_Shot extends _ProjectileBase
 	@Override
 	public void onImpact(MovingObjectPosition target)
 	{
-		if (target.entityHit != null) 		// We hit a living thing!
-    	{		
-    		// Damage
-			target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity), (float) this.damage);
-			target.entityHit.hurtResistantTime = 0;	// No immunity frames
-			
-			target.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.shootingEntity), (float) this.damage_Magic);
-            target.entityHit.hurtResistantTime = 0;	// No immunity frames
-
-            // Effect
-            if (target.entityHit instanceof EntityLivingBase)	// We hit a LIVING living thing!
-            {
-            	EntityLivingBase entitylivingbase = (EntityLivingBase) target.entityHit;
-            	Helper.applyPotionEffect(entitylivingbase, pot1);
-            }
-            
-            this.setDead();
-        }
-    	else 	// Hit the terrain
-		{
-    		this.blocksHit += 1;
-    		
-			// Glass breaking
-			if (!Helper.tryBlockBreak(this.worldObj, this, target, 3)) { this.setDead(); } // Punching through anything without restriction
-			
-			if (this.blocksHit > 5) { this.setDead(); }	// Put an actual limit on that
-		}
+	    if (target.entityHit != null) 		// We hit a living thing!
+	    {		
+		target.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.shootingEntity), (float) this.damage_Magic);
+		target.entityHit.hurtResistantTime = 0;	// No immunity frames
 		
-    	// SFX
-		this.worldObj.playSoundAtEntity(this, "random.bowhit", 1.0F, 0.5F);
-		NetHelper.sendParticleMessageToAllPlayers(this.worldObj, this.getEntityId(), (byte) 3, (byte) 4);
+		super.onImpact(target);
+		
+		this.setDead();
+	    }
+	    else 	// Hit the terrain
+	    {
+		this.blocksHit += 1;
+
+		// Glass breaking
+		if (!Helper.tryBlockBreak(this.worldObj, this, target, 3)) { this.setDead(); } // Punching through anything without restriction
+
+		if (this.blocksHit > 5) { this.setDead(); }	// Put an actual limit on that
+	    }
+
+	    // SFX
+	    this.worldObj.playSoundAtEntity(this, "random.bowhit", 1.0F, 0.5F);
+	    NetHelper.sendParticleMessageToAllPlayers(this.worldObj, this.getEntityId(), (byte) 3, (byte) 4);
 	}
 	
 	

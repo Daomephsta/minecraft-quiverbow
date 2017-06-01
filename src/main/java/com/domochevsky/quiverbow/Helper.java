@@ -2,6 +2,8 @@ package com.domochevsky.quiverbow;
 
 import java.util.ArrayList;
 
+import org.omg.PortableInterceptor.PolicyFactoryOperations;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -14,6 +16,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
@@ -214,21 +217,20 @@ public class Helper
 	
 	
 	// Unified appliance of potion effects
-	public static void applyPotionEffect(EntityLivingBase entitylivingbase, ShotPotion pot)
+	public static void applyPotionEffect(EntityLivingBase entitylivingbase, PotionEffect effect)
 	{
 		if (entitylivingbase == null) { return; }	// Not a valid entity, for some reason
 		
-		if (pot == null) { return; }				// Nothing to apply
+		if (effect == null) { return; }				// Nothing to apply
 		
-		PotionEffect potion = entitylivingbase.getActivePotionEffect(pot.potion);
-		
+		PotionEffect potion = entitylivingbase.getActivePotionEffect(Potion.potionTypes[effect.getPotionID()]);
 		if (potion != null)	// Already exists. Extending it
 		{
 			int dur = potion.getDuration();
 			
-			entitylivingbase.addPotionEffect( new PotionEffect(pot.potion.id, pot.Duration + dur, pot.Strength - 1, false) );
+			entitylivingbase.addPotionEffect( new PotionEffect(effect.getPotionID(), effect.getDuration() + dur, effect.getAmplifier() - 1, false) );
 		}
-		else { entitylivingbase.addPotionEffect( new PotionEffect(pot.potion.id, pot.Duration, pot.Strength - 1, false) ); }	// Fresh
+		else { entitylivingbase.addPotionEffect( new PotionEffect(effect.getPotionID(), effect.getDuration(), effect.getAmplifier() - 1, false) ); }	// Fresh
 	}
 	
 	

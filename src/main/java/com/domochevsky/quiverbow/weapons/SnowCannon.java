@@ -8,13 +8,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.ShotPotion;
 import com.domochevsky.quiverbow.projectiles.SnowShot;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 
@@ -86,7 +86,7 @@ public class SnowCannon extends _WeaponBase
 		float spreadHor = world.rand.nextFloat() * 20 - 10;								// Spread between -5 and 5
 		float spreadVert = world.rand.nextFloat() * 20 - 10;
 
-		SnowShot snow = new SnowShot(world, entity, (float) this.Speed, spreadHor, spreadVert);
+		SnowShot snow = new SnowShot(world, entity, (float) this.Speed, spreadHor, spreadVert, new PotionEffect(Potion.moveSlowdown.id, this.Slow_Duration, this.Slow_Strength));
 
 		// Random Damage
 		int dmg_range = this.DmgMax - this.DmgMin; 				// If max dmg is 20 and min is 10, then the range will be 10
@@ -94,14 +94,6 @@ public class SnowCannon extends _WeaponBase
 		dmg += this.DmgMin;									// Adding the min dmg of 10 back on top, giving us the proper damage range (10-20)
 
 		snow.damage = dmg;
-
-		ShotPotion effect = new ShotPotion();
-
-		effect.potion = Potion.moveSlowdown;
-		effect.Strength = this.Slow_Strength;
-		effect.Duration = this.Slow_Duration;
-
-		snow.pot1 = effect;
 
 		world.spawnEntityInWorld(snow);
 	}

@@ -10,13 +10,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.ShotPotion;
 import com.domochevsky.quiverbow.ammo.ColdIronClip;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.ColdIron;
@@ -74,7 +74,7 @@ public class FrostLancer extends _WeaponBase
 		NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), (byte) 3, (byte) 1);	// smoke
 
 		// Firing
-		ColdIron shot = new ColdIron(world, entity, (float) this.Speed);
+		ColdIron shot = new ColdIron(world, entity, (float) this.Speed, new PotionEffect(Potion.moveSlowdown.id, this.Slowness_Dur, this.Slowness_Str), new PotionEffect(Potion.confusion.id, this.Nausea_Dur, this.Nausea_Str));
 
 		// Random Damage
 		int dmg_range = this.DmgMax - this.DmgMin; 				// If max dmg is 20 and min is 10, then the range will be 10
@@ -84,23 +84,6 @@ public class FrostLancer extends _WeaponBase
 		shot.damage = dmg;
 
 		shot.knockbackStrength = this.Knockback;
-
-		// Gas
-		ShotPotion effect1 = new ShotPotion();
-
-		effect1.potion = Potion.moveSlowdown;	// Nausea
-		effect1.Strength = this.Slowness_Str;
-		effect1.Duration = this.Slowness_Dur;
-
-		shot.pot1 = effect1;
-
-		ShotPotion effect2 = new ShotPotion();
-
-		effect2.potion = Potion.hunger;
-		effect2.Strength = 1;
-		effect2.Duration = this.Nausea_Dur;
-
-		shot.pot2 = effect2;
 
 		world.spawnEntityInWorld(shot); 	// Firing!
 

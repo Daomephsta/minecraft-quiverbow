@@ -3,13 +3,13 @@ package com.domochevsky.quiverbow.projectiles;
 import io.netty.buffer.ByteBuf;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.ShotPotion;
 import com.domochevsky.quiverbow.net.NetHelper;
 
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -91,14 +91,8 @@ public class HealthBeam extends _ProjectileBase implements IEntityAdditionalSpaw
 	            EntityLivingBase living = (EntityLivingBase) movPos.entityHit;
 	            
 	            if (living.isEntityUndead())	// Not affected by regen potions, so whithering them instead
-	            {
-	            	ShotPotion pot1 = new ShotPotion();
-		            
-		            pot1.potion = Potion.wither;
-		            pot1.Strength = 3;
-		            pot1.Duration = 20;
-		            
-		            Helper.applyPotionEffect(living, pot1);
+	            {       
+		            Helper.applyPotionEffect(living, new PotionEffect(Potion.wither.id, 20, 3));
 	            }
 	            else	// Applying regen
 	            {
@@ -112,13 +106,7 @@ public class HealthBeam extends _ProjectileBase implements IEntityAdditionalSpaw
 		            } 
 		            // else, either not at full health or already full up on absorption
 		            
-		            ShotPotion pot1 = new ShotPotion();
-		            
-		            pot1.potion = Potion.regeneration;
-		            pot1.Strength = 3;
-		            pot1.Duration = 20;
-		            
-		            Helper.applyPotionEffect(living, pot1);
+		            Helper.applyPotionEffect(living, new PotionEffect(Potion.regeneration.id, 20, 3));
 	            }
             }
         }        

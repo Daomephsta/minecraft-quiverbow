@@ -10,13 +10,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.ShotPotion;
 import com.domochevsky.quiverbow.ammo.LargeRedstoneMagazine;
 import com.domochevsky.quiverbow.projectiles.RedSpray;
 
@@ -96,27 +96,11 @@ public class RedSprayer extends _WeaponBase
 
 	private void fireSingle(World world, Entity entity)
 	{
-		// Gas
-		ShotPotion effect1 = new ShotPotion();
-
-		effect1.potion = Potion.wither;
-		effect1.Strength = this.Wither_Strength;
-		effect1.Duration = this.Wither_Duration;
-
-		ShotPotion effect2 = new ShotPotion();
-
-		effect2.potion = Potion.blindness;
-		effect2.Strength = 1;
-		effect2.Duration = this.Blindness_Duration;
-
 		// Spread
 		float spreadHor = world.rand.nextFloat() * 20 - 10;								// Spread between -10 and 10
 		float spreadVert = world.rand.nextFloat() * 20 - 10;
 
-		RedSpray shot = new RedSpray(entity.worldObj, entity, (float) this.Speed, spreadHor, spreadVert);
-
-		shot.pot1 = effect1;
-		shot.pot2 = effect2;
+		RedSpray shot = new RedSpray(entity.worldObj, entity, (float) this.Speed, spreadHor, spreadVert, new PotionEffect(Potion.wither.id, this.Wither_Duration, this.Wither_Strength), new PotionEffect(Potion.blindness.id, this.Blindness_Duration, 1));
 
 		entity.worldObj.spawnEntityInWorld(shot);
 	}

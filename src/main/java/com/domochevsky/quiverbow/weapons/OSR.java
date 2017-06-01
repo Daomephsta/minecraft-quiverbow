@@ -11,13 +11,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.ShotPotion;
 import com.domochevsky.quiverbow.ammo.ObsidianMagazine;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.OSR_Shot;
@@ -79,7 +79,7 @@ public class OSR extends _WeaponBase
 		Helper.knockUserBack(entity, this.Kickback);			// Kickback
 
 		// Firing
-		OSR_Shot projectile = new OSR_Shot(world, entity, (float) this.Speed);
+		OSR_Shot projectile = new OSR_Shot(world, entity, (float) this.Speed, new PotionEffect(Potion.wither.id, this.Wither_Duration, this.Wither_Strength));
 
 		// Random Damage
 		int dmg_range = this.DmgMax - this.DmgMin; 				// If max dmg is 20 and min is 10, then the range will be 10
@@ -87,14 +87,6 @@ public class OSR extends _WeaponBase
 		dmg += this.DmgMin;									// Adding the min dmg of 10 back on top, giving us the proper damage range (10-20)
 
 		projectile.damage = dmg;
-
-		ShotPotion effect1 = new ShotPotion();
-
-		effect1.potion = Potion.wither;
-		effect1.Strength = this.Wither_Strength;
-		effect1.Duration = this.Wither_Duration;
-
-		projectile.pot1 = effect1;
 
 		world.spawnEntityInWorld(projectile); 			// Firing!
 

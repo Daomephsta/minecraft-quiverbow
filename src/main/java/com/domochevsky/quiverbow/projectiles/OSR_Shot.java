@@ -2,27 +2,25 @@ package com.domochevsky.quiverbow.projectiles;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.ShotPotion;
 import com.domochevsky.quiverbow.net.NetHelper;
 
-public class OSR_Shot extends _ProjectileBase
+public class OSR_Shot extends ProjectilePotionEffect
 {
-	public ShotPotion pot1;
-	public int entitiesHit;	
-	
+	public int entitiesHit;		
 	
 	public OSR_Shot(World world) { super(world); }
 
-	public OSR_Shot(World world, Entity entity, float speed)
-    {
-        super(world);
-        this.doSetup(entity, speed);
-    }
+	public OSR_Shot(World world, Entity entity, float speed, PotionEffect... effects)
+	{
+	    super(world, effects);
+	    this.doSetup(entity, speed);
+	}
 	
 	
 	@Override
@@ -35,31 +33,22 @@ public class OSR_Shot extends _ProjectileBase
 	@Override
 	public void onImpact(MovingObjectPosition movPos)
 	{
-		if (movPos.entityHit != null) 		// We hit a living thing!
-    	{		
-			// Damage
-			movPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity), (float)this.damage);
-            movPos.entityHit.hurtResistantTime = 0;	// No immunity frames
+	    if (movPos.entityHit != null) 		// We hit a living thing!
+	    {		
+		super.onImpact(movPos);
 
-            // Effect
-            if (movPos.entityHit instanceof EntityLivingBase)	// We hit a LIVING living thing!
-            {
-            	EntityLivingBase entitylivingbase = (EntityLivingBase) movPos.entityHit;
-            	Helper.applyPotionEffect(entitylivingbase, pot1);
-            }
-            
-            this.setDead();	// Hit an entity, so begone.
-        }
-		else 	// Hit the terrain
-		{
-			// Glass breaking
-			if (Helper.tryBlockBreak(this.worldObj, this, movPos, 2) && this.entitiesHit < 2) { this.entitiesHit += 1; }
-            else { this.setDead(); }	// Punching through glass, 2 thick
-		}
-		
-		// SFX
-		NetHelper.sendParticleMessageToAllPlayers(this.worldObj, this.getEntityId(), (byte) 3, (byte) 1);
-		this.worldObj.playSoundAtEntity(this, "random.bowhit", 1.0F, 0.5F);
+		this.setDead();	// Hit an entity, so begone.
+	    }
+	    else 	// Hit the terrain
+	    {
+		// Glass breaking
+		if (Helper.tryBlockBreak(this.worldObj, this, movPos, 2) && this.entitiesHit < 2) { this.entitiesHit += 1; }
+		else { this.setDead(); }	// Punching through glass, 2 thick
+	    }
+
+	    // SFX
+	    NetHelper.sendParticleMessageToAllPlayers(this.worldObj, this.getEntityId(), (byte) 3, (byte) 1);
+	    this.worldObj.playSoundAtEntity(this, "random.bowhit", 1.0F, 0.5F);
 	}
 	
 	

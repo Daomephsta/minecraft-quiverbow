@@ -1,26 +1,24 @@
 package com.domochevsky.quiverbow.projectiles;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.ShotPotion;
 import com.domochevsky.quiverbow.net.NetHelper;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
-public class RedSpray extends _ProjectileBase
+public class RedSpray extends ProjectilePotionEffect
 {	
-	public ShotPotion pot1;
-	public ShotPotion pot2;
-	
 	public RedSpray(World world) { super(world); }
 
-	public RedSpray(World world, Entity entity, float speed, float accHor, float AccVert) 
-    {
-        super(world);
-        this.doSetup(entity, speed, accHor, AccVert, entity.rotationYaw, entity.rotationPitch);
-    }
+	public RedSpray(World world, Entity entity, float speed, float accHor, float AccVert, PotionEffect... effects) 
+	{
+	    super(world, effects);
+	    this.damage = 0;
+	    this.doSetup(entity, speed, accHor, AccVert, entity.rotationYaw, entity.rotationPitch);
+	}
 	
 	
 	@Override
@@ -33,22 +31,17 @@ public class RedSpray extends _ProjectileBase
 	@Override
 	public void onImpact(MovingObjectPosition movPos) 
 	{
-		if (movPos.entityHit != null) 		// We hit a living thing!
-    	{		
-			if (movPos.entityHit instanceof EntityLivingBase)	// We hit a LIVING living thing!
-            {
-	            EntityLivingBase entitylivingbase = (EntityLivingBase) movPos.entityHit;
-	            Helper.applyPotionEffect(entitylivingbase, pot1);
-	            Helper.applyPotionEffect(entitylivingbase, pot2);
-            }
-        }        
-		// else, hit the terrain
-    	
-		// SFX
-    	this.worldObj.playSoundAtEntity(this, "random.fizz", 0.7F, 1.5F);
-    	this.worldObj.spawnParticle("redstone", this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
-    	
-    	this.setDead();		// We've hit something, so begone with the projectile
+	    if (movPos.entityHit != null) 		// We hit a living thing!
+	    {		
+		super.onImpact(movPos);
+	    }        
+	    // else, hit the terrain
+
+	    // SFX
+	    this.worldObj.playSoundAtEntity(this, "random.fizz", 0.7F, 1.5F);
+	    this.worldObj.spawnParticle("redstone", this.posX, this.posY + 0.5D, this.posZ, 0.0D, 0.0D, 0.0D);
+
+	    this.setDead();		// We've hit something, so begone with the projectile
 	}
 	
 	

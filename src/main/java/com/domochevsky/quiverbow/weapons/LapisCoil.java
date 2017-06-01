@@ -10,13 +10,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.ShotPotion;
 import com.domochevsky.quiverbow.ammo.LapisMagazine;
 import com.domochevsky.quiverbow.projectiles.LapisShot;
 
@@ -77,39 +77,16 @@ public class LapisCoil extends _WeaponBase
 		world.playSoundAtEntity(entity, "random.wood_click", 1.0F, 0.5F);
 		world.playSoundAtEntity(entity, "random.break", 1.0F, 3.0F);
 
-		// Gas
-		ShotPotion effect1 = new ShotPotion();
-
-		effect1.potion = Potion.confusion;	// Nausea
-		effect1.Strength = 1;
-		effect1.Duration = this.Nausea_Duration;
-
-		ShotPotion effect2 = new ShotPotion();
-
-		effect2.potion = Potion.hunger;
-		effect2.Strength = this.Hunger_Strength;
-		effect2.Duration = this.Hunger_Duration;
-
-		ShotPotion effect3 = new ShotPotion();
-
-		effect3.potion = Potion.weakness;
-		effect3.Strength = this.Weakness_Strength;
-		effect3.Duration = this.Weakness_Duration;
-
 		// Random Damage
 		int dmg_range = this.DmgMax - this.DmgMin; 				// If max dmg is 20 and min is 10, then the range will be 10
 		int dmg = world.rand.nextInt(dmg_range + 1);	// Range will be between 0 and 10
 		dmg += this.DmgMin;									// Adding the min dmg of 10 back on top, giving us the proper damage range (10-20)
 
 		// Projectile
-		LapisShot projectile = new LapisShot(world, entity, (float) this.Speed);
+		LapisShot projectile = new LapisShot(world, entity, (float) this.Speed, new PotionEffect(Potion.confusion.id, this.Nausea_Duration, 1), new PotionEffect(Potion.hunger.id, this.Hunger_Duration, this.Hunger_Strength), new PotionEffect(Potion.weakness.id, this.Weakness_Duration, this.Weakness_Strength));
 		projectile.damage = dmg;
 
 		projectile.ticksInGroundMax = 100;	// 5 sec before it disappears
-
-		projectile.pot1 = effect1;
-		projectile.pot2 = effect2;
-		projectile.pot3 = effect3;
 
 		world.spawnEntityInWorld(projectile); 		// Firing!
 
