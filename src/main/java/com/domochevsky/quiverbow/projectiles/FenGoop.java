@@ -6,9 +6,11 @@ import com.domochevsky.quiverbow.Main;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class FenGoop extends _ProjectileBase
 {	
@@ -46,10 +48,10 @@ public class FenGoop extends _ProjectileBase
     		
     		// Is the attached block a valid material?
     		boolean canPlace = false;
-    		if ( Helper.hasValidMaterial(this.worldObj, posiX, posiY, posiZ) ) { canPlace = true; }
+    		if ( worldObj.isSideSolid(posiX, posiY, posiZ, ForgeDirection.getOrientation(target.sideHit))) { canPlace = true; }
     		
         	// Glass breaking
-            if ( Helper.tryBlockBreak(this.worldObj, this, target, 0)) { canPlace = false; }
+    		if ( Helper.tryBlockBreak(this.worldObj, this, target, 0)) { canPlace = false; }
     		
     		if (target.sideHit == 0) { plusY = -1; } 		// Bottom		
     		else if (target.sideHit == 1) { plusY = 1; } 	// Top
@@ -59,11 +61,7 @@ public class FenGoop extends _ProjectileBase
     		else if (target.sideHit == 5) { plusX = 1; } 	// South
     		
     		// Is the space free?
-    		if (this.worldObj.getBlock( (int)posiX + plusX, (int)posiY + plusY, (int)posiZ + plusZ).getMaterial() == Material.air ||
-    				this.worldObj.getBlock( (int)posiX + plusX, (int)posiY + plusY, (int)posiZ + plusZ).getMaterial() == Material.fire ||
-    				this.worldObj.getBlock( (int)posiX + plusX, (int)posiY + plusY, (int)posiZ + plusZ).getMaterial() == Material.grass ||
-    				this.worldObj.getBlock( (int)posiX + plusX, (int)posiY + plusY, (int)posiZ + plusZ).getMaterial() == Material.snow ||
-    				this.worldObj.getBlock( (int)posiX + plusX, (int)posiY + plusY, (int)posiZ + plusZ).getMaterial() == Material.water)
+    		if (this.worldObj.getBlock( (int)posiX + plusX, (int)posiY + plusY, (int)posiZ + plusZ).isReplaceable(worldObj, posiX, posiY, posiZ))
         	{
     			// Putting light there (if we can)
     			if (canPlace)

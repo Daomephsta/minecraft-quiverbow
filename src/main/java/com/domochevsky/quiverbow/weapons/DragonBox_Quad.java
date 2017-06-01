@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
@@ -15,6 +16,7 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.RocketBundle;
 import com.domochevsky.quiverbow.projectiles.SmallRocket;
+import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -145,15 +147,8 @@ public class DragonBox_Quad extends _WeaponBase
 		else if (Main.noCreative) { this.setCreativeTab(null); }	// Not enabled and not allowed to be in the creative menu
 
 		ItemStack stack = Helper.getAmmoStack(RocketBundle.class, 0);
-
-		Helper.makeAmmoRecipe(stack, 1, 8, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 2, 16, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 3, 24, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 4, 32, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 5, 40, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 6, 48, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 7, 56, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 8, 64, this.getMaxDamage(), this);
+		
+		GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(stack.getItem(), 8));
 	}
 
 

@@ -17,6 +17,7 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.ArrowBundle;
 import com.domochevsky.quiverbow.projectiles.RegularArrow;
+import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -117,8 +118,7 @@ public class Crossbow_AutoImp extends _WeaponBase
 		ItemStack ammo = Helper.getAmmoStack(ArrowBundle.class, 0);
 
 		// Fill what can be filled. One arrow bundle for 8 shots, for up to 2 bundles
-		Helper.makeAmmoRecipe(ammo, 1, 8, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(ammo, 2, 16, this.getMaxDamage(), this);
+		GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(ammo.getItem(), 8, 1, 2));
 	}
 
 

@@ -17,6 +17,7 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.BoxOfFlintDust;
 import com.domochevsky.quiverbow.projectiles.FlintDust;
+import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -111,15 +112,7 @@ public class FlintDuster  extends _WeaponBase
 		else if (Main.noCreative) { this.setCreativeTab(null); }	// Not enabled and not allowed to be in the creative menu
 
 		ItemStack stack = Helper.getAmmoStack(BoxOfFlintDust.class, 0);
-
-		Helper.makeAmmoRecipe(stack, 1, 32, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 2, 64, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 3, 92, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 4, 128, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 5, 160, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 6, 192, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 7, 224, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 8, 256, this.getMaxDamage(), this);
+		GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(stack.getItem(), 32));
 	}
 
 

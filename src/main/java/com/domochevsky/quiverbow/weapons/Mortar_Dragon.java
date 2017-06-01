@@ -18,6 +18,7 @@ import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.RocketBundle;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.Sabot_Rocket;
+import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -139,15 +140,7 @@ public class Mortar_Dragon extends _WeaponBase
 		else if (Main.noCreative) { this.setCreativeTab(null); }	// Not enabled and not allowed to be in the creative menu
 
 		ItemStack ammo = Helper.getAmmoStack(RocketBundle.class, 0);
-
-		Helper.makeAmmoRecipe(ammo, 1, 1, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(ammo, 2, 2, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(ammo, 3, 3, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(ammo, 4, 4, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(ammo, 5, 5, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(ammo, 6, 6, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(ammo, 7, 7, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(ammo, 8, 8, this.getMaxDamage(), this);
+		GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(ammo.getItem(), 1));
 	}
 
 

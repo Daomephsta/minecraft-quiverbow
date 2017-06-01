@@ -16,6 +16,7 @@ import net.minecraftforge.common.config.Configuration;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.WebShot;
+import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -103,18 +104,8 @@ public class SilkenSpinner extends _WeaponBase
 		GameRegistry.addRecipe(new ItemStack(Blocks.web), "s s", " s ", "s s",
 				's', Items.string
 				);
-
-		// Ammo
-		ItemStack stack = new ItemStack(Blocks.web);
-
-		Helper.makeAmmoRecipe(stack, 1, 1, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 2, 2, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 3, 3, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 4, 4, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 5, 5, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 6, 6, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 7, 7, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 8, 8, this.getMaxDamage(), this);
+		
+		GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(Blocks.web, 1));
 	}
 
 

@@ -14,13 +14,13 @@ import com.domochevsky.quiverbow.ammo._AmmoBase;
 import com.domochevsky.quiverbow.weapons.OSP;
 import com.domochevsky.quiverbow.weapons._WeaponBase;
 
-public class Recipe_Ammo extends ShapelessRecipes implements IRecipe
+public class RecipeLoadMagazine extends ShapelessRecipes implements IRecipe
 {
 	private Item ammo;
 	private Item weapon;
 	private int metadata;
 	
-	public Recipe_Ammo(Item ammo, Item weapon, List recipe) 
+	public RecipeLoadMagazine(Item ammo, Item weapon, List recipe) 
 	{
 		super(new ItemStack(weapon), recipe);
 		

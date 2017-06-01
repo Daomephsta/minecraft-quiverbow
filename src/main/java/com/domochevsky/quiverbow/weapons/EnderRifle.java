@@ -16,6 +16,7 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.EnderShot;
+import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -142,16 +143,7 @@ public class EnderRifle extends _WeaponBase
 		}
 		else if (Main.noCreative) { this.setCreativeTab(null); }	// Not enabled and not allowed to be in the creative menu
 
-		ItemStack stack = new ItemStack(Items.iron_ingot);
-
-		Helper.makeAmmoRecipe(stack, 1, 1, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 2, 2, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 3, 3, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 4, 4, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 5, 5, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 6, 6, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 7, 7, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 8, 8, this.getMaxDamage(), this);
+		GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(Items.iron_ingot, 1));
 	}
 
 

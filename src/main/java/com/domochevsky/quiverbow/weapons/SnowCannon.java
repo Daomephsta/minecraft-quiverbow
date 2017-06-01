@@ -16,6 +16,7 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ShotPotion;
 import com.domochevsky.quiverbow.projectiles.SnowShot;
+import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -141,16 +142,7 @@ public class SnowCannon extends _WeaponBase
 		}
 		else if (Main.noCreative) { this.setCreativeTab(null); }	// Not enabled and not allowed to be in the creative menu
 
-		ItemStack stack = new ItemStack(Blocks.snow);
-
-		Helper.makeAmmoRecipe(stack, 1, 4, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 2, 8, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 3, 12, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 4, 16, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 5, 20, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 6, 24, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 7, 28, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(stack, 8, 32, this.getMaxDamage(), this);
+		GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(Blocks.snow, 4));
 	}
 
 

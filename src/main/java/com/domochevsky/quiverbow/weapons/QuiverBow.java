@@ -19,6 +19,7 @@ import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.ArrowBundle;
+import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -175,14 +176,6 @@ public class QuiverBow extends _WeaponBase
 
 		// Ammo
 		ItemStack bundle = Helper.getAmmoStack(ArrowBundle.class, 0);
-
-		Helper.makeAmmoRecipe(bundle, 1, 8, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(bundle, 2, 16, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(bundle, 3, 24, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(bundle, 4, 32, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(bundle, 5, 40, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(bundle, 6, 48, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(bundle, 7, 56, this.getMaxDamage(), this);
-		Helper.makeAmmoRecipe(bundle, 8, 64, this.getMaxDamage(), this);
+		GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(bundle.getItem(), 8));
 	}
 }

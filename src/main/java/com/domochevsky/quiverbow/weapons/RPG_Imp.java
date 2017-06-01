@@ -100,7 +100,7 @@ public class RPG_Imp extends _WeaponBase
 		else if (Main.noCreative) { this.setCreativeTab(null); }	// Not enabled and not allowed to be in the creative menu
 
 		// Fill the launcher with 1 big rocket
-		Helper.makeAmmoRecipe(Helper.getAmmoStack(LargeRocket.class, 0), 1, 1, this.getMaxDamage(), this);
+		GameRegistry.addShapelessRecipe(new ItemStack(this), Helper.getAmmoStack(LargeRocket.class, 0), new ItemStack(this, 1, 1));
 	}
 
 

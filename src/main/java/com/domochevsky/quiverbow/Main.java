@@ -113,7 +113,7 @@ public static class Constants
 		// Do I have to register a crafting listener of sorts? To what end?
 		RecipeSorter.register("quiverchevsky:recipehandler", Recipe_ERA.class, RecipeSorter.Category.SHAPED, "after:minecraft:shapeless");
 		RecipeSorter.register("quiverchevsky:recipehandler_2", Recipe_Weapon.class, RecipeSorter.Category.SHAPED, "after:minecraft:shapeless");
-		RecipeSorter.register("quiverchevsky:recipehandler_3", Recipe_Ammo.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
+		RecipeSorter.register("quiverchevsky:recipehandler_3", RecipeLoadMagazine.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
 		
 		Listener listener = new Listener();
 		

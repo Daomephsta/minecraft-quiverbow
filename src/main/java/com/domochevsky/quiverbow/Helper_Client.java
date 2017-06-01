@@ -94,7 +94,7 @@ public class Helper_Client
 		entity.setPosition(x, y, z);
 	}
 	
-	
+	//TODO: Replace with DataParameter
 	// Informing the client about the fact that my (visual) state has changed
 	public static void setTurretState(int entityID, boolean hasArmor, boolean hasWeaponUpgrade, boolean hasRidingUpgrade, boolean hasPlatingUpgrade, boolean hasCommunicationUpgrade) 
 	{

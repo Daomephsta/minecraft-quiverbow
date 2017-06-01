@@ -13,8 +13,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.PotatoShot;
+import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -116,99 +118,7 @@ public class Potatosser extends _WeaponBase
 		}
 		else if (Main.noCreative) { this.setCreativeTab(null); }	// Not enabled and not allowed to be in the creative menu
 
-		int maxAmmo = this.getMaxDamage();
-		int emptyAmmo = 0;
-
-		// Fill the cannon with 1 potato + 1 coal (1 ammo)
-		for (int ix = maxAmmo; ix > emptyAmmo; ix--)
-		{
-			GameRegistry.addShapelessRecipe(new ItemStack(this, 1, (ix - 1) ),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					Items.coal,
-					new ItemStack(this, 1, ix)
-					);
-		}
-
-		// Fill the cannon with 2 potatoes + 1 coal (2 ammo)
-		for (int ix = maxAmmo; ix > emptyAmmo + 1; ix--)
-		{
-			GameRegistry.addShapelessRecipe(new ItemStack(this, 1, (ix - 2) ),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					Items.coal,
-					new ItemStack(this, 1, ix)
-					);
-		}
-
-		// Fill the cannon with 3 potatoes + 1 coal (3 ammo)
-		for (int ix = maxAmmo; ix > emptyAmmo + 2; ix--)
-		{
-			GameRegistry.addShapelessRecipe(new ItemStack(this, 1, (ix - 3) ),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					Items.coal,
-					new ItemStack(this, 1, ix)
-					);
-		}
-
-		// Fill the cannon with 4 potatoes + 1 coal (4 ammo)
-		for (int ix = maxAmmo; ix > emptyAmmo + 3; ix--)
-		{
-			GameRegistry.addShapelessRecipe(new ItemStack(this, 1, (ix - 4) ),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					Items.coal,
-					new ItemStack(this, 1, ix)
-					);
-		}
-
-		// Fill the cannon with 5 potatoes + 1 coal (5 ammo)
-		for (int ix = maxAmmo; ix > emptyAmmo + 4; ix--)
-		{
-			GameRegistry.addShapelessRecipe(new ItemStack(this, 1, (ix - 5) ),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					Items.coal,
-					new ItemStack(this, 1, ix)
-					);
-		}
-
-		// Fill the cannon with 6 potatoes + 1 coal (6 ammo)
-		for (int ix = maxAmmo; ix > emptyAmmo + 5; ix--)
-		{
-			GameRegistry.addShapelessRecipe(new ItemStack(this, 1, (ix - 6) ),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					Items.coal,
-					new ItemStack(this, 1, ix)
-					);
-		}
-
-		// Fill the cannon with 7 potatoes + 1 coal (7 ammo)
-		for (int ix = maxAmmo; ix > emptyAmmo + 6; ix--)
-		{
-			GameRegistry.addShapelessRecipe(new ItemStack(this, 1, (ix - 7) ),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					new ItemStack(Items.potato, 1, OreDictionary.WILDCARD_VALUE),
-					Items.coal,
-					new ItemStack(this, 1, ix)
-					);
-		}
+		GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(Items.coal, 0, 1, 1).addComponent(Items.potato, 1, 1, 7));
 	}
 
 
