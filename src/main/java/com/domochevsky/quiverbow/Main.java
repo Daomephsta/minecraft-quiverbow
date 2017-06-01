@@ -57,12 +57,12 @@ public static class Constants
 	@SideOnly(Side.CLIENT)
 	public static ArrayList<ModelBase> models;	// Client side only
 	
-	public static Item gatlingBody = null;
-	public static Item gatlingBarrel = null;
-	public static Item packedAA = null;
-	public static Item packedBB = null;
+	public static Item gatlingBody;
+	public static Item gatlingBarrel;
+	public static Item packedAA;
+	public static Item packedBB;
 	
-	public static Block fenLight = null;
+	public static Block fenLight;
 	
 	private static int projectileCount = 1;	// A running number, to register projectiles by
 	
@@ -110,10 +110,9 @@ public static class Constants
 		
 		proxy.registerTurretRenderer();
 		
-		// Do I have to register a crafting listener of sorts? To what end?
-		RecipeSorter.register("quiverchevsky:recipehandler", Recipe_ERA.class, RecipeSorter.Category.SHAPED, "after:minecraft:shapeless");
-		RecipeSorter.register("quiverchevsky:recipehandler_2", Recipe_Weapon.class, RecipeSorter.Category.SHAPED, "after:minecraft:shapeless");
-		RecipeSorter.register("quiverchevsky:recipehandler_3", RecipeLoadMagazine.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
+		RecipeSorter.register(Constants.MODID + ":ender_rail_accelerator", Recipe_ERA.class, RecipeSorter.Category.SHAPED, "after:minecraft:shapeless");
+		RecipeSorter.register(Constants.MODID + ":era_upgrade", Recipe_Weapon.class, RecipeSorter.Category.SHAPED, "after:minecraft:shapeless");
+		RecipeSorter.register(Constants.MODID + ":load_magazine", RecipeLoadMagazine.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
 		
 		Listener listener = new Listener();
 		
@@ -127,30 +126,6 @@ public static class Constants
 		FMLCommonHandler.instance().bus().register(listenerClient);
 		MinecraftForge.EVENT_BUS.register(listenerClient);
 	}
-	
-	
-	/*@EventHandler
-	public void init(FMLInitializationEvent event)
-	{
-		// Everything should be registered by this point. Letting ForgeUpdater know what my version is (if it's installed)
-		//FMLInterModComms.sendMessage("forgeupdater", "updaterInfo", "{id='quiverbow', minType='2', formats=[QuiverBow_$mc_$v.zip, QuiverBow_1.7.10_$v.zip]}");
-		// id, as it shows up on curse.com, in the URL
-		// minType: 0 = alpha, 1 = beta, 2 = release
-		// Format is for the file and how it's aranged, eg QuiverBow_1.7.10_b100.zip, $mc and $v are wildcards
-
-		if (Loader.isModLoaded("battlegear2"))
-		{
-			System.out.println("[QUIVERBOW] Making myself known to Battle Gear 2.");
-			int counter = 0;
-
-			while (counter < weapons.length && weapons[counter] != null)
-			{
-				registerWithBattleGear2(weapons[counter], weaponType[counter]);	// Mod intercompatibility
-
-				counter += 1;
-			}
-		}
-	}*/
 	
 	
 	void registerAmmo()		// Items with which weapons can be reloaded
@@ -359,13 +334,5 @@ public static class Constants
 		    weapon.addProps(event, config);
 		    weapon.addRecipes();
 		}
-	}
-	
-	
-	private static void registerWithBattleGear2(Item item, String wield)
-	{
-		//Where hand is a case-insensitive String ("both" -or- "dual" for one-handed items,  "right" -or- "mainhand" -or- "left" -or- "offhand" for two-handed on designated side)
-		//Where itemStack is an ItemStack instance specific enough of the item
-		FMLInterModComms.sendMessage("battlegear2", wield, new ItemStack(item));
 	}
 }

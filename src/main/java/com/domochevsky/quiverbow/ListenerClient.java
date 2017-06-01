@@ -114,36 +114,4 @@ public class ListenerClient
 		net.minecraft.client.Minecraft.getMinecraft().gameSettings.fovSetting = this.defaultFOV;	// Restoring recorded default FOV
 		this.wasZoomedLastTick = false;
 	}
-
-
-	/*private void renderPlayerLeftItemUsage(RenderLivingEvent.Pre event)
-	{
-		if (!Loader.isModLoaded("battlegear2")) { return; }
-
-		EntityPlayer entityPlayer = (EntityPlayer) event.entity;
-
-		if (entityPlayer.getHeldItem() == null) { return; }				// Not holding anything
-
-		ItemStack offhand = ((mods.battlegear2.api.core.InventoryPlayerBattle) entityPlayer.inventory).getCurrentOffhandWeapon();
-		if (!(offhand.getItem() instanceof _WeaponBase)) { return; }	// Not mine
-
-		RenderPlayer renderer = ((RenderPlayer) event.renderer);
-
-		// You are holding something
-		renderer.modelArmorChestplate.heldItemLeft = 1;
-		renderer.modelArmor.heldItemLeft = 1;
-		renderer.modelBipedMain.heldItemLeft = 1;
-
-		// Hold it straight out
-		renderer.modelArmorChestplate.aimedBow = true;
-		renderer.modelArmor.aimedBow = true;
-		renderer.modelBipedMain.aimedBow = true;
-
-		if (!Loader.isModLoaded("battlegear2")) { return; }
-
-		// Left-hand usage here
-
-		//ItemStack mainhand = entityPlayer.inventory.getCurrentItem();
-		//renderer.modelArmorChestplate.heldItemRight = renderer.modelArmor.heldItemRight = renderer.modelBipedMain.heldItemRight = mainhand != null ? 1 : 0;
-	}*/
 }
