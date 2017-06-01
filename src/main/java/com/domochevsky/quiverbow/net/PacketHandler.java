@@ -1,5 +1,7 @@
 package com.domochevsky.quiverbow.net;
 
+import com.domochevsky.quiverbow.Main.Constants;
+
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.*;
 import cpw.mods.fml.relauncher.Side;
@@ -10,7 +12,7 @@ public class PacketHandler
 	
 	public static void initPackets()
 	{
-		net = NetworkRegistry.INSTANCE.newSimpleChannel("quiverchevsky".toUpperCase());
+		net = NetworkRegistry.INSTANCE.newSimpleChannel(Constants.MODID.toUpperCase());
 		 
 		registerMessage(ParticlePacket.class, ParticleMessage.class);
 		registerMessage(PositionPacket.class, PositionMessage.class);

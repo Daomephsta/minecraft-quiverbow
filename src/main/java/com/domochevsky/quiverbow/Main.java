@@ -40,7 +40,7 @@ public static class Constants
     public static final String NAME = "QuiverBow";
 }
     
-	@Instance("quiverchevsky")
+	@Instance(Constants.MODID)
 	public static Main instance;
 	
 	@SidedProxy(clientSide="com.domochevsky.quiverbow.ClientProxy", serverSide="com.domochevsky.quiverbow.CommonProxy")

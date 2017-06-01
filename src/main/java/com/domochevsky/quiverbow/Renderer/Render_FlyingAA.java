@@ -10,10 +10,11 @@ import org.lwjgl.opengl.GL11;
 
 import com.domochevsky.quiverbow.FlyingAA.Entity_BB;
 import com.domochevsky.quiverbow.FlyingAA.Model_BB;
+import com.domochevsky.quiverbow.Main.Constants;
 
 public class Render_FlyingAA extends RenderLiving
 {
-	private static ResourceLocation texture = new ResourceLocation("quiverchevsky", "textures/entity/FlyingAA.png");
+	private static ResourceLocation texture = new ResourceLocation(Constants.MODID, "textures/entity/FlyingAA.png");
 	
 	public Render_FlyingAA() 
 	{

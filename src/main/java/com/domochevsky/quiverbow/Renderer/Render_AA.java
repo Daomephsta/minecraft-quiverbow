@@ -10,10 +10,11 @@ import org.lwjgl.opengl.GL11;
 
 import com.domochevsky.quiverbow.ArmsAssistant.Entity_AA;
 import com.domochevsky.quiverbow.ArmsAssistant.Model_AA;
+import com.domochevsky.quiverbow.Main.Constants;
 
 public class Render_AA extends RenderLiving
 {
-	private static ResourceLocation texture = new ResourceLocation("quiverchevsky", "textures/entity/ArmsAssistant.png");
+	private static ResourceLocation texture = new ResourceLocation(Constants.MODID, "textures/entity/ArmsAssistant.png");
 	
 	public Render_AA() 
 	{

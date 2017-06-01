@@ -13,6 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import com.domochevsky.quiverbow.Main.Constants;
 import com.domochevsky.quiverbow.projectiles._ProjectileBase;
 
 public class Render_Projectile extends Render
@@ -75,7 +76,7 @@ public class Render_Projectile extends Render
 		_ProjectileBase shot = (_ProjectileBase) entity;
 		String loc = shot.getEntityTexturePath();
 		
-		if (loc != null) { return new ResourceLocation("quiverchevsky", loc); }
+		if (loc != null) { return new ResourceLocation(Constants.MODID, loc); }
 		else	// Texture path is null. Is this using an MC-internal texture?
 		{			
 			byte[] type = shot.getRenderType();
