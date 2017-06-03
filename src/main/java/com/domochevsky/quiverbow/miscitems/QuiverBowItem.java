@@ -10,9 +10,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public abstract class QuiverBowItem extends Item
-{   
+{
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean unknown) 
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean unknown)
     {
 	Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".description"));
     }
@@ -22,5 +22,6 @@ public abstract class QuiverBowItem extends Item
 	return null;
     }
 
-    public void addRecipes() { }	// Called once after all items have been registered and initialized
+    public void addRecipes()
+    {} // Called once after all items have been registered and initialized
 }

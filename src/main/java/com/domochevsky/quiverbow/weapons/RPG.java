@@ -1,11 +1,10 @@
 package com.domochevsky.quiverbow.weapons;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.init.*;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 
@@ -13,108 +12,120 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.BigRocket;
 
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class RPG extends _WeaponBase
 {
-	public RPG() { super("rocket_launcher", 1); }
+    public RPG()
+    {
+	super("rocket_launcher", 1);
+    }
 
-	
-	public double ExplosionSize;
-	private int travelTime;	// How many ticks the rocket can travel before exploding
-	private boolean dmgTerrain;	// Can our projectile damage terrain?
+    public double ExplosionSize;
+    private int travelTime; // How many ticks the rocket can travel before
+			    // exploding
+    private boolean dmgTerrain; // Can our projectile damage terrain?
 
+    /*@SideOnly(Side.CLIENT)
+    @Override
+    public void registerIcons(IIconRegister par1IconRegister)
+    {
+	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/RPG");
+	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/RPG_Empty");
+    }*/
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerIcons(IIconRegister par1IconRegister)
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
+    {
+	ItemStack stack = player.getHeldItem(hand);
+	if (this.getDamage(stack) >= this.getMaxDamage())
 	{
-		this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/RPG");
-		this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/RPG_Empty");
-	}
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
+	} // Is empty
 
+	this.doSingleFire(stack, world, player); // Handing it over to the
+						 // neutral firing function
+	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
+    }
 
-	@Override
-	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+    @Override
+    public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
+									  // side
+    {
+	if (this.getCooldown(stack) > 0)
 	{
-		if (world.isRemote) { return stack; }								// Not doing this on client side
-		if (this.getDamage(stack) >= this.getMaxDamage()) { return stack; }	// Is empty
+	    return;
+	} // Hasn't cooled down yet
 
-		this.doSingleFire(stack, world, player);	// Handing it over to the neutral firing function
-		return stack;
-	}
+	Helper.knockUserBack(entity, this.Kickback); // Kickback
 
+	// Firing
+	BigRocket rocket = new BigRocket(world, entity, (float) this.Speed); // Projectile
+									     // Speed.
+									     // Inaccuracy
+									     // Hor/Vert
+	rocket.explosionSize = this.ExplosionSize;
+	rocket.travelTicksMax = this.travelTime;
+	rocket.dmgTerrain = this.dmgTerrain;
 
-	@Override
-	public void doSingleFire(ItemStack stack, World world, Entity entity)		// Server side
+	world.spawnEntity(rocket); // shoom.
+
+	// SFX
+	entity.playSound(SoundEvents.ENTITY_FIREWORK_LAUNCH, 2.0F, 0.6F);
+
+	this.setCooldown(stack, 60);
+	this.consumeAmmo(stack, entity, 1);
+    }
+
+    @Override
+    public void addProps(FMLPreInitializationEvent event, Configuration config)
+    {
+	this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+	this.Speed = config.get(this.name, "How fast are my projectiles? (default 2.0 BPT (Blocks Per Tick))", 2.0)
+		.getDouble();
+	this.Kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 3)", 3)
+		.getInt();
+	this.ExplosionSize = config.get(this.name, "How big are my explosions? (default 4.0 blocks, like TNT)", 4.0)
+		.getDouble();
+	this.travelTime = config
+		.get(this.name, "How many ticks can my rocket fly before exploding? (default 20 ticks)", 20).getInt();
+	this.dmgTerrain = config.get(this.name, "Can I damage terrain, when in player hands? (default true)", true)
+		.getBoolean(true);
+
+	this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
+    }
+
+    @Override
+    public void addRecipes()
+    {
+	if (this.Enabled)
 	{
-		if (this.getCooldown(stack) > 0) { return; }	// Hasn't cooled down yet
-
-		Helper.knockUserBack(entity, this.Kickback);			// Kickback
-
-		// Firing
-		BigRocket rocket = new BigRocket(world, entity, (float) this.Speed);	// Projectile Speed. Inaccuracy Hor/Vert
-		rocket.explosionSize = this.ExplosionSize;
-		rocket.travelTicksMax = this.travelTime;
-		rocket.dmgTerrain = this.dmgTerrain;
-
-		world.spawnEntityInWorld(rocket); 		// shoom.
-
-		// SFX
-		world.playSoundAtEntity(entity, "fireworks.launch", 2.0F, 0.6F);
-
-		this.setCooldown(stack, 60);
-		this.consumeAmmo(stack, entity, 1);
+	    // One Firework Rocket Launcher (empty)
+	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "x  ", "yx ", "zyx", 'x', Blocks.PLANKS,
+		    'y', Items.IRON_INGOT, 'z', Items.FLINT_AND_STEEL);
 	}
-
-
-	@Override
-	public void addProps(FMLPreInitializationEvent event, Configuration config)
+	else if (Main.noCreative)
 	{
-		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
-		this.Speed = config.get(this.name, "How fast are my projectiles? (default 2.0 BPT (Blocks Per Tick))", 2.0).getDouble();
-		this.Kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 3)", 3).getInt();
-		this.ExplosionSize = config.get(this.name, "How big are my explosions? (default 4.0 blocks, like TNT)", 4.0).getDouble();
-		this.travelTime = config.get(this.name, "How many ticks can my rocket fly before exploding? (default 20 ticks)", 20).getInt();
-		this.dmgTerrain = config.get(this.name, "Can I damage terrain, when in player hands? (default true)", true).getBoolean(true);
+	    this.setCreativeTab(null);
+	} // Not enabled and not allowed to be in the creative menu
 
-		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
-	}
+	// Fill the RPG with 1 rocket
+	GameRegistry.addRecipe(new ItemStack(this), " ab", "zya", " x ", 'x',
+		new ItemStack(this, 1, this.getMaxDamage()), 'y', Blocks.TNT, 'z', Blocks.PLANKS, 'a', Items.PAPER, 'b',
+		Items.STRING);
+    }
 
-
-	@Override
-	public void addRecipes()
+    @Override
+    public String getModelTexPath(ItemStack stack) // The model texture path
+    {
+	if (stack.getItemDamage() >= stack.getMaxDamage())
 	{
-		if (this.Enabled)
-		{
-			// One Firework Rocket Launcher (empty)
-			GameRegistry.addRecipe(new ItemStack(this, 1 , this.getMaxDamage()), "x  ", "yx ", "zyx",
-					'x', Blocks.planks,
-					'y', Items.iron_ingot,
-					'z', Items.flint_and_steel
-					);
-		}
-		else if (Main.noCreative) { this.setCreativeTab(null); }	// Not enabled and not allowed to be in the creative menu
+	    return "RPG_empty";
+	} // Empty
 
-		// Fill the RPG with 1 rocket
-		GameRegistry.addRecipe(new ItemStack(this), " ab", "zya", " x ",
-				'x', new ItemStack(this, 1 , this.getMaxDamage()),
-				'y', Blocks.tnt,
-				'z', Blocks.planks,
-				'a', Items.paper,
-				'b', Items.string
-				);
-	}
-
-
-	@Override
-	public String getModelTexPath(ItemStack stack)	// The model texture path
-	{
-		if (stack.getItemDamage() >= stack.getMaxDamage()) { return "RPG_empty"; }	// Empty
-
-		return "RPG";	// Regular
-	}
+	return "RPG"; // Regular
+    }
 }

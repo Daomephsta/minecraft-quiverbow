@@ -1,12 +1,12 @@
 package com.domochevsky.quiverbow.ammo;
 
 import com.domochevsky.quiverbow.util.InventoryHelper;
+import com.domochevsky.quiverbow.util.Utils;
 
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.init.*;
 import net.minecraft.item.ItemStack;
 
 public class LargeNetherrackMagazine extends AmmoMagazine
@@ -14,9 +14,12 @@ public class LargeNetherrackMagazine extends AmmoMagazine
     public LargeNetherrackMagazine()
     {
 	super(1, 8);
-	this.setMaxDamage(200);		// Filled with gold nuggets (8 shots with 9 scatter, 24 with 3 scatter)
-	this.setCreativeTab(CreativeTabs.tabCombat);	// On the combat tab by default, since this is amunition
-    }	
+	this.setMaxDamage(200); // Filled with gold nuggets (8 shots with 9
+				// scatter, 24 with 3 scatter)
+	this.setCreativeTab(CreativeTabs.COMBAT); // On the combat tab by
+						  // default, since this is
+						  // amunition
+    }
 
     @Override
     public String getIconPath()
@@ -24,26 +27,23 @@ public class LargeNetherrackMagazine extends AmmoMagazine
 	return "LargeNetherAmmo";
     }
 
-
     @Override
-    public void addRecipes() 
+    public void addRecipes()
     {
-	GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "x x", "x x", "xgx",
-		'x', Blocks.nether_brick, 
-		'g', Items.iron_ingot
-		);
+	GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "x x", "x x", "xgx", 'x',
+		Blocks.NETHER_BRICK, 'g', Items.IRON_INGOT);
     }
 
     @Override
     protected boolean hasComponentItems(EntityPlayer player, int amount)
     {
-	return InventoryHelper.hasBlock(player, Blocks.netherrack, amount);
+	return InventoryHelper.hasBlock(player, Blocks.NETHERRACK, amount);
     }
 
     @Override
     protected boolean consumeComponentItems(EntityPlayer player, int amount)
     {
-	player.getEntityWorld().playSoundAtEntity(player, "random.wood_click", 0.5F, 0.3F);
-	return InventoryHelper.consumeBlock(player, Blocks.netherrack, amount);
+	Utils.playSoundAtEntityPos(player, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 0.3F);
+	return InventoryHelper.consumeBlock(player, Blocks.NETHERRACK, amount);
     }
 }

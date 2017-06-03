@@ -1,12 +1,11 @@
 package com.domochevsky.quiverbow.weapons;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -17,162 +16,229 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.ArrowBundle;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
+import com.domochevsky.quiverbow.util.Utils;
 
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class QuiverBow extends _WeaponBase
 {
-	public QuiverBow() { super("quiverbow", 256); }
+    public QuiverBow()
+    {
+	super("quiverbow", 256);
+    }
 
+    // public static final String[] bowPullIconNameArray = new String[]
+    // {"pulling_0", "pulling_1", "pulling_2"};
 
-	//public static final String[] bowPullIconNameArray = new String[] {"pulling_0", "pulling_1", "pulling_2"};
+    String name = "Bow with Quiver";
 
-	String name = "Bow with Quiver";
+    @SideOnly(Side.CLIENT)
+    private IIcon pull_0;
 
-	@SideOnly(Side.CLIENT)
-	private IIcon pull_0;
+    @SideOnly(Side.CLIENT)
+    private IIcon pull_1;
 
-	@SideOnly(Side.CLIENT)
-	private IIcon pull_1;
+    @SideOnly(Side.CLIENT)
+    private IIcon pull_2;
 
-	@SideOnly(Side.CLIENT)
-	private IIcon pull_2;
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void registerIcons(IIconRegister par1IconRegister)
+    {
+	this.itemIcon = par1IconRegister.registerIcon("quiverchevsky:weapons/QBow_idle");
 
+	this.pull_0 = par1IconRegister.registerIcon("quiverchevsky:weapons/QBow_pulling_0");
+	this.pull_1 = par1IconRegister.registerIcon("quiverchevsky:weapons/QBow_pulling_1");
+	this.pull_2 = par1IconRegister.registerIcon("quiverchevsky:weapons/QBow_pulling_2");
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void registerIcons(IIconRegister par1IconRegister)
+    @SideOnly(Side.CLIENT)
+    public IIcon getItemIconForUseDuration(int state) // Inventory display
+    {
+	if (state == 0)
 	{
-		this.itemIcon = par1IconRegister.registerIcon("quiverchevsky:weapons/QBow_idle");
-
-		this.pull_0 = par1IconRegister.registerIcon("quiverchevsky:weapons/QBow_pulling_0");
-		this.pull_1 = par1IconRegister.registerIcon("quiverchevsky:weapons/QBow_pulling_1");
-		this.pull_2 = par1IconRegister.registerIcon("quiverchevsky:weapons/QBow_pulling_2");
+	    return this.pull_0;
+	}
+	else if (state == 1)
+	{
+	    return this.pull_1;
+	}
+	else if (state == 2)
+	{
+	    return this.pull_2;
 	}
 
+	return this.pull_2; // Fallback
+    }
 
-	@SideOnly(Side.CLIENT)
-	public IIcon getItemIconForUseDuration(int state) // Inventory display
+    @Override // This is for inventory display. Comes in with metadata
+    public IIcon getIconFromDamage(int meta)
+    {
+	return this.itemIcon;
+    }
+
+    @Override
+    public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) // On
+														      // hand
+														      // display
+    {
+	if (player.getItemInUse() == null)
 	{
-		if (state == 0) { return this.pull_0; }
-		else if (state == 1) { return this.pull_1; }
-		else if (state == 2) { return this.pull_2; }
-
-		return this.pull_2; // Fallback
+	    return this.itemIcon;
 	}
 
+	int Pulling = stack.getMaxItemUseDuration() - useRemaining; // Displaying
+								    // the bow
+								    // drawing
+								    // animation
+								    // based on
+								    // the use
+								    // state
 
-	@Override									// This is for inventory display. Comes in with metadata
-	public IIcon getIconFromDamage(int meta)
+	if (Pulling >= 18)
 	{
-		return this.itemIcon;
+	    return this.pull_2;
+	}
+	else if (Pulling > 13)
+	{
+	    return this.pull_1;
+	}
+	else if (Pulling > 0)
+	{
+	    return this.pull_0;
 	}
 
+	return this.itemIcon;
+    }
 
-	@Override
-	public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) 	// On hand display
+    @Override
+    public void onPlayerStoppedUsing(ItemStack stack, World par2World, EntityPlayer par3EntityPlayer, int par4)
+    {
+	if (!par2World.isRemote)
 	{
-		if(player.getItemInUse() == null) { return this.itemIcon; }
+	    int j = this.getMaxItemUseDuration(stack) - par4; // Reduces the
+							      // durability by
+							      // the
+							      // ItemInUseCount
+							      // (probably 1 for
+							      // anything that
+							      // isn't a tool)
 
-		int Pulling = stack.getMaxItemUseDuration() - useRemaining;	// Displaying the bow drawing animation based on the use state
+	    ArrowLooseEvent event = new ArrowLooseEvent(par3EntityPlayer, stack, j);
+	    MinecraftForge.EVENT_BUS.post(event);
+	    if (event.isCanceled())
+	    {
+		return;
+	    }
+	    j = event.charge;
 
-		if (Pulling >= 18) { return this.pull_2; }
-		else if (Pulling > 13) { return this.pull_1; }
-		else if (Pulling > 0) { return this.pull_0; }
+	    if (this.getDamage(stack) == this.getMaxDamage())
+	    {
+		return;
+	    } // No arrows in the quiver? Getting out of here early
 
-		return this.itemIcon;
+	    float f = j / 20.0F;
+	    f = (f * f + f * 2.0F) / 3.0F;
+
+	    if (f < 0.1D)
+	    {
+		return;
+	    }
+	    if (f > 1.0F)
+	    {
+		f = 1.0F;
+	    }
+
+	    EntityArrow entityarrow = Utils.createArrow(par2World, par3EntityPlayer);
+	    if (f == 1.0F)
+	    {
+		entityarrow.setIsCritical(true);
+	    }
+
+	    par2World.playSoundAtEntity(par3EntityPlayer, "random.bow", 1.0F,
+		    1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+
+	    if (par3EntityPlayer.capabilities.isCreativeMode)
+	    {
+		entityarrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
+	    }
+	    else
+	    {
+		entityarrow.pickupStatus = EntityArrow.PickupStatus.ALLOWED;
+		stack.setItemDamage(this.getDamage(stack) + 1); // Reversed.
+								// MORE Damage
+								// for a shorter
+								// durability
+								// bar
+	    }
+
+	    par2World.spawnEntity(entityarrow);
+
+	}
+    }
+
+    @Override
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+    {
+	ArrowNockEvent event = new ArrowNockEvent(player, stack);
+	MinecraftForge.EVENT_BUS.post(event);
+	if (event.isCanceled())
+	{
+	    return event.result;
 	}
 
-
-	@Override
-	public void onPlayerStoppedUsing(ItemStack stack, World par2World, EntityPlayer par3EntityPlayer, int par4)
+	// Are there any arrows in the quiver?
+	if (this.getDamage(stack) < this.getMaxDamage())
 	{
-		if (!par2World.isRemote)
-		{
-			int j = this.getMaxItemUseDuration(stack) - par4;		// Reduces the durability by the ItemInUseCount (probably 1 for anything that isn't a tool)
-
-			ArrowLooseEvent event = new ArrowLooseEvent(par3EntityPlayer, stack, j);
-			MinecraftForge.EVENT_BUS.post(event);
-			if (event.isCanceled()) { return; }
-			j = event.charge;
-
-			if (this.getDamage(stack) == this.getMaxDamage()) {	return; }		// No arrows in the quiver? Getting out of here early
-
-			float f = j / 20.0F;
-			f = (f * f + f * 2.0F) / 3.0F;
-
-			if (f < 0.1D) { return; }
-			if (f > 1.0F) { f = 1.0F; }
-
-			EntityArrow entityarrow = new EntityArrow(par2World, par3EntityPlayer, f * 2.0F);
-			if (f == 1.0F) { entityarrow.setIsCritical(true); }
-
-			par2World.playSoundAtEntity(par3EntityPlayer, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
-
-			if (par3EntityPlayer.capabilities.isCreativeMode) { entityarrow.canBePickedUp = 0; }
-			else
-			{
-				entityarrow.canBePickedUp = 1;
-				stack.setItemDamage(this.getDamage(stack) + 1);		// Reversed. MORE Damage for a shorter durability bar
-			}
-
-			par2World.spawnEntityInWorld(entityarrow);
-
-		}
+	    player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
 	}
 
+	return stack;
+    }
 
-	@Override
-	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+    @Override
+    public int getMaxItemUseDuration(ItemStack stack)
+    {
+	return 72000;
+    }
+
+    @Override
+    public EnumAction getItemUseAction(ItemStack stack)
+    {
+	return EnumAction.BOW;
+    }
+
+    @Override
+    public void addProps(FMLPreInitializationEvent event, Configuration config)
+    {
+	this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+
+	this.isMobUsable = config.get(this.name,
+		"Can I be used by QuiverMobs? (default false. They don't know how to span the string.)", false)
+		.getBoolean(true);
+    }
+
+    @Override
+    public void addRecipes() // Enabled defines whether or not the item can be
+			     // crafted. Reloading existing weapons is always
+			     // permitted.
+    {
+	if (this.Enabled)
 	{
-		ArrowNockEvent event = new ArrowNockEvent(player, stack);
-		MinecraftForge.EVENT_BUS.post(event);
-		if (event.isCanceled()) { return event.result; }
-
-		// Are there any arrows in the quiver?
-		if (this.getDamage(stack) < this.getMaxDamage()) {	player.setItemInUse(stack, this.getMaxItemUseDuration(stack)); }
-
-		return stack;
+	    // One quiverbow with 256 damage value (empty)
+	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "zxy", "xzy", "zxy", 'x', Items.STICK,
+		    'y', Items.STRING, 'z', Items.LEATHER);
 	}
-
-
-	@Override
-	public int getMaxItemUseDuration(ItemStack stack) { return 72000; }
-
-
-	@Override
-	public EnumAction getItemUseAction(ItemStack stack) { return EnumAction.bow; }
-
-
-
-	@Override
-	public void addProps(FMLPreInitializationEvent event, Configuration config)
+	else if (Main.noCreative)
 	{
-		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+	    this.setCreativeTab(null);
+	} // Not enabled and not allowed to be in the creative menu
 
-		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default false. They don't know how to span the string.)", false).getBoolean(true);
-	}
-
-
-	@Override
-	public void addRecipes()	// Enabled defines whether or not the item can be crafted. Reloading existing weapons is always permitted.
-	{
-		if (this.Enabled)
-		{
-			// One quiverbow with 256 damage value (empty)
-			GameRegistry.addRecipe(new ItemStack(this, 1 , this.getMaxDamage()), "zxy", "xzy", "zxy",
-					'x', Items.stick,
-					'y', Items.string,
-					'z', Items.leather
-					);
-		}
-		else if (Main.noCreative) { this.setCreativeTab(null); }	// Not enabled and not allowed to be in the creative menu
-
-		// Ammo
-		ItemStack bundle = Helper.getAmmoStack(ArrowBundle.class, 0);
-		GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(bundle.getItem(), 8));
-	}
+	// Ammo
+	ItemStack bundle = Helper.getAmmoStack(ArrowBundle.class, 0);
+	GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(bundle.getItem(), 8));
+    }
 }

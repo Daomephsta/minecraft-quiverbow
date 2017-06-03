@@ -5,112 +5,119 @@ import java.util.List;
 
 import com.domochevsky.quiverbow.util.Newliner;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.IIconRegister;
+
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 
 public abstract class AmmoMagazine extends _AmmoBase
-{	
-    @SideOnly(Side.CLIENT)
-    protected IIcon iconEmpty;
-    //How much should this magazine attempt to fill when sneak-clicked?
+{
+    /*
+     * @SideOnly(Side.CLIENT) protected IIcon iconEmpty;
+     */
+    // How much should this magazine attempt to fill when sneak-clicked?
     private int sneakFillQuantity;
-    //How much should this magazine attempt to fill when not sneak-clicked?
+    // How much should this magazine attempt to fill when not sneak-clicked?
     private int standardFillQuantity;
 
     public AmmoMagazine()
     {
 	this(1, 1);
     }
-    
+
     public AmmoMagazine(int standardFillQuantity, int sneakFillQuantity)
     {
 	this.sneakFillQuantity = sneakFillQuantity;
 	this.standardFillQuantity = standardFillQuantity;
-	
+
 	this.setMaxStackSize(1);
 	this.setHasSubtypes(true);
     }
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister par1IconRegister) 
-    { 
-	Icon = par1IconRegister.registerIcon("quiverchevsky:ammo/" + getIconPath());
-	iconEmpty = par1IconRegister.registerIcon("quiverchevsky:ammo/" + getIconPath() + "_Empty");
-    }
+    /*
+     * @SideOnly(Side.CLIENT)
+     * 
+     * @Override public void registerIcons(IIconRegister par1IconRegister) {
+     * Icon = par1IconRegister.registerIcon("quiverchevsky:ammo/" +
+     * getIconPath()); iconEmpty =
+     * par1IconRegister.registerIcon("quiverchevsky:ammo/" + getIconPath() +
+     * "_Empty"); }
+     * 
+     * @Override public IIcon getIconFromDamage(int meta) { if (meta ==
+     * this.getMaxDamage()) { return iconEmpty; }
+     * 
+     * return Icon; }
+     */
 
     @Override
     public abstract String getIconPath();
 
     @Override
-    public IIcon getIconFromDamage(int meta) 
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
-	if (meta == this.getMaxDamage()) { return iconEmpty; }
-
-	return Icon;
-    }
-    
-    @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) 
-    {  
-	//if (world.isRemote) { return stack; }				// Not doing this on client side
-	if (stack.getItemDamage() == 0) { return stack; }	// Already fully loaded or player is in Creative mode
-	if(player.capabilities.isCreativeMode)
+	ItemStack stack = player.getHeldItem(hand);
+	if (stack.getItemDamage() == 0)
 	{
-	    if(world.isRemote) Minecraft.getMinecraft().ingameGUI.func_110326_a(I18n.format("quiverchevsky.ammo.nocreative"), false);	
-	    return stack;
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
+	} // Already fully loaded or player is in Creative mode
+	if (player.capabilities.isCreativeMode)
+	{
+	    if (world.isRemote) Minecraft.getMinecraft().ingameGUI
+		    .setOverlayMessage(I18n.format("quiverchevsky.ammo.nocreative"), false);
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	}
-	
-	if (player.isSneaking()) 
-	    this.fill(stack, world, player, sneakFillQuantity);
-	else 
-	    this.fill(stack, world, player, standardFillQuantity);
 
-	return stack;
+	if (player.isSneaking())
+	    this.fill(stack, world, player, sneakFillQuantity);
+	else this.fill(stack, world, player, standardFillQuantity);
+
+	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     protected void fill(ItemStack stack, World world, EntityPlayer player, int amount)
     {
-	if(!hasComponentItems(player, amount))
+	if (!hasComponentItems(player, amount))
 	{
-	    if(world.isRemote) Minecraft.getMinecraft().ingameGUI.func_110326_a(I18n.format("quiverchevsky.ammo.missingitems"), false);
+	    if (world.isRemote) Minecraft.getMinecraft().ingameGUI
+		    .setOverlayMessage(I18n.format("quiverchevsky.ammo.missingitems"), false);
 	    return;
 	}
-	if(consumeComponentItems(player, amount))
-	    stack.setItemDamage(stack.getItemDamage() - amount);
+	if (consumeComponentItems(player, amount)) stack.setItemDamage(stack.getItemDamage() - amount);
     }
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean advancedTooltips) 
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean advancedTooltips)
     {
-	Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".clipstatus", this.getMaxDamage() - stack.getItemDamage(), this.getMaxDamage()));
+	Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".clipstatus",
+		this.getMaxDamage() - stack.getItemDamage(), this.getMaxDamage()));
 	Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".filltext"));
 	Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".description"));
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List list) 	// getSubItems
+    public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> subItems)
     {
-	list.add(new ItemStack(item, 1, 0));
-	list.add(new ItemStack( item, 1, this.getMaxDamage() ));
+	subItems.add(new ItemStack(item, 1, 0));
+	subItems.add(new ItemStack(item, 1, this.getMaxDamage()));
     }
-    
-    @Override
-    public boolean showDurabilityBar(ItemStack stack) { return true; }
 
-    //Does the player have all the items required to refill the magazine? 
+    @Override
+    public boolean showDurabilityBar(ItemStack stack)
+    {
+	return true;
+    }
+
+    // Does the player have all the items required to refill the magazine?
     protected abstract boolean hasComponentItems(EntityPlayer player, int amount);
-    
-    //Consume the items required to refill the magazine.
+
+    // Consume the items required to refill the magazine.
     protected abstract boolean consumeComponentItems(EntityPlayer player, int amount);
 }

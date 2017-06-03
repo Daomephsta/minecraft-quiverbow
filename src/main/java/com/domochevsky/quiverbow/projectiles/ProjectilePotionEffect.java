@@ -5,7 +5,7 @@ import com.domochevsky.quiverbow.Helper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public abstract class ProjectilePotionEffect extends _ProjectileBase
@@ -19,14 +19,16 @@ public abstract class ProjectilePotionEffect extends _ProjectileBase
     }
 
     @Override
-    public void onImpact(MovingObjectPosition hitPos)
+    public void onImpact(RayTraceResult hitPos)
     {
-	hitPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity), (float)this.damage);
-	hitPos.entityHit.hurtResistantTime = 0;	// No immunity frames
-	if (hitPos.entityHit instanceof EntityLivingBase)	// We hit a LIVING living thing!
+	hitPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
+		(float) this.damage);
+	hitPos.entityHit.hurtResistantTime = 0; // No immunity frames
+	if (hitPos.entityHit instanceof EntityLivingBase) // We hit a LIVING
+							  // living thing!
 	{
 	    EntityLivingBase entitylivingbase = (EntityLivingBase) hitPos.entityHit;
-	    for(PotionEffect effect : effects)
+	    for (PotionEffect effect : effects)
 		Helper.applyPotionEffect(entitylivingbase, effect);
 	}
     }

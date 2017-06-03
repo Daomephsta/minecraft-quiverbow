@@ -1,12 +1,12 @@
 package com.domochevsky.quiverbow.ammo;
 
 import com.domochevsky.quiverbow.util.InventoryHelper;
+import com.domochevsky.quiverbow.util.Utils;
 
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.init.*;
 import net.minecraft.item.ItemStack;
 
 public class NeedleMagazine extends AmmoMagazine
@@ -14,8 +14,8 @@ public class NeedleMagazine extends AmmoMagazine
     public NeedleMagazine()
     {
 	super(1, 8);
-	this.setMaxDamage(64);		// Filled with cactus thorns
-	this.setCreativeTab(CreativeTabs.tabCombat);
+	this.setMaxDamage(64); // Filled with cactus thorns
+	this.setCreativeTab(CreativeTabs.COMBAT);
     }
 
     @Override
@@ -24,26 +24,23 @@ public class NeedleMagazine extends AmmoMagazine
 	return "NeedleAmmo";
     }
 
-
     @Override
-    public void addRecipes() 
+    public void addRecipes()
     {
-	GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "x x", "x x", "xix",
-		'x', Items.leather, 
-		'i', Items.iron_ingot
-		);
+	GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "x x", "x x", "xix", 'x', Items.LEATHER,
+		'i', Items.IRON_INGOT);
     }
 
     @Override
     protected boolean hasComponentItems(EntityPlayer player, int amount)
     {
-	return InventoryHelper.hasBlock(player, Blocks.cactus, amount);
+	return InventoryHelper.hasBlock(player, Blocks.CACTUS, amount);
     }
-    
+
     @Override
     protected boolean consumeComponentItems(EntityPlayer player, int amount)
     {
-	player.getEntityWorld().playSoundAtEntity(player, "random.wood_click", 0.5F, 1.3F);
-        return InventoryHelper.consumeBlock(player, Blocks.cactus, amount);
+	Utils.playSoundAtEntityPos(player, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 1.3F);
+	return InventoryHelper.consumeBlock(player, Blocks.CACTUS, amount);
     }
 }

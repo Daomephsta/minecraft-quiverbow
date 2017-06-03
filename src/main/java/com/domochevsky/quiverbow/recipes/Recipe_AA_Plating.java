@@ -12,47 +12,49 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class Recipe_AA_Plating extends ShapelessRecipes implements IRecipe
 {
-	public Recipe_AA_Plating(ItemStack result, List<ItemStack> components) 
+    public Recipe_AA_Plating(ItemStack result, List<ItemStack> components)
+    {
+	super(result, components);
+    }
+
+    @Override
+    public ItemStack getCraftingResult(InventoryCrafting matrix)
+    {
+	ItemStack stack = this.getRecipeOutput().copy();
+	ItemStack previousAA = this.getAAFromMatrix(matrix);
+
+	if (previousAA != null && previousAA.hasTagCompound()) // Copying
+							       // existing
+							       // properties
 	{
-		super(result, components);
+	    stack.setTagCompound((NBTTagCompound) previousAA.getTagCompound().copy());
+	}
+	else // ...or just applying new ones
+	{
+	    stack.setTagCompound(new NBTTagCompound());
 	}
 
-	@Override
-	public ItemStack getCraftingResult(InventoryCrafting matrix)
-    {
-		ItemStack stack = this.getRecipeOutput().copy();
-		ItemStack previousAA = this.getAAFromMatrix(matrix);
-		
-		if (previousAA != null && previousAA.hasTagCompound())	// Copying existing properties
-		{
-			stack.setTagCompound((NBTTagCompound) previousAA.getTagCompound().copy());
-		}
-		else	// ...or just applying new ones
-		{
-			stack.setTagCompound(new NBTTagCompound());
-		}
-		
-		// Apply the new upgrade now
-		stack.getTagCompound().setBoolean("hasHeavyPlatingUpgrade", true);
-		
-        return stack;
+	// Apply the new upgrade now
+	stack.getTagCompound().setBoolean("hasHeavyPlatingUpgrade", true);
+
+	return stack;
     }
-	
-	
-	private ItemStack getAAFromMatrix(InventoryCrafting matrix)
+
+    private ItemStack getAAFromMatrix(InventoryCrafting matrix)
+    {
+	int counter = 0;
+
+	while (counter < matrix.getSizeInventory())
 	{
-		int counter = 0;
-		
-		while (counter < matrix.getSizeInventory())
-		{
-			if (matrix.getStackInSlot(counter) != null && matrix.getStackInSlot(counter).getItem() instanceof PackedUpAA)
-			{
-				return matrix.getStackInSlot(counter);	// Found it
-			}
-			
-			counter += 1;
-		}
-		
-		return null;
+	    if (matrix.getStackInSlot(counter) != null
+		    && matrix.getStackInSlot(counter).getItem() instanceof PackedUpAA)
+	    {
+		return matrix.getStackInSlot(counter); // Found it
+	    }
+
+	    counter += 1;
 	}
+
+	return null;
+    }
 }
