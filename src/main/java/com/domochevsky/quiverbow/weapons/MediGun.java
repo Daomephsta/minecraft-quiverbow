@@ -1,23 +1,22 @@
 package com.domochevsky.quiverbow.weapons;
 
 import java.util.ArrayList;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.oredict.RecipeSorter;
 
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.HealthBeam;
 import com.domochevsky.quiverbow.recipes.Recipe_RayOfHope_Reload;
+import com.domochevsky.quiverbow.util.Utils;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.*;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.*;
+import net.minecraft.world.World;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.RecipeSorter;
 
 public class MediGun extends _WeaponBase
 {
@@ -26,29 +25,25 @@ public class MediGun extends _WeaponBase
 	super("ray_of_hope", 320);
     } // 20 per regen potion, for 2x 8 potions (or 1x 8 Regen 2 potions)
 
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister par1IconRegister)
     {
 	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/MediGun");
 	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/MediGun_Empty");
-    }
+    }*/
 
-    @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
-	if (world.isRemote)
-	{
-	    return stack;
-	} // Not doing this on client side
+	ItemStack stack = player.getHeldItem(hand);
 	if (this.getDamage(stack) >= this.getMaxDamage())
 	{
-	    return stack;
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
 						 // neutral firing function
-	return stack;
+	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
@@ -58,7 +53,7 @@ public class MediGun extends _WeaponBase
 	// Good to go (already verified)
 
 	// SFX
-	entity.world.playSoundAtEntity(entity, "random.fizz", 0.7F, 1.4F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.7F, 1.4F);
 
 	HealthBeam beam = new HealthBeam(entity.world, entity, (float) this.Speed);
 

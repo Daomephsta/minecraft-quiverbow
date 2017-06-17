@@ -3,24 +3,23 @@ package com.domochevsky.quiverbow.weapons;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.ObsidianMagazine;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.OSR_Shot;
 import com.domochevsky.quiverbow.util.Newliner;
+import com.domochevsky.quiverbow.util.Utils;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.*;
+import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.*;
+import net.minecraft.world.World;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -41,35 +40,32 @@ public class OSR extends _WeaponBase
 				 // seconds
     private int Wither_Strength; // 2 dmg per second for 3 seconds = 6 dmg total
 
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister par1IconRegister)
     {
 	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/OSR");
 	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/OSR_Empty");
-    }
+    }*/
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
-	if (world.isRemote)
-	{
-	    return stack;
-	} // Not doing this on client side
+	ItemStack stack = player.getHeldItem(hand);
 	if (this.getDamage(stack) >= this.getMaxDamage())
 	{
-	    return stack;
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
 
 	if (player.isSneaking()) // Dropping the magazine
 	{
 	    this.dropMagazine(world, stack, player);
-	    return stack;
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
 	}
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
 						 // neutral firing function
-	return stack;
+	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
@@ -86,7 +82,7 @@ public class OSR extends _WeaponBase
 
 	// Firing
 	OSR_Shot projectile = new OSR_Shot(world, entity, (float) this.Speed,
-		new PotionEffect(Potion.wither.id, this.Wither_Duration, this.Wither_Strength));
+		new PotionEffect(MobEffects.WITHER, this.Wither_Duration, this.Wither_Strength));
 
 	// Random Damage
 	int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
@@ -102,8 +98,8 @@ public class OSR extends _WeaponBase
 	world.spawnEntity(projectile); // Firing!
 
 	// SFX
-	world.playSoundAtEntity(entity, "random.explode", 0.5F, 1.5F);
-	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), (byte) 3, (byte) 4); // smoke
+	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_GENERIC_EXPLODE, 0.5F, 1.5F);
+	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL, (byte) 4); // smoke
 
 	this.setCooldown(stack, this.Cooldown);
 	if (this.consumeAmmo(stack, entity, 1))
@@ -144,14 +140,14 @@ public class OSR extends _WeaponBase
 	}
 
 	// SFX
-	world.playSoundAtEntity(entity, "random.click", 1.7F, 0.3F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.7F, 0.3F);
     }
 
     @Override
     void doCooldownSFX(World world, Entity entity)
     {
-	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), (byte) 3, (byte) 4); // smoke
-	world.playSoundAtEntity(entity, "random.fizz", 0.5F, 1.2F);
+	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL, (byte) 4); // smoke
+	Utils.playSoundAtEntityPos(entity, SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.5F, 1.2F);
     }
 
     @SideOnly(Side.CLIENT)

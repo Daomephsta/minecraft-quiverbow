@@ -1,31 +1,28 @@
 package com.domochevsky.quiverbow.weapons;
 
-import java.util.List;
+import com.domochevsky.quiverbow.Main;
+import com.domochevsky.quiverbow.projectiles.ScopedPredictive;
+import com.domochevsky.quiverbow.util.InventoryHelper;
+import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraft.client.Minecraft;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
-
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
-
-import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.projectiles.ScopedPredictive;
-import com.domochevsky.quiverbow.util.Utils;
-
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class EnderBow extends _WeaponBase // So archaic... I may have to
 					  // overhaul this at some point.
@@ -39,14 +36,14 @@ public class EnderBow extends _WeaponBase // So archaic... I may have to
     // public String[] bowPullIconNameArray = new String[] {"pulling_0",
     // "pulling_1", "pulling_2"};
 
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     private IIcon pull_0;
 
     @SideOnly(Side.CLIENT)
     private IIcon pull_1;
 
     @SideOnly(Side.CLIENT)
-    private IIcon pull_2;
+    private IIcon pull_2;*/
 
     // @SideOnly(Side.CLIENT)
     // private IIcon[] iconArray;
@@ -60,7 +57,7 @@ public class EnderBow extends _WeaponBase // So archaic... I may have to
 
     private int defaultFOV;
 
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister par1IconRegister)
     {
@@ -127,7 +124,7 @@ public class EnderBow extends _WeaponBase // So archaic... I may have to
 					     // Comes in with metadata
     {
 	return this.itemIcon;
-    }
+    }*/
 
     @Override
     public void addProps(FMLPreInitializationEvent event, Configuration config)
@@ -160,11 +157,11 @@ public class EnderBow extends _WeaponBase // So archaic... I may have to
     }
 
     @Override
-    public void onUpdate(ItemStack stack, World world, Entity entity, int par4, boolean par5)
+    public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected)
     {
 	if (stack.getTagCompound() == null)
 	{
-	    stack.getTagCompound() = new NBTTagCompound();
+	    stack.setTagCompound(new NBTTagCompound());
 
 	    stack.getTagCompound().setBoolean("isZoomed", false);
 	    stack.getTagCompound().setInteger("defaultFOV", 0); // FOV is now
@@ -182,7 +179,7 @@ public class EnderBow extends _WeaponBase // So archaic... I may have to
 	{
 	    EntityPlayer entityplayer = (EntityPlayer) entity;
 
-	    if (entityplayer.inventory.getCurrentItem() != null && entityplayer.inventory.getCurrentItem() == stack) // Step
+	    if (isSelected) // Step
 														     // 2,
 														     // are
 														     // they
@@ -190,7 +187,7 @@ public class EnderBow extends _WeaponBase // So archaic... I may have to
 														     // the
 														     // bow?
 	    {
-		if (entityplayer.isUsingItem()) // step 3, are they using the
+		if (entityplayer.getActiveHand() != null) // step 3, are they using the
 						// bow?
 		{
 		    this.setCurrentZoom(stack, true); // We need to zoom in!
@@ -299,61 +296,65 @@ public class EnderBow extends _WeaponBase // So archaic... I may have to
     }
 
     @Override
-    public void onPlayerStoppedUsing(ItemStack stack, World world, EntityPlayer player, int par4)
+    public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft)
     {
-	int chargeTime = this.getMaxItemUseDuration(stack) - par4;
+	int chargeTime = this.getMaxItemUseDuration(stack) - timeLeft;
 
-	ArrowLooseEvent event = new ArrowLooseEvent(player, stack, chargeTime);
-	MinecraftForge.EVENT_BUS.post(event);
-
-	if (event.isCanceled())
+	if(entityLiving instanceof EntityPlayer)
 	{
-	    return;
-	} // Not having it
+	    EntityPlayer player = (EntityPlayer) entityLiving;
+	    // Either creative mode or infinity enchantment is higher than 0. Not
+	    // using arrows
+	    boolean freeShot = player.capabilities.isCreativeMode;
 
-	chargeTime = event.charge;
+	    ArrowLooseEvent event = new ArrowLooseEvent(player, stack, world, chargeTime, false);
+	    MinecraftForge.EVENT_BUS.post(event);
 
-	// Either creative mode or infinity enchantment is higher than 0. Not
-	// using arrows
-	boolean freeShot = player.capabilities.isCreativeMode;
-
-	if (freeShot || player.inventory.hasItemStack(new ItemStack(Items.ARROW)))
-	{
-	    float f = (float) chargeTime / 20.0F;
-	    f = (f * f + f * 2.0F) / 3.0F;
-
-	    if ((double) f < 0.1D)
+	    if (event.isCanceled())
 	    {
 		return;
-	    }
-	    if (f > 1.0F)
-	    {
-		f = 1.0F;
-	    }
+	    } // Not having it
 
-	    EntityArrow entityarrow = Utils.createArrow(world, player);
+	    chargeTime = event.getCharge();
 
-	    if (f == 1.0F)
+	    if (freeShot || player.inventory.hasItemStack(new ItemStack(Items.ARROW)))
 	    {
-		entityarrow.setIsCritical(true);
+		float f = (float) chargeTime / 20.0F;
+		f = (f * f + f * 2.0F) / 3.0F;
+
+		if ((double) f < 0.1D)
+		{
+		    return;
+		}
+		if (f > 1.0F)
+		{
+		    f = 1.0F;
+		}
+
+		EntityArrow entityarrow = Utils.createArrow(world, player);
+
+		if (f == 1.0F)
+		{
+		    entityarrow.setIsCritical(true);
+		}
+
+		stack.damageItem(1, player);
+		Utils.playSoundAtEntityPos(player, SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+
+		if (freeShot)
+		{
+		    entityarrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
+		}
+		else
+		{
+		    InventoryHelper.consumeItem(player, Items.ARROW, 1);
+		}
+
+		if (!world.isRemote)
+		{
+		    world.spawnEntity(entityarrow);
+		} // pew.
 	    }
-
-	    stack.damageItem(1, player);
-	    world.playSoundAtEntity(player, "random.bow", 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
-
-	    if (freeShot)
-	    {
-		entityarrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
-	    }
-	    else
-	    {
-		player.inventory.consumeInventoryItem(Items.ARROW);
-	    }
-
-	    if (!world.isRemote)
-	    {
-		world.spawnEntity(entityarrow);
-	    } // pew.
 	}
     }
 
@@ -368,9 +369,9 @@ public class EnderBow extends _WeaponBase // So archaic... I may have to
     {
 	return EnumAction.BOW;
     }
-
+    
     @Override
-    public void onUsingTick(ItemStack stack, EntityPlayer player, int count)
+    public void onUsingTick(ItemStack stack, EntityLivingBase player, int count)
     {
 	if (player.world.isRemote)
 	{
@@ -379,8 +380,8 @@ public class EnderBow extends _WeaponBase // So archaic... I may have to
 	    this.shotCounter += 1;
 	    if (this.shotCounter >= Ticks)
 	    {
-		// Only allowing this to happen when the right player uses this
-		if (player.getDisplayName() == this.playerName)
+		// Only allowing this to happen when the right player uses this TODO: replace with OGL rendering
+		if (player.getDisplayName().getUnformattedText().equals(this.playerName))
 		{
 		    ScopedPredictive entityarrow = new ScopedPredictive(player.world, player, 2.0F * 1.5F);
 		    player.world.spawnEntity(entityarrow);
@@ -391,25 +392,26 @@ public class EnderBow extends _WeaponBase // So archaic... I may have to
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
-	ArrowNockEvent event = new ArrowNockEvent(player, stack);
+	ItemStack stack = player.getHeldItem(hand);
+	ArrowNockEvent event = new ArrowNockEvent(player, stack, hand, world, player.capabilities.isCreativeMode);
 	MinecraftForge.EVENT_BUS.post(event);
 	if (event.isCanceled())
 	{
-	    return event.result;
+	    return event.getAction();
 	}
 
 	if (player.capabilities.isCreativeMode || player.inventory.hasItemStack(new ItemStack(Items.ARROW)))
 	{
-	    player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
-	    this.playerName = player.getDisplayName(); // Recording the player
+	    player.setActiveHand(hand);
+	    this.playerName = player.getDisplayName().getUnformattedText(); // Recording the player
 						       // name here, so only
 						       // they can see the
 						       // projectile
 	}
 
-	return stack;
+	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
@@ -430,9 +432,8 @@ public class EnderBow extends _WeaponBase // So archaic... I may have to
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs par2CreativeTabs, List list) // getSubItems
+    public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> subItems)
     {
-	list.add(new ItemStack(item, 1, 0));
+	subItems.add(new ItemStack(item, 1, 0));
     }
 }

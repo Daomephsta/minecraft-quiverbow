@@ -3,20 +3,19 @@ package com.domochevsky.quiverbow.weapons;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-
-import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.RegularArrow;
 import com.domochevsky.quiverbow.util.Newliner;
+import com.domochevsky.quiverbow.util.Utils;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.*;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.*;
+import net.minecraft.world.World;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -30,7 +29,7 @@ public class Crossbow_Double extends _WeaponBase
     }
 
     // Icons
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     public IIcon Icon_Half;
 
     @SideOnly(Side.CLIENT)
@@ -40,9 +39,9 @@ public class Crossbow_Double extends _WeaponBase
 	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/CrossbowDouble");
 	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/CrossbowDouble_Empty");
 	this.Icon_Half = par1IconRegister.registerIcon("quiverchevsky:weapons/CrossbowDouble_Half");
-    }
+    }*/
 
-    @Override
+   /* @Override
     public IIcon getIcon(ItemStack stack, int pass)
     {
 	if (this.getDamage(stack) >= this.getMaxDamage())
@@ -74,23 +73,20 @@ public class Crossbow_Double extends _WeaponBase
 	}
 
 	return this.Icon; // Full, default
-    }
+    }*/
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
-	if (world.isRemote)
-	{
-	    return stack;
-	} // Not doing this on client side
+	ItemStack stack = player.getHeldItem(hand);
 	if (this.getDamage(stack) >= this.getMaxDamage())
 	{
-	    return stack;
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
 						 // neutral firing function
-	return stack;
+	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
@@ -103,7 +99,7 @@ public class Crossbow_Double extends _WeaponBase
 	} // Hasn't cooled down yet
 
 	// SFX
-	world.playSoundAtEntity(entity, "random.bow", 1.0F, 0.5F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 0.5F);
 
 	RegularArrow entityarrow = new RegularArrow(world, entity, (float) this.Speed);
 
@@ -129,7 +125,7 @@ public class Crossbow_Double extends _WeaponBase
     @Override
     void doCooldownSFX(World world, Entity entity) // Server side
     {
-	world.playSoundAtEntity(entity, "random.click", 0.5F, 0.4F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 0.4F);
     }
 
     @SideOnly(Side.CLIENT)

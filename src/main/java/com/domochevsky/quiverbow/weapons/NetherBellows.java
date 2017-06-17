@@ -1,23 +1,21 @@
 package com.domochevsky.quiverbow.weapons;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.LargeNetherrackMagazine;
 import com.domochevsky.quiverbow.projectiles.NetherFire;
+import com.domochevsky.quiverbow.util.Utils;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.*;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.*;
+import net.minecraft.world.World;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class NetherBellows extends _WeaponBase
 {
@@ -33,35 +31,32 @@ public class NetherBellows extends _WeaponBase
     private int Dmg;
     private int FireDur;
 
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister par1IconRegister)
     {
 	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/NetherBellows");
 	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/NetherBellows_Empty");
-    }
+    }*/
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
-	if (world.isRemote)
-	{
-	    return stack;
-	} // Not doing this on client side
+	ItemStack stack = player.getHeldItem(hand);
 	if (this.getDamage(stack) >= this.getMaxDamage())
 	{
-	    return stack;
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
 
 	if (player.isSneaking()) // Dropping the magazine
 	{
 	    this.dropMagazine(world, stack, player);
-	    return stack;
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
 	}
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
 						 // neutral firing function
-	return stack;
+	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
@@ -69,7 +64,7 @@ public class NetherBellows extends _WeaponBase
 									  // side
     {
 	// SFX
-	entity.world.playSoundAtEntity(entity, "random.fizz", 1.0F, 0.3F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.BLOCK_FIRE_EXTINGUISH, 1.0F, 0.3F);
 
 	this.setCooldown(stack, this.Cooldown);
 
@@ -136,7 +131,7 @@ public class NetherBellows extends _WeaponBase
 	}
 
 	// SFX
-	world.playSoundAtEntity(entity, "random.break", 1.0F, 0.5F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F);
     }
 
     @Override

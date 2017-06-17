@@ -1,21 +1,19 @@
 package com.domochevsky.quiverbow.weapons;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PowderKnuckle extends _WeaponBase
 {
@@ -28,27 +26,23 @@ public class PowderKnuckle extends _WeaponBase
 
     private boolean dmgTerrain;
 
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister par1IconRegister)
     {
 	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/PowderKnuckle");
 	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/PowderKnuckle_Empty");
-    }
+    }*/
 
     @Override
-    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
-	    float sideX, float sideY, float sideZ)
+    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand,
+            EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-	if (world.isRemote)
-	{
-	    return false;
-	} // Not doing this on client side
-
+	ItemStack stack = player.getHeldItem(hand);
 	// Right click
 	if (this.getDamage(stack) >= this.getMaxDamage())
 	{
-	    return false;
+	    return EnumActionResult.FAIL;
 	} // Not loaded
 
 	if (!player.capabilities.isCreativeMode)
@@ -56,11 +50,11 @@ public class PowderKnuckle extends _WeaponBase
 	    this.consumeAmmo(stack, player, 1);
 	}
 
-	world.createExplosion(player, x, y, z, (float) this.ExplosionSize, true);
+	world.createExplosion(player, pos.getX(), pos.getY(), pos.getZ(), (float) this.ExplosionSize, true);
 
-	NetHelper.sendParticleMessageToAllPlayers(world, player.getEntityId(), (byte) 3, (byte) 4); // smoke
+	NetHelper.sendParticleMessageToAllPlayers(world, player.getEntityId(), EnumParticleTypes.SMOKE_NORMAL, (byte) 4); // smoke
 
-	return true;
+	return EnumActionResult.SUCCESS;
     }
 
     @Override
@@ -83,7 +77,7 @@ public class PowderKnuckle extends _WeaponBase
 	this.consumeAmmo(stack, entity, 1);
 
 	// SFX
-	NetHelper.sendParticleMessageToAllPlayers(entity.world, player.getEntityId(), (byte) 3, (byte) 4); // smoke
+	NetHelper.sendParticleMessageToAllPlayers(entity.world, player.getEntityId(), EnumParticleTypes.SMOKE_NORMAL, (byte) 4); // smoke
 
 	// Dmg
 	entity.setFire(2); // Setting fire to them for 2 sec, so pigs can drop

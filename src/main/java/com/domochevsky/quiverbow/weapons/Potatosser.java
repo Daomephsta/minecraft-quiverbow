@@ -1,20 +1,19 @@
 package com.domochevsky.quiverbow.weapons;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.PotatoShot;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
+import com.domochevsky.quiverbow.util.Utils;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.*;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.*;
+import net.minecraft.world.World;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class Potatosser extends _WeaponBase
 {
@@ -25,29 +24,26 @@ public class Potatosser extends _WeaponBase
 
     private boolean shouldDrop;
 
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister par1IconRegister)
     {
 	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/Potatosser");
 	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/Potatosser_Empty");
-    }
+    }*/
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
-	if (world.isRemote)
-	{
-	    return stack;
-	} // Not doing this on client side
+	ItemStack stack = player.getHeldItem(hand);
 	if (this.getDamage(stack) >= this.getMaxDamage())
 	{
-	    return stack;
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
 						 // neutral firing function
-	return stack;
+	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
@@ -60,7 +56,7 @@ public class Potatosser extends _WeaponBase
 	} // Hasn't cooled down yet
 
 	// SFX
-	world.playSoundAtEntity(entity, "random.break", 0.7F, 0.4F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ITEM_BREAK, 0.7F, 0.4F);
 
 	// Random Damage
 	int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
@@ -85,7 +81,7 @@ public class Potatosser extends _WeaponBase
     @Override
     void doCooldownSFX(World world, Entity entity) // Server side
     {
-	world.playSoundAtEntity(entity, "random.click", 0.3F, 3.0F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.3F, 3.0F);
     }
 
     @Override

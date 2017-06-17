@@ -1,23 +1,21 @@
 package com.domochevsky.quiverbow.weapons;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.NeedleMagazine;
 import com.domochevsky.quiverbow.projectiles.ProxyThorn;
+import com.domochevsky.quiverbow.util.Utils;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.*;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.*;
+import net.minecraft.world.World;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ProximityNeedler extends _WeaponBase
 {
@@ -35,40 +33,37 @@ public class ProximityNeedler extends _WeaponBase
     private int ThornAmount;
     private double triggerDist;
 
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister par1IconRegister)
     {
 	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/ProxyNeedler");
 	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/ProxyNeedler_Empty");
-    }
+    }*/
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
-	if (world.isRemote)
-	{
-	    return stack;
-	} // Not doing this on client side
+	ItemStack stack = player.getHeldItem(hand);
 	if (this.getDamage(stack) >= this.getMaxDamage())
 	{
-	    return stack;
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
 
 	if (player.isSneaking()) // Dropping the magazine
 	{
 	    this.dropMagazine(world, stack, player);
-	    return stack;
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
 	}
 
 	if (this.getDamage(stack) >= this.getMaxDamage() - 7)
 	{
-	    return stack;
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Doesn't have enough ammo in it)
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
 						 // neutral firing function
-	return stack;
+	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
@@ -85,7 +80,7 @@ public class ProximityNeedler extends _WeaponBase
 	Helper.knockUserBack(entity, this.Kickback); // Kickback
 
 	// SFX
-	world.playSoundAtEntity(entity, "tile.piston.out", 1.0F, 0.3F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 0.3F);
 
 	this.setCooldown(stack, this.Cooldown); // Cooling down now
 
@@ -152,13 +147,13 @@ public class ProximityNeedler extends _WeaponBase
 	}
 
 	// SFX
-	world.playSoundAtEntity(entity, "random.break", 1.0F, 0.3F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.3F);
     }
 
     @Override
     void doCooldownSFX(World world, Entity entity)
     {
-	world.playSoundAtEntity(entity, "random.glass", 0.3F, 0.3F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.BLOCK_GLASS_BREAK, 0.3F, 0.3F);
     }
 
     @Override

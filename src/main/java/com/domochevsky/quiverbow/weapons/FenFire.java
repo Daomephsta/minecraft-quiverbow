@@ -1,57 +1,52 @@
 package com.domochevsky.quiverbow.weapons;
 
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.FenGoop;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
+import com.domochevsky.quiverbow.util.Utils;
 
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.*;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.*;
+import net.minecraft.world.World;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class FenFire extends _WeaponBase
 {
     public FenFire()
     {
 	super("fen_fire", 32);
-	this.setCreativeTab(CreativeTabs.tabTools); // Tool, so on the tool tab
+	this.setCreativeTab(CreativeTabs.TOOLS); // Tool, so on the tool tab
     }
 
     private int FireDur;
     private int LightTick;
 
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister par1IconRegister)
     {
 	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/FenFire");
 	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/FenFire_Empty");
-    }
+    }*/
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
-	if (world.isRemote)
-	{
-	    return stack;
-	} // Not doing this on client side
+	ItemStack stack = player.getHeldItem(hand);
 	if (this.getDamage(stack) >= this.getMaxDamage())
 	{
-	    return stack;
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
 						 // neutral firing function
-	return stack;
+	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
@@ -64,7 +59,7 @@ public class FenFire extends _WeaponBase
 	} // Hasn't cooled down yet
 
 	// SFX
-	world.playSoundAtEntity(entity, "random.bow", 0.7F, 0.3F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ARROW_SHOOT, 0.7F, 0.3F);
 
 	// Firing
 	FenGoop projectile = new FenGoop(world, entity, (float) this.Speed);
@@ -84,7 +79,7 @@ public class FenFire extends _WeaponBase
     @Override
     void doCooldownSFX(World world, Entity entity)
     {
-	world.playSoundAtEntity(entity, "random.click", 0.8F, 2.0F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.8F, 2.0F);
     }
 
     @Override

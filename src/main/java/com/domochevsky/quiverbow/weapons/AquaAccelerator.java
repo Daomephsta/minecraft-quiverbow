@@ -1,11 +1,11 @@
 package com.domochevsky.quiverbow.weapons;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.init.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.RayTraceResult;
@@ -13,9 +13,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
+import net.minecraftforge.fluids.IFluidBlock;
 
 import com.domochevsky.quiverbow.Main;
+import com.domochevsky.quiverbow.AI.AI_Targeting;
 import com.domochevsky.quiverbow.projectiles.WaterShot;
+import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -54,7 +57,7 @@ public class AquaAccelerator extends _WeaponBase
 
 	this.doSingleFire(stack, world, player);	// Handing it over to the neutral firing function
 
-	return return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
+	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
@@ -69,7 +72,7 @@ public class AquaAccelerator extends _WeaponBase
 	} // Hasn't cooled down yet
 
 	// SFX
-	world.playSoundAtEntity(entity, "tile.piston.out", 1.0F, 2.0F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 2.0F);
 
 	// Firing
 	WaterShot projectile = new WaterShot(world, entity, (float) Speed);
@@ -81,7 +84,7 @@ public class AquaAccelerator extends _WeaponBase
 
     private void checkReloadFromWater(ItemStack stack, World world, EntityPlayer player)
     {
-	RayTraceResult movingobjectposition = this.getRayTraceResultFromPlayer(world, player, true);
+	RayTraceResult movingobjectposition = AI_Targeting.getRayTraceResultFromPlayer(world, player, 8.0D);
 	FillBucketEvent event = new FillBucketEvent(player, stack, world, movingobjectposition);
 
 	if (MinecraftForge.EVENT_BUS.post(event))
@@ -89,7 +92,7 @@ public class AquaAccelerator extends _WeaponBase
 	    return;
 	}
 
-	RayTraceResult movObj = this.getRayTraceResultFromPlayer(world, player, true);
+	RayTraceResult movObj = AI_Targeting.getRayTraceResultFromPlayer(world, player, 8.0D);
 
 	if (movObj == null)
 	{
@@ -97,28 +100,23 @@ public class AquaAccelerator extends _WeaponBase
 	} // Didn't click on anything in particular
 	else
 	{
-	    if (movObj.typeOfHit == RayTraceResult.MovingObjectType.BLOCK)
+	    if (movObj.typeOfHit == RayTraceResult.Type.BLOCK)
 	    {
-		int x = movObj.getBlockPos().getX();
-		int y = movObj.getBlockPos().getY();
-		int z = movObj.getBlockPos().getZ();
-
-		if (!world.canMineBlock(player, x, y, z))
+		if (!world.canMineBlockBody(player, movObj.getBlockPos()))
 		{
 		    return;
 		} // Not allowed to mine this, getting out of here
-		if (!player.canPlayerEdit(x, y, z, movObj.sideHit, stack))
+		if (!player.canPlayerEdit(movObj.getBlockPos(), movObj.sideHit, stack))
 		{
 		    return;
 		} // Not allowed to edit this, getting out of here
 
-		Material material = world.getBlock(x, y, z).getMaterial();
-		int meta = world.getBlockMetadata(x, y, z);
+		IBlockState state = world.getBlockState(movObj.getBlockPos());
 
 		// Is this water?
-		if (material == Material.WATER && meta == 0)
+		if (state.getBlock() == Blocks.WATER)
 		{
-		    world.setBlockToAir(x, y, z);
+		    world.setBlockToAir(movObj.getBlockPos());
 		    stack.setItemDamage(0);
 
 		    return;

@@ -6,21 +6,18 @@ import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.EnderAccelerator;
 import com.domochevsky.quiverbow.recipes.Recipe_ERA;
 import com.domochevsky.quiverbow.recipes.Recipe_Weapon;
-
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.init.*;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.DamageSource;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ERA extends _WeaponBase
 {
@@ -34,31 +31,27 @@ public class ERA extends _WeaponBase
 
     private boolean dmgTerrain; // Can our projectile damage terrain?
 
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister par1IconRegister)
     {
 	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/EnderRailgun");
 	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/EnderRailgun_Empty"); // Burnt
 												     // out
-    }
+    }*/
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
-	if (world.isRemote)
-	{
-	    return stack;
-	} // Not doing this on client side
-
+	ItemStack stack = player.getHeldItem(hand);
 	if (stack.getItemDamage() >= stack.getMaxDamage())
 	{
-	    return stack;
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is burnt out
 
 	this.doSingleFire(stack, world, player);
 
-	return stack;
+	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
@@ -98,7 +91,7 @@ public class ERA extends _WeaponBase
 													  // pitching
 													  // up
 
-	    world.playSoundAtEntity(entity, "mob.endermen.portal", stack.getTagCompound().getFloat("accSFX"),
+	    Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ENDERMEN_TELEPORT, stack.getTagCompound().getFloat("accSFX"),
 		    stack.getTagCompound().getFloat("accSFX"));
 	    // mob.endermen.portal
 	    // mob.enderdragon.wings
@@ -158,8 +151,8 @@ public class ERA extends _WeaponBase
 		if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("hasEmeraldMuzzle"))
 		{
 		    // Has a muzzle, so no boom
-		    world.playSoundAtEntity(entity, "random.explode", 2.0F, 0.1F);
-		    NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), (byte) 11, (byte) 6);
+		    Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_GENERIC_EXPLODE, 2.0F, 0.1F);
+		    NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_LARGE, (byte) 6);
 		}
 		else
 		{

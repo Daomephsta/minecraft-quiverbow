@@ -1,25 +1,22 @@
 package com.domochevsky.quiverbow.weapons;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-
-import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.RocketBundle;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.Sabot_Rocket;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
+import com.domochevsky.quiverbow.util.Utils;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.*;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.*;
+import net.minecraft.world.World;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class Mortar_Dragon extends _WeaponBase
 {
@@ -31,7 +28,7 @@ public class Mortar_Dragon extends _WeaponBase
     private int FireDur;
     private double ExplosionSize;
 
-    @SideOnly(Side.CLIENT)
+   /* @SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister par1IconRegister)
     {
@@ -44,23 +41,20 @@ public class Mortar_Dragon extends _WeaponBase
 					     // gets called on client side
     {
 	return this.Icon; // Full, default
-    }
+    }*/
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
-	if (world.isRemote)
-	{
-	    return stack;
-	} // Not doing this on client side
+	ItemStack stack = player.getHeldItem(hand);
 	if (this.getDamage(stack) >= this.getMaxDamage())
 	{
-	    return stack;
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
 						 // neutral firing function
-	return stack;
+	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
@@ -93,10 +87,10 @@ public class Mortar_Dragon extends _WeaponBase
 	world.spawnEntity(projectile); // Firing!
 
 	// SFX
-	world.playSoundAtEntity(entity, "tile.piston.out", 1.0F, 2.0F);
-	world.playSoundAtEntity(entity, "fireworks.launch", 1.0F, 0.5F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 2.0F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_FIREWORK_LAUNCH, 1.0F, 0.5F);
 
-	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), (byte) 11, (byte) 1);
+	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_LARGE, (byte) 1);
 
 	// The parent function will take care of ammo and cooldown
 	this.consumeAmmo(stack, entity, 1);
@@ -106,7 +100,7 @@ public class Mortar_Dragon extends _WeaponBase
     @Override
     void doCooldownSFX(World world, Entity entity) // Server side
     {
-	world.playSoundAtEntity(entity, "random.click", 0.6F, 2.0F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.6F, 2.0F);
     }
 
     @Override

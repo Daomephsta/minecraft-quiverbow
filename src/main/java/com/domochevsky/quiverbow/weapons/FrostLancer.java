@@ -3,22 +3,22 @@ package com.domochevsky.quiverbow.weapons;
 import java.util.Collections;
 import java.util.List;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.ColdIronClip;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.ColdIron;
 import com.domochevsky.quiverbow.util.Newliner;
+import com.domochevsky.quiverbow.util.Utils;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.*;
+import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.*;
+import net.minecraft.world.World;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -39,29 +39,26 @@ public class FrostLancer extends _WeaponBase
     private int Nausea_Str;
     private int Nausea_Dur;
 
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister par1IconRegister)
     {
 	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/FrostLancer");
 	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/FrostLancer_Empty");
-    }
+    }*/
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
-	if (world.isRemote)
-	{
-	    return stack;
-	} // Not doing this on client side
+	ItemStack stack = player.getHeldItem(hand);
 	if (this.getDamage(stack) >= this.getMaxDamage())
 	{
-	    return stack;
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
 						 // neutral firing function
-	return stack;
+	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
@@ -76,8 +73,8 @@ public class FrostLancer extends _WeaponBase
 	Helper.knockUserBack(entity, this.Kickback); // Kickback
 
 	// SFX
-	world.playSoundAtEntity(entity, "random.explode", 0.8F, 1.5F);
-	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), (byte) 3, (byte) 1); // smoke
+	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_GENERIC_EXPLODE, 0.8F, 1.5F);
+	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL, (byte) 1); // smoke
 
 	// Firing
 	ColdIron shot = new ColdIron(world, entity, (float) this.Speed,
@@ -126,8 +123,8 @@ public class FrostLancer extends _WeaponBase
     @Override
     void doCooldownSFX(World world, Entity entity)
     {
-	world.playSoundAtEntity(entity, "random.click", 0.7F, 0.2F);
-	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), (byte) 3, (byte) 1); // smoke
+	Utils.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.7F, 0.2F);
+	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL, (byte) 1); // smoke
     }
 
     @SideOnly(Side.CLIENT)

@@ -3,13 +3,16 @@ package com.domochevsky.quiverbow.weapons;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.BlazeShot;
+import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -25,29 +28,26 @@ public class Crossbow_Blaze extends _WeaponBase
 
     private int FireDur;
 
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister par1IconRegister)
     {
 	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/CrossbowBlaze");
 	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/CrossbowBlaze_Empty");
-    }
+    }*/
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
-	if (world.isRemote)
-	{
-	    return stack;
-	} // Not doing this on client side
+	ItemStack stack = player.getHeldItem(hand);
 	if (this.getDamage(stack) >= this.getMaxDamage())
 	{
-	    return stack;
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
 						 // neutral firing function
-	return stack;
+	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class Crossbow_Blaze extends _WeaponBase
 	} // Hasn't cooled down yet
 
 	// SFX
-	world.playSoundAtEntity(entity, "random.bow", 1.0F, 0.5F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 0.5F);
 
 	// Firing
 	BlazeShot entityarrow = new BlazeShot(world, entity, (float) this.Speed);
@@ -83,8 +83,8 @@ public class Crossbow_Blaze extends _WeaponBase
 	world.spawnEntity(entityarrow); // pew
 
 	// SFX
-	world.playSoundAtEntity(entity, "random.wood_click", 1.0F, 0.5F);
-	world.spawnParticle("smoke", entity.posX, entity.posY + 0.5D, entity.posZ, 0.0D, 0.0D, 0.0D);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.0F, 0.5F);
+	world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, entity.posX, entity.posY + 0.5D, entity.posZ, 0.0D, 0.0D, 0.0D);
 
 	this.consumeAmmo(stack, entity, 1);
 	this.setCooldown(stack, 10);

@@ -1,23 +1,24 @@
 package com.domochevsky.quiverbow.weapons;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Items;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.ItemStack;
-
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.event.entity.player.ArrowLooseEvent;
-import net.minecraftforge.event.entity.player.ArrowNockEvent;
-
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.ArrowBundle;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 import com.domochevsky.quiverbow.util.Utils;
 
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.EnumAction;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.*;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.event.entity.player.ArrowLooseEvent;
+import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -36,7 +37,7 @@ public class QuiverBow extends _WeaponBase
     String name = "Bow with Quiver";
 
     @SideOnly(Side.CLIENT)
-    private IIcon pull_0;
+  /*  private IIcon pull_0;
 
     @SideOnly(Side.CLIENT)
     private IIcon pull_1;
@@ -112,14 +113,10 @@ public class QuiverBow extends _WeaponBase
 	}
 
 	return this.itemIcon;
-    }
-
-    @Override
-    public void onPlayerStoppedUsing(ItemStack stack, World par2World, EntityPlayer par3EntityPlayer, int par4)
+    }*/
+    public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft)
     {
-	if (!par2World.isRemote)
-	{
-	    int j = this.getMaxItemUseDuration(stack) - par4; // Reduces the
+	    int j = this.getMaxItemUseDuration(stack) - timeLeft; // Reduces the
 							      // durability by
 							      // the
 							      // ItemInUseCount
@@ -127,13 +124,16 @@ public class QuiverBow extends _WeaponBase
 							      // anything that
 							      // isn't a tool)
 
-	    ArrowLooseEvent event = new ArrowLooseEvent(par3EntityPlayer, stack, j);
+	    if(entityLiving instanceof EntityPlayer)
+	    {
+		ArrowLooseEvent event = new ArrowLooseEvent((EntityPlayer) entityLiving, stack, world, j, false);
 	    MinecraftForge.EVENT_BUS.post(event);
 	    if (event.isCanceled())
 	    {
 		return;
 	    }
-	    j = event.charge;
+	    j = event.getCharge();
+    }
 
 	    if (this.getDamage(stack) == this.getMaxDamage())
 	    {
@@ -152,16 +152,16 @@ public class QuiverBow extends _WeaponBase
 		f = 1.0F;
 	    }
 
-	    EntityArrow entityarrow = Utils.createArrow(par2World, par3EntityPlayer);
+	    EntityArrow entityarrow = Utils.createArrow(world, entityLiving);
 	    if (f == 1.0F)
 	    {
 		entityarrow.setIsCritical(true);
 	    }
 
-	    par2World.playSoundAtEntity(par3EntityPlayer, "random.bow", 1.0F,
+	    Utils.playSoundAtEntityPos(entityLiving, SoundEvents.ENTITY_ARROW_SHOOT, 1.0F,
 		    1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
-	    if (par3EntityPlayer.capabilities.isCreativeMode)
+	    if (entityLiving instanceof EntityPlayer && ((EntityPlayer)entityLiving).capabilities.isCreativeMode)
 	    {
 		entityarrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
 	    }
@@ -175,28 +175,27 @@ public class QuiverBow extends _WeaponBase
 								// bar
 	    }
 
-	    par2World.spawnEntity(entityarrow);
-
-	}
+	    world.spawnEntity(entityarrow);
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
-	ArrowNockEvent event = new ArrowNockEvent(player, stack);
+	ItemStack stack = player.getHeldItem(hand);
+	ArrowNockEvent event = new ArrowNockEvent(player, stack, hand, world, false);
 	MinecraftForge.EVENT_BUS.post(event);
 	if (event.isCanceled())
 	{
-	    return event.result;
+	    return event.getAction();
 	}
 
 	// Are there any arrows in the quiver?
 	if (this.getDamage(stack) < this.getMaxDamage())
 	{
-	    player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
+	    player.setActiveHand(hand);
 	}
 
-	return stack;
+	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override

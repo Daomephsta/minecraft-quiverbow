@@ -1,59 +1,54 @@
 package com.domochevsky.quiverbow.weapons;
 
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.BoxOfFlintDust;
 import com.domochevsky.quiverbow.projectiles.FlintDust;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
+import com.domochevsky.quiverbow.util.Utils;
 
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.*;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.*;
+import net.minecraft.world.World;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class FlintDuster extends _WeaponBase
 {
     public FlintDuster()
     {
 	super("flint_duster", 256);
-	this.setCreativeTab(CreativeTabs.tabTools); // Tool, so on the tool tab
+	this.setCreativeTab(CreativeTabs.TOOLS); // Tool, so on the tool tab
     }
 
     private int Dmg;
     private int MaxBlocks;
 
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister par1IconRegister)
     {
 	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/FlintDrill");
 	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/FlintDrill_Empty");
-    }
+    }*/
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
-	if (world.isRemote)
-	{
-	    return stack;
-	} // Not doing this on client side
+	ItemStack stack = player.getHeldItem(hand);
 	if (this.getDamage(stack) >= this.getMaxDamage())
 	{
-	    return stack;
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
 						 // neutral firing function
-	return stack;
+	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
@@ -63,7 +58,7 @@ public class FlintDuster extends _WeaponBase
 	// Ignoring cooldown for firing purposes
 
 	// SFX
-	world.playSoundAtEntity(entity, "mob.bat.takeoff", 0.5F, 0.6F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_BAT_TAKEOFF, 0.5F, 0.6F);
 
 	// Ready
 	FlintDust shot = new FlintDust(world, entity, (float) this.Speed);

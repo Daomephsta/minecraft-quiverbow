@@ -2,6 +2,7 @@ package com.domochevsky.quiverbow.weapons;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,9 +11,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldSettings;
+import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.*;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.world.BlockEvent;
@@ -38,36 +39,32 @@ public class PowderKnuckle_Mod extends _WeaponBase
 
     private boolean dmgTerrain;
 
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister par1IconRegister)
     {
 	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/PowderKnuckle_Modified");
 	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/PowderKnuckle_Modified_Empty");
-    }
+    }*/
 
     @Override
-    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
-	    float sideX, float sideY, float sideZ)
+    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand,
+            EnumFacing facing, float hitX, float hitY, float hitZ)
     {
-	if (world.isRemote)
-	{
-	    return false;
-	} // Not doing this on client side
-
+	ItemStack stack = player.getHeldItem(hand);
 	// Right click
 	if (this.getDamage(stack) >= this.getMaxDamage())
 	{
-	    return false;
+	    return EnumActionResult.FAIL;
 	} // Not loaded
 
 	this.consumeAmmo(stack, player, 1);
 
 	// SFX
-	NetHelper.sendParticleMessageToAllPlayers(world, player.getEntityId(), (byte) 3, (byte) 4); // smoke
+	NetHelper.sendParticleMessageToAllPlayers(world, player.getEntityId(), EnumParticleTypes.SMOKE_NORMAL, (byte) 4); // smoke
 
 	// Dmg
-	world.createExplosion(player, x, y, z, (float) this.ExplosionSize, true); // 4.0F
+	world.createExplosion(player, pos.getX(), pos.getY(), pos.getZ(), (float) this.ExplosionSize, true); // 4.0F
 										  // is
 										  // TNT
 
@@ -78,7 +75,7 @@ public class PowderKnuckle_Mod extends _WeaponBase
 	    {
 		for (int zAxis = -1; zAxis <= 1; zAxis++) // Along the z axis
 		{
-		    this.doMining(world, (EntityPlayerMP) player, x + xAxis, y + yAxis, z + zAxis); // That
+		    this.doMining(world, (EntityPlayerMP) player, pos.add(xAxis, yAxis, zAxis)); // That
 												    // should
 												    // give
 												    // me
@@ -94,7 +91,7 @@ public class PowderKnuckle_Mod extends _WeaponBase
 	    }
 	}
 
-	return true;
+	return EnumActionResult.SUCCESS;
     }
 
     @Override
@@ -117,7 +114,7 @@ public class PowderKnuckle_Mod extends _WeaponBase
 	this.consumeAmmo(stack, entity, 1);
 
 	// SFX
-	NetHelper.sendParticleMessageToAllPlayers(entity.world, player.getEntityId(), (byte) 3, (byte) 4); // smoke
+	NetHelper.sendParticleMessageToAllPlayers(entity.world, player.getEntityId(), EnumParticleTypes.SMOKE_NORMAL, (byte) 4); // smoke
 
 	// Dmg
 	entity.world.createExplosion(player, entity.posX, entity.posY + 0.5D, entity.posZ, (float) this.ExplosionSize,
@@ -135,7 +132,7 @@ public class PowderKnuckle_Mod extends _WeaponBase
 	return false;
     }
 
-    void doMining(World world, EntityPlayerMP player, int x, int y, int z) // Calling
+    void doMining(World world, EntityPlayerMP player, BlockPos pos) // Calling
 									   // this
 									   // 27
 									   // times,
@@ -146,15 +143,14 @@ public class PowderKnuckle_Mod extends _WeaponBase
 									   // 3x3x3
 									   // area
     {
-	Block toBeBroken = world.getBlock(x, y, z);
-	int meta = world.getBlockMetadata(x, y, z);
+	IBlockState toBeBroken = world.getBlockState(pos);
 
-	if (toBeBroken.getBlockHardness(world, x, y, z) == -1)
+	if (toBeBroken.getBlockHardness(world, pos) == -1)
 	{
 	    return;
 	} // Unbreakable
 
-	if (toBeBroken.getHarvestLevel(meta) > 1)
+	if (toBeBroken.getBlock().getHarvestLevel(toBeBroken) > 1)
 	{
 	    return;
 	}
@@ -200,45 +196,13 @@ public class PowderKnuckle_Mod extends _WeaponBase
 	{
 	    return;
 	}
-
-	// Crashing blocks: Redstone Lamp, Extended Piston
-	// They're likely trying to drop things that cannot be dropped (active
-	// states of themselves)
-
-	// WorldSettings.GameType gametype =
-	// WorldSettings.GameType.getByName("survival");
-	WorldSettings.GameType gametype = world.getWorldInfo().getGameType();
-	BlockEvent.BreakEvent event = ForgeHooks.onBlockBreakEvent(world, gametype, player, x, y, z);
-
-	if (event.isCanceled())
+	GameType gametype = world.getWorldInfo().getGameType();
+	int result = ForgeHooks.onBlockBreakEvent(world, gametype, player, pos);
+	if (result == -1)
 	{
 	    return;
 	} // Not allowed to do this
-
-	// toBeBroken.dropBlockAsItem(world, x, x, z, meta, 0); // The last one
-	// is Fortune
-
-	boolean removalSuccess = world.setBlockToAir(x, y, z);
-	if (removalSuccess)
-	{
-	    toBeBroken.onBlockDestroyedByPlayer(world, x, y, z, meta);
-	}
-
-	Item preBlockItem = toBeBroken.getItemDropped(meta, player.getRNG(), 0);
-
-	if (preBlockItem == null)
-	{
-	    return;
-	} // Item doesn't exist
-
-	ItemStack blockItem = new ItemStack(preBlockItem);
-
-	blockItem.setItemDamage(meta);
-
-	EntityItem entityItem = new EntityItem(world, x, y + 0.5d, z, blockItem);
-	entityItem.delayBeforeCanPickup = 10;
-
-	world.spawnEntity(entityItem);
+	world.destroyBlock(pos, true);
     }
 
     @Override

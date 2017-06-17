@@ -1,24 +1,22 @@
 package com.domochevsky.quiverbow.weapons;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.RedstoneMagazine;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.RedLight;
+import com.domochevsky.quiverbow.util.Utils;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.*;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.*;
+import net.minecraft.world.World;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class LightningRed extends _WeaponBase
 {
@@ -35,40 +33,37 @@ public class LightningRed extends _WeaponBase
     private int PassThroughMax;
     private int MaxTicks;
 
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister par1IconRegister)
     {
 	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/LightningRed");
 	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/LightningRed_Empty");
-    }
+    }*/
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
-	if (world.isRemote)
-	{
-	    return stack;
-	} // Not doing this on client side
+	ItemStack stack = player.getHeldItem(hand);
 	if (this.getDamage(stack) >= this.getMaxDamage())
 	{
-	    return stack;
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
 
 	if (player.isSneaking()) // Dropping the magazine
 	{
 	    this.dropMagazine(world, stack, player);
-	    return stack;
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
 	}
 
 	if (this.getDamage(stack) >= this.getMaxDamage() - 3)
 	{
-	    return stack;
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Needs at least 4 redstone per shot
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
 						 // neutral firing function
-	return stack;
+	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
@@ -83,10 +78,10 @@ public class LightningRed extends _WeaponBase
 	Helper.knockUserBack(entity, this.Kickback); // Kickback
 
 	// SFX
-	world.playSoundAtEntity(entity, "ambient.weather.thunder", 1.0F, 0.5F);
-	world.playSoundAtEntity(entity, "fireworks.blast", 2.0F, 0.1F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_LIGHTNING_THUNDER, 1.0F, 0.5F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_FIREWORK_BLAST, 2.0F, 0.1F);
 
-	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), (byte) 10, (byte) 4);
+	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.REDSTONE, (byte) 4);
 
 	// Firing
 	RedLight shot = new RedLight(world, entity, (float) this.Speed);
@@ -149,14 +144,14 @@ public class LightningRed extends _WeaponBase
 	}
 
 	// SFX
-	world.playSoundAtEntity(entity, "random.break", 1.0F, 0.5F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F);
     }
 
     @Override
     void doCooldownSFX(World world, Entity entity) // Server side. Only done
 						   // when held
     {
-	world.playSoundAtEntity(entity, "random.fizz", 0.7F, 0.2F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, 0.7F, 0.2F);
     }
 
     @Override

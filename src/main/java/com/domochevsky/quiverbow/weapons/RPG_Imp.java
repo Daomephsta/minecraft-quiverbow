@@ -2,9 +2,9 @@ package com.domochevsky.quiverbow.weapons;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.init.*;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 
@@ -12,6 +12,7 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.LargeRocket;
 import com.domochevsky.quiverbow.projectiles.BigRocket;
+import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -28,29 +29,26 @@ public class RPG_Imp extends _WeaponBase
     public double ExplosionSize;
     private boolean dmgTerrain; // Can our projectile damage terrain?
 
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     @Override
     public void registerIcons(IIconRegister par1IconRegister)
     {
 	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/RPG_Improved");
 	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/RPG_Improved_Empty");
-    }
+    }*/
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
-	if (world.isRemote)
-	{
-	    return stack;
-	} // Not doing this on client side
+	ItemStack stack = player.getHeldItem(hand);
 	if (this.getDamage(stack) >= this.getMaxDamage())
 	{
-	    return stack;
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
 						 // neutral firing function
-	return stack;
+	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
@@ -75,7 +73,7 @@ public class RPG_Imp extends _WeaponBase
 	world.spawnEntity(rocket); // shoom.
 
 	// SFX
-	world.playSoundAtEntity(entity, "fireworks.launch", 2.0F, 0.6F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_FIREWORK_LAUNCH, 2.0F, 0.6F);
 
 	this.consumeAmmo(stack, entity, 1);
 	this.setCooldown(stack, 60);

@@ -2,11 +2,10 @@ package com.domochevsky.quiverbow.weapons;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import net.minecraft.init.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 
@@ -14,6 +13,7 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.ArrowBundle;
 import com.domochevsky.quiverbow.projectiles.RegularArrow;
+import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -27,7 +27,7 @@ public class Crossbow_Auto extends _WeaponBase
 	super("auto_crossbow", 8);
     }
 
-    @SideOnly(Side.CLIENT)
+    /*@SideOnly(Side.CLIENT)
     public IIcon Icon_Unchambered; // Only relevant if you're using the
 				   // non-model version
 
@@ -57,18 +57,15 @@ public class Crossbow_Auto extends _WeaponBase
 	} // Not chambered
 
 	return this.Icon;
-    }
+    }*/
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
-	if (world.isRemote)
-	{
-	    return stack;
-	} // Not doing this on client side
+	ItemStack stack = player.getHeldItem(hand);
 	if (this.getDamage(stack) >= this.getMaxDamage())
 	{
-	    return stack;
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
 
 	if (!this.getChambered(stack)) // No arrow on the rail
@@ -78,18 +75,18 @@ public class Crossbow_Auto extends _WeaponBase
 		this.setChambered(stack, world, player, true);
 	    } // Setting up a new arrow
 
-	    return stack; // Done here either way
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
 	}
 
 	if (player.isSneaking())
 	{
-	    return stack;
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Still sneaking, even though you have an arrow on the rail? Not
 	  // having it
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
 						 // neutral firing function
-	return stack;
+	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
@@ -102,7 +99,7 @@ public class Crossbow_Auto extends _WeaponBase
 	} // Hasn't cooled down yet
 
 	// SFX
-	world.playSoundAtEntity(entity, "random.bow", 1.0F, 0.5F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 0.5F);
 
 	RegularArrow entityarrow = new RegularArrow(world, entity, (float) this.Speed);
 
@@ -149,7 +146,7 @@ public class Crossbow_Auto extends _WeaponBase
 								  // again
 
 	// SFX
-	world.playSoundAtEntity(entity, "random.click", 0.8F, 0.5F);
+	Utils.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.8F, 0.5F);
     }
 
     @Override
