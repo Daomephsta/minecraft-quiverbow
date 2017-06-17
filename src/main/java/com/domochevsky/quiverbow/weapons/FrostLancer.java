@@ -39,13 +39,16 @@ public class FrostLancer extends _WeaponBase
     private int Nausea_Str;
     private int Nausea_Dur;
 
-    /*@SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/FrostLancer");
-	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/FrostLancer_Empty");
-    }*/
+    /*
+     * @SideOnly(Side.CLIENT)
+     * 
+     * @Override public void registerIcons(IIconRegister par1IconRegister) {
+     * this.Icon =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/FrostLancer");
+     * this.Icon_Empty =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/FrostLancer_Empty");
+     * }
+     */
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
@@ -74,7 +77,8 @@ public class FrostLancer extends _WeaponBase
 
 	// SFX
 	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_GENERIC_EXPLODE, 0.8F, 1.5F);
-	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL, (byte) 1); // smoke
+	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+		(byte) 1); // smoke
 
 	// Firing
 	ColdIron shot = new ColdIron(world, entity, (float) this.Speed,
@@ -124,7 +128,8 @@ public class FrostLancer extends _WeaponBase
     void doCooldownSFX(World world, Entity entity)
     {
 	Utils.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.7F, 0.2F);
-	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL, (byte) 1); // smoke
+	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+		(byte) 1); // smoke
     }
 
     @SideOnly(Side.CLIENT)

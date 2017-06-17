@@ -39,17 +39,19 @@ public class PowderKnuckle_Mod extends _WeaponBase
 
     private boolean dmgTerrain;
 
-    /*@SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/PowderKnuckle_Modified");
-	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/PowderKnuckle_Modified_Empty");
-    }*/
+    /*
+     * @SideOnly(Side.CLIENT)
+     * 
+     * @Override public void registerIcons(IIconRegister par1IconRegister) {
+     * this.Icon = par1IconRegister.registerIcon(
+     * "quiverchevsky:weapons/PowderKnuckle_Modified"); this.Icon_Empty =
+     * par1IconRegister.registerIcon(
+     * "quiverchevsky:weapons/PowderKnuckle_Modified_Empty"); }
+     */
 
     @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand,
-            EnumFacing facing, float hitX, float hitY, float hitZ)
+    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing,
+	    float hitX, float hitY, float hitZ)
     {
 	ItemStack stack = player.getHeldItem(hand);
 	// Right click
@@ -61,12 +63,13 @@ public class PowderKnuckle_Mod extends _WeaponBase
 	this.consumeAmmo(stack, player, 1);
 
 	// SFX
-	NetHelper.sendParticleMessageToAllPlayers(world, player.getEntityId(), EnumParticleTypes.SMOKE_NORMAL, (byte) 4); // smoke
+	NetHelper.sendParticleMessageToAllPlayers(world, player.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+		(byte) 4); // smoke
 
 	// Dmg
 	world.createExplosion(player, pos.getX(), pos.getY(), pos.getZ(), (float) this.ExplosionSize, true); // 4.0F
-										  // is
-										  // TNT
+	// is
+	// TNT
 
 	// Mining
 	for (int xAxis = -1; xAxis <= 1; xAxis++) // Along the x axis
@@ -76,17 +79,17 @@ public class PowderKnuckle_Mod extends _WeaponBase
 		for (int zAxis = -1; zAxis <= 1; zAxis++) // Along the z axis
 		{
 		    this.doMining(world, (EntityPlayerMP) player, pos.add(xAxis, yAxis, zAxis)); // That
-												    // should
-												    // give
-												    // me
-												    // 3
-												    // iterations
-												    // of
-												    // each
-												    // axis
-												    // on
-												    // every
-												    // level
+												 // should
+												 // give
+												 // me
+												 // 3
+												 // iterations
+												 // of
+												 // each
+												 // axis
+												 // on
+												 // every
+												 // level
 		}
 	    }
 	}
@@ -114,7 +117,8 @@ public class PowderKnuckle_Mod extends _WeaponBase
 	this.consumeAmmo(stack, entity, 1);
 
 	// SFX
-	NetHelper.sendParticleMessageToAllPlayers(entity.world, player.getEntityId(), EnumParticleTypes.SMOKE_NORMAL, (byte) 4); // smoke
+	NetHelper.sendParticleMessageToAllPlayers(entity.world, player.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+		(byte) 4); // smoke
 
 	// Dmg
 	entity.world.createExplosion(player, entity.posX, entity.posY + 0.5D, entity.posZ, (float) this.ExplosionSize,
@@ -133,15 +137,15 @@ public class PowderKnuckle_Mod extends _WeaponBase
     }
 
     void doMining(World world, EntityPlayerMP player, BlockPos pos) // Calling
-									   // this
-									   // 27
-									   // times,
-									   // to
-									   // blast
-									   // mine
-									   // a
-									   // 3x3x3
-									   // area
+								    // this
+								    // 27
+								    // times,
+								    // to
+								    // blast
+								    // mine
+								    // a
+								    // 3x3x3
+								    // area
     {
 	IBlockState toBeBroken = world.getBlockState(pos);
 

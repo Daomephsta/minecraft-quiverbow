@@ -519,7 +519,7 @@ public class Entity_AA extends EntityLiving
 	    return true;
 	} // Client side. Doesn't have the same info, so makes a different
 	  // decision. Ugh.
-	// They'll just shoot when trying to equip this with a weapon
+	  // They'll just shoot when trying to equip this with a weapon
 	if (!player.getDisplayName().equals(this.ownerName))
 	{
 	    return false;

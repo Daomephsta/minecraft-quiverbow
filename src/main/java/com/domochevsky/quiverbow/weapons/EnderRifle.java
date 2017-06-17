@@ -27,13 +27,16 @@ public class EnderRifle extends _WeaponBase
     public int ZoomMax;
     private double DmgIncrease;
 
-    /*@SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/EnderRifle");
-	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/EnderRifle_Empty");
-    }*/
+    /*
+     * @SideOnly(Side.CLIENT)
+     * 
+     * @Override public void registerIcons(IIconRegister par1IconRegister) {
+     * this.Icon =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/EnderRifle");
+     * this.Icon_Empty =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/EnderRifle_Empty");
+     * }
+     */
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
@@ -77,7 +80,8 @@ public class EnderRifle extends _WeaponBase
 
 	// SFX
 	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F);
-	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL, (byte) 1); // smoke
+	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+		(byte) 1); // smoke
 
 	this.consumeAmmo(stack, entity, 1);
 	this.setCooldown(stack, this.Cooldown);
@@ -107,7 +111,8 @@ public class EnderRifle extends _WeaponBase
     void doCooldownSFX(World world, Entity entity)
     {
 	Utils.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.7F, 0.2F);
-	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL, (byte) 1); // smoke
+	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+		(byte) 1); // smoke
     }
 
     @Override

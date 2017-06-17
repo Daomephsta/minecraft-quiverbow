@@ -33,13 +33,16 @@ public class ProximityNeedler extends _WeaponBase
     private int ThornAmount;
     private double triggerDist;
 
-    /*@SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/ProxyNeedler");
-	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/ProxyNeedler_Empty");
-    }*/
+    /*
+     * @SideOnly(Side.CLIENT)
+     * 
+     * @Override public void registerIcons(IIconRegister par1IconRegister) {
+     * this.Icon =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/ProxyNeedler");
+     * this.Icon_Empty =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/ProxyNeedler_Empty")
+     * ; }
+     */
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)

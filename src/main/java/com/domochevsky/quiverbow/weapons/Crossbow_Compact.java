@@ -21,13 +21,15 @@ public class Crossbow_Compact extends _WeaponBase
 	super("compact_crossbow", 1);
     }
 
-    /*@SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/Crossbow");
-	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/Crossbow_Empty");
-    }*/
+    /*
+     * @SideOnly(Side.CLIENT)
+     * 
+     * @Override public void registerIcons(IIconRegister par1IconRegister) {
+     * this.Icon =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/Crossbow");
+     * this.Icon_Empty =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/Crossbow_Empty"); }
+     */
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)

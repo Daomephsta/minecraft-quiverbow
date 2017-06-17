@@ -31,19 +31,22 @@ public class ThornSpitter extends _WeaponBase
 						// the magazine
     }
 
-    /*@SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/ThornSpitter");
-	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/ThornSpitter_Empty");
-    }*/
+    /*
+     * @SideOnly(Side.CLIENT)
+     * 
+     * @Override public void registerIcons(IIconRegister par1IconRegister) {
+     * this.Icon =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/ThornSpitter");
+     * this.Icon_Empty =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/ThornSpitter_Empty")
+     * ; }
+     */
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) 
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);
-	
+
 	if (this.getDamage(stack) >= this.getMaxDamage())
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);

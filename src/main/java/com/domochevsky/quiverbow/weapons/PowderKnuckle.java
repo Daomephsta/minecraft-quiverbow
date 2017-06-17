@@ -26,17 +26,20 @@ public class PowderKnuckle extends _WeaponBase
 
     private boolean dmgTerrain;
 
-    /*@SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/PowderKnuckle");
-	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/PowderKnuckle_Empty");
-    }*/
+    /*
+     * @SideOnly(Side.CLIENT)
+     * 
+     * @Override public void registerIcons(IIconRegister par1IconRegister) {
+     * this.Icon =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/PowderKnuckle");
+     * this.Icon_Empty =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/PowderKnuckle_Empty"
+     * ); }
+     */
 
     @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand,
-            EnumFacing facing, float hitX, float hitY, float hitZ)
+    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing,
+	    float hitX, float hitY, float hitZ)
     {
 	ItemStack stack = player.getHeldItem(hand);
 	// Right click
@@ -52,7 +55,8 @@ public class PowderKnuckle extends _WeaponBase
 
 	world.createExplosion(player, pos.getX(), pos.getY(), pos.getZ(), (float) this.ExplosionSize, true);
 
-	NetHelper.sendParticleMessageToAllPlayers(world, player.getEntityId(), EnumParticleTypes.SMOKE_NORMAL, (byte) 4); // smoke
+	NetHelper.sendParticleMessageToAllPlayers(world, player.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+		(byte) 4); // smoke
 
 	return EnumActionResult.SUCCESS;
     }
@@ -77,7 +81,8 @@ public class PowderKnuckle extends _WeaponBase
 	this.consumeAmmo(stack, entity, 1);
 
 	// SFX
-	NetHelper.sendParticleMessageToAllPlayers(entity.world, player.getEntityId(), EnumParticleTypes.SMOKE_NORMAL, (byte) 4); // smoke
+	NetHelper.sendParticleMessageToAllPlayers(entity.world, player.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+		(byte) 4); // smoke
 
 	// Dmg
 	entity.setFire(2); // Setting fire to them for 2 sec, so pigs can drop

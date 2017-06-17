@@ -29,51 +29,37 @@ public class Crossbow_Double extends _WeaponBase
     }
 
     // Icons
-    /*@SideOnly(Side.CLIENT)
-    public IIcon Icon_Half;
+    /*
+     * @SideOnly(Side.CLIENT) public IIcon Icon_Half;
+     * 
+     * @SideOnly(Side.CLIENT)
+     * 
+     * @Override public void registerIcons(IIconRegister par1IconRegister) {
+     * this.Icon =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/CrossbowDouble");
+     * this.Icon_Empty = par1IconRegister.registerIcon(
+     * "quiverchevsky:weapons/CrossbowDouble_Empty"); this.Icon_Half =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/CrossbowDouble_Half"
+     * ); }
+     */
 
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/CrossbowDouble");
-	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/CrossbowDouble_Empty");
-	this.Icon_Half = par1IconRegister.registerIcon("quiverchevsky:weapons/CrossbowDouble_Half");
-    }*/
-
-   /* @Override
-    public IIcon getIcon(ItemStack stack, int pass)
-    {
-	if (this.getDamage(stack) >= this.getMaxDamage())
-	{
-	    return this.Icon_Empty;
-	} // Empty
-	if (this.getDamage(stack) == 1)
-	{
-	    return this.Icon_Half;
-	} // One arrow on the bay
-
-	return this.Icon;
-    }
-    // This is for on-hand display. Only gets called on client side. Ideally
-    // won't get used at all once models are fully integrated
-
-    @Override
-    public IIcon getIconFromDamage(int meta) // This is for inventory display.
-					     // Comes in with metadata. Only
-					     // gets called on client side
-    {
-	if (meta == this.getMaxDamage())
-	{
-	    return this.Icon_Empty;
-	} // Empty
-	if (meta == 1)
-	{
-	    return this.Icon_Half;
-	}
-
-	return this.Icon; // Full, default
-    }*/
+    /*
+     * @Override public IIcon getIcon(ItemStack stack, int pass) { if
+     * (this.getDamage(stack) >= this.getMaxDamage()) { return this.Icon_Empty;
+     * } // Empty if (this.getDamage(stack) == 1) { return this.Icon_Half; } //
+     * One arrow on the bay
+     * 
+     * return this.Icon; } // This is for on-hand display. Only gets called on
+     * client side. Ideally // won't get used at all once models are fully
+     * integrated
+     * 
+     * @Override public IIcon getIconFromDamage(int meta) // This is for
+     * inventory display. // Comes in with metadata. Only // gets called on
+     * client side { if (meta == this.getMaxDamage()) { return this.Icon_Empty;
+     * } // Empty if (meta == 1) { return this.Icon_Half; }
+     * 
+     * return this.Icon; // Full, default }
+     */
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)

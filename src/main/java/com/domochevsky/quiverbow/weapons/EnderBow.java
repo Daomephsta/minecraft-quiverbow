@@ -36,14 +36,13 @@ public class EnderBow extends _WeaponBase // So archaic... I may have to
     // public String[] bowPullIconNameArray = new String[] {"pulling_0",
     // "pulling_1", "pulling_2"};
 
-    /*@SideOnly(Side.CLIENT)
-    private IIcon pull_0;
-
-    @SideOnly(Side.CLIENT)
-    private IIcon pull_1;
-
-    @SideOnly(Side.CLIENT)
-    private IIcon pull_2;*/
+    /*
+     * @SideOnly(Side.CLIENT) private IIcon pull_0;
+     * 
+     * @SideOnly(Side.CLIENT) private IIcon pull_1;
+     * 
+     * @SideOnly(Side.CLIENT) private IIcon pull_2;
+     */
 
     // @SideOnly(Side.CLIENT)
     // private IIcon[] iconArray;
@@ -57,74 +56,43 @@ public class EnderBow extends _WeaponBase // So archaic... I may have to
 
     private int defaultFOV;
 
-    /*@SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-	this.itemIcon = par1IconRegister.registerIcon("quiverchevsky:weapons/EnderBow_idle");
-
-	this.pull_0 = par1IconRegister.registerIcon("quiverchevsky:weapons/EnderBow_pulling_0");
-	this.pull_1 = par1IconRegister.registerIcon("quiverchevsky:weapons/EnderBow_pulling_1");
-	this.pull_2 = par1IconRegister.registerIcon("quiverchevsky:weapons/EnderBow_pulling_2");
-    }
-
-    @Override
-    public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
-    {
-	if (player.getItemInUse() == null)
-	{
-	    return this.itemIcon;
-	}
-
-	int Pulling = stack.getMaxItemUseDuration() - useRemaining; // Displaying
-								    // the bow
-								    // drawing
-								    // animation
-								    // based on
-								    // the use
-								    // state
-
-	if (Pulling >= 18)
-	{
-	    return this.pull_2;
-	}
-	else if (Pulling > 13)
-	{
-	    return this.pull_1;
-	}
-	else if (Pulling > 0)
-	{
-	    return this.pull_0;
-	}
-
-	return itemIcon;
-    }
-
-    @SideOnly(Side.CLIENT)
-    public IIcon getItemIconForUseDuration(int state) // Inventory display
-    {
-	if (state == 0)
-	{
-	    return this.pull_0;
-	}
-	else if (state == 1)
-	{
-	    return this.pull_1;
-	}
-	else if (state == 2)
-	{
-	    return this.pull_2;
-	}
-
-	return this.pull_2; // Fallback
-    }
-
-    @Override
-    public IIcon getIconFromDamage(int meta) // This is for inventory display.
-					     // Comes in with metadata
-    {
-	return this.itemIcon;
-    }*/
+    /*
+     * @SideOnly(Side.CLIENT)
+     * 
+     * @Override public void registerIcons(IIconRegister par1IconRegister) {
+     * this.itemIcon =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/EnderBow_idle");
+     * 
+     * this.pull_0 =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/EnderBow_pulling_0")
+     * ; this.pull_1 =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/EnderBow_pulling_1")
+     * ; this.pull_2 =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/EnderBow_pulling_2")
+     * ; }
+     * 
+     * @Override public IIcon getIcon(ItemStack stack, int renderPass,
+     * EntityPlayer player, ItemStack usingItem, int useRemaining) { if
+     * (player.getItemInUse() == null) { return this.itemIcon; }
+     * 
+     * int Pulling = stack.getMaxItemUseDuration() - useRemaining; // Displaying
+     * // the bow // drawing // animation // based on // the use // state
+     * 
+     * if (Pulling >= 18) { return this.pull_2; } else if (Pulling > 13) {
+     * return this.pull_1; } else if (Pulling > 0) { return this.pull_0; }
+     * 
+     * return itemIcon; }
+     * 
+     * @SideOnly(Side.CLIENT) public IIcon getItemIconForUseDuration(int state)
+     * // Inventory display { if (state == 0) { return this.pull_0; } else if
+     * (state == 1) { return this.pull_1; } else if (state == 2) { return
+     * this.pull_2; }
+     * 
+     * return this.pull_2; // Fallback }
+     * 
+     * @Override public IIcon getIconFromDamage(int meta) // This is for
+     * inventory display. // Comes in with metadata { return this.itemIcon; }
+     */
 
     @Override
     public void addProps(FMLPreInitializationEvent event, Configuration config)
@@ -180,15 +148,16 @@ public class EnderBow extends _WeaponBase // So archaic... I may have to
 	    EntityPlayer entityplayer = (EntityPlayer) entity;
 
 	    if (isSelected) // Step
-														     // 2,
-														     // are
-														     // they
-														     // holding
-														     // the
-														     // bow?
+			    // 2,
+			    // are
+			    // they
+			    // holding
+			    // the
+			    // bow?
 	    {
-		if (entityplayer.getActiveHand() != null) // step 3, are they using the
-						// bow?
+		if (entityplayer.getActiveHand() != null) // step 3, are they
+							  // using the
+		// bow?
 		{
 		    this.setCurrentZoom(stack, true); // We need to zoom in!
 
@@ -300,10 +269,11 @@ public class EnderBow extends _WeaponBase // So archaic... I may have to
     {
 	int chargeTime = this.getMaxItemUseDuration(stack) - timeLeft;
 
-	if(entityLiving instanceof EntityPlayer)
+	if (entityLiving instanceof EntityPlayer)
 	{
 	    EntityPlayer player = (EntityPlayer) entityLiving;
-	    // Either creative mode or infinity enchantment is higher than 0. Not
+	    // Either creative mode or infinity enchantment is higher than 0.
+	    // Not
 	    // using arrows
 	    boolean freeShot = player.capabilities.isCreativeMode;
 
@@ -339,7 +309,8 @@ public class EnderBow extends _WeaponBase // So archaic... I may have to
 		}
 
 		stack.damageItem(1, player);
-		Utils.playSoundAtEntityPos(player, SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+		Utils.playSoundAtEntityPos(player, SoundEvents.ENTITY_ARROW_SHOOT, 1.0F,
+			1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
 		if (freeShot)
 		{
@@ -369,7 +340,7 @@ public class EnderBow extends _WeaponBase // So archaic... I may have to
     {
 	return EnumAction.BOW;
     }
-    
+
     @Override
     public void onUsingTick(ItemStack stack, EntityLivingBase player, int count)
     {
@@ -380,7 +351,8 @@ public class EnderBow extends _WeaponBase // So archaic... I may have to
 	    this.shotCounter += 1;
 	    if (this.shotCounter >= Ticks)
 	    {
-		// Only allowing this to happen when the right player uses this TODO: replace with OGL rendering
+		// Only allowing this to happen when the right player uses this
+		// TODO: replace with OGL rendering
 		if (player.getDisplayName().getUnformattedText().equals(this.playerName))
 		{
 		    ScopedPredictive entityarrow = new ScopedPredictive(player.world, player, 2.0F * 1.5F);
@@ -405,10 +377,12 @@ public class EnderBow extends _WeaponBase // So archaic... I may have to
 	if (player.capabilities.isCreativeMode || player.inventory.hasItemStack(new ItemStack(Items.ARROW)))
 	{
 	    player.setActiveHand(hand);
-	    this.playerName = player.getDisplayName().getUnformattedText(); // Recording the player
-						       // name here, so only
-						       // they can see the
-						       // projectile
+	    this.playerName = player.getDisplayName().getUnformattedText(); // Recording
+									    // the
+									    // player
+	    // name here, so only
+	    // they can see the
+	    // projectile
 	}
 
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);

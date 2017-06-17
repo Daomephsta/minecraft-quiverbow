@@ -40,13 +40,14 @@ public class OSR extends _WeaponBase
 				 // seconds
     private int Wither_Strength; // 2 dmg per second for 3 seconds = 6 dmg total
 
-    /*@SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/OSR");
-	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/OSR_Empty");
-    }*/
+    /*
+     * @SideOnly(Side.CLIENT)
+     * 
+     * @Override public void registerIcons(IIconRegister par1IconRegister) {
+     * this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/OSR");
+     * this.Icon_Empty =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/OSR_Empty"); }
+     */
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
@@ -99,7 +100,8 @@ public class OSR extends _WeaponBase
 
 	// SFX
 	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_GENERIC_EXPLODE, 0.5F, 1.5F);
-	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL, (byte) 4); // smoke
+	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+		(byte) 4); // smoke
 
 	this.setCooldown(stack, this.Cooldown);
 	if (this.consumeAmmo(stack, entity, 1))
@@ -146,7 +148,8 @@ public class OSR extends _WeaponBase
     @Override
     void doCooldownSFX(World world, Entity entity)
     {
-	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL, (byte) 4); // smoke
+	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+		(byte) 4); // smoke
 	Utils.playSoundAtEntityPos(entity, SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.5F, 1.2F);
     }
 

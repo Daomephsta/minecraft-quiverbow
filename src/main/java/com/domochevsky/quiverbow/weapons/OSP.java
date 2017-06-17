@@ -36,13 +36,14 @@ public class OSP extends _WeaponBase
 				 // seconds
     private int Wither_Strength; // 2 dmg per second for 3 seconds = 6 dmg total
 
-/*    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/OSP");
-	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/OSP_Empty");
-    }*/
+    /*
+     * @SideOnly(Side.CLIENT)
+     * 
+     * @Override public void registerIcons(IIconRegister par1IconRegister) {
+     * this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/OSP");
+     * this.Icon_Empty =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/OSP_Empty"); }
+     */
 
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
@@ -74,7 +75,8 @@ public class OSP extends _WeaponBase
 
 	// SFX
 	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_GENERIC_EXPLODE, 0.4F, 1.5F);
-	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL, (byte) 1); // smoke
+	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+		(byte) 1); // smoke
 
 	// Firing
 	OSP_Shot shot = new OSP_Shot(world, entity, (float) this.Speed,
@@ -110,14 +112,14 @@ public class OSP extends _WeaponBase
 
 	ItemStack clipStack = Helper.getAmmoStack(ObsidianMagazine.class,
 		MathHelper.floor(stack.getItemDamage() / 2) + 1); // Unloading
-									 // all
-									 // ammo
-									 // into
-									 // that
-									 // clip,
-									 // with
-									 // some
-									 // loss
+								  // all
+								  // ammo
+								  // into
+								  // that
+								  // clip,
+								  // with
+								  // some
+								  // loss
 
 	stack.setItemDamage(this.getMaxDamage()); // Emptying out
 

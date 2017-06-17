@@ -27,37 +27,28 @@ public class Crossbow_Auto extends _WeaponBase
 	super("auto_crossbow", 8);
     }
 
-    /*@SideOnly(Side.CLIENT)
-    public IIcon Icon_Unchambered; // Only relevant if you're using the
-				   // non-model version
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister par1IconRegister) // We got need for
-							      // a non-typical
-							      // icon currently.
-							      // Will be phased
-							      // out
-    {
-	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/CrossbowAuto");
-	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/CrossbowAuto_Empty");
-	this.Icon_Unchambered = par1IconRegister.registerIcon("quiverchevsky:weapons/CrossbowAuto_Unchambered");
-    }
-
-    @Override
-    public IIcon getIcon(ItemStack stack, int pass) // Onhand display
-    {
-	if (this.getDamage(stack) >= this.getMaxDamage())
-	{
-	    return this.Icon_Empty;
-	}
-	if (!this.getChambered(stack))
-	{
-	    return this.Icon_Unchambered;
-	} // Not chambered
-
-	return this.Icon;
-    }*/
+    /*
+     * @SideOnly(Side.CLIENT) public IIcon Icon_Unchambered; // Only relevant if
+     * you're using the // non-model version
+     * 
+     * @SideOnly(Side.CLIENT)
+     * 
+     * @Override public void registerIcons(IIconRegister par1IconRegister) // We
+     * got need for // a non-typical // icon currently. // Will be phased // out
+     * { this.Icon =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/CrossbowAuto");
+     * this.Icon_Empty =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/CrossbowAuto_Empty")
+     * ; this.Icon_Unchambered = par1IconRegister.registerIcon(
+     * "quiverchevsky:weapons/CrossbowAuto_Unchambered"); }
+     * 
+     * @Override public IIcon getIcon(ItemStack stack, int pass) // Onhand
+     * display { if (this.getDamage(stack) >= this.getMaxDamage()) { return
+     * this.Icon_Empty; } if (!this.getChambered(stack)) { return
+     * this.Icon_Unchambered; } // Not chambered
+     * 
+     * return this.Icon; }
+     */
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)

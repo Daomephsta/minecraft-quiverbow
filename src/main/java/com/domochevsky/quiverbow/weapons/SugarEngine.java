@@ -32,13 +32,16 @@ public class SugarEngine extends _WeaponBase
 
     public float Spread;
 
-    /*@SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/SugarGatling");
-	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/SugarGatling_Empty");
-    }*/
+    /*
+     * @SideOnly(Side.CLIENT)
+     * 
+     * @Override public void registerIcons(IIconRegister par1IconRegister) {
+     * this.Icon =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/SugarGatling");
+     * this.Icon_Empty =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/SugarGatling_Empty")
+     * ; }
+     */
 
     int getSpinupTime()
     {
@@ -87,7 +90,7 @@ public class SugarEngine extends _WeaponBase
 	{
 	    return;
 	} // Not ready yet, so keep spinning up
-	// else, we're ready
+	  // else, we're ready
 
 	this.setBurstFire(stack, 4); // Setting the rods left to fire to 4, then
 	// going through that via onUpdate (Will be
@@ -154,14 +157,14 @@ public class SugarEngine extends _WeaponBase
 	} // Init
 
 	if (stack.getTagCompound().getInteger("spinDownImmunity") == 0) // Not
-	    // firing
-	    // and
-	    // no
-	    // immunity
-	    // left,
-	    // so
-	    // spinning
-	    // down
+	// firing
+	// and
+	// no
+	// immunity
+	// left,
+	// so
+	// spinning
+	// down
 	{
 	    if (stack.getTagCompound().getInteger("spinning") > 0)
 	    {
@@ -172,7 +175,7 @@ public class SugarEngine extends _WeaponBase
 	    // else, not spinning
 	}
 	else // We're currently immune to spinning down, so decreasing that
-	    // immunity time until we actually can
+	     // immunity time until we actually can
 	{
 	    stack.getTagCompound().setInteger("spinDownImmunity",
 		    stack.getTagCompound().getInteger("spinDownImmunity") - 1);
@@ -194,16 +197,16 @@ public class SugarEngine extends _WeaponBase
 	    this.setBurstFire(stack, this.getBurstFire(stack) - 1); // One done
 
 	    if (stack.getItemDamage() < stack.getMaxDamage() && holdingItem) // Can
-		// only
-		// do
-		// it
-		// if
-		// we're
-		// loaded
-		// and
-		// holding
-		// the
-		// weapon
+	    // only
+	    // do
+	    // it
+	    // if
+	    // we're
+	    // loaded
+	    // and
+	    // holding
+	    // the
+	    // weapon
 	    {
 		this.doBurstFire(stack, world, entity);
 
@@ -260,7 +263,7 @@ public class SugarEngine extends _WeaponBase
 	// SFX
 	int spin = stack.getTagCompound().getInteger("spinning");
 	// Increasing in frequency as we spin up TODO: Clean up with formula
-	switch(spin)
+	switch (spin)
 	{
 	case 1:
 	case 5:
@@ -274,7 +277,7 @@ public class SugarEngine extends _WeaponBase
 	    Utils.playSoundAtEntityPos(player, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.8F, 1.8F);
 	    break;
 	default:
-	    if(spin >= 27) Utils.playSoundAtEntityPos(player, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.8F, 1.8F);
+	    if (spin >= 27) Utils.playSoundAtEntityPos(player, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.8F, 1.8F);
 	    break;
 	}
     }

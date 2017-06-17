@@ -37,145 +37,110 @@ public class QuiverBow extends _WeaponBase
     String name = "Bow with Quiver";
 
     @SideOnly(Side.CLIENT)
-  /*  private IIcon pull_0;
-
-    @SideOnly(Side.CLIENT)
-    private IIcon pull_1;
-
-    @SideOnly(Side.CLIENT)
-    private IIcon pull_2;
-
-    @SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-	this.itemIcon = par1IconRegister.registerIcon("quiverchevsky:weapons/QBow_idle");
-
-	this.pull_0 = par1IconRegister.registerIcon("quiverchevsky:weapons/QBow_pulling_0");
-	this.pull_1 = par1IconRegister.registerIcon("quiverchevsky:weapons/QBow_pulling_1");
-	this.pull_2 = par1IconRegister.registerIcon("quiverchevsky:weapons/QBow_pulling_2");
-    }
-
-    @SideOnly(Side.CLIENT)
-    public IIcon getItemIconForUseDuration(int state) // Inventory display
-    {
-	if (state == 0)
-	{
-	    return this.pull_0;
-	}
-	else if (state == 1)
-	{
-	    return this.pull_1;
-	}
-	else if (state == 2)
-	{
-	    return this.pull_2;
-	}
-
-	return this.pull_2; // Fallback
-    }
-
-    @Override // This is for inventory display. Comes in with metadata
-    public IIcon getIconFromDamage(int meta)
-    {
-	return this.itemIcon;
-    }
-
-    @Override
-    public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining) // On
-														      // hand
-														      // display
-    {
-	if (player.getItemInUse() == null)
-	{
-	    return this.itemIcon;
-	}
-
-	int Pulling = stack.getMaxItemUseDuration() - useRemaining; // Displaying
-								    // the bow
-								    // drawing
-								    // animation
-								    // based on
-								    // the use
-								    // state
-
-	if (Pulling >= 18)
-	{
-	    return this.pull_2;
-	}
-	else if (Pulling > 13)
-	{
-	    return this.pull_1;
-	}
-	else if (Pulling > 0)
-	{
-	    return this.pull_0;
-	}
-
-	return this.itemIcon;
-    }*/
+    /*
+     * private IIcon pull_0;
+     * 
+     * @SideOnly(Side.CLIENT) private IIcon pull_1;
+     * 
+     * @SideOnly(Side.CLIENT) private IIcon pull_2;
+     * 
+     * @SideOnly(Side.CLIENT)
+     * 
+     * @Override public void registerIcons(IIconRegister par1IconRegister) {
+     * this.itemIcon =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/QBow_idle");
+     * 
+     * this.pull_0 =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/QBow_pulling_0");
+     * this.pull_1 =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/QBow_pulling_1");
+     * this.pull_2 =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/QBow_pulling_2"); }
+     * 
+     * @SideOnly(Side.CLIENT) public IIcon getItemIconForUseDuration(int state)
+     * // Inventory display { if (state == 0) { return this.pull_0; } else if
+     * (state == 1) { return this.pull_1; } else if (state == 2) { return
+     * this.pull_2; }
+     * 
+     * return this.pull_2; // Fallback }
+     * 
+     * @Override // This is for inventory display. Comes in with metadata public
+     * IIcon getIconFromDamage(int meta) { return this.itemIcon; }
+     * 
+     * @Override public IIcon getIcon(ItemStack stack, int renderPass,
+     * EntityPlayer player, ItemStack usingItem, int useRemaining) // On // hand
+     * // display { if (player.getItemInUse() == null) { return this.itemIcon; }
+     * 
+     * int Pulling = stack.getMaxItemUseDuration() - useRemaining; // Displaying
+     * // the bow // drawing // animation // based on // the use // state
+     * 
+     * if (Pulling >= 18) { return this.pull_2; } else if (Pulling > 13) {
+     * return this.pull_1; } else if (Pulling > 0) { return this.pull_0; }
+     * 
+     * return this.itemIcon; }
+     */
     public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft)
     {
-	    int j = this.getMaxItemUseDuration(stack) - timeLeft; // Reduces the
-							      // durability by
-							      // the
-							      // ItemInUseCount
-							      // (probably 1 for
-							      // anything that
-							      // isn't a tool)
+	int j = this.getMaxItemUseDuration(stack) - timeLeft; // Reduces the
+	// durability by
+	// the
+	// ItemInUseCount
+	// (probably 1 for
+	// anything that
+	// isn't a tool)
 
-	    if(entityLiving instanceof EntityPlayer)
-	    {
-		ArrowLooseEvent event = new ArrowLooseEvent((EntityPlayer) entityLiving, stack, world, j, false);
+	if (entityLiving instanceof EntityPlayer)
+	{
+	    ArrowLooseEvent event = new ArrowLooseEvent((EntityPlayer) entityLiving, stack, world, j, false);
 	    MinecraftForge.EVENT_BUS.post(event);
 	    if (event.isCanceled())
 	    {
 		return;
 	    }
 	    j = event.getCharge();
-    }
+	}
 
-	    if (this.getDamage(stack) == this.getMaxDamage())
-	    {
-		return;
-	    } // No arrows in the quiver? Getting out of here early
+	if (this.getDamage(stack) == this.getMaxDamage())
+	{
+	    return;
+	} // No arrows in the quiver? Getting out of here early
 
-	    float f = j / 20.0F;
-	    f = (f * f + f * 2.0F) / 3.0F;
+	float f = j / 20.0F;
+	f = (f * f + f * 2.0F) / 3.0F;
 
-	    if (f < 0.1D)
-	    {
-		return;
-	    }
-	    if (f > 1.0F)
-	    {
-		f = 1.0F;
-	    }
+	if (f < 0.1D)
+	{
+	    return;
+	}
+	if (f > 1.0F)
+	{
+	    f = 1.0F;
+	}
 
-	    EntityArrow entityarrow = Utils.createArrow(world, entityLiving);
-	    if (f == 1.0F)
-	    {
-		entityarrow.setIsCritical(true);
-	    }
+	EntityArrow entityarrow = Utils.createArrow(world, entityLiving);
+	if (f == 1.0F)
+	{
+	    entityarrow.setIsCritical(true);
+	}
 
-	    Utils.playSoundAtEntityPos(entityLiving, SoundEvents.ENTITY_ARROW_SHOOT, 1.0F,
-		    1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+	Utils.playSoundAtEntityPos(entityLiving, SoundEvents.ENTITY_ARROW_SHOOT, 1.0F,
+		1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
-	    if (entityLiving instanceof EntityPlayer && ((EntityPlayer)entityLiving).capabilities.isCreativeMode)
-	    {
-		entityarrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
-	    }
-	    else
-	    {
-		entityarrow.pickupStatus = EntityArrow.PickupStatus.ALLOWED;
-		stack.setItemDamage(this.getDamage(stack) + 1); // Reversed.
-								// MORE Damage
-								// for a shorter
-								// durability
-								// bar
-	    }
+	if (entityLiving instanceof EntityPlayer && ((EntityPlayer) entityLiving).capabilities.isCreativeMode)
+	{
+	    entityarrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
+	}
+	else
+	{
+	    entityarrow.pickupStatus = EntityArrow.PickupStatus.ALLOWED;
+	    stack.setItemDamage(this.getDamage(stack) + 1); // Reversed.
+							    // MORE Damage
+							    // for a shorter
+							    // durability
+							    // bar
+	}
 
-	    world.spawnEntity(entityarrow);
+	world.spawnEntity(entityarrow);
     }
 
     @Override

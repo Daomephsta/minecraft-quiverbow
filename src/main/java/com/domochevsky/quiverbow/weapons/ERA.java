@@ -31,14 +31,16 @@ public class ERA extends _WeaponBase
 
     private boolean dmgTerrain; // Can our projectile damage terrain?
 
-    /*@SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/EnderRailgun");
-	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/EnderRailgun_Empty"); // Burnt
-												     // out
-    }*/
+    /*
+     * @SideOnly(Side.CLIENT)
+     * 
+     * @Override public void registerIcons(IIconRegister par1IconRegister) {
+     * this.Icon =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/EnderRailgun");
+     * this.Icon_Empty =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/EnderRailgun_Empty")
+     * ; // Burnt // out }
+     */
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
@@ -91,8 +93,8 @@ public class ERA extends _WeaponBase
 													  // pitching
 													  // up
 
-	    Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ENDERMEN_TELEPORT, stack.getTagCompound().getFloat("accSFX"),
-		    stack.getTagCompound().getFloat("accSFX"));
+	    Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ENDERMEN_TELEPORT,
+		    stack.getTagCompound().getFloat("accSFX"), stack.getTagCompound().getFloat("accSFX"));
 	    // mob.endermen.portal
 	    // mob.enderdragon.wings
 
@@ -152,7 +154,8 @@ public class ERA extends _WeaponBase
 		{
 		    // Has a muzzle, so no boom
 		    Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_GENERIC_EXPLODE, 2.0F, 0.1F);
-		    NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_LARGE, (byte) 6);
+		    NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(),
+			    EnumParticleTypes.SMOKE_LARGE, (byte) 6);
 		}
 		else
 		{

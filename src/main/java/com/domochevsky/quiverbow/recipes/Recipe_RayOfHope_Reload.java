@@ -35,7 +35,7 @@ public class Recipe_RayOfHope_Reload extends ShapelessRecipes implements IRecipe
 	{
 	    return false;
 	} // Has no AA in there
-	// else, medigun is in there. Good.
+	  // else, medigun is in there. Good.
 
 	if (!medigun.hasTagCompound())
 	{

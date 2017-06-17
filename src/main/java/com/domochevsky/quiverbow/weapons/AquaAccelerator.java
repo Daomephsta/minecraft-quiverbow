@@ -44,18 +44,20 @@ public class AquaAccelerator extends _WeaponBase
      */
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) 
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);
 
 	// Not doing this on client side
-	if (this.getDamage(stack) >= this.getMaxDamage()) 	// Is empty
-	{ 
-	    this.checkReloadFromWater(stack, world, player);// See if you can reload
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack); 
-	}	
+	if (this.getDamage(stack) >= this.getMaxDamage()) // Is empty
+	{
+	    this.checkReloadFromWater(stack, world, player);// See if you can
+							    // reload
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
+	}
 
-	this.doSingleFire(stack, world, player);	// Handing it over to the neutral firing function
+	this.doSingleFire(stack, world, player); // Handing it over to the
+						 // neutral firing function
 
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }

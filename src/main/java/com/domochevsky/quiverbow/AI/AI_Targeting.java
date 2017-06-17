@@ -492,7 +492,7 @@ public class AI_Targeting
 				{
 				    return true;
 				} // Found it!
-				// else, not on this line
+				  // else, not on this line
 
 				lineCount += 1;
 			    }

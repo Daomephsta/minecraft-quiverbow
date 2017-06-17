@@ -28,13 +28,16 @@ public class Crossbow_Blaze extends _WeaponBase
 
     private int FireDur;
 
-    /*@SideOnly(Side.CLIENT)
-    @Override
-    public void registerIcons(IIconRegister par1IconRegister)
-    {
-	this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/CrossbowBlaze");
-	this.Icon_Empty = par1IconRegister.registerIcon("quiverchevsky:weapons/CrossbowBlaze_Empty");
-    }*/
+    /*
+     * @SideOnly(Side.CLIENT)
+     * 
+     * @Override public void registerIcons(IIconRegister par1IconRegister) {
+     * this.Icon =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/CrossbowBlaze");
+     * this.Icon_Empty =
+     * par1IconRegister.registerIcon("quiverchevsky:weapons/CrossbowBlaze_Empty"
+     * ); }
+     */
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
@@ -84,7 +87,8 @@ public class Crossbow_Blaze extends _WeaponBase
 
 	// SFX
 	Utils.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.0F, 0.5F);
-	world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, entity.posX, entity.posY + 0.5D, entity.posZ, 0.0D, 0.0D, 0.0D);
+	world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, entity.posX, entity.posY + 0.5D, entity.posZ, 0.0D, 0.0D,
+		0.0D);
 
 	this.consumeAmmo(stack, entity, 1);
 	this.setCooldown(stack, 10);
