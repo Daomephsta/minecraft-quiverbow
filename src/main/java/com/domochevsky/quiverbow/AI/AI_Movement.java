@@ -7,8 +7,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.*;
-import net.minecraft.world.World;
-
 import com.domochevsky.quiverbow.ArmsAssistant.Entity_AA;
 
 public class AI_Movement

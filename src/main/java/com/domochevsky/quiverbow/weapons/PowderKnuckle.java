@@ -1,5 +1,6 @@
 package com.domochevsky.quiverbow.weapons;
 
+import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
@@ -43,7 +44,7 @@ public class PowderKnuckle extends _WeaponBase
     {
 	ItemStack stack = player.getHeldItem(hand);
 	// Right click
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return EnumActionResult.FAIL;
 	} // Not loaded
@@ -69,7 +70,7 @@ public class PowderKnuckle extends _WeaponBase
 	    return false;
 	} // Not doing this on client side
 
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    entity.attackEntityFrom(DamageSource.causePlayerDamage(player), this.DmgMin);
 	    entity.hurtResistantTime = 0; // No invincibility frames
@@ -124,7 +125,7 @@ public class PowderKnuckle extends _WeaponBase
 	if (this.Enabled)
 	{
 	    // One Powder Knuckle with 8 damage value (empty)
-	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "yyy", "xzx", "x x", 'x', Items.LEATHER,
+	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "yyy", "xzx", "x x", 'x', Items.LEATHER,
 		    'y', Items.IRON_INGOT, 'z', Items.STICK);
 	}
 	else if (Main.noCreative)

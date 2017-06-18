@@ -36,7 +36,7 @@ public class Helper
 
 	Item ammo = getAmmoByClass(ammoBase);
 
-	ItemStack weaponStack = new ItemStack(weapon, 1, weapon.getMaxDamage());
+	ItemStack weaponStack = Helper.createEmptyWeaponOrAmmoStack(weapon, 1);
 	ItemStack ammoStack = new ItemStack(ammo);
 
 	list.add(weaponStack);
@@ -161,7 +161,7 @@ public class Helper
 	    {
 		if (isEmpty) // They want the empty version of this thing
 		{
-		    return new ItemStack(weapon, 1, weapon.getMaxDamage());
+		    return Helper.createEmptyWeaponOrAmmoStack(weapon, 1);
 		}
 		else
 		{
@@ -409,5 +409,12 @@ public class Helper
 	return world.rayTraceBlocks(
 		new Vec3d(observer.posX, observer.posY + (double) observer.getEyeHeight(), observer.posZ),
 		new Vec3d(entity.posX, entity.posY + (double) entity.getEyeHeight(), entity.posZ)) == null;
+    }
+    
+    public static ItemStack createEmptyWeaponOrAmmoStack(Item item, int count)
+    {
+	ItemStack stack = new ItemStack(item, count);
+	stack.setItemDamage(stack.getMaxDamage());
+	return stack;
     }
 }

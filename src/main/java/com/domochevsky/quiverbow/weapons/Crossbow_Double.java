@@ -45,7 +45,7 @@ public class Crossbow_Double extends _WeaponBase
 
     /*
      * @Override public IIcon getIcon(ItemStack stack, int pass) { if
-     * (this.getDamage(stack) >= this.getMaxDamage()) { return this.Icon_Empty;
+     * (this.getDamage(stack) >= stack.getMaxDamage()) { return this.Icon_Empty;
      * } // Empty if (this.getDamage(stack) == 1) { return this.Icon_Half; } //
      * One arrow on the bay
      * 
@@ -55,7 +55,7 @@ public class Crossbow_Double extends _WeaponBase
      * 
      * @Override public IIcon getIconFromDamage(int meta) // This is for
      * inventory display. // Comes in with metadata. Only // gets called on
-     * client side { if (meta == this.getMaxDamage()) { return this.Icon_Empty;
+     * client side { if (meta == stack.getMaxDamage()) { return this.Icon_Empty;
      * } // Empty if (meta == 1) { return this.Icon_Half; }
      * 
      * return this.Icon; // Full, default }
@@ -65,7 +65,7 @@ public class Crossbow_Double extends _WeaponBase
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
@@ -116,7 +116,7 @@ public class Crossbow_Double extends _WeaponBase
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean par4)
     {
 	super.addInformation(stack, player, list, par4);
 	if (this.getCooldown(stack) > 0) Collections.addAll(list, Newliner
@@ -146,7 +146,7 @@ public class Crossbow_Double extends _WeaponBase
 	if (this.Enabled)
 	{
 	    // One empty double crossbow (upgraded from regular crossbow)
-	    GameRegistry.addShapelessRecipe(new ItemStack(this, 1, this.getMaxDamage()), Blocks.STICKY_PISTON,
+	    GameRegistry.addShapelessRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), Blocks.STICKY_PISTON,
 		    Items.REPEATER, Helper.getWeaponStackByClass(Crossbow_Compact.class, true));
 	}
 	else if (Main.noCreative)
@@ -157,14 +157,14 @@ public class Crossbow_Double extends _WeaponBase
 	GameRegistry.addShapelessRecipe(new ItemStack(this), // Fill the empty
 							     // crossbow with
 							     // two arrows
-		Items.ARROW, Items.ARROW, new ItemStack(this, 1, this.getMaxDamage()));
+		Items.ARROW, Items.ARROW, Helper.createEmptyWeaponOrAmmoStack(this, 1));
 
 	GameRegistry.addShapelessRecipe(new ItemStack(this, 1, 1), // Fill the
 								   // empty
 								   // crossbow
 								   // with one
 								   // arrow
-		Items.ARROW, new ItemStack(this, 1, this.getMaxDamage()));
+		Items.ARROW, Helper.createEmptyWeaponOrAmmoStack(this, 1));
 
 	GameRegistry.addShapelessRecipe(new ItemStack(this), // Fill the half
 							     // empty crossbow

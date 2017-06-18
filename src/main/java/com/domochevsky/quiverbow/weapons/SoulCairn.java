@@ -15,8 +15,6 @@ import com.domochevsky.quiverbow.projectiles.SoulShot;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SoulCairn extends _WeaponBase
 {
@@ -40,7 +38,7 @@ public class SoulCairn extends _WeaponBase
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
@@ -99,7 +97,7 @@ public class SoulCairn extends _WeaponBase
 	if (this.Enabled)
 	{
 	    // One Soul Cairn (empty)
-	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "e e", "epe", "oto", 'o',
+	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "e e", "epe", "oto", 'o',
 		    Blocks.OBSIDIAN, 'e', Blocks.END_STONE, 't', Blocks.TRIPWIRE_HOOK, 'p', Blocks.PISTON);
 	}
 	else if (Main.noCreative)
@@ -109,7 +107,7 @@ public class SoulCairn extends _WeaponBase
 
 	// Reload with 1 diamond
 	GameRegistry.addShapelessRecipe(new ItemStack(this), Items.DIAMOND,
-		new ItemStack(this, 1, this.getMaxDamage()));
+		Helper.createEmptyWeaponOrAmmoStack(this, 1));
     }
 
     @Override

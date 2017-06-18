@@ -16,8 +16,6 @@ import com.domochevsky.quiverbow.projectiles.SugarRod;
 import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SugarEngine extends _WeaponBase
 {
@@ -52,7 +50,7 @@ public class SugarEngine extends _WeaponBase
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
@@ -113,7 +111,7 @@ public class SugarEngine extends _WeaponBase
 	// that
 	// clip
 
-	stack.setItemDamage(this.getMaxDamage()); // Emptying out
+	stack.setItemDamage(stack.getMaxDamage()); // Emptying out
 
 	// Creating the clip
 	EntityItem entityitem = new EntityItem(world, entity.posX, entity.posY + 1.0d, entity.posZ, clipStack);
@@ -282,11 +280,6 @@ public class SugarEngine extends _WeaponBase
 	}
     }
 
-    private void click(Entity player)
-    {
-	Utils.playSoundAtEntityPos(player, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.8F, 1.8F);
-    }
-
     @Override
     public void addProps(FMLPreInitializationEvent event, Configuration config)
     {
@@ -312,7 +305,7 @@ public class SugarEngine extends _WeaponBase
     {
 	/*
 	 * if (this.Enabled) { // One Sugar Gatling (empty)
-	 * GameRegistry.addRecipe(new ItemStack(this, 1 , this.getMaxDamage()),
+	 * GameRegistry.addRecipe(new ItemStack(this, 1 , stack.getMaxDamage()),
 	 * "b b", "b b", " m ", 'b',
 	 * Helper.getAmmoStack(Part_GatlingBarrel.class, 0), 'm',
 	 * Helper.getAmmoStack(Part_GatlingBody.class, 0) ); } else if

@@ -54,7 +54,7 @@ public class FrostLancer extends _WeaponBase
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
@@ -134,7 +134,7 @@ public class FrostLancer extends _WeaponBase
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean par4)
     {
 	super.addInformation(stack, player, list, par4);
 	if (this.getCooldown(stack) > 0) Collections.addAll(list, Newliner
@@ -179,7 +179,7 @@ public class FrostLancer extends _WeaponBase
 	    // Upgrade of the EnderRifle
 
 	    // One Frost Lancer (empty)
-	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "qiq", "prs", " o ", 'o',
+	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "qiq", "prs", " o ", 'o',
 		    Blocks.OBSIDIAN, 'q', Items.QUARTZ, 'i', Items.IRON_INGOT, 'p', Blocks.PISTON, 's',
 		    Blocks.STICKY_PISTON, 'r', Helper.getWeaponStackByClass(EnderRifle.class, true) // One
 												    // empty
@@ -193,7 +193,7 @@ public class FrostLancer extends _WeaponBase
 	} // Not enabled and not allowed to be in the creative menu
 
 	// Reloading with one Frost Clip
-	GameRegistry.addShapelessRecipe(new ItemStack(this), new ItemStack(this, 1, this.getMaxDamage()),
+	GameRegistry.addShapelessRecipe(new ItemStack(this), Helper.createEmptyWeaponOrAmmoStack(this, 1),
 		Helper.getAmmoStack(ColdIronClip.class, 0));
     }
 

@@ -14,8 +14,6 @@ import com.domochevsky.quiverbow.projectiles.BigRocket;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class RPG extends _WeaponBase
 {
@@ -42,7 +40,7 @@ public class RPG extends _WeaponBase
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
@@ -105,7 +103,7 @@ public class RPG extends _WeaponBase
 	if (this.Enabled)
 	{
 	    // One Firework Rocket Launcher (empty)
-	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "x  ", "yx ", "zyx", 'x', Blocks.PLANKS,
+	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "x  ", "yx ", "zyx", 'x', Blocks.PLANKS,
 		    'y', Items.IRON_INGOT, 'z', Items.FLINT_AND_STEEL);
 	}
 	else if (Main.noCreative)
@@ -115,7 +113,7 @@ public class RPG extends _WeaponBase
 
 	// Fill the RPG with 1 rocket
 	GameRegistry.addRecipe(new ItemStack(this), " ab", "zya", " x ", 'x',
-		new ItemStack(this, 1, this.getMaxDamage()), 'y', Blocks.TNT, 'z', Blocks.PLANKS, 'a', Items.PAPER, 'b',
+		Helper.createEmptyWeaponOrAmmoStack(this, 1), 'y', Blocks.TNT, 'z', Blocks.PLANKS, 'a', Items.PAPER, 'b',
 		Items.STRING);
     }
 

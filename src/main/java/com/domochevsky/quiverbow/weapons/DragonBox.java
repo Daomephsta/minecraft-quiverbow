@@ -44,7 +44,7 @@ public class DragonBox extends _WeaponBase
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
@@ -124,7 +124,7 @@ public class DragonBox extends _WeaponBase
 	if (this.Enabled)
 	{
 	    // One dragonbox (empty)
-	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "zxy", "azy", "zxy", 'x', Items.STICK,
+	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "zxy", "azy", "zxy", 'x', Items.STICK,
 		    'y', Items.STRING, 'z', Items.IRON_INGOT, 'a', Items.FLINT_AND_STEEL);
 	}
 	else if (Main.noCreative)

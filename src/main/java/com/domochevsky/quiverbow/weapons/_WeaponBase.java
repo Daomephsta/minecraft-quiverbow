@@ -3,6 +3,7 @@ package com.domochevsky.quiverbow.weapons;
 import java.util.Collections;
 import java.util.List;
 
+import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main.Constants;
 import com.domochevsky.quiverbow.miscitems.QuiverBowItem;
 import com.domochevsky.quiverbow.util.Newliner;
@@ -19,8 +20,6 @@ import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class _WeaponBase extends QuiverBowItem
 {
@@ -66,7 +65,7 @@ public class _WeaponBase extends QuiverBowItem
      * 
      * @SideOnly(Side.CLIENT) public IIcon getIconFromDamage(int meta) // This
      * is for inventory display. Comes in with metadata. Only gets called on
-     * client side { if (meta == this.getMaxDamage()) { return this.Icon_Empty;
+     * client side { if (meta == stack.getMaxDamage()) { return this.Icon_Empty;
      * } // Empty return this.Icon; // Full, default }
      */
 
@@ -86,7 +85,7 @@ public class _WeaponBase extends QuiverBowItem
 	if (player.capabilities.isCreativeMode)
 	    list.add(I18n.format(Constants.MODID + ".ammo.infinite"));
 	else Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".ammostatus",
-		this.getMaxDamage() - stack.getItemDamage(), this.getMaxDamage()));
+		stack.getMaxDamage() - stack.getItemDamage(), stack.getMaxDamage()));
 	Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".loadtext"));
 	super.addInformation(stack, player, list, unknown);
     }
@@ -110,10 +109,10 @@ public class _WeaponBase extends QuiverBowItem
 
 	this.setDamage(stack, stack.getItemDamage() + ammo);
 
-	if (stack.getItemDamage() >= this.getMaxDamage()) // All used up. This
+	if (stack.getItemDamage() >= stack.getMaxDamage()) // All used up. This
 							  // thing is now empty
 	{
-	    this.setDamage(stack, this.getMaxDamage()); // Just making sure
+	    this.setDamage(stack, stack.getMaxDamage()); // Just making sure
 							// we're not going over
 							// the cap
 	    return true;
@@ -180,7 +179,7 @@ public class _WeaponBase extends QuiverBowItem
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
 	} // Is empty
@@ -223,14 +222,14 @@ public class _WeaponBase extends QuiverBowItem
     @Override
     public double getDurabilityForDisplay(ItemStack stack)
     {
-	return 1.0d / this.getMaxDamage() * this.getDamage(stack);
+	return 1.0d / stack.getMaxDamage() * this.getDamage(stack);
     }
 
     @Override
     public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> subItems)
     {
 	subItems.add(new ItemStack(item, 1, 0));
-	subItems.add(new ItemStack(item, 1, this.getMaxDamage()));
+	subItems.add(Helper.createEmptyWeaponOrAmmoStack(item, 1));
     }
 
     public void addProps(FMLPreInitializationEvent event, Configuration config)

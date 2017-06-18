@@ -48,7 +48,7 @@ public class ProximityNeedler extends _WeaponBase
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
@@ -59,7 +59,7 @@ public class ProximityNeedler extends _WeaponBase
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
 	}
 
-	if (this.getDamage(stack) >= this.getMaxDamage() - 7)
+	if (this.getDamage(stack) >= stack.getMaxDamage() - 7)
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Doesn't have enough ammo in it)
@@ -133,7 +133,7 @@ public class ProximityNeedler extends _WeaponBase
 												// that
 												// clip
 
-	stack.setItemDamage(this.getMaxDamage()); // Emptying out
+	stack.setItemDamage(stack.getMaxDamage()); // Emptying out
 
 	// Creating the clip
 	EntityItem entityitem = new EntityItem(world, entity.posX, entity.posY + 1.0d, entity.posZ, clipStack);
@@ -192,7 +192,7 @@ public class ProximityNeedler extends _WeaponBase
     {
 	if (this.Enabled)
 	{
-	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "ihi", "bpb", "tsi", 't',
+	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "ihi", "bpb", "tsi", 't',
 		    Blocks.TRIPWIRE_HOOK, 'b', Blocks.IRON_BARS, 'i', Items.IRON_INGOT, 'h', Blocks.HOPPER, 's',
 		    Blocks.STICKY_PISTON, 'p', Blocks.PISTON);
 	}

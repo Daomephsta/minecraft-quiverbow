@@ -164,7 +164,6 @@ public class Main
 
 	Listener listener = new Listener();
 
-	FMLCommonHandler.instance().bus().register(listener);
 	MinecraftForge.EVENT_BUS.register(listener);
 
 	if (event.getSide().isServer())
@@ -174,7 +173,6 @@ public class Main
 
 	ListenerClient listenerClient = new ListenerClient();
 
-	FMLCommonHandler.instance().bus().register(listenerClient);
 	MinecraftForge.EVENT_BUS.register(listenerClient);
     }
 

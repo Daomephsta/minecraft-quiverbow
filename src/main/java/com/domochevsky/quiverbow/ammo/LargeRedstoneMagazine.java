@@ -1,13 +1,13 @@
 package com.domochevsky.quiverbow.ammo;
 
+import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.util.InventoryHelper;
 import com.domochevsky.quiverbow.util.Utils;
 
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.*;
-import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class LargeRedstoneMagazine extends AmmoMagazine
 {
@@ -30,7 +30,7 @@ public class LargeRedstoneMagazine extends AmmoMagazine
     @Override
     public void addRecipes()
     {
-	GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "x x", "x x", "xgx", 'x', Items.IRON_INGOT,
+	GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "x x", "x x", "xgx", 'x', Items.IRON_INGOT,
 		'g', Blocks.REDSTONE_BLOCK);
     }
 

@@ -46,7 +46,7 @@ public class NetherBellows extends _WeaponBase
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
@@ -117,7 +117,7 @@ public class NetherBellows extends _WeaponBase
 													 // that
 													 // clip
 
-	stack.setItemDamage(this.getMaxDamage()); // Emptying out
+	stack.setItemDamage(stack.getMaxDamage()); // Emptying out
 
 	// Creating the clip
 	EntityItem entityitem = new EntityItem(world, entity.posX, entity.posY + 1.0d, entity.posZ, clipStack);
@@ -155,7 +155,7 @@ public class NetherBellows extends _WeaponBase
 	if (this.Enabled)
 	{
 	    // One redstone sprayer (empty)
-	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "zxz", "zbz", "cya", 'x', Blocks.PISTON,
+	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "zxz", "zbz", "cya", 'x', Blocks.PISTON,
 		    'y', Blocks.TRIPWIRE_HOOK, 'z', Blocks.OBSIDIAN, 'a', Items.REPEATER, 'b', Blocks.STICKY_PISTON,
 		    'c', Items.FLINT_AND_STEEL);
 	}

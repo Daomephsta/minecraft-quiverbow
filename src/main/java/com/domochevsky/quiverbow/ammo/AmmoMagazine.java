@@ -3,6 +3,7 @@ package com.domochevsky.quiverbow.ammo;
 import java.util.Collections;
 import java.util.List;
 
+import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.util.Newliner;
 
 import net.minecraftforge.fml.relauncher.Side;
@@ -51,7 +52,7 @@ public abstract class AmmoMagazine extends _AmmoBase
      * "_Empty"); }
      * 
      * @Override public IIcon getIconFromDamage(int meta) { if (meta ==
-     * this.getMaxDamage()) { return iconEmpty; }
+     * stack.getMaxDamage()) { return iconEmpty; }
      * 
      * return Icon; }
      */
@@ -96,7 +97,7 @@ public abstract class AmmoMagazine extends _AmmoBase
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean advancedTooltips)
     {
 	Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".clipstatus",
-		this.getMaxDamage() - stack.getItemDamage(), this.getMaxDamage()));
+		stack.getMaxDamage() - stack.getItemDamage(), stack.getMaxDamage()));
 	Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".filltext"));
 	Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".description"));
     }
@@ -106,7 +107,7 @@ public abstract class AmmoMagazine extends _AmmoBase
     public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> subItems)
     {
 	subItems.add(new ItemStack(item, 1, 0));
-	subItems.add(new ItemStack(item, 1, this.getMaxDamage()));
+	subItems.add(Helper.createEmptyWeaponOrAmmoStack(item, 1));
     }
 
     @Override

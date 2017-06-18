@@ -1,5 +1,6 @@
 package com.domochevsky.quiverbow.weapons;
 
+import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.RegularArrow;
 import com.domochevsky.quiverbow.util.Utils;
@@ -35,7 +36,7 @@ public class Crossbow_Compact extends _WeaponBase
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
@@ -101,7 +102,7 @@ public class Crossbow_Compact extends _WeaponBase
 	if (this.Enabled)
 	{
 	    // One compact crossbow (empty)
-	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "zxy", "xzy", "zxy", 'x', Items.STICK,
+	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "zxy", "xzy", "zxy", 'x', Items.STICK,
 		    'y', Items.STRING, 'z', Blocks.PLANKS);
 	}
 	else if (Main.noCreative)
@@ -112,7 +113,7 @@ public class Crossbow_Compact extends _WeaponBase
 	GameRegistry.addShapelessRecipe(new ItemStack(this), // Fill the empty
 							     // crossbow with
 							     // one arrow
-		Items.ARROW, new ItemStack(this, 1, this.getMaxDamage()));
+		Items.ARROW, Helper.createEmptyWeaponOrAmmoStack(this, 1));
     }
 
     @Override

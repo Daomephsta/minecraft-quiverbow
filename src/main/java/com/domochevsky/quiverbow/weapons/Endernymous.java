@@ -46,7 +46,7 @@ public class Endernymous extends _WeaponBase
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
@@ -123,7 +123,7 @@ public class Endernymous extends _WeaponBase
 												 // that
 												 // clip
 
-	stack.setItemDamage(this.getMaxDamage()); // Emptying out
+	stack.setItemDamage(stack.getMaxDamage()); // Emptying out
 
 	// Creating the clip
 	EntityItem entityitem = new EntityItem(world, entity.posX, entity.posY + 1.0d, entity.posZ, clipStack);
@@ -176,7 +176,7 @@ public class Endernymous extends _WeaponBase
     {
 	if (this.Enabled)
 	{
-	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "e e", "ofo", "oto", 'o',
+	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "e e", "ofo", "oto", 'o',
 		    Blocks.OBSIDIAN, 'e', Blocks.END_STONE, 't', Blocks.TRIPWIRE_HOOK, 'f', Items.FLINT_AND_STEEL);
 	}
 	else if (Main.noCreative)

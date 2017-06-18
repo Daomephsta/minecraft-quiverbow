@@ -1,15 +1,5 @@
 package com.domochevsky.quiverbow.Renderer;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-
-import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.models.EnderNymous_Model;
-
 /*
  * public class Render_Weapon implements IItemRenderer { byte weaponID;
  * 

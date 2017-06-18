@@ -1,11 +1,10 @@
 package com.domochevsky.quiverbow.ammo;
 
+import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.util.InventoryHelper;
 import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 
 import net.minecraft.client.resources.I18n;
@@ -49,7 +48,7 @@ public class LapisMagazine extends AmmoMagazine
      * 
      * 
      * @Override public IIcon getIconFromDamage(int meta) { if (meta ==
-     * this.getMaxDamage()) return this.iconEmpty; else return icons[(int) (5 -
+     * stack.getMaxDamage()) return this.iconEmpty; else return icons[(int) (5 -
      * Math.floor(meta / 25.0F))]; }
      */
 
@@ -89,7 +88,7 @@ public class LapisMagazine extends AmmoMagazine
     @Override
     public void addRecipes()
     {
-	GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "x x", "x x", "xgx", 'x', Blocks.GLASS_PANE,
+	GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "x x", "x x", "xgx", 'x', Blocks.GLASS_PANE,
 		'g', new ItemStack(Items.DYE, 1, 4));
     }
 

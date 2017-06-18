@@ -1,6 +1,5 @@
 package com.domochevsky.quiverbow.weapons;
 
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -13,8 +12,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
-import net.minecraftforge.fluids.IFluidBlock;
 
+import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.AI.AI_Targeting;
 import com.domochevsky.quiverbow.projectiles.WaterShot;
@@ -22,8 +21,6 @@ import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class AquaAccelerator extends _WeaponBase
 {
@@ -49,7 +46,7 @@ public class AquaAccelerator extends _WeaponBase
 	ItemStack stack = player.getHeldItem(hand);
 
 	// Not doing this on client side
-	if (this.getDamage(stack) >= this.getMaxDamage()) // Is empty
+	if (this.getDamage(stack) >= stack.getMaxDamage()) // Is empty
 	{
 	    this.checkReloadFromWater(stack, world, player);// See if you can
 							    // reload
@@ -145,7 +142,7 @@ public class AquaAccelerator extends _WeaponBase
 	if (Enabled)
 	{
 	    // One Aqua Accelerator (empty)
-	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "ihi", "gpg", "iti", 'p', Blocks.PISTON,
+	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "ihi", "gpg", "iti", 'p', Blocks.PISTON,
 		    't', Blocks.TRIPWIRE_HOOK, 'i', Items.IRON_INGOT, 'h', Blocks.HOPPER, 'g', Blocks.GLASS_PANE);
 	}
 	else if (Main.noCreative)
@@ -155,7 +152,7 @@ public class AquaAccelerator extends _WeaponBase
 
 	// Fill the AA with one water bucket
 	GameRegistry.addShapelessRecipe(new ItemStack(this), Items.WATER_BUCKET,
-		new ItemStack(this, 1, this.getMaxDamage()) // Empty
+		Helper.createEmptyWeaponOrAmmoStack(this, 1) // Empty
 	);
     }
 

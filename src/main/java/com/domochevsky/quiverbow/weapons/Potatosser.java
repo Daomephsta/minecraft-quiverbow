@@ -1,5 +1,6 @@
 package com.domochevsky.quiverbow.weapons;
 
+import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.PotatoShot;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
@@ -39,7 +40,7 @@ public class Potatosser extends _WeaponBase
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
@@ -111,7 +112,7 @@ public class Potatosser extends _WeaponBase
 	if (this.Enabled)
 	{
 	    // One potatosser (empty)
-	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "xax", "zbx", "cdy", 'a',
+	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "xax", "zbx", "cdy", 'a',
 		    Blocks.TRAPDOOR, 'b', Blocks.PISTON, 'c', Blocks.TRIPWIRE_HOOK, 'd', Blocks.STICKY_PISTON, 'x',
 		    Blocks.IRON_BARS, 'y', Items.IRON_INGOT, 'z', Items.FLINT_AND_STEEL);
 	}

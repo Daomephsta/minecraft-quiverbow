@@ -2,6 +2,7 @@ package com.domochevsky.quiverbow.weapons;
 
 import java.util.ArrayList;
 
+import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.HealthBeam;
 import com.domochevsky.quiverbow.recipes.Recipe_RayOfHope_Reload;
@@ -38,7 +39,7 @@ public class MediGun extends _WeaponBase
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
@@ -87,7 +88,7 @@ public class MediGun extends _WeaponBase
 	if (this.Enabled)
 	{
 	    // Use a beacon for this (+ obsidian, tripwire hook... what else)
-	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "bi ", "ico", " ot", 'b', Blocks.BEACON,
+	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "bi ", "ico", " ot", 'b', Blocks.BEACON,
 		    'o', Blocks.OBSIDIAN, 't', Blocks.TRIPWIRE_HOOK, 'c', Items.CAULDRON, 'i', Items.IRON_INGOT);
 	}
 	else if (Main.noCreative)

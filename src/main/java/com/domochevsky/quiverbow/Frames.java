@@ -7,7 +7,6 @@ public class Frames
     private static long lastFPS;
 
     private static int tickCounter = 30;
-    private static int tickCount; // The number of ticks we did per second
 
     // Get the time in milliseconds
     private static long getTime()

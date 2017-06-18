@@ -44,7 +44,7 @@ public class FlintDuster extends _WeaponBase
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
@@ -98,7 +98,7 @@ public class FlintDuster extends _WeaponBase
 	if (this.Enabled)
 	{
 	    // One Flint Duster (Empty)
-	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "qhq", "qpq", "tsi", 'p', Blocks.PISTON,
+	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "qhq", "qpq", "tsi", 'p', Blocks.PISTON,
 		    's', Blocks.STICKY_PISTON, 'h', Blocks.HOPPER, 'q', Blocks.QUARTZ_BLOCK, 'i', Items.IRON_INGOT, 't',
 		    Blocks.TRIPWIRE_HOOK);
 	}

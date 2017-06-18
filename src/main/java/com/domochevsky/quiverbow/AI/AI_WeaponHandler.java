@@ -138,7 +138,7 @@ public class AI_WeaponHandler
 	int currentDmg = currentWeapon.getDamage(currentStack);
 
 	// We're out of ammo
-	if (currentDmg >= currentWeapon.getMaxDamage())
+	if (currentDmg >= currentStack.getMaxDamage())
 	{
 	    turret.playSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.6F, 0.3F);
 

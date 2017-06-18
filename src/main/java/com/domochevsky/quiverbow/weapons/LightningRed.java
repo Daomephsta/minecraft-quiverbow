@@ -48,7 +48,7 @@ public class LightningRed extends _WeaponBase
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
@@ -59,7 +59,7 @@ public class LightningRed extends _WeaponBase
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
 	}
 
-	if (this.getDamage(stack) >= this.getMaxDamage() - 3)
+	if (this.getDamage(stack) >= stack.getMaxDamage() - 3)
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Needs at least 4 redstone per shot
@@ -130,7 +130,7 @@ public class LightningRed extends _WeaponBase
 												  // that
 												  // clip
 
-	stack.setItemDamage(this.getMaxDamage()); // Emptying out
+	stack.setItemDamage(stack.getMaxDamage()); // Emptying out
 
 	// Creating the clip
 	EntityItem entityitem = new EntityItem(world, entity.posX, entity.posY + 1.0d, entity.posZ, clipStack);
@@ -185,7 +185,7 @@ public class LightningRed extends _WeaponBase
 	if (this.Enabled)
 	{
 	    // One Lightning Red (empty)
-	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "q q", "qiq", "iti", 'q', Items.QUARTZ,
+	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "q q", "qiq", "iti", 'q', Items.QUARTZ,
 		    'i', Items.IRON_INGOT, 't', Blocks.TRIPWIRE_HOOK);
 	}
 	else if (Main.noCreative)

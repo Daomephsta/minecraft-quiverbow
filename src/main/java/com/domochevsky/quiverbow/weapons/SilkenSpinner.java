@@ -1,5 +1,10 @@
 package com.domochevsky.quiverbow.weapons;
 
+import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.Main;
+import com.domochevsky.quiverbow.projectiles.WebShot;
+import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,15 +13,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
-
-import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.projectiles.WebShot;
-import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
-
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class SilkenSpinner extends _WeaponBase
 {
@@ -40,7 +38,7 @@ public class SilkenSpinner extends _WeaponBase
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
@@ -90,7 +88,7 @@ public class SilkenSpinner extends _WeaponBase
     {
 	if (this.Enabled)
 	{
-	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "ihi", "gpg", "tsi", 'p', Blocks.PISTON,
+	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "ihi", "gpg", "tsi", 'p', Blocks.PISTON,
 		    's', Blocks.STICKY_PISTON, 't', Blocks.TRIPWIRE_HOOK, 'i', Items.IRON_INGOT, 'h', Blocks.HOPPER,
 		    'g', Blocks.GLASS_PANE);
 	}

@@ -1,5 +1,6 @@
 package com.domochevsky.quiverbow.weapons;
 
+import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.FenGoop;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
@@ -41,7 +42,7 @@ public class FenFire extends _WeaponBase
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
@@ -108,7 +109,7 @@ public class FenFire extends _WeaponBase
 	if (this.Enabled)
 	{
 	    // One Fen Fire (empty)
-	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "di ", "i i", " ts", 't',
+	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "di ", "i i", " ts", 't',
 		    Blocks.TRIPWIRE_HOOK, 'i', Items.IRON_INGOT, 's', Blocks.STICKY_PISTON, 'd', Blocks.TRAPDOOR);
 	}
 	else if (Main.noCreative)

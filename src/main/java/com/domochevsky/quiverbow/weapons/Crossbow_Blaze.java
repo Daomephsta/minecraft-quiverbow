@@ -16,8 +16,6 @@ import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class Crossbow_Blaze extends _WeaponBase
 {
@@ -43,7 +41,7 @@ public class Crossbow_Blaze extends _WeaponBase
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
@@ -120,7 +118,7 @@ public class Crossbow_Blaze extends _WeaponBase
 	if (this.Enabled)
 	{
 	    // One blaze crossbow (empty)
-	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "bib", "ici", "bib", 'b',
+	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "bib", "ici", "bib", 'b',
 		    Items.BLAZE_POWDER, 'i', Items.IRON_INGOT, 'c',
 		    Helper.getWeaponStackByClass(Crossbow_Compact.class, true));
 	}
@@ -132,7 +130,7 @@ public class Crossbow_Blaze extends _WeaponBase
 	GameRegistry.addShapelessRecipe(new ItemStack(this), // Fill the empty
 							     // blaze crossbow
 							     // with one rod
-		Items.BLAZE_ROD, new ItemStack(this, 1, this.getMaxDamage()));
+		Items.BLAZE_ROD, Helper.createEmptyWeaponOrAmmoStack(this, 1));
     }
 
     @Override

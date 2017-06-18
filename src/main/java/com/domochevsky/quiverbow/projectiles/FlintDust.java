@@ -1,7 +1,6 @@
 package com.domochevsky.quiverbow.projectiles;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -13,8 +12,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.*;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.event.world.BlockEvent;
-
 import com.domochevsky.quiverbow.net.NetHelper;
 
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;

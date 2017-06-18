@@ -94,7 +94,7 @@ public class AA_Targeter extends _WeaponBase
 
     @SideOnly(Side.CLIENT)
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
+    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean par4)
     {
 	Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".description"));
     }

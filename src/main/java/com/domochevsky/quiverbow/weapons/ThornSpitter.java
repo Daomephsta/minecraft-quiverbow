@@ -17,8 +17,6 @@ import com.domochevsky.quiverbow.projectiles.Thorn;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ThornSpitter extends _WeaponBase
 {
@@ -47,7 +45,7 @@ public class ThornSpitter extends _WeaponBase
     {
 	ItemStack stack = player.getHeldItem(hand);
 
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
@@ -92,7 +90,7 @@ public class ThornSpitter extends _WeaponBase
 												// that
 												// clip
 
-	stack.setItemDamage(this.getMaxDamage()); // Emptying out
+	stack.setItemDamage(stack.getMaxDamage()); // Emptying out
 
 	// Creating the clip
 	EntityItem entityitem = new EntityItem(world, entity.posX, entity.posY + 1.0d, entity.posZ, clipStack);
@@ -200,7 +198,7 @@ public class ThornSpitter extends _WeaponBase
 	if (Enabled)
 	{
 	    // One Thorn Spitter (empty)
-	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "bib", "php", "sts", 't',
+	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "bib", "php", "sts", 't',
 		    Blocks.TRIPWIRE_HOOK, 'b', Blocks.IRON_BARS, 'i', Items.IRON_INGOT, 'h', Blocks.HOPPER, 's',
 		    Blocks.STICKY_PISTON, 'p', Blocks.PISTON);
 	}

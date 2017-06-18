@@ -44,7 +44,7 @@ public class Mortar_Dragon extends _WeaponBase
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
@@ -129,7 +129,7 @@ public class Mortar_Dragon extends _WeaponBase
 	if (this.Enabled)
 	{
 	    // One Dragon Mortar (Empty)
-	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "ipi", "isr", "tsf", 't',
+	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "ipi", "isr", "tsf", 't',
 		    Blocks.TRIPWIRE_HOOK, 'i', Items.IRON_INGOT, 's', Blocks.STICKY_PISTON, 'p', Blocks.PISTON, 'r',
 		    Items.REPEATER, 'f', Items.FLINT_AND_STEEL);
 	}

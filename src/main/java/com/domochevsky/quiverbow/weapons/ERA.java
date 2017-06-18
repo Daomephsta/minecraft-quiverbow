@@ -311,7 +311,7 @@ public class ERA extends _WeaponBase
 
 	// Middle row
 	repair[3] = new ItemStack(Blocks.GOLDEN_RAIL);
-	repair[4] = new ItemStack(this, 1, this.getMaxDamage());
+	repair[4] = Helper.createEmptyWeaponOrAmmoStack(this, 1);
 	repair[5] = new ItemStack(Blocks.GOLDEN_RAIL);
 
 	// Bottom row
@@ -348,7 +348,7 @@ public class ERA extends _WeaponBase
     @Override
     public String getModelTexPath(ItemStack stack) // The model texture path
     {
-	if (this.getDamage(stack) == this.getMaxDamage())
+	if (this.getDamage(stack) == stack.getMaxDamage())
 	{
 	    return "ERA_Empty";
 	}

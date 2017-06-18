@@ -17,8 +17,6 @@ import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class Crossbow_AutoImp extends _WeaponBase
 {
@@ -40,7 +38,7 @@ public class Crossbow_AutoImp extends _WeaponBase
      * "quiverchevsky:weapons/CrossbowAutoImp_Empty"); }
      * 
      * @Override public IIcon getIcon(ItemStack stack, int pass) // Onhand
-     * display { if (this.getDamage(stack) >= this.getMaxDamage()) { return
+     * display { if (this.getDamage(stack) >= stack.getMaxDamage()) { return
      * this.Icon_Empty; }
      * 
      * return this.Icon; }
@@ -50,7 +48,7 @@ public class Crossbow_AutoImp extends _WeaponBase
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
@@ -119,7 +117,7 @@ public class Crossbow_AutoImp extends _WeaponBase
 	if (this.Enabled)
 	{
 	    // One auto-crossbow (empty)
-	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "iii", "scs", " i ", 'i',
+	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "iii", "scs", " i ", 'i',
 		    Items.IRON_INGOT, 's', Blocks.STICKY_PISTON, 'c',
 		    Helper.getWeaponStackByClass(Crossbow_Auto.class, true));
 	}

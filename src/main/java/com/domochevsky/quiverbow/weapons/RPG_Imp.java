@@ -16,8 +16,6 @@ import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class RPG_Imp extends _WeaponBase
 {
@@ -44,7 +42,7 @@ public class RPG_Imp extends _WeaponBase
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
@@ -104,7 +102,7 @@ public class RPG_Imp extends _WeaponBase
 	if (this.Enabled)
 	{
 	    // One Improved Rocket Launcher (empty)
-	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "xxx", "yzy", "xxx", 'x',
+	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "xxx", "yzy", "xxx", 'x',
 		    Blocks.OBSIDIAN, // Adding an obsidian frame to the RPG
 		    'y', Items.IRON_INGOT, 'z', Helper.getWeaponStackByClass(RPG.class, true));
 	}

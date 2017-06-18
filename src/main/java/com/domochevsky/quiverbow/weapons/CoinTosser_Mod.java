@@ -46,7 +46,7 @@ public class CoinTosser_Mod extends _WeaponBase
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
@@ -148,7 +148,7 @@ public class CoinTosser_Mod extends _WeaponBase
 											      // that
 											      // clip
 
-	stack.setItemDamage(this.getMaxDamage()); // Emptying out
+	stack.setItemDamage(stack.getMaxDamage()); // Emptying out
 
 	// Creating the clip
 	EntityItem entityitem = new EntityItem(world, entity.posX, entity.posY + 1.0d, entity.posZ, clipStack);
@@ -196,7 +196,7 @@ public class CoinTosser_Mod extends _WeaponBase
 	if (this.Enabled)
 	{
 	    // Modifying the Coin Tosser with double piston tech
-	    GameRegistry.addShapelessRecipe(new ItemStack(this, 1, this.getMaxDamage()),
+	    GameRegistry.addShapelessRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1),
 		    Helper.getWeaponStackByClass(CoinTosser.class, true), Blocks.STICKY_PISTON, Blocks.TRIPWIRE_HOOK,
 		    Items.IRON_INGOT, Items.IRON_INGOT);
 	}

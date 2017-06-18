@@ -100,7 +100,7 @@ public class QuiverBow extends _WeaponBase
 	    j = event.getCharge();
 	}
 
-	if (this.getDamage(stack) == this.getMaxDamage())
+	if (this.getDamage(stack) == stack.getMaxDamage())
 	{
 	    return;
 	} // No arrows in the quiver? Getting out of here early
@@ -155,7 +155,7 @@ public class QuiverBow extends _WeaponBase
 	}
 
 	// Are there any arrows in the quiver?
-	if (this.getDamage(stack) < this.getMaxDamage())
+	if (this.getDamage(stack) < stack.getMaxDamage())
 	{
 	    player.setActiveHand(hand);
 	}
@@ -193,7 +193,7 @@ public class QuiverBow extends _WeaponBase
 	if (this.Enabled)
 	{
 	    // One quiverbow with 256 damage value (empty)
-	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "zxy", "xzy", "zxy", 'x', Items.STICK,
+	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "zxy", "xzy", "zxy", 'x', Items.STICK,
 		    'y', Items.STRING, 'z', Items.LEATHER);
 	}
 	else if (Main.noCreative)

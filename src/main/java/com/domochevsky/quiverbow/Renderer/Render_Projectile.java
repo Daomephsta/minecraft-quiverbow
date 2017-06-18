@@ -1,19 +1,5 @@
 package com.domochevsky.quiverbow.Renderer;
 
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.entity.Entity;
-import net.minecraft.init.Items;
-import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
-import com.domochevsky.quiverbow.Main.Constants;
-import com.domochevsky.quiverbow.projectiles._ProjectileBase;
-
 /*
  * public class Render_Projectile extends Render {
  * 

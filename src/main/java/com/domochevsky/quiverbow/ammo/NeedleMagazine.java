@@ -1,13 +1,13 @@
 package com.domochevsky.quiverbow.ammo;
 
+import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.util.InventoryHelper;
 import com.domochevsky.quiverbow.util.Utils;
 
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.*;
-import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class NeedleMagazine extends AmmoMagazine
 {
@@ -27,7 +27,7 @@ public class NeedleMagazine extends AmmoMagazine
     @Override
     public void addRecipes()
     {
-	GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "x x", "x x", "xix", 'x', Items.LEATHER,
+	GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "x x", "x x", "xix", 'x', Items.LEATHER,
 		'i', Items.IRON_INGOT);
     }
 

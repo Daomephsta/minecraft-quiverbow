@@ -17,8 +17,6 @@ import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class Crossbow_Auto extends _WeaponBase
 {
@@ -43,7 +41,7 @@ public class Crossbow_Auto extends _WeaponBase
      * "quiverchevsky:weapons/CrossbowAuto_Unchambered"); }
      * 
      * @Override public IIcon getIcon(ItemStack stack, int pass) // Onhand
-     * display { if (this.getDamage(stack) >= this.getMaxDamage()) { return
+     * display { if (this.getDamage(stack) >= stack.getMaxDamage()) { return
      * this.Icon_Empty; } if (!this.getChambered(stack)) { return
      * this.Icon_Unchambered; } // Not chambered
      * 
@@ -54,7 +52,7 @@ public class Crossbow_Auto extends _WeaponBase
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
@@ -165,7 +163,7 @@ public class Crossbow_Auto extends _WeaponBase
 	if (this.Enabled)
 	{
 	    // One auto-crossbow (empty)
-	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "iii", "pcp", " t ", 'i',
+	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "iii", "pcp", " t ", 'i',
 		    Items.IRON_INGOT, 'p', Blocks.PISTON, 't', Blocks.TRIPWIRE_HOOK, 'c',
 		    Helper.getWeaponStackByClass(Crossbow_Double.class, true));
 	}
@@ -178,7 +176,7 @@ public class Crossbow_Auto extends _WeaponBase
 							     // auto-crossbow
 							     // with one arrow
 							     // bundle
-		Helper.getAmmoStack(ArrowBundle.class, 0), new ItemStack(this, 1, this.getMaxDamage()));
+		Helper.getAmmoStack(ArrowBundle.class, 0), Helper.createEmptyWeaponOrAmmoStack(this, 1));
     }
 
     @Override

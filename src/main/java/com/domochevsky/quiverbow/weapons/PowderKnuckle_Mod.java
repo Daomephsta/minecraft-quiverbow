@@ -1,23 +1,18 @@
 package com.domochevsky.quiverbow.weapons;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.*;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.event.world.BlockEvent;
-
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.net.NetHelper;
@@ -25,8 +20,6 @@ import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class PowderKnuckle_Mod extends _WeaponBase
 {
@@ -55,7 +48,7 @@ public class PowderKnuckle_Mod extends _WeaponBase
     {
 	ItemStack stack = player.getHeldItem(hand);
 	// Right click
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    return EnumActionResult.FAIL;
 	} // Not loaded
@@ -105,7 +98,7 @@ public class PowderKnuckle_Mod extends _WeaponBase
 	    return false;
 	} // Not doing this on client side
 
-	if (this.getDamage(stack) >= this.getMaxDamage())
+	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
 	    entity.attackEntityFrom(DamageSource.causePlayerDamage(player), this.DmgMin);
 	    entity.hurtResistantTime = 0; // No invincibility frames
@@ -233,7 +226,7 @@ public class PowderKnuckle_Mod extends _WeaponBase
 	if (this.Enabled)
 	{
 	    // Modifying the powder knuckle once
-	    GameRegistry.addRecipe(new ItemStack(this, 1, this.getMaxDamage()), "ooo", "oco", "i i", 'c',
+	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "ooo", "oco", "i i", 'c',
 		    Helper.getWeaponStackByClass(PowderKnuckle.class, true), 'o', Blocks.OBSIDIAN, 'i',
 		    Items.IRON_INGOT);
 	}
