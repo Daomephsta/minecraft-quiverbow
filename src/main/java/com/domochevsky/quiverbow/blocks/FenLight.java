@@ -92,6 +92,18 @@ public class FenLight extends BlockDirectional
     {
 	return new BlockStateContainer(this, FACING);
     }
+    
+    @Override
+    public IBlockState getStateFromMeta(int meta)
+    {
+        return this.getDefaultState().withProperty(FACING, EnumFacing.VALUES[meta]);
+    }
+    
+    @Override
+    public int getMetaFromState(IBlockState state)
+    {
+        return state.getValue(FACING).getIndex();
+    }
 
     @Override
     public void onNeighborChange(IBlockAccess blockAccess, BlockPos pos, BlockPos neighbor)
