@@ -6,7 +6,6 @@ import com.domochevsky.quiverbow.ammo.RocketBundle;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.Sabot_Rocket;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
-import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -84,8 +83,8 @@ public class Mortar_Dragon extends _WeaponBase
 	world.spawnEntity(projectile); // Firing!
 
 	// SFX
-	Utils.playSoundAtEntityPos(entity, SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 2.0F);
-	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_FIREWORK_LAUNCH, 1.0F, 0.5F);
+	Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 2.0F);
+	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_FIREWORK_LAUNCH, 1.0F, 0.5F);
 
 	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_LARGE, (byte) 1);
 
@@ -97,7 +96,7 @@ public class Mortar_Dragon extends _WeaponBase
     @Override
     void doCooldownSFX(World world, Entity entity) // Server side
     {
-	Utils.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.6F, 2.0F);
+	Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.6F, 2.0F);
     }
 
     @Override

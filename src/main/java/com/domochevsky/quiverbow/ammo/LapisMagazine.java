@@ -2,7 +2,6 @@ package com.domochevsky.quiverbow.ammo;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.util.InventoryHelper;
-import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraft.client.Minecraft;
@@ -101,7 +100,7 @@ public class LapisMagazine extends AmmoMagazine
     @Override
     protected boolean consumeComponentItems(EntityPlayer player, int amount)
     {
-	Utils.playSoundAtEntityPos(player, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.0F, 0.2F);
+	Helper.playSoundAtEntityPos(player, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.0F, 0.2F);
 	return InventoryHelper.consumeBlock(player, Blocks.LAPIS_BLOCK, amount);
     }
 }

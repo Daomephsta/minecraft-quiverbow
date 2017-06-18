@@ -4,7 +4,6 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.FenGoop;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
-import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -62,7 +61,7 @@ public class FenFire extends _WeaponBase
 	} // Hasn't cooled down yet
 
 	// SFX
-	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ARROW_SHOOT, 0.7F, 0.3F);
+	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ARROW_SHOOT, 0.7F, 0.3F);
 
 	// Firing
 	FenGoop projectile = new FenGoop(world, entity, (float) this.Speed);
@@ -82,7 +81,7 @@ public class FenFire extends _WeaponBase
     @Override
     void doCooldownSFX(World world, Entity entity)
     {
-	Utils.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.8F, 2.0F);
+	Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.8F, 2.0F);
     }
 
     @Override

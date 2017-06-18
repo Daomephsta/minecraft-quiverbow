@@ -7,7 +7,6 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.RegularArrow;
 import com.domochevsky.quiverbow.util.Newliner;
-import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -85,7 +84,7 @@ public class Crossbow_Double extends _WeaponBase
 	} // Hasn't cooled down yet
 
 	// SFX
-	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 0.5F);
+	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 0.5F);
 
 	RegularArrow entityarrow = new RegularArrow(world, entity, (float) this.Speed);
 
@@ -111,7 +110,7 @@ public class Crossbow_Double extends _WeaponBase
     @Override
     void doCooldownSFX(World world, Entity entity) // Server side
     {
-	Utils.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 0.4F);
+	Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 0.4F);
     }
 
     @SideOnly(Side.CLIENT)

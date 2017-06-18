@@ -1,9 +1,9 @@
 package com.domochevsky.quiverbow.weapons;
 
+import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.ScopedPredictive;
 import com.domochevsky.quiverbow.util.InventoryHelper;
-import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
@@ -301,7 +301,7 @@ public class EnderBow extends _WeaponBase // So archaic... I may have to
 		    f = 1.0F;
 		}
 
-		EntityArrow entityarrow = Utils.createArrow(world, player);
+		EntityArrow entityarrow = Helper.createArrow(world, player);
 
 		if (f == 1.0F)
 		{
@@ -309,7 +309,7 @@ public class EnderBow extends _WeaponBase // So archaic... I may have to
 		}
 
 		stack.damageItem(1, player);
-		Utils.playSoundAtEntityPos(player, SoundEvents.ENTITY_ARROW_SHOOT, 1.0F,
+		Helper.playSoundAtEntityPos(player, SoundEvents.ENTITY_ARROW_SHOOT, 1.0F,
 			1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
 		if (freeShot)

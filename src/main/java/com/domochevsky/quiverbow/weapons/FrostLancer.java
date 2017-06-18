@@ -9,7 +9,6 @@ import com.domochevsky.quiverbow.ammo.ColdIronClip;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.ColdIron;
 import com.domochevsky.quiverbow.util.Newliner;
-import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -76,7 +75,7 @@ public class FrostLancer extends _WeaponBase
 	Helper.knockUserBack(entity, this.Kickback); // Kickback
 
 	// SFX
-	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_GENERIC_EXPLODE, 0.8F, 1.5F);
+	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_GENERIC_EXPLODE, 0.8F, 1.5F);
 	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
 		(byte) 1); // smoke
 
@@ -127,7 +126,7 @@ public class FrostLancer extends _WeaponBase
     @Override
     void doCooldownSFX(World world, Entity entity)
     {
-	Utils.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.7F, 0.2F);
+	Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.7F, 0.2F);
 	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
 		(byte) 1); // smoke
     }

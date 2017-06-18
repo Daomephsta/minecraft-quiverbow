@@ -6,7 +6,6 @@ import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.EnderAccelerator;
 import com.domochevsky.quiverbow.recipes.Recipe_ERA;
 import com.domochevsky.quiverbow.recipes.Recipe_Weapon;
-import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -93,7 +92,7 @@ public class ERA extends _WeaponBase
 													  // pitching
 													  // up
 
-	    Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ENDERMEN_TELEPORT,
+	    Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ENDERMEN_TELEPORT,
 		    stack.getTagCompound().getFloat("accSFX"), stack.getTagCompound().getFloat("accSFX"));
 	    // mob.endermen.portal
 	    // mob.enderdragon.wings
@@ -153,7 +152,7 @@ public class ERA extends _WeaponBase
 		if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("hasEmeraldMuzzle"))
 		{
 		    // Has a muzzle, so no boom
-		    Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_GENERIC_EXPLODE, 2.0F, 0.1F);
+		    Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_GENERIC_EXPLODE, 2.0F, 0.1F);
 		    NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(),
 			    EnumParticleTypes.SMOKE_LARGE, (byte) 6);
 		}

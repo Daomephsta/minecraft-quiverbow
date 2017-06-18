@@ -13,7 +13,6 @@ import net.minecraftforge.common.config.Configuration;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.ammo.GatlingAmmo;
 import com.domochevsky.quiverbow.projectiles.SugarRod;
-import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
@@ -272,10 +271,10 @@ public class SugarEngine extends _WeaponBase
 	case 21:
 	case 23:
 	case 25:
-	    Utils.playSoundAtEntityPos(player, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.8F, 1.8F);
+	    Helper.playSoundAtEntityPos(player, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.8F, 1.8F);
 	    break;
 	default:
-	    if (spin >= 27) Utils.playSoundAtEntityPos(player, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.8F, 1.8F);
+	    if (spin >= 27) Helper.playSoundAtEntityPos(player, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.8F, 1.8F);
 	    break;
 	}
     }

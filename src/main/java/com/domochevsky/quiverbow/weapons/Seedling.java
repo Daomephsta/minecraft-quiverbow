@@ -9,9 +9,9 @@ import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 
+import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.Seed;
-import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -113,7 +113,7 @@ public class Seedling extends _WeaponBase
 	    world.spawnEntity(hook);
 	}
 
-	Utils.playSoundAtEntityPos(player, SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 1.5F);
+	Helper.playSoundAtEntityPos(player, SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 1.5F);
     }
 
     @Override

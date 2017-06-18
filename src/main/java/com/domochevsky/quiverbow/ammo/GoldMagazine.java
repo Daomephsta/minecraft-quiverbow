@@ -2,7 +2,6 @@ package com.domochevsky.quiverbow.ammo;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.util.InventoryHelper;
-import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -44,7 +43,7 @@ public class GoldMagazine extends AmmoMagazine
     @Override
     protected boolean consumeComponentItems(EntityPlayer player, int amount)
     {
-	Utils.playSoundAtEntityPos(player, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 0.3F);
+	Helper.playSoundAtEntityPos(player, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 0.3F);
 	return InventoryHelper.consumeItem(player, Items.GOLD_NUGGET, amount);
     }
 }

@@ -6,7 +6,6 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.HealthBeam;
 import com.domochevsky.quiverbow.recipes.Recipe_RayOfHope_Reload;
-import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -56,7 +55,7 @@ public class MediGun extends _WeaponBase
 	// Good to go (already verified)
 
 	// SFX
-	Utils.playSoundAtEntityPos(entity, SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.7F, 1.4F);
+	Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.7F, 1.4F);
 
 	HealthBeam beam = new HealthBeam(entity.world, entity, (float) this.Speed);
 

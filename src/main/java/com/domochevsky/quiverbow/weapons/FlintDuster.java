@@ -5,7 +5,6 @@ import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.BoxOfFlintDust;
 import com.domochevsky.quiverbow.projectiles.FlintDust;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
-import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -61,7 +60,7 @@ public class FlintDuster extends _WeaponBase
 	// Ignoring cooldown for firing purposes
 
 	// SFX
-	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_BAT_TAKEOFF, 0.5F, 0.6F);
+	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_BAT_TAKEOFF, 0.5F, 0.6F);
 
 	// Ready
 	FlintDust shot = new FlintDust(world, entity, (float) this.Speed);

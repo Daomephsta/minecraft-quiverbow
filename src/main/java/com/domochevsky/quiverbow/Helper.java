@@ -15,12 +15,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.*;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
@@ -29,6 +31,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Helper
 {
+    private static final ItemStack ARROW_STACK = new ItemStack(Items.ARROW);
+    
     // Overhauled method for registering ammo (specifically, using magazines)
     public static void registerAmmoRecipe(Class<? extends _AmmoBase> ammoBase, Item weapon)
     {
@@ -416,5 +420,16 @@ public class Helper
 	ItemStack stack = new ItemStack(item, count);
 	stack.setItemDamage(stack.getMaxDamage());
 	return stack;
+    }
+
+    public static void playSoundAtEntityPos(Entity entity, SoundEvent sound, float volume, float pitch)
+    {
+        entity.world.playSound(entity.posX, entity.posY, entity.posZ, sound, entity.getSoundCategory(), volume, pitch,
+        	false);
+    }
+
+    public static EntityArrow createArrow(World world, EntityLivingBase shooter)
+    {
+        return ((ItemArrow) Items.ARROW).createArrow(world, ARROW_STACK, shooter);
     }
 }

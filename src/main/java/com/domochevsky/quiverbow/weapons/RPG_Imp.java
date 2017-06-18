@@ -12,7 +12,6 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.LargeRocket;
 import com.domochevsky.quiverbow.projectiles.BigRocket;
-import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -74,7 +73,7 @@ public class RPG_Imp extends _WeaponBase
 	world.spawnEntity(rocket); // shoom.
 
 	// SFX
-	Utils.playSoundAtEntityPos(entity, SoundEvents.ENTITY_FIREWORK_LAUNCH, 2.0F, 0.6F);
+	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_FIREWORK_LAUNCH, 2.0F, 0.6F);
 
 	this.consumeAmmo(stack, entity, 1);
 	this.setCooldown(stack, 60);

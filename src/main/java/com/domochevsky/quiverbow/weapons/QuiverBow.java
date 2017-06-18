@@ -4,7 +4,6 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.ArrowBundle;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
-import com.domochevsky.quiverbow.util.Utils;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -117,13 +116,13 @@ public class QuiverBow extends _WeaponBase
 	    f = 1.0F;
 	}
 
-	EntityArrow entityarrow = Utils.createArrow(world, entityLiving);
+	EntityArrow entityarrow = Helper.createArrow(world, entityLiving);
 	if (f == 1.0F)
 	{
 	    entityarrow.setIsCritical(true);
 	}
 
-	Utils.playSoundAtEntityPos(entityLiving, SoundEvents.ENTITY_ARROW_SHOOT, 1.0F,
+	Helper.playSoundAtEntityPos(entityLiving, SoundEvents.ENTITY_ARROW_SHOOT, 1.0F,
 		1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
 	if (entityLiving instanceof EntityPlayer && ((EntityPlayer) entityLiving).capabilities.isCreativeMode)
