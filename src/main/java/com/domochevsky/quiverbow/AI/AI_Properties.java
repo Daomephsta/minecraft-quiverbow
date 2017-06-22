@@ -59,7 +59,7 @@ public class AI_Properties
 
 	while (counter < turret.storage.length)
 	{
-	    if (turret.storage[counter] == null)
+	    if (turret.storage[counter].isEmpty())
 	    {
 		NetHelper.sendTurretInventoryMessageToPlayersInRange(turret.world, turret, -1, counter, 0); // Empty
 	    }

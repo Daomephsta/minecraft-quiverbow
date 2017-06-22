@@ -21,7 +21,7 @@ public class AI_Storage
 
 	while (slot < turret.storage.length)
 	{
-	    if (turret.storage[slot] == null) // That spot is free
+	    if (turret.storage[slot].isEmpty()) // That spot is free
 	    {
 		turret.storage[slot] = playerStack.copy(); // Stored
 		if (!player.capabilities.isCreativeMode)
@@ -55,7 +55,7 @@ public class AI_Storage
 
 	while (slot < turret.storage.length)
 	{
-	    if (turret.storage[slot] != null)
+	    if (!turret.storage[slot].isEmpty())
 	    {
 		boolean skip = false;
 
@@ -140,10 +140,10 @@ public class AI_Storage
 
 	while (slot < turret.storage.length)
 	{
-	    if (turret.storage[slot] != null) // Dumping
+	    if (!turret.storage[slot].isEmpty()) // Dumping
 	    {
 		dropSingleItem(turret, turret.storage[slot]);
-		turret.storage[slot] = null;
+		turret.storage[slot] = ItemStack.EMPTY;
 
 		// Informing the client about this change
 		NetHelper.sendTurretInventoryMessageToPlayersInRange(turret.world, turret, -1, slot, 0);
@@ -156,7 +156,7 @@ public class AI_Storage
     public static void dropFirstWeapon(Entity_AA turret)
     {
 	// Validation
-	if (turret.getHeldItem(EnumHand.MAIN_HAND) == null)
+	if (turret.getHeldItem(EnumHand.MAIN_HAND).isEmpty())
 	{
 	    return;
 	}
@@ -182,7 +182,7 @@ public class AI_Storage
     public static void dropSecondWeapon(Entity_AA turret)
     {
 	// Validation
-	if (turret.getHeldItem(EnumHand.OFF_HAND) == null)
+	if (turret.getHeldItem(EnumHand.OFF_HAND).isEmpty())
 	{
 	    return;
 	}

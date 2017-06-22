@@ -20,7 +20,7 @@ public class RecipeHelper
 	    currentStack = matrix.getStackInSlot(currentSlot); // Hand me your
 							       // item, slot
 
-	    if (currentStack != null && recipeItems[currentSlot] != null)
+	    if (!currentStack.isEmpty() && !recipeItems[currentSlot].isEmpty())
 	    {
 		if (currentStack.getItem() != recipeItems[currentSlot].getItem())
 		{
@@ -40,7 +40,7 @@ public class RecipeHelper
 		    matches += 1; // Seems to check out
 		}
 	    }
-	    else if (currentStack == null && recipeItems[currentSlot] == null)
+	    else if (currentStack.isEmpty() && recipeItems[currentSlot].isEmpty())
 	    {
 		matches += 1; // Both null, so that works for me too
 	    }

@@ -43,7 +43,7 @@ public class Render_AA extends RenderLiving<Entity_AA>
 
 	ItemStack itemstack = entity.getHeldItem(EnumHand.MAIN_HAND);
 
-	if (itemstack != null && itemstack.getItem() != null)
+	if (!itemstack.isEmpty() && itemstack.getItem() != null)
 	{
 	    GL11.glPushMatrix();
 
@@ -76,7 +76,7 @@ public class Render_AA extends RenderLiving<Entity_AA>
 	{
 	    itemstack = entity.getHeldItemOffhand();
 
-	    if (itemstack != null && itemstack.getItem() != null)
+	    if (!itemstack.isEmpty() && itemstack.getItem() != null)
 	    {
 		GL11.glPushMatrix();
 
@@ -123,7 +123,7 @@ public class Render_AA extends RenderLiving<Entity_AA>
 	    // System.out.println("[RENDER] Items.ACK in slot " + slot + " is "
 	    // + itemstack);
 
-	    if (itemstack != null && itemstack.getItem() != null)
+	    if (!itemstack.isEmpty() && itemstack.getItem() != null)
 	    {
 		GL11.glPushMatrix();
 

@@ -138,7 +138,7 @@ public class _WeaponBase extends QuiverBowItem
 
     public int getCooldown(ItemStack stack)
     {
-	if (stack == null)
+	if (stack.isEmpty())
 	{
 	    return 0;
 	} // Why are you not holding anything?
@@ -163,7 +163,7 @@ public class _WeaponBase extends QuiverBowItem
 
     public int getBurstFire(ItemStack stack)
     {
-	if (stack == null)
+	if (stack.isEmpty())
 	{
 	    return 0;
 	} // Not a valid item

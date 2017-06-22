@@ -239,9 +239,9 @@ public class PackedUpAA extends QuiverBowItem
 	ItemStack[] input = new ItemStack[9];
 
 	// Top
-	input[0] = null;
+	input[0] = ItemStack.EMPTY;
 	input[1] = new ItemStack(this);
-	input[2] = null;
+	input[2] = ItemStack.EMPTY;
 
 	// Mid
 	input[3] = new ItemStack(Item.getItemFromBlock(Blocks.STICKY_PISTON));
@@ -250,7 +250,7 @@ public class PackedUpAA extends QuiverBowItem
 
 	// Bottom
 	input[6] = new ItemStack(Item.getItemFromBlock(Blocks.IRON_BARS));
-	input[7] = null;
+	input[7] = ItemStack.EMPTY;
 	input[8] = new ItemStack(Item.getItemFromBlock(Blocks.IRON_BARS));
 
 	Helper.registerAAUpgradeRecipe(new ItemStack(this), input, "hasMobilityUpgrade");
@@ -261,9 +261,9 @@ public class PackedUpAA extends QuiverBowItem
 	ItemStack[] input = new ItemStack[9];
 
 	// Top
-	input[0] = null;
+	input[0] = ItemStack.EMPTY;
 	input[1] = new ItemStack(Item.getItemFromBlock(Blocks.CHEST));
-	input[2] = null;
+	input[2] = ItemStack.EMPTY;
 
 	// Mid
 	input[3] = new ItemStack(Item.getItemFromBlock(Blocks.STICKY_PISTON));
@@ -271,9 +271,9 @@ public class PackedUpAA extends QuiverBowItem
 	input[5] = new ItemStack(Items.SLIME_BALL);
 
 	// Bottom
-	input[6] = null;
+	input[6] = ItemStack.EMPTY;
 	input[7] = new ItemStack(Item.getItemFromBlock(Blocks.OBSIDIAN));
-	input[8] = null;
+	input[8] = ItemStack.EMPTY;
 
 	Helper.registerAAUpgradeRecipe(new ItemStack(this), input, "hasStorageUpgrade");
     }
@@ -283,9 +283,9 @@ public class PackedUpAA extends QuiverBowItem
 	ItemStack[] input = new ItemStack[9];
 
 	// Top
-	input[0] = null;
+	input[0] = ItemStack.EMPTY;
 	input[1] = new ItemStack(this);
-	input[2] = null;
+	input[2] = ItemStack.EMPTY;
 
 	// Mid
 	input[3] = new ItemStack(Item.getItemFromBlock(Blocks.IRON_BLOCK));
@@ -293,8 +293,8 @@ public class PackedUpAA extends QuiverBowItem
 	input[5] = new ItemStack(Item.getItemFromBlock(Blocks.STICKY_PISTON));
 
 	// Bottom
-	input[6] = null;
-	input[7] = null;
+	input[6] = ItemStack.EMPTY;
+	input[7] = ItemStack.EMPTY;
 	input[8] = new ItemStack(Item.getItemFromBlock(Blocks.STICKY_PISTON));
 
 	Helper.registerAAUpgradeRecipe(new ItemStack(this), input, "hasWeaponUpgrade");

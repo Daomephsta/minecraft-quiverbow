@@ -39,7 +39,7 @@ public class Recipe_AA_Weapon extends ShapedRecipes implements IRecipe
 	ItemStack stack = this.result.copy();
 	ItemStack previousAA = this.getAAFromMatrix(matrix);
 
-	if (previousAA != null && previousAA.hasTagCompound()) // Copying
+	if (!previousAA.isEmpty() && previousAA.hasTagCompound()) // Copying
 							       // existing
 							       // properties
 	{
@@ -80,7 +80,7 @@ public class Recipe_AA_Weapon extends ShapedRecipes implements IRecipe
 
 	while (counter < matrix.getSizeInventory())
 	{
-	    if (matrix.getStackInSlot(counter) != null
+	    if (!matrix.getStackInSlot(counter).isEmpty()
 		    && matrix.getStackInSlot(counter).getItem() instanceof PackedUpAA)
 	    {
 		return matrix.getStackInSlot(counter); // Found it
@@ -89,6 +89,6 @@ public class Recipe_AA_Weapon extends ShapedRecipes implements IRecipe
 	    counter += 1;
 	}
 
-	return null;
+	return ItemStack.EMPTY;
     }
 }

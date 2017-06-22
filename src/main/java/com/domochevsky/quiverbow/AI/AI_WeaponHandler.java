@@ -96,11 +96,11 @@ public class AI_WeaponHandler
 	// else, not doing target validation
 
 	_WeaponBase currentWeapon = null;
-	ItemStack currentStack = null;
+	ItemStack currentStack = ItemStack.EMPTY;
 
 	if (secondRail)
 	{
-	    if (turret.firstWeapon != null && turret.getHeldItem(EnumHand.MAIN_HAND) != null) // Checking
+	    if (turret.firstWeapon != null && !turret.getHeldItem(EnumHand.MAIN_HAND).isEmpty()) // Checking
 											      // fire
 											      // staggering
 	    {
@@ -130,7 +130,7 @@ public class AI_WeaponHandler
 	}
 
 	// Still need to check we're actually holding anything
-	if (ignoreValidation && (currentWeapon == null || currentStack == null))
+	if (ignoreValidation && (currentWeapon == null || currentStack.isEmpty()))
 	{
 	    return;
 	} // Nothing to attack with? Weird
@@ -221,7 +221,7 @@ public class AI_WeaponHandler
     private static void reloadFromStorage(Entity_AA turret, boolean secondRail)
     {
 	_WeaponBase currentWeapon = null;
-	ItemStack currentStack = null;
+	ItemStack currentStack = ItemStack.EMPTY;
 
 	if (secondRail)
 	{
@@ -251,7 +251,7 @@ public class AI_WeaponHandler
 
 	while (slot < turret.storage.length) // Lesse what I got here...
 	{
-	    if (turret.storage[slot] != null)
+	    if (!turret.storage[slot].isEmpty())
 	    {
 		if (currentWeapon instanceof LapisCoil && turret.storage[slot].getItem() instanceof LapisMagazine)
 		{
@@ -526,7 +526,7 @@ public class AI_WeaponHandler
 	{
 	    return 0;
 	} // Out of bounds
-	if (turret.storage[slot] == null)
+	if (turret.storage[slot].isEmpty())
 	{
 	    return 0;
 	} // Nothing in there
@@ -552,7 +552,7 @@ public class AI_WeaponHandler
 	    // Still some left?
 	    if (turret.storage[slot].getCount() <= 0) // Nope
 	    {
-		turret.storage[slot] = null; // Remove it
+		turret.storage[slot] = ItemStack.EMPTY; // Remove it
 
 		// Something changed, so informing the client about that now
 		NetHelper.sendTurretInventoryMessageToPlayersInRange(turret.world, turret, -1, slot, 0);

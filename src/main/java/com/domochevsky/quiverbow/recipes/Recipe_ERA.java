@@ -36,7 +36,7 @@ public class Recipe_ERA extends ShapedRecipes implements IRecipe
 
 	while (currentSlot < 9) // Going through all 9 slots
 	{
-	    if (currentStack != null && this.recipeItems[currentSlot] != null)
+	    if (!currentStack.isEmpty() && !this.recipeItems[currentSlot].isEmpty())
 	    {
 		if (currentStack.getItem().getClass() != this.recipeItems[currentSlot].getItem().getClass())
 		{
@@ -56,7 +56,7 @@ public class Recipe_ERA extends ShapedRecipes implements IRecipe
 		    matches += 1; // Seems to check out
 		}
 	    }
-	    else if (currentStack == null && this.recipeItems[currentSlot] == null)
+	    else if (currentStack.isEmpty() && this.recipeItems[currentSlot].isEmpty())
 	    {
 		matches += 1;
 	    } // Both null, so that works for me too

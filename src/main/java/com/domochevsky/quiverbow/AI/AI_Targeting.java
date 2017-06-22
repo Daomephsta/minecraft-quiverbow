@@ -460,7 +460,7 @@ public class AI_Targeting
 
 	while (counter < turret.storage.length)
 	{
-	    if (turret.storage[counter] != null)
+	    if (!turret.storage[counter].isEmpty())
 	    {
 		if (turret.storage[counter].getItem() == Items.WRITABLE_BOOK
 			|| turret.storage[counter].getItem() == Items.WRITTEN_BOOK)

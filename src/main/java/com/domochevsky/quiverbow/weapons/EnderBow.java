@@ -238,7 +238,7 @@ public class EnderBow extends _WeaponBase // So archaic... I may have to
 
     void setCurrentZoom(ItemStack stack, boolean zoom)
     {
-	if (stack == null)
+	if (stack.isEmpty())
 	{
 	    return;
 	} // Not a valid item
@@ -252,7 +252,7 @@ public class EnderBow extends _WeaponBase // So archaic... I may have to
 
     boolean isCurrentlyZoomed(ItemStack stack)
     {
-	if (stack == null)
+	if (stack.isEmpty())
 	{
 	    return false;
 	} // Not a valid item

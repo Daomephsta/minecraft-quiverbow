@@ -65,7 +65,7 @@ public class RecipeLoadMagazine extends ShapelessRecipes implements IRecipe
 	while (counter < matrix.getSizeInventory()) // scouring through the
 						    // entire thing
 	{
-	    if (stack != null && stack.getItem().getClass() == item.getClass()) // Found
+	    if (!stack.isEmpty() && stack.getItem().getClass() == item.getClass()) // Found
 										// one!
 	    {
 		if (stack.getItem() instanceof _WeaponBase) // Is a weapon, so

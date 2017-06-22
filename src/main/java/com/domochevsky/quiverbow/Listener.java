@@ -16,16 +16,16 @@ public class Listener
     {
 	// System.out.println("[EVENT] Player crafted something.");
 
-	if (event.crafting != null && event.crafting.getItem() instanceof ERA)
+	if (!event.crafting.isEmpty() && event.crafting.getItem() instanceof ERA)
 	{
 	    ItemStack stack = event.craftMatrix.getStackInSlot(1);
 
-	    if (stack != null && stack.getCount() > 1)
+	    if (!stack.isEmpty() && stack.getCount() > 1)
 	    {
 		stack.shrink(26);
 		if (stack.getCount() <= 0)
 		{
-		    event.craftMatrix.setInventorySlotContents(1, null);
+		    event.craftMatrix.setInventorySlotContents(1, ItemStack.EMPTY);
 		} // Nothing left
 	    }
 	    // else, nothing in there or only a single rail, meaning this is a
@@ -33,7 +33,7 @@ public class Listener
 	}
 	// else, not mine, so don't care
 
-	else if (event.crafting != null && event.crafting.getItem() instanceof _WeaponBase) // More
+	else if (!event.crafting.isEmpty() && event.crafting.getItem() instanceof _WeaponBase) // More
 											    // generic
 											    // weapon
 											    // check
@@ -63,7 +63,7 @@ public class Listener
 	{
 	    ItemStack stack = craftMatrix.getStackInSlot(slot);
 
-	    if (stack != null && stack.getItem() instanceof _WeaponBase) // Found
+	    if (!stack.isEmpty() && stack.getItem() instanceof _WeaponBase) // Found
 									 // it.
 									 // Does
 									 // it

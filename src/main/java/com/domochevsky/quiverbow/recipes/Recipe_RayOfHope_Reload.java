@@ -31,7 +31,7 @@ public class Recipe_RayOfHope_Reload extends ShapelessRecipes implements IRecipe
     {
 	ItemStack medigun = this.getROHFromMatrix(matrix);
 
-	if (medigun == null)
+	if (medigun.isEmpty())
 	{
 	    return false;
 	} // Has no AA in there
@@ -52,7 +52,7 @@ public class Recipe_RayOfHope_Reload extends ShapelessRecipes implements IRecipe
 	{
 	    ItemStack potentialStack = matrix.getStackInSlot(counter);
 
-	    if (potentialStack != null && potentialStack.getItem() == this.regenPot_1.getItem()
+	    if (!potentialStack.isEmpty() && potentialStack.getItem() == this.regenPot_1.getItem()
 		    && potentialStack.getItemDamage() == this.regenPot_1.getItemDamage())
 	    {
 		// This is a light healing potion. Each of these adds a certain
@@ -63,7 +63,7 @@ public class Recipe_RayOfHope_Reload extends ShapelessRecipes implements IRecipe
 
 		matches = true; // Found at least one thing to reload with
 	    }
-	    else if (potentialStack != null && potentialStack.getItem() == this.regenPot_2.getItem()
+	    else if (!potentialStack.isEmpty() && potentialStack.getItem() == this.regenPot_2.getItem()
 		    && potentialStack.getItemDamage() == this.regenPot_2.getItemDamage())
 	    {
 		// This is a medium healing potion. Each of these adds a certain
@@ -89,10 +89,10 @@ public class Recipe_RayOfHope_Reload extends ShapelessRecipes implements IRecipe
 
 	if (medigun.getItemDamage() - medigun.getTagCompound().getInteger("reloadAmount") < 0)
 	{
-	    return null;
+	    return ItemStack.EMPTY;
 	} // Beyond reloading capacity
 
-	if (medigun != null && medigun.hasTagCompound()) // Copying existing
+	if (!medigun.isEmpty() && medigun.hasTagCompound()) // Copying existing
 							 // properties (should
 							 // copy names too)
 	{
@@ -116,7 +116,7 @@ public class Recipe_RayOfHope_Reload extends ShapelessRecipes implements IRecipe
 
 	while (counter < matrix.getSizeInventory())
 	{
-	    if (matrix.getStackInSlot(counter) != null && matrix.getStackInSlot(counter).getItem() instanceof MediGun)
+	    if (!matrix.getStackInSlot(counter).isEmpty() && matrix.getStackInSlot(counter).getItem() instanceof MediGun)
 	    {
 		return matrix.getStackInSlot(counter); // Found it
 	    }
@@ -124,6 +124,6 @@ public class Recipe_RayOfHope_Reload extends ShapelessRecipes implements IRecipe
 	    counter += 1;
 	}
 
-	return null; // Isn't in here
+	return ItemStack.EMPTY; // Isn't in here
     }
 }

@@ -43,7 +43,7 @@ public class Recipe_Weapon extends ShapedRecipes implements IRecipe
 	    // if (!world.isRemote) { System.out.println("[RECIPE] Checking " +
 	    // currentStack + " against " + this.recipeItems[currentSlot]); }
 
-	    if (currentStack != null && this.recipeItems[currentSlot] != null)
+	    if (!currentStack.isEmpty() && !this.recipeItems[currentSlot].isEmpty())
 	    {
 		if (currentStack.getItem().getClass() != this.recipeItems[currentSlot].getItem().getClass())
 		{
@@ -82,7 +82,7 @@ public class Recipe_Weapon extends ShapedRecipes implements IRecipe
 		    matches += 1;
 		} // Seems to check out
 	    }
-	    else if (currentStack == null && this.recipeItems[currentSlot] == null)
+	    else if (currentStack.isEmpty() && this.recipeItems[currentSlot].isEmpty())
 	    {
 		matches += 1;
 	    } // Both null, so that works for me too

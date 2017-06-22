@@ -32,7 +32,7 @@ public class RecipeLoadAmmo implements IRecipe
 	for (int s = 0; s < invCrafting.getSizeInventory(); s++)
 	{
 	    ItemStack stack = invCrafting.getStackInSlot(s);
-	    if (stack == null) continue;
+	    if (stack.isEmpty()) continue;
 	    if (stack.getItem() == this.targetWeapon)
 	    {
 		if (stack.getItemDamage() == 0) return false;// Already full
@@ -48,7 +48,7 @@ public class RecipeLoadAmmo implements IRecipe
 	    for (int s = 0; s < invCrafting.getSizeInventory(); s++)
 	    {
 		ItemStack stack = invCrafting.getStackInSlot(s);
-		if (stack == null) continue;
+		if (stack.isEmpty()) continue;
 		if (stack.getItem() == componentEntry.getKey())
 		{
 		    componentCount++;
@@ -63,12 +63,12 @@ public class RecipeLoadAmmo implements IRecipe
     @Override
     public ItemStack getCraftingResult(InventoryCrafting invCrafting)
     {
-	ItemStack weapon = null;
+	ItemStack weapon = ItemStack.EMPTY;
 	int s;
 	for (s = 0; s < invCrafting.getSizeInventory(); s++)
 	{
 	    ItemStack stack = invCrafting.getStackInSlot(s);
-	    if (stack == null) continue;
+	    if (stack.isEmpty()) continue;
 	    if (stack.getItem() == this.targetWeapon)
 	    {
 		weapon = stack.copy();
@@ -77,7 +77,7 @@ public class RecipeLoadAmmo implements IRecipe
 	for (s = 0; s < invCrafting.getSizeInventory(); s++)
 	{
 	    ItemStack stack = invCrafting.getStackInSlot(s);
-	    if (stack == null) continue;
+	    if (stack.isEmpty()) continue;
 	    if (ammoComponents.containsKey(stack.getItem()))
 	    {
 		int ammoValue = ammoComponents.get(stack.getItem()).ammoValue;
@@ -120,7 +120,7 @@ public class RecipeLoadAmmo implements IRecipe
     @Override
     public ItemStack getRecipeOutput()
     {
-	return null;
+	return ItemStack.EMPTY;
     }
 
     private static class AmmoData

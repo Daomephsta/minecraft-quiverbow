@@ -28,6 +28,7 @@ import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.item.ItemStack;
 
 public class Helper
 {
@@ -154,7 +155,7 @@ public class Helper
 	    }
 	}
 
-	return null; // No idea what you're looking for
+	return ItemStack.EMPTY; // No idea what you're looking for
     }
 
     public static ItemStack getWeaponStackByClass(Class<? extends _WeaponBase> targetClass, boolean isEmpty)
@@ -174,7 +175,7 @@ public class Helper
 	    }
 	}
 
-	return null; // No idea what you want
+	return ItemStack.EMPTY; // No idea what you want
     }
 
     // Kicks the passed in entity backwards, relative to the passed in strength
@@ -372,7 +373,7 @@ public class Helper
 	{
 	    ItemStack stack = craftMatrix.getStackInSlot(slot);
 
-	    if (stack != null && stack.getItem() instanceof _WeaponBase) // Found
+	    if (!stack.isEmpty() && stack.getItem() instanceof _WeaponBase) // Found
 									 // it.
 									 // Does
 									 // it

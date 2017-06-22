@@ -12,7 +12,7 @@ public class InventoryHelper
 	for (int slot = 0; slot < player.inventory.getSizeInventory(); slot++)
 	{
 	    ItemStack stack = player.inventory.getStackInSlot(slot);
-	    if (stack != null && stack.getItem() == item && stack.getCount() >= amount) return true;
+	    if (!stack.isEmpty() && stack.getItem() == item && stack.getCount() >= amount) return true;
 	}
 	return false;
     }
@@ -28,7 +28,7 @@ public class InventoryHelper
 	for (int slot = 0; slot < player.inventory.getSizeInventory(); slot++)
 	{
 	    ItemStack stack = player.inventory.getStackInSlot(slot);
-	    if (stack != null && stack.getItem() == item)
+	    if (!stack.isEmpty() && stack.getItem() == item)
 	    {
 		if (stack.getCount() - amount < 0)
 		{
@@ -37,7 +37,7 @@ public class InventoryHelper
 		else
 		{
 		    stack.shrink(amount);
-		    if (stack.getCount() <= 0) player.inventory.setInventorySlotContents(slot, null);
+		    if (stack.getCount() <= 0) player.inventory.setInventorySlotContents(slot, ItemStack.EMPTY);
 		    return true;
 		}
 	    }

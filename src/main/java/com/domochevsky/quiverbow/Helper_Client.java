@@ -119,7 +119,7 @@ public class Helper_Client
 
 	    if (itemID == -1)
 	    {
-		turret.storage[itemSlot] = null; // Empty
+		turret.storage[itemSlot] = ItemStack.EMPTY; // Empty
 	    }
 	    else
 	    {

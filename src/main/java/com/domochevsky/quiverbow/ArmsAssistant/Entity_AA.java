@@ -296,7 +296,7 @@ public class Entity_AA extends EntityLiving
 	    this.secondAttackDelay -= 1;
 	}
 
-	if (this.firstWeapon != null && this.getHeldItem(EnumHand.MAIN_HAND) != null)
+	if (this.firstWeapon != null && !this.getHeldItem(EnumHand.MAIN_HAND).isEmpty())
 	{
 	    if (this.firstWeapon.getBurstFire(this.getHeldItem(EnumHand.MAIN_HAND)) > 0) // Doing
 											 // burst
@@ -317,7 +317,7 @@ public class Entity_AA extends EntityLiving
 															// burst
 	}
 
-	if (this.secondWeapon != null && this.getHeldItem(EnumHand.OFF_HAND) != null)
+	if (this.secondWeapon != null && !this.getHeldItem(EnumHand.OFF_HAND).isEmpty())
 	{
 	    if (this.secondWeapon.getBurstFire(this.getHeldItem(EnumHand.OFF_HAND)) > 0) // Doing
 											 // burst
@@ -528,7 +528,7 @@ public class Entity_AA extends EntityLiving
 	ItemStack itemstack = player.getHeldItem(hand);
 
 	// Isn't holding anything
-	if (itemstack == null)
+	if (itemstack.isEmpty())
 	{
 	    if (player.isSneaking()) // They're sneaking, so removing our weapon
 				     // now
@@ -775,7 +775,7 @@ public class Entity_AA extends EntityLiving
 	{
 	    itemTag = new NBTTagCompound();
 
-	    if (this.storage[counter] != null)
+	    if (!this.storage[counter].isEmpty())
 	    {
 		this.storage[counter].writeToNBT(itemTag);
 	    }
@@ -827,7 +827,7 @@ public class Entity_AA extends EntityLiving
 	    this.firstWeapon = Main.weapons.get(tag.getInteger("firstWeapon"));
 	    AI_WeaponHandler.setFirstWeapon(this, new ItemStack(Main.weapons.get(tag.getInteger("firstWeapon"))));
 
-	    if (this.getHeldItem(EnumHand.MAIN_HAND) != null)
+	    if (!this.getHeldItem(EnumHand.MAIN_HAND).isEmpty())
 	    {
 		this.getHeldItem(EnumHand.MAIN_HAND).setItemDamage(tag.getInteger("firstAmmo")); // restoring
 												 // known
@@ -850,7 +850,7 @@ public class Entity_AA extends EntityLiving
 	{
 	    AI_WeaponHandler.setSecondWeapon(this, new ItemStack(Main.weapons.get(tag.getInteger("secondWeapon"))));
 
-	    if (this.getHeldItem(EnumHand.OFF_HAND) != null)
+	    if (!this.getHeldItem(EnumHand.OFF_HAND).isEmpty())
 	    {
 		this.getHeldItem(EnumHand.OFF_HAND).setItemDamage(tag.getInteger("firstAmmo")); // restoring
 												// known
