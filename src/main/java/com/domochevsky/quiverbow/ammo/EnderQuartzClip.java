@@ -28,12 +28,6 @@ public class EnderQuartzClip extends AmmoMagazine
     }
 
     @Override
-    public String getIconPath()
-    {
-	return "EnderAmmo";
-    }
-
-    @Override
     protected boolean hasComponentItems(EntityPlayer player, int amount)
     {
 	return InventoryHelper.hasItem(player, Items.ENDER_PEARL, amount)

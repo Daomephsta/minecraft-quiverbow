@@ -17,12 +17,6 @@ public class BoxOfFlintDust extends _AmmoBase
     }
 
     @Override
-    public String getIconPath()
-    {
-	return "Bundle_Flint";
-    }
-
-    @Override
     public void addRecipes()
     {
 	// A box of flint dust (4 dust per flint, meaning 32 per box), merged

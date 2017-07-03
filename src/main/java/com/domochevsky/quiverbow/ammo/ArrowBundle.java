@@ -7,12 +7,6 @@ import net.minecraft.item.ItemStack;
 public class ArrowBundle extends _AmmoBase
 {
     @Override
-    public String getIconPath()
-    {
-	return "Bundle_Arrows";
-    }
-
-    @Override
     public void addRecipes()
     {
 	// One arrow bundle, holding 8 arrows

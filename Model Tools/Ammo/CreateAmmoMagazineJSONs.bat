@@ -1,0 +1,1 @@
+python createAmmoMagazineJSON.py sugar_magazine,seed_jar,obsidian_magazine,gold_magazine,redstone_magazine,thorn_magazine,lapis_magazine,large_netherrack_magazine,large_redstone_magazine,ender_quartz_magazine

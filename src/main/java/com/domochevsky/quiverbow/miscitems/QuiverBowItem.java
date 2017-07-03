@@ -17,11 +17,6 @@ public abstract class QuiverBowItem extends Item
 	Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".description"));
     }
 
-    public String getIconPath()
-    {
-	return null;
-    }
-
     public void addRecipes()
     {} // Called once after all items have been registered and initialized
 }

@@ -25,32 +25,6 @@ public class LapisMagazine extends AmmoMagazine
 						  // amunition
     }
 
-    /*
-     * @SideOnly(Side.CLIENT) private IIcon[] icons = new IIcon[6];
-     */
-
-    @Override
-    public String getIconPath()
-    {
-	return "LapisAmmo";
-    }
-
-    /*
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * this.iconEmpty =
-     * par1IconRegister.registerIcon("quiverchevsky:ammo/LapisAmmo_0"); for(int
-     * i = 0; i < 6; i++) { this.icons[i] =
-     * par1IconRegister.registerIcon("quiverchevsky:ammo/LapisAmmo_" + (i + 1));
-     * } }
-     * 
-     * 
-     * @Override public IIcon getIconFromDamage(int meta) { if (meta ==
-     * stack.getMaxDamage()) return this.iconEmpty; else return icons[(int) (5 -
-     * Math.floor(meta / 25.0F))]; }
-     */
-
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {

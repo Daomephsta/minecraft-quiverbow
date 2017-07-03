@@ -6,10 +6,7 @@ import java.util.List;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.util.Newliner;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,12 +14,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class AmmoMagazine extends _AmmoBase
-{
-    /*
-     * @SideOnly(Side.CLIENT) protected IIcon iconEmpty;
-     */
+{ 
     // How much should this magazine attempt to fill when sneak-clicked?
     private int sneakFillQuantity;
     // How much should this magazine attempt to fill when not sneak-clicked?
@@ -41,24 +37,6 @@ public abstract class AmmoMagazine extends _AmmoBase
 	this.setMaxStackSize(1);
 	this.setHasSubtypes(true);
     }
-
-    /*
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * Icon = par1IconRegister.registerIcon("quiverchevsky:ammo/" +
-     * getIconPath()); iconEmpty =
-     * par1IconRegister.registerIcon("quiverchevsky:ammo/" + getIconPath() +
-     * "_Empty"); }
-     * 
-     * @Override public IIcon getIconFromDamage(int meta) { if (meta ==
-     * stack.getMaxDamage()) { return iconEmpty; }
-     * 
-     * return Icon; }
-     */
-
-    @Override
-    public abstract String getIconPath();
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)

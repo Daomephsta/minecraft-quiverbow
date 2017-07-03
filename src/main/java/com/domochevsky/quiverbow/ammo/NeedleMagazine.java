@@ -18,12 +18,6 @@ public class NeedleMagazine extends AmmoMagazine
     }
 
     @Override
-    public String getIconPath()
-    {
-	return "NeedleAmmo";
-    }
-
-    @Override
     public void addRecipes()
     {
 	GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "x x", "x x", "xix", 'x', Items.LEATHER,

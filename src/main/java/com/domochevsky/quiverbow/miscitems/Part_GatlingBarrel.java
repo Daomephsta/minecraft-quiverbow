@@ -25,10 +25,4 @@ public class Part_GatlingBarrel extends QuiverBowItem
 	GameRegistry.addRecipe(new ItemStack(this), "i i", "ipi", "isi", 'i', Items.IRON_INGOT, 'p', Blocks.PISTON, 's',
 		Blocks.STICKY_PISTON);
     }
-
-    @Override
-    public String getIconPath()
-    {
-	return "misc/Part_SEBarrel";
-    }
 }

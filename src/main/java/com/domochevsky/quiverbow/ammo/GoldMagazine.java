@@ -22,12 +22,6 @@ public class GoldMagazine extends AmmoMagazine
     }
 
     @Override
-    public String getIconPath()
-    {
-	return "GoldAmmo";
-    }
-
-    @Override
     public void addRecipes()
     {
 	GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "x x", "x x", "xgx", 'x', Items.IRON_INGOT,

@@ -8,12 +8,6 @@ import net.minecraft.item.ItemStack;
 public class LargeRocket extends _AmmoBase
 {
     @Override
-    public String getIconPath()
-    {
-	return "Bundle_BigRocket";
-    }
-
-    @Override
     public void addRecipes()
     {
 	// A big rocket

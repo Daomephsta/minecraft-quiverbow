@@ -20,12 +20,6 @@ public class ObsidianMagazine extends AmmoMagazine
     }
 
     @Override
-    public String getIconPath()
-    {
-	return "ObsidianAmmo";
-    }
-
-    @Override
     public void addRecipes()
     {
 	GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "x x", "x x", "xox", 'x', Items.IRON_INGOT,

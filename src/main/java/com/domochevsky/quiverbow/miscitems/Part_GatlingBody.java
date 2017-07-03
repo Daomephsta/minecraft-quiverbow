@@ -26,10 +26,4 @@ public class Part_GatlingBody extends QuiverBowItem
 	GameRegistry.addRecipe(new ItemStack(this), "rir", "ror", "tpb", 'o', Blocks.OBSIDIAN, 'i', Items.IRON_INGOT,
 		't', Blocks.TRIPWIRE_HOOK, 'r', Items.REPEATER, 'p', Blocks.PLANKS, 'b', Blocks.PISTON);
     }
-
-    @Override
-    public String getIconPath()
-    {
-	return "misc/Part_SEBody";
-    }
 }

@@ -195,12 +195,6 @@ public class PackedUpAA extends QuiverBowItem
 	this.registerCommunicationRecipe();
     }
 
-    @Override
-    public String getIconPath()
-    {
-	return "misc/TurretSpawner";
-    }
-
     private void registerArmorRecipe()
     {
 	ItemStack[] input = new ItemStack[2];

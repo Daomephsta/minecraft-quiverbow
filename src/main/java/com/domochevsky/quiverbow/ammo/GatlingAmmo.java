@@ -20,12 +20,6 @@ public class GatlingAmmo extends AmmoMagazine
     }
 
     @Override
-    public String getIconPath()
-    {
-	return "GatlingAmmo";
-    }
-
-    @Override
     public void addRecipes()
     {
 	// First, the clip itself (empty)

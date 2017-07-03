@@ -19,18 +19,6 @@ public class _AmmoBase extends QuiverBowItem
 						  // amunition
     }
 
-    /*
-     * @SideOnly(Side.CLIENT) protected IIcon Icon;
-     * 
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * this.Icon = par1IconRegister.registerIcon("quiverchevsky:ammo/" +
-     * this.getIconPath()); }
-     * 
-     * @Override public IIcon getIconFromDamage(int meta) { return this.Icon; }
-     */
-
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean unknown)
     {

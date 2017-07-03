@@ -7,12 +7,6 @@ import net.minecraft.item.ItemStack;
 public class RocketBundle extends _AmmoBase
 {
     @Override
-    public String getIconPath()
-    {
-	return "Bundle_Rockets";
-    }
-
-    @Override
     public void addRecipes()
     {
 	// A bundle of rockets (8)

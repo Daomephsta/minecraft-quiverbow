@@ -22,12 +22,6 @@ public class SeedJar extends AmmoMagazine
     }
 
     @Override
-    public String getIconPath()
-    {
-	return "SeedJar";
-    }
-
-    @Override
     public void addRecipes()
     {
 	GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "gwg", "g g", "gig", 'g', Blocks.GLASS_PANE,

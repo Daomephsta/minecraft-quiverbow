@@ -1,0 +1,14 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "quiverchevsky:items/ammo/large_redstone_magazine"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "damage": 1.0
+            },
+            "model": "quiverchevsky:item/ammo/large_redstone_magazine_empty"
+        }
+    ]
+}

@@ -8,12 +8,6 @@ import net.minecraft.item.ItemStack;
 public class ColdIronClip extends _AmmoBase
 {
     @Override
-    public String getIconPath()
-    {
-	return "Bundle_Frost";
-    }
-
-    @Override
     public void addRecipes()
     {
 	// A bundle of ice-laced iron ingots (4), merged with a slime ball
