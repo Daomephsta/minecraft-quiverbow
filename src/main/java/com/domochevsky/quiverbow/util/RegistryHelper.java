@@ -3,7 +3,6 @@ package com.domochevsky.quiverbow.util;
 import com.domochevsky.quiverbow.Main.Constants;
 import com.domochevsky.quiverbow.miscitems.QuiverBowItem;
 
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 
@@ -18,7 +17,6 @@ public class RegistryHelper
     {
 	item.setRegistryName(Constants.MODID + ":" + name);
 	item.setUnlocalizedName(Constants.MODID + infix + name);
-	GameRegistry.register(item);
 	return item;
     }
 
@@ -31,7 +29,6 @@ public class RegistryHelper
     {
 	block.setRegistryName(Constants.MODID + ":" + name);
 	block.setUnlocalizedName(Constants.MODID + infix + name);
-	GameRegistry.register(block);
 	return block;
     }
 }

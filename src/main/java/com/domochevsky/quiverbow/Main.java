@@ -7,29 +7,30 @@ import com.domochevsky.quiverbow.ArmsAssistant.Entity_AA;
 import com.domochevsky.quiverbow.ammo.*;
 import com.domochevsky.quiverbow.blocks.FenLight;
 import com.domochevsky.quiverbow.miscitems.*;
-import com.domochevsky.quiverbow.models.*;
 import com.domochevsky.quiverbow.net.PacketHandler;
 import com.domochevsky.quiverbow.projectiles.*;
 import com.domochevsky.quiverbow.recipes.*;
 import com.domochevsky.quiverbow.util.RegistryHelper;
 import com.domochevsky.quiverbow.weapons.*;
 
-import net.minecraftforge.fml.common.*;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.*;
 import net.minecraftforge.oredict.RecipeSorter;
 
 @Mod(modid = Constants.MODID, name = Constants.NAME, version = "b102")
@@ -50,27 +51,23 @@ public class Main
     protected Configuration config; // Accessible from other files this way
 
     public static ArrayList<_WeaponBase> weapons = new ArrayList<_WeaponBase>(); // Holder
-										 // array
-										 // for
-										 // all
-										 // (fully
-										 // set
-										 // up)
-										 // possible
-										 // weapons
+    // array
+    // for
+    // all
+    // (fully
+    // set
+    // up)
+    // possible
+    // weapons
     public static ArrayList<_AmmoBase> ammo = new ArrayList<_AmmoBase>(); // Same
-									  // with
-									  // ammo,
-									  // since
-									  // they
-									  // got
-									  // recipes
-									  // as
-									  // well
-    // private static String[] weaponType = new String[60]; // For Battle Gear 2
-
-    @SideOnly(Side.CLIENT)
-    public static ArrayList<ModelBase> models; // Client side only
+    // with
+    // ammo,
+    // since
+    // they
+    // got
+    // recipes
+    // as
+    // well
 
     public static Item gatlingBody;
     public static Item gatlingBarrel;
@@ -80,36 +77,36 @@ public class Main
     public static Block fenLight;
 
     private static int projectileCount = 1; // A running number, to register
-					    // projectiles by
+    // projectiles by
 
     // Config
     public static boolean breakGlass; // If this is false then we're not allowed
-				      // to break blocks with projectiles (Don't
-				      // care about TNT)
+    // to break blocks with projectiles (Don't
+    // care about TNT)
     public static boolean useModels; // If this is false then we're reverting
-				     // back to held icons
+    // back to held icons
     public static boolean noCreative; // If this is true then disabled weapons
-				      // won't show up in the creative menu
-				      // either
+    // won't show up in the creative menu
+    // either
     public static boolean allowTurret; // If this is false then the Arms
-				       // Assistant will not be available
+    // Assistant will not be available
     public static boolean allowTurretPlayerAttacks; // If this is false then the
-						    // AA is not allowed to
-						    // attack players (ignores
-						    // them)
+    // AA is not allowed to
+    // attack players (ignores
+    // them)
     public static boolean restrictTurretRange; // If this is false then we're
-					       // not capping the targeting
-					       // range at 32 blocks
+    // not capping the targeting
+    // range at 32 blocks
     public static boolean sendBlockBreak; // If this is false then
-					  // Helper.tryBlockBreak() won't send a
-					  // BlockBreak event. Used by
-					  // protection plugins.
+    // Helper.tryBlockBreak() won't send a
+    // BlockBreak event. Used by
+    // protection plugins.
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
 	this.config = new Configuration(event.getSuggestedConfigurationFile()); // Starting
-										// config
+	// config
 
 	this.config.load(); // And loading it up
 
@@ -131,21 +128,16 @@ public class Main
 		"Is my firing range limited to a maximum of 32 blocks? (default true. Set false for 'Shoot as far as your weapon can handle'.)",
 		true).getBoolean();
 
-	// Item registry here
-	this.registerAmmo();
-	this.registerWeapons(event.getSide().isClient());
 	this.registerProjectiles();
-	this.registerBlocks();
-	this.registerMiscItems();
 
 	addAllProps(event, this.config); // All items are registered now. Making
-					 // recipes and recording props
+	// recipes and recording props
 
 	this.config.save(); // Done with config, saving it
 
 	PacketHandler.initPackets(); // Used for sending particle packets, so I
-				     // can do my thing purely on the server
-				     // side
+	// can do my thing purely on the server
+	// side
 
 	// Registering the Arms Assistant
 	EntityRegistry.registerModEntity(new ResourceLocation(Constants.MODID, "turret"), Entity_AA.class, "turret", 0,
@@ -176,97 +168,10 @@ public class Main
 	MinecraftForge.EVENT_BUS.register(listenerClient);
     }
 
-    void registerAmmo() // Items.WITH which weapons can be reloaded
-    {
-	this.addAmmo(new ArrowBundle(), "arrow_bundle");
-	this.addAmmo(new RocketBundle(), "rocket_bundle");
 
-	this.addAmmo(new GatlingAmmo(), "sugar_magazine");
-
-	this.addAmmo(new LargeRocket(), "large_rocket");
-	this.addAmmo(new ColdIronClip(), "cold_iron_clip");
-	this.addAmmo(new BoxOfFlintDust(), "box_of_flint_dust");
-	this.addAmmo(new SeedJar(), "seed_jar");
-
-	this.addAmmo(new ObsidianMagazine(), "obsidian_magazine");
-	this.addAmmo(new GoldMagazine(), "gold_magazine");
-	this.addAmmo(new NeedleMagazine(), "thorn_magazine");
-	this.addAmmo(new LapisMagazine(), "lapis_magazine");
-	this.addAmmo(new RedstoneMagazine(), "redstone_magazine");
-
-	this.addAmmo(new LargeNetherrackMagazine(), "large_netherrack_magazine");
-	this.addAmmo(new LargeRedstoneMagazine(), "large_redstone_magazine");
-
-	this.addAmmo(new EnderQuartzClip(), "ender_quartz_magazine");
-    }
-
-    void registerWeapons(boolean isClient) // The weapons themselves
-    {
-	this.addWeapon(new Crossbow_Compact(), new Crossbow_Model(), isClient, "dual");
-	this.addWeapon(new Crossbow_Double(), new CrossbowDouble_Model(), isClient, "mainhand");
-	this.addWeapon(new Crossbow_Blaze(), new Crossbow_Model(), isClient, "mainhand");
-	this.addWeapon(new Crossbow_Auto(), new CrossbowAuto_Model(), isClient, "mainhand");
-	this.addWeapon(new Crossbow_AutoImp(), new CrossbowAutoImp_Model(), isClient, "mainhand");
-
-	this.addWeapon(new CoinTosser(), new CoinTosser_Model(), isClient, "mainhand");
-	this.addWeapon(new CoinTosser_Mod(), new CoinTosser_Mod_Model(), isClient, "mainhand");
-
-	this.addWeapon(new DragonBox(), new DragonBox_Model(), isClient, "mainhand");
-	this.addWeapon(new DragonBox_Quad(), new QuadBox_Model(), isClient, "mainhand");
-
-	this.addWeapon(new LapisCoil(), new LapisCoil_Model(), isClient, "mainhand");
-	this.addWeapon(new ThornSpitter(), new ThornSpitter_Model(), isClient, "dual");
-	this.addWeapon(new ProximityNeedler(), new PTT_Model(), isClient, "mainhand");
-	this.addWeapon(new SugarEngine(), new SugarEngine_Model(), isClient, "mainhand");
-
-	this.addWeapon(new RPG(), new RPG_Model(), isClient, "mainhand");
-	this.addWeapon(new RPG_Imp(), new RPG_Model(), isClient, "mainhand");
-
-	this.addWeapon(new Mortar_Arrow(), new Mortar_Model(), isClient, "mainhand");
-	this.addWeapon(new Mortar_Dragon(), new Mortar_Model(), isClient, "mainhand");
-
-	this.addWeapon(new Seedling(), new Seedling_Model(), isClient, "dual");
-	this.addWeapon(new Potatosser(), new Potatosser_Model(), isClient, "mainhand");
-	this.addWeapon(new SnowCannon(), new SnowCannon_Model(), isClient, "dual");
-
-	this.addWeapon(new QuiverBow(), null, isClient, "mainhand");
-
-	this.addWeapon(new EnderBow(), null, isClient, "mainhand");
-	this.addWeapon(new EnderRifle(), new EnderRifle_Model(), isClient, "mainhand");
-	this.addWeapon(new FrostLancer(), new FrostLancer_Model(), isClient, "mainhand");
-
-	this.addWeapon(new OSP(), new OSP_Model(), isClient, "dual");
-	this.addWeapon(new OSR(), new OSR_Model(), isClient, "mainhand");
-	this.addWeapon(new OWR(), new OWR_Model(), isClient, "mainhand");
-
-	this.addWeapon(new FenFire(), new FenFire_Model(), isClient, "dual");
-	this.addWeapon(new FlintDuster(), new FlintDuster_Model(), isClient, "mainhand");
-
-	this.addWeapon(new LightningRed(), new LightningRed_Model(), isClient, "mainhand");
-	this.addWeapon(new Sunray(), new Sunray_Model(), isClient, "mainhand");
-
-	this.addWeapon(new PowderKnuckle(), null, isClient, "dual");
-	this.addWeapon(new PowderKnuckle_Mod(), null, isClient, "dual");
-
-	this.addWeapon(new NetherBellows(), new NetherBellows_Model(), isClient, "mainhand");
-	this.addWeapon(new RedSprayer(), new RedSprayer_Model(), isClient, "mainhand");
-
-	this.addWeapon(new SoulCairn(), new SoulCairn_Model(), isClient, "dual");
-	this.addWeapon(new AquaAccelerator(), new AquaAcc_Model(), isClient, "dual");
-	this.addWeapon(new SilkenSpinner(), new AquaAcc_Model(), isClient, "dual");
-
-	this.addWeapon(new SeedSweeper(), new SeedSweeper_Model(), isClient, "mainhand");
-	this.addWeapon(new MediGun(), new MediGun_Model(), isClient, "mainhand");
-
-	this.addWeapon(new ERA(), new ERA_Model(), isClient, "mainhand");
-
-	this.addWeapon(new AA_Targeter(), new AATH_Model(), isClient, "dual");
-
-	this.addWeapon(new Endernymous(), new EnderNymous_Model(), isClient, "dual");
-    }
 
     void registerProjectiles() // Entities that get shot out of weapons as
-			       // projectiles
+    // projectiles
     {
 	this.addProjectile(RegularArrow.class, true, "arrow");
 	this.addProjectile(BlazeShot.class, true, "blaze");
@@ -315,59 +220,6 @@ public class Main
 	this.addProjectile(EnderAno.class, true, "ano");
     }
 
-    private void registerBlocks() // Blocks.WE can place
-    {
-	fenLight = new FenLight(Material.GLASS);
-	fenLight.setRegistryName(Constants.MODID, "fen_light");
-	fenLight.setUnlocalizedName(Constants.MODID + ".fen_light");
-	GameRegistry.register(fenLight);
-    }
-
-    private void registerMiscItems()
-    {
-	gatlingBody = RegistryHelper.registerItem(new Part_GatlingBody(), ".misc.", "part_se_body");
-	gatlingBarrel = RegistryHelper.registerItem(new Part_GatlingBarrel(), ".misc.", "part_se_barrel");
-	packedAA = RegistryHelper.registerItem(new PackedUpAA(), ".misc.", "turret_spawner");
-	// packedBB = RegistryHelper.registerItem(new PackedUpBB(),
-	// "FlyingAASpawner");
-    }
-
-    private void addAmmo(_AmmoBase ammoBase, String name)
-    {
-	Main.ammo.add(ammoBase);
-	ammoBase.setUnlocalizedName(Constants.MODID + ".ammo." + name);
-	RegistryHelper.registerItem(ammoBase, ".ammo.", name);
-    }
-
-    // Helper function for taking care of weapon registration
-    private void addWeapon(_WeaponBase weapon, ModelBase model, boolean isClient, String handedness)
-    {
-	if (Main.weapons == null)
-	{
-	    Main.weapons = new ArrayList<_WeaponBase>();
-	}
-
-	Main.weapons.add(weapon);
-
-	RegistryHelper.registerItem(weapon, ".weapon.", weapon.getName());
-
-	if (isClient && useModels && model != null) // Do we care about models?
-						    // And if we do, do we got a
-						    // custom weapon model? :O
-	{
-	    if (Main.models == null)
-	    {
-		Main.models = new ArrayList<ModelBase>();
-	    } // Init
-
-	    Main.models.add(model); // Keeping track of it
-	    proxy.registerWeaponRenderer(weapon, (byte) Main.models.indexOf(model)); // And
-										     // registering
-										     // its
-										     // renderer
-	}
-    }
-
     private void addProjectile(Class<? extends Entity> entityClass, boolean hasRenderer, String name)
     {
 	EntityRegistry.registerModEntity(new ResourceLocation(Constants.MODID, name), entityClass,
@@ -395,6 +247,134 @@ public class Main
 	{
 	    weapon.addProps(event, config);
 	    weapon.addRecipes();
+	}
+    }
+
+    @Mod.EventBusSubscriber(modid = Constants.MODID)
+    public static class RegistryHandler
+    {
+	@SubscribeEvent
+	public static void registerBlocks(RegistryEvent.Register<Block> e)
+	{
+	    e.getRegistry().register(RegistryHelper.registerBlock(new FenLight(Material.GLASS), "fen_light"));
+	}
+
+	@SubscribeEvent
+	public static void registerItems(RegistryEvent.Register<Item> e)
+	{
+	    registerMiscItems(e.getRegistry());
+	    registerWeapons(e.getRegistry());
+	    registerAmmo(e.getRegistry());
+	}
+
+	private static void registerMiscItems(IForgeRegistry<Item> registry)
+	{
+	    registry.registerAll(RegistryHelper.registerItem(new Part_GatlingBody(), ".misc.", "part_sugar_engine_body"),
+		    RegistryHelper.registerItem(new Part_GatlingBarrel(), ".misc.", "part_sugar_engine_barrel"),
+		    RegistryHelper.registerItem(new PackedUpAA(), ".misc.", "arms_assistant"));
+	}
+
+	private static void registerWeapons(IForgeRegistry<Item> registry) // The weapons themselves
+	{
+	    registry.registerAll(addWeapon(new Crossbow_Compact()),
+		    addWeapon(new Crossbow_Double()),
+		    addWeapon(new Crossbow_Blaze()),
+		    addWeapon(new Crossbow_Auto()),
+		    addWeapon(new Crossbow_AutoImp()),
+		    addWeapon(new CoinTosser()),
+		    addWeapon(new CoinTosser_Mod()),
+		    addWeapon(new DragonBox()),
+		    addWeapon(new DragonBox_Quad()),
+		    addWeapon(new LapisCoil()),
+		    addWeapon(new ThornSpitter()),
+		    addWeapon(new ProximityNeedler()),
+		    addWeapon(new SugarEngine()),
+		    addWeapon(new RPG()),
+		    addWeapon(new RPG_Imp()),
+		    addWeapon(new Mortar_Arrow()),
+		    addWeapon(new Mortar_Dragon()),
+		    addWeapon(new Seedling()),
+		    addWeapon(new Potatosser()),
+		    addWeapon(new SnowCannon()),
+		    addWeapon(new QuiverBow()),
+		    addWeapon(new EnderBow()),
+		    addWeapon(new EnderRifle()),
+		    addWeapon(new FrostLancer()),
+		    addWeapon(new OSP()),
+		    addWeapon(new OSR()),
+		    addWeapon(new OWR()),
+		    addWeapon(new FenFire()),
+		    addWeapon(new FlintDuster()),
+		    addWeapon(new LightningRed()),
+		    addWeapon(new Sunray()),
+		    addWeapon(new PowderKnuckle()),
+		    addWeapon(new PowderKnuckle_Mod()),
+		    addWeapon(new NetherBellows()),
+		    addWeapon(new RedSprayer()),
+		    addWeapon(new SoulCairn()),
+		    addWeapon(new AquaAccelerator()),
+		    addWeapon(new SilkenSpinner()),
+		    addWeapon(new SeedSweeper()),
+		    addWeapon(new MediGun()),
+		    addWeapon(new ERA()),
+		    addWeapon(new AA_Targeter()),
+		    addWeapon(new Endernymous()));
+	}
+
+	// Helper function for taking care of weapon registration
+	private static Item addWeapon(_WeaponBase weapon)
+	{
+	    Main.weapons.add(weapon);
+	    weapon.setRegistryName(Constants.MODID, weapon.getName());
+	    weapon.setUnlocalizedName(Constants.MODID + ".weapon." + weapon.getName());
+	    return weapon;
+	}
+
+	private static void registerAmmo(IForgeRegistry<Item> registry) // Items.WITH which weapons can be reloaded
+	{
+	    registry.registerAll(addAmmo(new ArrowBundle(), "arrow_bundle"),
+		    addAmmo(new RocketBundle(), "rocket_bundle"),
+		    addAmmo(new GatlingAmmo(), "sugar_magazine"),
+		    addAmmo(new LargeRocket(), "large_rocket"),
+		    addAmmo(new ColdIronClip(), "cold_iron_clip"),
+		    addAmmo(new BoxOfFlintDust(), "box_of_flint_dust"),
+		    addAmmo(new SeedJar(), "seed_jar"),
+		    addAmmo(new ObsidianMagazine(), "obsidian_magazine"),
+		    addAmmo(new GoldMagazine(), "gold_magazine"),
+		    addAmmo(new NeedleMagazine(), "thorn_magazine"),
+		    addAmmo(new LapisMagazine(), "lapis_magazine"),
+		    addAmmo(new RedstoneMagazine(), "redstone_magazine"),
+		    addAmmo(new LargeNetherrackMagazine(), "large_netherrack_magazine"),
+		    addAmmo(new LargeRedstoneMagazine(), "large_redstone_magazine"),
+		    addAmmo(new EnderQuartzClip(), "ender_quartz_magazine"));
+	}
+
+	private static Item addAmmo(_AmmoBase ammoBase, String name)
+	{
+	    Main.ammo.add(ammoBase);
+	    ammoBase.setUnlocalizedName(Constants.MODID + ".ammo." + name);
+	    ammoBase.setRegistryName(Constants.MODID + ":" + name);
+	    return ammoBase;
+	}
+
+	@SubscribeEvent
+	public static void registerEntities(RegistryEvent.Register<EntityEntry> e)
+	{
+
+	}
+
+	@SubscribeEvent
+	public static void registerModels(ModelRegistryEvent e)
+	{
+	    for (_AmmoBase ammunition : ammo)
+	    {
+		ModelLoader.setCustomModelResourceLocation(ammunition, 0, new ModelResourceLocation(new ResourceLocation(Constants.MODID, "ammo/" + ammunition.getRegistryName().getResourcePath()), "inventory"));
+	    }
+
+	    for (_WeaponBase weapon : weapons)
+	    {
+		//ModelLoader.setCustomModelResourceLocation(weapon, 0, new ModelResourceLocation(new ResourceLocation(Constants.MODID, "weapons/" + weapon.getRegistryName().getResourcePath()), "inventory"));
+	    }
 	}
     }
 }
