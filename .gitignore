@@ -20,6 +20,7 @@ hs_err_pid*
 
 #Minecraft
 /run/*
+*.launch
 
 # Eclipse
 *.classpath
