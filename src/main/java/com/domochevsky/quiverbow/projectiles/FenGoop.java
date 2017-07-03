@@ -1,7 +1,7 @@
 package com.domochevsky.quiverbow.projectiles;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
+import com.domochevsky.quiverbow.blocks.BlockRegistry;
 import com.domochevsky.quiverbow.blocks.FenLight;
 
 import net.minecraft.block.SoundType;
@@ -68,7 +68,7 @@ public class FenGoop extends _ProjectileBase
 
 		    if (this.lightTick != 0)
 		    {
-			this.world.scheduleBlockUpdate(pos, Main.fenLight, this.lightTick, 1);
+			this.world.scheduleBlockUpdate(pos, BlockRegistry.FEN_LIGHT, this.lightTick, 1);
 		    }
 		    // else, stays on indefinitely
 		}

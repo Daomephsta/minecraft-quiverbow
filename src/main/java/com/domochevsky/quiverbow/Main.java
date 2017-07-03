@@ -69,13 +69,6 @@ public class Main
     // as
     // well
 
-    public static Item gatlingBody;
-    public static Item gatlingBarrel;
-    public static Item packedAA;
-    public static Item packedBB;
-
-    public static Block fenLight;
-
     private static int projectileCount = 1; // A running number, to register
     // projectiles by
 
@@ -373,7 +366,7 @@ public class Main
 
 	    for (_WeaponBase weapon : weapons)
 	    {
-		//ModelLoader.setCustomModelResourceLocation(weapon, 0, new ModelResourceLocation(new ResourceLocation(Constants.MODID, "weapons/" + weapon.getRegistryName().getResourcePath()), "inventory"));
+		ModelLoader.setCustomModelResourceLocation(weapon, 0, new ModelResourceLocation(new ResourceLocation(Constants.MODID, "weapons/" + weapon.getRegistryName().getResourcePath()), "inventory"));
 	    }
 	}
     }

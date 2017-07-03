@@ -8,9 +8,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 
-import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ArmsAssistant.Entity_AA;
 import com.domochevsky.quiverbow.ammo._AmmoBase;
+import com.domochevsky.quiverbow.items.ItemRegistry;
 import com.domochevsky.quiverbow.net.NetHelper;
 
 public class AI_Storage
@@ -97,7 +97,7 @@ public class AI_Storage
     // Packing myself up and dropping as the spawner item
     public static void dropSelf(Entity_AA turret)
     {
-	ItemStack spawner = new ItemStack(Main.packedAA);
+	ItemStack spawner = new ItemStack(ItemRegistry.ARMS_ASSISTANT);
 
 	// Adding some customization data
 	spawner.setTagCompound(new NBTTagCompound());

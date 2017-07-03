@@ -2,8 +2,6 @@ package com.domochevsky.quiverbow.blocks;
 
 import java.util.Random;
 
-import com.domochevsky.quiverbow.Main;
-
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -37,7 +35,7 @@ public class FenLight extends BlockDirectional
 
     public static void placeFenLight(World world, BlockPos pos, EnumFacing facing)
     {
-	world.setBlockState(pos, Main.fenLight.getDefaultState().withProperty(FACING, facing));
+	world.setBlockState(pos, BlockRegistry.FEN_LIGHT.getDefaultState().withProperty(FACING, facing));
     }
 
     @Override
