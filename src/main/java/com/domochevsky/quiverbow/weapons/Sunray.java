@@ -163,17 +163,6 @@ public class Sunray extends _WeaponBase
     }
 
     @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (this.getCooldown(stack) > 0)
-	{
-	    return "Sunray2_empty";
-	} // Still charging
-
-	return "Sunray2"; // Regular
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> subItems)
     {

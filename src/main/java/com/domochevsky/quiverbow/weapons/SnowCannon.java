@@ -144,19 +144,4 @@ public class SnowCannon extends _WeaponBase
 
 	GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(Blocks.SNOW, 4));
     }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "SnowCannon_empty";
-	}
-	if (this.getCooldown(stack) > 0)
-	{
-	    return "SnowCannon_hot";
-	} // Cooling down
-
-	return "SnowCannon"; // Regular
-    }
 }

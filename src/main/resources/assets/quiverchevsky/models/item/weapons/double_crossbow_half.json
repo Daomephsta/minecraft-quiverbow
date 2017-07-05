@@ -1,0 +1,6 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "quiverchevsky:items/weapons/double_crossbow_half"
+    }
+}

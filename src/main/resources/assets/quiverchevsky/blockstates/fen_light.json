@@ -1,0 +1,21 @@
+
+{
+	"forge_marker": 1,
+	"defaults":
+	{
+		"model": "quiverchevsky:fen_light"
+	},
+	"variants": 
+ 	{
+ 		"inventory": {"model": "quiverchevsky:fen_light"},
+		"facing":
+ 		{	
+ 			"north": {},
+			"south": {"y":180},
+			"east": {"y":90},
+			"west": {"y":270},
+			"up": {"x": -90},
+			"down": {"x": 90}
+ 		}
+  	}
+}

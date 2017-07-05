@@ -6,39 +6,45 @@
     "overrides": [
         {
             "predicate": {
-                "damage": 0.16
+                "damage": 0.0
             },
             "model": "quiverchevsky:item/ammo/lapis_magazine_6"
         },
 		{
             "predicate": {
-                "damage": 0.33
+                "damage": 0.16
             },
             "model": "quiverchevsky:item/ammo/lapis_magazine_5"
         },
 		{
             "predicate": {
-                "damage": 0.5
+                "damage": 0.33
             },
             "model": "quiverchevsky:item/ammo/lapis_magazine_4"
         },
 		{
             "predicate": {
-                "damage": 0.66
+                "damage": 0.5
             },
             "model": "quiverchevsky:item/ammo/lapis_magazine_3"
         },
 		{
             "predicate": {
-                "damage": 0.83
+                "damage": 0.66
             },
             "model": "quiverchevsky:item/ammo/lapis_magazine_2"
         },
 		{
             "predicate": {
-                "damage": 1.0
+                "damage": 0.83
             },
             "model": "quiverchevsky:item/ammo/lapis_magazine_1"
+        },
+		{
+            "predicate": {
+                "damage": 1.0
+            },
+            "model": "quiverchevsky:item/ammo/lapis_magazine"
         }
     ]
 }

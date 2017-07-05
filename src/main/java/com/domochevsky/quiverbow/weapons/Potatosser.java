@@ -123,10 +123,4 @@ public class Potatosser extends _WeaponBase
 	GameRegistry.addRecipe(
 		new RecipeLoadAmmo(this).addComponent(Items.COAL, 0, 1, 1).addComponent(Items.POTATO, 1, 1, 7));
     }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	return "Potatosser"; // Regular
-    }
 }

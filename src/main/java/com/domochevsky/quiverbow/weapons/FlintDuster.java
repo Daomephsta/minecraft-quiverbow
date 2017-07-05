@@ -109,19 +109,4 @@ public class FlintDuster extends _WeaponBase
 	ItemStack stack = Helper.getAmmoStack(BoxOfFlintDust.class, 0);
 	GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(stack.getItem(), 32));
     }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "FlintDuster_empty";
-	} // empty
-	if (this.getCooldown(stack) > 0)
-	{
-	    return "FlintDuster_hot";
-	} // Firing
-
-	return "FlintDuster"; // Regular
-    }
 }

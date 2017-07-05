@@ -118,19 +118,4 @@ public class FenFire extends _WeaponBase
 
 	GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(Blocks.GLOWSTONE, 4));
     }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "FenFire_empty";
-	} // empty
-	if (this.getCooldown(stack) > 0)
-	{
-	    return "FenFire_hot";
-	} // Cooling down
-
-	return "FenFire"; // Regular
-    }
 }

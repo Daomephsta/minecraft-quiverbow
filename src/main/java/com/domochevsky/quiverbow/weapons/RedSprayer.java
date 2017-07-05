@@ -23,26 +23,11 @@ public class RedSprayer extends _WeaponBase
     public RedSprayer()
     {
 	super("redstone_sprayer", 200);
-
-	ItemStack ammo = Helper.getAmmoStack(LargeRedstoneMagazine.class, 0);
-	this.setMaxDamage(ammo.getMaxDamage()); // Fitting our max capacity to
-						// the magazine
     }
 
     private int Wither_Strength;
     private int Wither_Duration;
     private int Blindness_Duration;
-
-    /*
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * this.Icon =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/RedSprayer");
-     * this.Icon_Empty =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/RedSprayer_Empty");
-     * }
-     */
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
@@ -171,20 +156,5 @@ public class RedSprayer extends _WeaponBase
 	} // Not enabled and not allowed to be in the creative menu
 
 	Helper.registerAmmoRecipe(LargeRedstoneMagazine.class, this);
-    }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "RedSprayer_empty";
-	}
-	if (this.getCooldown(stack) > 0)
-	{
-	    return "RedSprayer_hot";
-	}
-
-	return "RedSprayer";
     }
 }

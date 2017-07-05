@@ -29,10 +29,6 @@ public class OWR extends _WeaponBase
     public OWR()
     {
 	super("wither_rifle", 16);
-
-	ItemStack ammo = Helper.getAmmoStack(ObsidianMagazine.class, 0);
-	this.setMaxDamage(ammo.getMaxDamage()); // Fitting our max capacity to
-						// the magazine
     }
 
     public int DmgMagicMin;
@@ -223,20 +219,5 @@ public class OWR extends _WeaponBase
 	// Reloading with obsidian magazine, setting its ammo metadata as ours
 	// (Need to be empty for that)
 	Helper.registerAmmoRecipe(ObsidianMagazine.class, this);
-    }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "OWR_empty";
-	} // empty
-	if (this.getCooldown(stack) > 0)
-	{
-	    return "OWR_hot";
-	} // Cooling down
-
-	return "OWR"; // Regular
     }
 }

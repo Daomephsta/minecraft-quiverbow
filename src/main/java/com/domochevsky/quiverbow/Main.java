@@ -6,7 +6,9 @@ import com.domochevsky.quiverbow.Main.Constants;
 import com.domochevsky.quiverbow.ArmsAssistant.Entity_AA;
 import com.domochevsky.quiverbow.ammo.*;
 import com.domochevsky.quiverbow.blocks.FenLight;
+import com.domochevsky.quiverbow.items.ItemRegistry;
 import com.domochevsky.quiverbow.miscitems.*;
+import com.domochevsky.quiverbow.models.ISpecialRender;
 import com.domochevsky.quiverbow.net.PacketHandler;
 import com.domochevsky.quiverbow.projectiles.*;
 import com.domochevsky.quiverbow.recipes.*;
@@ -361,13 +363,18 @@ public class Main
 	{
 	    for (_AmmoBase ammunition : ammo)
 	    {
-		ModelLoader.setCustomModelResourceLocation(ammunition, 0, new ModelResourceLocation(new ResourceLocation(Constants.MODID, "ammo/" + ammunition.getRegistryName().getResourcePath()), "inventory"));
+		if(ammunition instanceof ISpecialRender) ((ISpecialRender) ammunition).registerRender();
+		else ModelLoader.setCustomModelResourceLocation(ammunition, 0, new ModelResourceLocation(new ResourceLocation(Constants.MODID, "ammo/" + ammunition.getRegistryName().getResourcePath()), "inventory"));
 	    }
 
 	    for (_WeaponBase weapon : weapons)
 	    {
-		ModelLoader.setCustomModelResourceLocation(weapon, 0, new ModelResourceLocation(new ResourceLocation(Constants.MODID, "weapons/" + weapon.getRegistryName().getResourcePath()), "inventory"));
+		if(weapon instanceof ISpecialRender) ((ISpecialRender) weapon).registerRender();
+		else ModelLoader.setCustomModelResourceLocation(weapon, 0, new ModelResourceLocation(new ResourceLocation(Constants.MODID, "weapons/" + weapon.getRegistryName().getResourcePath()), "inventory"));
 	    }
+	    ModelLoader.setCustomModelResourceLocation(ItemRegistry.PART_SUGAR_ENGINE_BODY, 0, new ModelResourceLocation(ItemRegistry.PART_SUGAR_ENGINE_BODY.getRegistryName(), "inventory"));
+	    ModelLoader.setCustomModelResourceLocation(ItemRegistry.PART_SUGAR_ENGINE_BARREL, 0, new ModelResourceLocation(ItemRegistry.PART_SUGAR_ENGINE_BARREL.getRegistryName(), "inventory"));
+	    ModelLoader.setCustomModelResourceLocation(ItemRegistry.ARMS_ASSISTANT, 0, new ModelResourceLocation(ItemRegistry.ARMS_ASSISTANT.getRegistryName(), "inventory"));
 	}
     }
 }

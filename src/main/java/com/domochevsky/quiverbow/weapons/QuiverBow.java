@@ -12,7 +12,9 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -20,64 +22,16 @@ import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class QuiverBow extends _WeaponBase
+public class QuiverBow extends WeaponBow
 {
     public QuiverBow()
     {
 	super("quiverbow", 256);
     }
 
-    // public static final String[] bowPullIconNameArray = new String[]
-    // {"pulling_0", "pulling_1", "pulling_2"};
-
     String name = "Bow with Quiver";
 
-    @SideOnly(Side.CLIENT)
-    /*
-     * private IIcon pull_0;
-     * 
-     * @SideOnly(Side.CLIENT) private IIcon pull_1;
-     * 
-     * @SideOnly(Side.CLIENT) private IIcon pull_2;
-     * 
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * this.itemIcon =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/QBow_idle");
-     * 
-     * this.pull_0 =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/QBow_pulling_0");
-     * this.pull_1 =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/QBow_pulling_1");
-     * this.pull_2 =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/QBow_pulling_2"); }
-     * 
-     * @SideOnly(Side.CLIENT) public IIcon getItemIconForUseDuration(int state)
-     * // Inventory display { if (state == 0) { return this.pull_0; } else if
-     * (state == 1) { return this.pull_1; } else if (state == 2) { return
-     * this.pull_2; }
-     * 
-     * return this.pull_2; // Fallback }
-     * 
-     * @Override // This is for inventory display. Comes in with metadata public
-     * IIcon getIconFromDamage(int meta) { return this.itemIcon; }
-     * 
-     * @Override public IIcon getIcon(ItemStack stack, int renderPass,
-     * EntityPlayer player, ItemStack usingItem, int useRemaining) // On // hand
-     * // display { if (player.getItemInUse() == null) { return this.itemIcon; }
-     * 
-     * int Pulling = stack.getMaxItemUseDuration() - useRemaining; // Displaying
-     * // the bow // drawing // animation // based on // the use // state
-     * 
-     * if (Pulling >= 18) { return this.pull_2; } else if (Pulling > 13) {
-     * return this.pull_1; } else if (Pulling > 0) { return this.pull_0; }
-     * 
-     * return this.itemIcon; }
-     */
     public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft)
     {
 	int j = this.getMaxItemUseDuration(stack) - timeLeft; // Reduces the

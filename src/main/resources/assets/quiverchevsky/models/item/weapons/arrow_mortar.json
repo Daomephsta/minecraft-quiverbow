@@ -1,0 +1,14 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "quiverchevsky:items/weapons/arrow_mortar"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "damage": 1.0
+            },
+            "model": "quiverchevsky:item/weapons/arrow_mortar_empty"
+        }
+    ]
+}

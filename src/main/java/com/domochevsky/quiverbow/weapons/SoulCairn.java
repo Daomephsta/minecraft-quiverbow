@@ -109,15 +109,4 @@ public class SoulCairn extends _WeaponBase
 	GameRegistry.addShapelessRecipe(new ItemStack(this), Items.DIAMOND,
 		Helper.createEmptyWeaponOrAmmoStack(this, 1));
     }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "SoulCairn_empty";
-	} // empty
-
-	return "SoulCairn"; // Regular
-    }
 }

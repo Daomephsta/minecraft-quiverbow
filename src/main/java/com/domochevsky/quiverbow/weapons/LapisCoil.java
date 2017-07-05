@@ -22,10 +22,6 @@ public class LapisCoil extends _WeaponBase
     public LapisCoil()
     {
 	super("lapis_coil", 100);
-
-	ItemStack ammo = Helper.getAmmoStack(LapisMagazine.class, 0);
-	this.setMaxDamage(ammo.getMaxDamage()); // Fitting our max capacity to
-						// the magazine
     }
 
     int Weakness_Strength;
@@ -33,16 +29,6 @@ public class LapisCoil extends _WeaponBase
     int Nausea_Duration;
     int Hunger_Strength;
     int Hunger_Duration;
-
-    /*
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * this.Icon =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/LapisCoil");
-     * this.Icon_Empty =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/LapisCoil_Empty"); }
-     */
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
@@ -172,20 +158,5 @@ public class LapisCoil extends _WeaponBase
 	} // Not enabled and not allowed to be in the creative menu
 
 	Helper.registerAmmoRecipe(LapisMagazine.class, this);
-    }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "LapisCoil2_empty";
-	} // Empty
-	if (this.getCooldown(stack) > 0)
-	{
-	    return "LapisCoil2_hot";
-	} // Hot
-
-	return "LapisCoil2"; // Regular
     }
 }

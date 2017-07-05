@@ -195,19 +195,4 @@ public class FrostLancer extends _WeaponBase
 	GameRegistry.addShapelessRecipe(new ItemStack(this), Helper.createEmptyWeaponOrAmmoStack(this, 1),
 		Helper.getAmmoStack(ColdIronClip.class, 0));
     }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "FrostLancer_empty";
-	}
-	if (this.getCooldown(stack) > 0)
-	{
-	    return "FrostLancer_hot";
-	} // Cooling down
-
-	return "FrostLancer"; // Regular
-    }
 }

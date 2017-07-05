@@ -114,15 +114,4 @@ public class RPG_Imp extends _WeaponBase
 	GameRegistry.addShapelessRecipe(new ItemStack(this), Helper.getAmmoStack(LargeRocket.class, 0),
 		new ItemStack(this, 1, 1));
     }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "RPG_Imp_empty";
-	} // Empty
-
-	return "RPG_Imp"; // Regular
-    }
 }

@@ -21,7 +21,7 @@ public class DragonBox_Quad extends _WeaponBase
 {
     public DragonBox_Quad()
     {
-	super("quad_dragon_box", 64);
+	super("quad_dragonbox", 64);
     }
 
     private int FireDur;
@@ -165,18 +165,5 @@ public class DragonBox_Quad extends _WeaponBase
 	ItemStack stack = Helper.getAmmoStack(RocketBundle.class, 0);
 
 	GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(stack.getItem(), 8));
-    }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	// if (stack.getItemDamage() >= stack.getMaxDamage()) { return
-	// "Dragonbox_hot"; }
-	if (this.getCooldown(stack) > 0)
-	{
-	    return "Dragonbox_hot";
-	} // Cooling down
-
-	return "Dragonbox"; // Regular
     }
 }

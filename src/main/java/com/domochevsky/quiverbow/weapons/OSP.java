@@ -24,25 +24,11 @@ public class OSP extends _WeaponBase
     public OSP()
     {
 	super("splinter_pistol", 16);
-	ItemStack ammo = Helper.getAmmoStack(ObsidianMagazine.class, 0);
-	this.setMaxDamage(ammo.getMaxDamage() * 2); // Fitting our max capacity
-						    // to the magazine. EDIT:
-						    // Experimental double
-						    // capacity
     }
 
     private int Wither_Duration; // 20 ticks to a second, let's start with 3
 				 // seconds
     private int Wither_Strength; // 2 dmg per second for 3 seconds = 6 dmg total
-
-    /*
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/OSP");
-     * this.Icon_Empty =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/OSP_Empty"); }
-     */
 
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
@@ -184,20 +170,5 @@ public class OSP extends _WeaponBase
 	// Reloading with obsidian magazine, setting its ammo metadata as ours
 	// (Need to be empty for that)
 	Helper.registerAmmoRecipe(ObsidianMagazine.class, this);
-    }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "OSP_empty";
-	} // empty
-	if (this.getCooldown(stack) > 0)
-	{
-	    return "OSP_hot";
-	} // Cooling down
-
-	return "OSP"; // Regular
     }
 }

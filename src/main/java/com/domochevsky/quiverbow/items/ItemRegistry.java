@@ -22,8 +22,8 @@ public class ItemRegistry
     public static final Item AUTO_CROSSBOW_IMP = null;
     public static final Item COIN_TOSSER = null;
     public static final Item COIN_TOSSER_MOD = null;
-    public static final Item DRAGON_BOX = null;
-    public static final Item QUAD_DRAGON_BOX = null;
+    public static final Item DRAGONBOX = null;
+    public static final Item QUAD_DRAGONBOX = null;
     public static final Item LAPIS_COIL = null;
     public static final Item THORN_SPITTER = null;
     public static final Item PROXIMITY_THORN_THROWER = null;

@@ -1,5 +1,7 @@
 package com.domochevsky.quiverbow.weapons;
 
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.*;
@@ -7,45 +9,47 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.config.Configuration;
+
+import java.util.Collections;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
+import com.domochevsky.quiverbow.Main.Constants;
 import com.domochevsky.quiverbow.ammo.ArrowBundle;
+import com.domochevsky.quiverbow.models.ISpecialRender;
 import com.domochevsky.quiverbow.projectiles.RegularArrow;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class Crossbow_Auto extends _WeaponBase
-{
+public class Crossbow_Auto extends _WeaponBase implements ISpecialRender
+{    
     public Crossbow_Auto()
     {
 	super("auto_crossbow", 8);
     }
 
-    /*
-     * @SideOnly(Side.CLIENT) public IIcon Icon_Unchambered; // Only relevant if
-     * you're using the // non-model version
-     * 
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) // We
-     * got need for // a non-typical // icon currently. // Will be phased // out
-     * { this.Icon =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/CrossbowAuto");
-     * this.Icon_Empty =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/CrossbowAuto_Empty")
-     * ; this.Icon_Unchambered = par1IconRegister.registerIcon(
-     * "quiverchevsky:weapons/CrossbowAuto_Unchambered"); }
-     * 
-     * @Override public IIcon getIcon(ItemStack stack, int pass) // Onhand
-     * display { if (this.getDamage(stack) >= stack.getMaxDamage()) { return
-     * this.Icon_Empty; } if (!this.getChambered(stack)) { return
-     * this.Icon_Unchambered; } // Not chambered
-     * 
-     * return this.Icon; }
-     */
+    @Override
+    public void registerRender()
+    {
+	final ModelResourceLocation empty = new ModelResourceLocation(new ResourceLocation(Constants.MODID, "weapons/" + getRegistryName().getResourcePath() + "_empty"), "inventory");
+	final ModelResourceLocation unchambered = new ModelResourceLocation(new ResourceLocation(Constants.MODID, "weapons/" + getRegistryName().getResourcePath() + "_unchambered"), "inventory");
+	final ModelResourceLocation chambered = new ModelResourceLocation(new ResourceLocation(Constants.MODID, "weapons/" + getRegistryName().getResourcePath()), "inventory");
+	ModelLoader.registerItemVariants(this, empty, unchambered, chambered);
+	ModelLoader.setCustomMeshDefinition(this, new ItemMeshDefinition()
+	{
+	    @Override
+	    public ModelResourceLocation getModelLocation(ItemStack stack)
+	    {
+		if (stack.getItemDamage() >= stack.getMaxDamage()) return empty;
+		if (!Crossbow_Auto.getChambered(stack)) return unchambered;
+		return chambered; 
+	    }
+	});
+	ModelLoader.setCustomStateMapper(Blocks.OBSIDIAN, (block) -> {return Collections.emptyMap();});
+    }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
@@ -56,7 +60,7 @@ public class Crossbow_Auto extends _WeaponBase
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
 
-	if (!this.getChambered(stack)) // No arrow on the rail
+	if (!Crossbow_Auto.getChambered(stack)) // No arrow on the rail
 	{
 	    if (player.isSneaking())
 	    {
@@ -70,16 +74,16 @@ public class Crossbow_Auto extends _WeaponBase
 	{
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Still sneaking, even though you have an arrow on the rail? Not
-	  // having it
+	// having it
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
+	// neutral firing function
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
     public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-									  // side
+    // side
     {
 	if (this.getCooldown(stack) != 0)
 	{
@@ -93,26 +97,26 @@ public class Crossbow_Auto extends _WeaponBase
 
 	// Random Damage
 	int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
-						   // is 10, then the range will
-						   // be 10
+	// is 10, then the range will
+	// be 10
 	int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
-						     // and 10
+	// and 10
 	dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
-			    // the proper damage range (10-20)
+	// the proper damage range (10-20)
 
 	entityarrow.damage = dmg;
 	entityarrow.knockbackStrength = this.Knockback; // Comes with an inbuild
-							// knockback II
+	// knockback II
 
 	world.spawnEntity(entityarrow); // pew
 
 	this.consumeAmmo(stack, entity, 1);
 	this.setCooldown(stack, this.Cooldown);
 	this.setChambered(stack, world, entity, false); // That bolt has left
-							// the rail
+	// the rail
     }
 
-    private boolean getChambered(ItemStack stack)
+    private static boolean getChambered(ItemStack stack)
     {
 	if (stack.getTagCompound() == null)
 	{
@@ -130,8 +134,8 @@ public class Crossbow_Auto extends _WeaponBase
 	} // Init
 
 	stack.getTagCompound().setBoolean("isChambered", toggle); // Done, we're
-								  // good to go
-								  // again
+	// good to go
+	// again
 
 	// SFX
 	Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.8F, 0.5F);
@@ -172,24 +176,9 @@ public class Crossbow_Auto extends _WeaponBase
 	} // Not enabled and not allowed to be in the creative menu
 
 	GameRegistry.addShapelessRecipe(new ItemStack(this), // Fill the empty
-							     // auto-crossbow
-							     // with one arrow
-							     // bundle
+		// auto-crossbow
+		// with one arrow
+		// bundle
 		Helper.getAmmoStack(ArrowBundle.class, 0), Helper.createEmptyWeaponOrAmmoStack(this, 1));
-    }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "CrossbowAuto_empty";
-	} // Empty
-	if (!this.getChambered(stack))
-	{
-	    return "CrossbowAuto_unchambered";
-	} // Not chambered
-
-	return "CrossbowAuto"; // Regular
     }
 }

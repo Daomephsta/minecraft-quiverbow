@@ -158,19 +158,4 @@ public class EnderRifle extends _WeaponBase
 
 	GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(Items.IRON_INGOT, 1));
     }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "EnderRifle_empty";
-	}
-	if (this.getCooldown(stack) > 0)
-	{
-	    return "EnderRifle_hot";
-	} // Cooling down
-
-	return "EnderRifle"; // Regular
-    }
 }

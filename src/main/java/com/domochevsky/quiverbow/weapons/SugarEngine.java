@@ -20,25 +20,10 @@ public class SugarEngine extends _WeaponBase
 {
     public SugarEngine()
     {
-	super("sugar_engine", 200); // Max ammo placeholder
-
-	ItemStack ammo = Helper.getAmmoStack(GatlingAmmo.class, 0);
-	this.setMaxDamage(ammo.getMaxDamage()); // Fitting our max capacity to
-	// the magazine
+	super("sugar_engine", 200);
     }
 
     public float Spread;
-
-    /*
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * this.Icon =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/SugarGatling");
-     * this.Icon_Empty =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/SugarGatling_Empty")
-     * ; }
-     */
 
     int getSpinupTime()
     {
@@ -315,20 +300,5 @@ public class SugarEngine extends _WeaponBase
 	 * (Need to be empty for that)
 	 * Helper.registerAmmoRecipe(GatlingAmmo.class, this);
 	 */
-    }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "SugarGatling_empty";
-	}
-	if (this.getCooldown(stack) > 0)
-	{
-	    return "SugarGatling_hot";
-	} // Cooling down
-
-	return "SugarGatling"; // Regular
     }
 }

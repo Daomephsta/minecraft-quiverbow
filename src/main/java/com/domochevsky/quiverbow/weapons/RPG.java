@@ -116,15 +116,4 @@ public class RPG extends _WeaponBase
 		Helper.createEmptyWeaponOrAmmoStack(this, 1), 'y', Blocks.TNT, 'z', Blocks.PLANKS, 'a', Items.PAPER, 'b',
 		Items.STRING);
     }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "RPG_empty";
-	} // Empty
-
-	return "RPG"; // Regular
-    }
 }

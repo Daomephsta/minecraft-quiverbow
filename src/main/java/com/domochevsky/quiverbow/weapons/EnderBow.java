@@ -24,28 +24,12 @@ import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class EnderBow extends _WeaponBase // So archaic... I may have to
-					  // overhaul this at some point.
-					  // There's nothing standard about this
+public class EnderBow extends WeaponBow
 {
     public EnderBow()
     {
 	super("ender_bow", 256);
     }
-
-    // public String[] bowPullIconNameArray = new String[] {"pulling_0",
-    // "pulling_1", "pulling_2"};
-
-    /*
-     * @SideOnly(Side.CLIENT) private IIcon pull_0;
-     * 
-     * @SideOnly(Side.CLIENT) private IIcon pull_1;
-     * 
-     * @SideOnly(Side.CLIENT) private IIcon pull_2;
-     */
-
-    // @SideOnly(Side.CLIENT)
-    // private IIcon[] iconArray;
 
     private int shotCounter = 0;
 
@@ -55,44 +39,6 @@ public class EnderBow extends _WeaponBase // So archaic... I may have to
     private int ZoomMax;
 
     private int defaultFOV;
-
-    /*
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * this.itemIcon =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/EnderBow_idle");
-     * 
-     * this.pull_0 =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/EnderBow_pulling_0")
-     * ; this.pull_1 =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/EnderBow_pulling_1")
-     * ; this.pull_2 =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/EnderBow_pulling_2")
-     * ; }
-     * 
-     * @Override public IIcon getIcon(ItemStack stack, int renderPass,
-     * EntityPlayer player, ItemStack usingItem, int useRemaining) { if
-     * (player.getItemInUse() == null) { return this.itemIcon; }
-     * 
-     * int Pulling = stack.getMaxItemUseDuration() - useRemaining; // Displaying
-     * // the bow // drawing // animation // based on // the use // state
-     * 
-     * if (Pulling >= 18) { return this.pull_2; } else if (Pulling > 13) {
-     * return this.pull_1; } else if (Pulling > 0) { return this.pull_0; }
-     * 
-     * return itemIcon; }
-     * 
-     * @SideOnly(Side.CLIENT) public IIcon getItemIconForUseDuration(int state)
-     * // Inventory display { if (state == 0) { return this.pull_0; } else if
-     * (state == 1) { return this.pull_1; } else if (state == 2) { return
-     * this.pull_2; }
-     * 
-     * return this.pull_2; // Fallback }
-     * 
-     * @Override public IIcon getIconFromDamage(int meta) // This is for
-     * inventory display. // Comes in with metadata { return this.itemIcon; }
-     */
 
     @Override
     public void addProps(FMLPreInitializationEvent event, Configuration config)

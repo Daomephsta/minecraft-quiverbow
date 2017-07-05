@@ -21,25 +21,10 @@ public class NetherBellows extends _WeaponBase
     public NetherBellows()
     {
 	super("nether_bellows", 200);
-
-	ItemStack ammo = Helper.getAmmoStack(LargeNetherrackMagazine.class, 0);
-	this.setMaxDamage(ammo.getMaxDamage()); // Fitting our max capacity to
-						// the magazine
     }
 
     private int Dmg;
     private int FireDur;
-
-    /*
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * this.Icon =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/NetherBellows");
-     * this.Icon_Empty =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/NetherBellows_Empty"
-     * ); }
-     */
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
@@ -164,20 +149,5 @@ public class NetherBellows extends _WeaponBase
 	} // Not enabled and not allowed to be in the creative menu
 
 	Helper.registerAmmoRecipe(LargeNetherrackMagazine.class, this);
-    }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "NetherBellows_empty";
-	}
-	if (this.getCooldown(stack) > 0)
-	{
-	    return "NetherBellows_hot";
-	}
-
-	return "NetherBellows";
     }
 }

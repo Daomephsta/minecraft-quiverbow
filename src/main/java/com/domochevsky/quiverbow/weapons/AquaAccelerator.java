@@ -154,15 +154,4 @@ public class AquaAccelerator extends _WeaponBase
 		Helper.createEmptyWeaponOrAmmoStack(this, 1) // Empty
 	);
     }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "AquaAcc_empty";
-	} // empty
-
-	return "AquaAcc"; // Regular
-    }
 }

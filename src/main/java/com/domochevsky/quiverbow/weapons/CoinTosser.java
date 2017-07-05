@@ -24,23 +24,8 @@ public class CoinTosser extends _WeaponBase
 
     public CoinTosser()
     {
-	super("coin_tosser", 72); // Max ammo placeholder
-
-	ItemStack ammo = Helper.getAmmoStack(GoldMagazine.class, 0);
-	this.setMaxDamage(ammo.getMaxDamage()); // Fitting our max capacity to
-						// the magazine
+	super("coin_tosser", 72);
     }
-
-    /*
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * this.Icon =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/CoinTosser");
-     * this.Icon_Empty =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/CoinTosser_Empty");
-     * }
-     */
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
@@ -233,20 +218,5 @@ public class CoinTosser extends _WeaponBase
 
 	// Ammo
 	Helper.registerAmmoRecipe(GoldMagazine.class, this);
-    }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "CoinTosser_empty";
-	} // Empty
-	if (this.getCooldown(stack) > 0)
-	{
-	    return "CoinTosser_hot";
-	}
-
-	return "CoinTosser";
     }
 }

@@ -21,25 +21,10 @@ public class Endernymous extends _WeaponBase
 {
     public Endernymous()
     {
-	super("hidden_ender_pistol", 8); // Max ammo placeholder
-
-	ItemStack ammo = Helper.getAmmoStack(EnderQuartzClip.class, 0);
-	this.setMaxDamage(ammo.getMaxDamage()); // Fitting our max capacity to
-						// the magazine
+	super("hidden_ender_pistol", 8);
     }
 
     private int MaxTicks;
-
-    /*
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * this.Icon =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/EnderNymous");
-     * this.Icon_Empty =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/EnderNymous_Empty");
-     * }
-     */
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
@@ -185,15 +170,5 @@ public class Endernymous extends _WeaponBase
 
 	// Ammo
 	Helper.registerAmmoRecipe(EnderQuartzClip.class, this);
-    }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (this.getCooldown(stack) > 0)
-	{
-	    return "EnderNymous_hot";
-	} // Cooling down
-	return "EnderNymous";
     }
 }

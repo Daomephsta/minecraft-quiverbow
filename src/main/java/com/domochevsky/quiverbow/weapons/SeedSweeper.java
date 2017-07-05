@@ -185,15 +185,4 @@ public class SeedSweeper extends _WeaponBase
 
 	Helper.registerAmmoRecipe(SeedJar.class, this);
     }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "SeedSweeper_empty";
-	}
-
-	return "SeedSweeper"; // Regular
-    }
 }

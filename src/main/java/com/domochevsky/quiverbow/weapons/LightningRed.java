@@ -23,25 +23,10 @@ public class LightningRed extends _WeaponBase
 			  // magazine
     {
 	super("lightning_red", 16);
-
-	ItemStack ammo = Helper.getAmmoStack(RedstoneMagazine.class, 0);
-	this.setMaxDamage(ammo.getMaxDamage()); // Fitting our max capacity to
-						// the magazine
     }
 
     private int PassThroughMax;
     private int MaxTicks;
-
-    /*
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * this.Icon =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/LightningRed");
-     * this.Icon_Empty =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/LightningRed_Empty")
-     * ; }
-     */
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
@@ -193,20 +178,5 @@ public class LightningRed extends _WeaponBase
 	} // Not enabled and not allowed to be in the creative menu
 
 	Helper.registerAmmoRecipe(RedstoneMagazine.class, this);
-    }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "LightningRed_empty";
-	} // empty
-	if (this.getCooldown(stack) > 0)
-	{
-	    return "LightningRed_hot";
-	} // Cooling down
-
-	return "LightningRed"; // Regular
     }
 }

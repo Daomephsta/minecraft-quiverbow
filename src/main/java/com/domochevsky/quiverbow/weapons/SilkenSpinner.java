@@ -102,15 +102,4 @@ public class SilkenSpinner extends _WeaponBase
 
 	GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(Blocks.WEB, 1));
     }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "WebGun_empty";
-	} // empty
-
-	return "WebGun"; // Regular
-    }
 }

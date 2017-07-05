@@ -114,15 +114,4 @@ public class Crossbow_Compact extends _WeaponBase
 							     // one arrow
 		Items.ARROW, Helper.createEmptyWeaponOrAmmoStack(this, 1));
     }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "Crossbow_empty";
-	} // empty
-
-	return "Crossbow"; // Regular
-    }
 }

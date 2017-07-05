@@ -23,22 +23,7 @@ public class ThornSpitter extends _WeaponBase
     public ThornSpitter()
     {
 	super("thorn_spitter", 64);
-
-	ItemStack ammo = Helper.getAmmoStack(NeedleMagazine.class, 0);
-	this.setMaxDamage(ammo.getMaxDamage()); // Fitting our max capacity to
-						// the magazine
     }
-
-    /*
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * this.Icon =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/ThornSpitter");
-     * this.Icon_Empty =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/ThornSpitter_Empty")
-     * ; }
-     */
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
@@ -208,20 +193,5 @@ public class ThornSpitter extends _WeaponBase
 	} // Not enabled and not allowed to be in the creative menu
 
 	Helper.registerAmmoRecipe(NeedleMagazine.class, this);
-    }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "ThornSpitter_empty";
-	}
-	if (this.getCooldown(stack) > 0)
-	{
-	    return "ThornSpitter_hot";
-	} // Cooling down
-
-	return "ThornSpitter"; // Regular
     }
 }

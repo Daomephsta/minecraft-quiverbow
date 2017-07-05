@@ -143,10 +143,4 @@ public class Seedling extends _WeaponBase
 	    this.setCreativeTab(null);
 	} // Not enabled and not allowed to be in the creative menu
     }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	return "Seedling"; // Regular
-    }
 }

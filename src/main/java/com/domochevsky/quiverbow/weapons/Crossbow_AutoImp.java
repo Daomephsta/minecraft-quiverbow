@@ -131,15 +131,4 @@ public class Crossbow_AutoImp extends _WeaponBase
 	// bundles
 	GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(ammo.getItem(), 8, 1, 2));
     }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "CrossbowAutoImp_empty";
-	} // Empty
-
-	return "CrossbowAutoImp"; // Regular
-    }
 }

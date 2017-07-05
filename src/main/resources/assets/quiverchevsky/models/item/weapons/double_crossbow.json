@@ -1,0 +1,20 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "quiverchevsky:items/weapons/double_crossbow"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "damage": 0.5
+            },
+            "model": "quiverchevsky:item/weapons/double_crossbow_half"
+        },
+        {
+            "predicate": {
+                "damage": 1.0
+            },
+            "model": "quiverchevsky:item/weapons/double_crossbow_empty"
+        }
+    ]
+}

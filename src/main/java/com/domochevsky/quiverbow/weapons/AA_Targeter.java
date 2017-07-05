@@ -129,10 +129,4 @@ public class AA_Targeter extends _WeaponBase
     {
 	subItems.add(new ItemStack(item, 1, 0));
     }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	return "AATH"; // Regular
-    }
 }

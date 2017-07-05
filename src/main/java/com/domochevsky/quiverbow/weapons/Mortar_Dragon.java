@@ -140,10 +140,4 @@ public class Mortar_Dragon extends _WeaponBase
 	ItemStack ammo = Helper.getAmmoStack(RocketBundle.class, 0);
 	GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(ammo.getItem(), 1));
     }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	return "MortarDragon"; // Regular
-    }
 }

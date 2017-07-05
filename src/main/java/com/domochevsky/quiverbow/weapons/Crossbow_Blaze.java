@@ -131,15 +131,4 @@ public class Crossbow_Blaze extends _WeaponBase
 							     // with one rod
 		Items.BLAZE_ROD, Helper.createEmptyWeaponOrAmmoStack(this, 1));
     }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "CrossbowBlaze_empty";
-	} // empty
-
-	return "CrossbowBlaze"; // Regular
-    }
 }

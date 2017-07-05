@@ -106,19 +106,4 @@ public class MediGun extends _WeaponBase
 	GameRegistry.addRecipe(new Recipe_RayOfHope_Reload(new ItemStack(this), list,
 		new ItemStack(Items.POTIONITEM, 1, 8193), new ItemStack(Items.POTIONITEM, 1, 8225)));
     }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "MediGun_empty";
-	} // empty
-	if (this.getCooldown(stack) > 0)
-	{
-	    return "MediGun_hot";
-	} // Cooling down
-
-	return "MediGun"; // Regular
-    }
 }

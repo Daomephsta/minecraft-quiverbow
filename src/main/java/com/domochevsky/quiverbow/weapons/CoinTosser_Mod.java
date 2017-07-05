@@ -23,23 +23,8 @@ public class CoinTosser_Mod extends _WeaponBase
 
     public CoinTosser_Mod()
     {
-	super("coin_tosser_mod", 72); // 18 shots, meaning scatter 4 with 72
-				      // nuggets
-
-	ItemStack gold = Helper.getAmmoStack(GoldMagazine.class, 0);
-	this.setMaxDamage(gold.getMaxDamage()); // Fitting our max capacity to
-						// the magazine
+	super("coin_tosser_mod", 72);
     }
-
-    /*
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * this.Icon =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/CoinTosser_Modified"
-     * ); this.Icon_Empty = par1IconRegister.registerIcon(
-     * "quiverchevsky:weapons/CoinTosser_Modified_Empty"); }
-     */
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
@@ -206,20 +191,5 @@ public class CoinTosser_Mod extends _WeaponBase
 
 	// Ammo
 	Helper.registerAmmoRecipe(GoldMagazine.class, this);
-    }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "CoinTosser_Mod_empty";
-	} // Not loaded
-	if (this.getCooldown(stack) > 0)
-	{
-	    return "CoinTosser_Mod_hot";
-	} // Cooling down
-
-	return "CoinTosser_Mod"; // Regular
     }
 }

@@ -235,11 +235,6 @@ public class _WeaponBase extends QuiverBowItem
     public void addProps(FMLPreInitializationEvent event, Configuration config)
     {}
 
-    public String getModelTexPath(ItemStack stack)
-    {
-	return null;
-    } // The model texture path
-
     protected String displayInSec(int tick)
     {
 	return String.format("%.2f", tick * 0.05);

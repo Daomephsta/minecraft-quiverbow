@@ -22,24 +22,13 @@ public class ERA extends _WeaponBase
 {
     public ERA()
     {
-	super("ender_railgun", 1);
+	super("ender_rail_accelerator", 1);
     }
 
     private double explosionSelf;
     public double explosionTarget;
 
     private boolean dmgTerrain; // Can our projectile damage terrain?
-
-    /*
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * this.Icon =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/EnderRailgun");
-     * this.Icon_Empty =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/EnderRailgun_Empty")
-     * ; // Burnt // out }
-     */
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
@@ -342,27 +331,5 @@ public class ERA extends _WeaponBase
 
 	GameRegistry.addRecipe(new Recipe_Weapon(recipe, new ItemStack(this), 1)); // Emerald
 										   // Muzzle
-    }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (this.getDamage(stack) == stack.getMaxDamage())
-	{
-	    return "ERA_Empty";
-	}
-
-	return "ERA";
-    }
-
-    @Override
-    public EnumRarity getRarity(ItemStack stack)
-    {
-	if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("hasEmeraldMuzzle"))
-	{
-	    return EnumRarity.RARE;
-	}
-
-	return EnumRarity.COMMON; // Default
     }
 }

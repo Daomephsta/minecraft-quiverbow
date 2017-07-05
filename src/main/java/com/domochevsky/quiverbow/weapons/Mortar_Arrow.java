@@ -132,10 +132,4 @@ public class Mortar_Arrow extends _WeaponBase
 	ItemStack ammo = Helper.getAmmoStack(ArrowBundle.class, 0);
 	GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(ammo.getItem(), 1));
     }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	return "MortarArrow"; // Regular
-    }
 }

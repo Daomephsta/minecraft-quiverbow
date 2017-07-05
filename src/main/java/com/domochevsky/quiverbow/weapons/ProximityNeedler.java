@@ -20,28 +20,13 @@ public class ProximityNeedler extends _WeaponBase
 {
     public ProximityNeedler()
     {
-	super("proximity_thorn_thrower", 64); // Max ammo placeholder
-
-	ItemStack ammo = Helper.getAmmoStack(NeedleMagazine.class, 0);
-	this.setMaxDamage(ammo.getMaxDamage()); // Fitting our max capacity to
-						// the magazine
+	super("proximity_thorn_thrower", 64);
     }
 
     private int MaxTicks;
     private int ProxyCheck;
     private int ThornAmount;
     private double triggerDist;
-
-    /*
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * this.Icon =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/ProxyNeedler");
-     * this.Icon_Empty =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/ProxyNeedler_Empty")
-     * ; }
-     */
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
@@ -202,16 +187,5 @@ public class ProximityNeedler extends _WeaponBase
 
 	// Ammo
 	Helper.registerAmmoRecipe(NeedleMagazine.class, this);
-    }
-
-    @Override
-    public String getModelTexPath(ItemStack stack) // The model texture path
-    {
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return "PTT_empty";
-	} // Cooling down
-
-	return "PTT";
     }
 }
