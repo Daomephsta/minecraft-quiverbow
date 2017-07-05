@@ -89,10 +89,10 @@ item.quiverchevsky.weapon.ray_of_hope.ammostatus=§9Potion: %dmb/ %dmb
 item.quiverchevsky.weapon.ray_of_hope.loadtext=§eCraft with up to 8 Regeneration Potions (I or II) to reload.
 item.quiverchevsky.weapon.ray_of_hope.description=The beacon shimmers encouragingly.
 
-item.quiverchevsky.weapon.quad_dragon_box.name=Four-headed Dragonbox
-item.quiverchevsky.weapon.quad_dragon_box.ammostatus=§9Rocket Sets: %d / %d
-item.quiverchevsky.weapon.quad_dragon_box.loadtext=§eCraft with up to 8 Rocket Bundles to reload.
-item.quiverchevsky.weapon.quad_dragon_box.description=Four Dragonboxes strapped together.#n§cWhat could go wrong?
+item.quiverchevsky.weapon.quad_dragonbox.name=Four-headed Dragonbox
+item.quiverchevsky.weapon.quad_dragonbox.ammostatus=§9Rocket Sets: %d / %d
+item.quiverchevsky.weapon.quad_dragonbox.loadtext=§eCraft with up to 8 Rocket Bundles to reload.
+item.quiverchevsky.weapon.quad_dragonbox.description=Four Dragonboxes strapped together.#n§cWhat could go wrong?
 
 item.quiverchevsky.weapon.compact_crossbow.name=Compact Crossbow
 item.quiverchevsky.weapon.compact_crossbow.ammostatus=§9Bolts: %d / %d
@@ -124,10 +124,10 @@ item.quiverchevsky.weapon.flint_duster.ammostatus=§9Flint Dust: %d / %d
 item.quiverchevsky.weapon.flint_duster.loadtext=§eCraft with up to 8 Boxes of Flint Dust to reload.
 item.quiverchevsky.weapon.flint_duster.description=The quartz is barely visible beneath the dust coating.
 
-item.quiverchevsky.weapon.dragon_box.name=Dragonbox
-item.quiverchevsky.weapon.dragon_box.ammostatus=§9Rockets: %d / %d
-item.quiverchevsky.weapon.dragon_box.loadtext=§eCraft with up to 8 Rocket Bundles to reload.
-item.quiverchevsky.weapon.dragon_box.description=Crank-powered. The metal is bent.
+item.quiverchevsky.weapon.dragonbox.name=Dragonbox
+item.quiverchevsky.weapon.dragonbox.ammostatus=§9Rockets: %d / %d
+item.quiverchevsky.weapon.dragonbox.loadtext=§eCraft with up to 8 Rocket Bundles to reload.
+item.quiverchevsky.weapon.dragonbox.description=Crank-powered. The metal is bent.
 
 item.quiverchevsky.weapon.seedling.name=Seedling
 item.quiverchevsky.weapon.seedling.ammostatus=§9Melon Seeds: %d / %d
@@ -242,10 +242,10 @@ item.quiverchevsky.weapon.fen_fire.ammostatus=§9Lights: %d / %d
 item.quiverchevsky.weapon.fen_fire.loadtext=§eCraft with up to 8 Glowstone Blocks to reload.
 item.quiverchevsky.weapon.fen_fire.description=It's emanating a warm light.
 
-item.quiverchevsky.weapon.ender_railgun.name=Ender Rail Accelerator
-item.quiverchevsky.weapon.ender_railgun.ammostatus=§cBurns out after one shot.
-item.quiverchevsky.weapon.ender_railgun.loadtext=§cCannot be reloaded.
-item.quiverchevsky.weapon.ender_railgun.description=27 blocks worth of powered rail#nrunning through a single ender chest.#nSo not safe for use.
+item.quiverchevsky.weapon.ender_rail_accelerator.name=Ender Rail Accelerator
+item.quiverchevsky.weapon.ender_rail_accelerator.ammostatus=§cBurns out after one shot.
+item.quiverchevsky.weapon.ender_rail_accelerator.loadtext=§cCannot be reloaded.
+item.quiverchevsky.weapon.ender_rail_accelerator.description=27 blocks worth of powered rail#nrunning through a single ender chest.#nSo not safe for use.
 
 item.quiverchevsky.weapon.auto_crossbow_imp.name=Improved Auto-crossbow
 item.quiverchevsky.weapon.auto_crossbow_imp.ammostatus=§9Bolts: %d / %d
@@ -289,13 +289,13 @@ item.quiverchevsky.weapon.powder_knuckles.loadtext=§eCraft with up to 8 gunpowd
 item.quiverchevsky.weapon.powder_knuckles.description=§ePunch to attack mobs.Use to attack terrain.#nNot safe for use.
 
 //Misc
-item.quiverchevsky.misc.Part_SEBarrel.name=Sugar Engine Barrel
-item.quiverchevsky.misc.Part_SEBarrel.description=A barrel, waiting for 3 companions and a main body.
+item.quiverchevsky.misc.part_sugar_engine_barrel.name=Sugar Engine Barrel
+item.quiverchevsky.misc.part_sugar_engine_barrel.description=A barrel, waiting for 3 companions and a main body.
 
-item.quiverchevsky.misc.Part_SEBody.name=Sugar Engine Main Body
-item.quiverchevsky.misc.Part_SEBody.description=To be outfitted with 4 barrels.
+item.quiverchevsky.misc.part_sugar_engine_body.name=Sugar Engine Main Body
+item.quiverchevsky.misc.part_sugar_engine_body.description=To be outfitted with 4 barrels.
 
-item.quiverchevsky.misc.TurretSpawner.name=Packed Up Arms Assistant
-item.quiverchevsky.misc.TurretSpawner.description=It's sizing you up
+item.quiverchevsky.misc.arms_assistant.name=Packed Up Arms Assistant
+item.quiverchevsky.misc.arms_assistant.description=It's sizing you up
 
 item.quiverchevsky.misc.FlyingAASpawner.name=Packed Up BB (WIP) 
