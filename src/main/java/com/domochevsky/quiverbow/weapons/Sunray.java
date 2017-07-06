@@ -57,27 +57,29 @@ public class Sunray extends _WeaponBase
 	} // Hasn't cooled down yet
 
 	Helper.knockUserBack(entity, this.Kickback); // Kickback
+	if(!world.isRemote)
+	{
+	    // Firing a beam that goes through walls
+	    SunLight shot = new SunLight(world, entity, (float) this.Speed);
 
-	// Firing a beam that goes through walls
-	SunLight shot = new SunLight(world, entity, (float) this.Speed);
+	    // Random Damage
+	    int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
+	    // is 10, then the range will
+	    // be 10
+	    int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
+	    // and 10
+	    dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
+	    // the proper damage range (10-20)
 
-	// Random Damage
-	int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
-						   // is 10, then the range will
-						   // be 10
-	int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
-						     // and 10
-	dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
-			    // the proper damage range (10-20)
+	    // The moving end point
+	    shot.damage = dmg;
+	    shot.fireDuration = this.FireDur;
 
-	// The moving end point
-	shot.damage = dmg;
-	shot.fireDuration = this.FireDur;
+	    shot.ignoreFrustumCheck = true;
+	    shot.ticksInAirMax = this.MaxTicks;
 
-	shot.ignoreFrustumCheck = true;
-	shot.ticksInAirMax = this.MaxTicks;
-
-	world.spawnEntity(shot); // Firing!
+	    world.spawnEntity(shot); // Firing!
+	}
 
 	// SFX
 	entity.playSound(SoundEvents.ENTITY_BLAZE_DEATH, 0.7F, 2.0F);

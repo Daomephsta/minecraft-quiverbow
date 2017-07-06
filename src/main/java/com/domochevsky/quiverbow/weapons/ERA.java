@@ -47,11 +47,6 @@ public class ERA extends _WeaponBase
     @Override
     public void doSingleFire(ItemStack stack, World world, Entity entity)
     {
-	if (world.isRemote)
-	{
-	    return;
-	} // Not doing this on client side
-
 	if (this.isAccelerating(stack))
 	{
 	    return;
@@ -64,11 +59,6 @@ public class ERA extends _WeaponBase
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int animTick, boolean holdingItem)
     {
-	if (world.isRemote)
-	{
-	    return;
-	} // Not doing this on client side
-
 	// Used for ticking up 27 * 2 times (with increasing pitch) after
 	// triggered and before firing
 	// 54 ticks minimum per shot (movement in/out)
@@ -76,10 +66,10 @@ public class ERA extends _WeaponBase
 	if (this.isAccelerating(stack))
 	{
 	    stack.getTagCompound().setInteger("acceleration", stack.getTagCompound().getInteger("acceleration") - 1); // Ticking
-														      // down
+	    // down
 	    stack.getTagCompound().setFloat("accSFX", stack.getTagCompound().getFloat("accSFX") + 0.02f); // And
-													  // pitching
-													  // up
+	    // pitching
+	    // up
 
 	    Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ENDERMEN_TELEPORT,
 		    stack.getTagCompound().getFloat("accSFX"), stack.getTagCompound().getFloat("accSFX"));
@@ -87,8 +77,8 @@ public class ERA extends _WeaponBase
 	    // mob.enderdragon.wings
 
 	    if (stack.getTagCompound().getInteger("acceleration") <= 0) // Ready
-									// to
-									// fire
+		// to
+		// fire
 	    {
 		Helper.knockUserBack(entity, this.Kickback); // Kickback
 
@@ -96,9 +86,9 @@ public class ERA extends _WeaponBase
 		if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("hasEmeraldMuzzle"))
 		{
 		    entity.attackEntityFrom(DamageSource.causeThrownDamage(entity, entity), 15.0f); // Hurtin'
-												    // (but
-												    // less
-												    // so)
+		    // (but
+		    // less
+		    // so)
 		}
 		else
 		{
@@ -108,7 +98,7 @@ public class ERA extends _WeaponBase
 		boolean damageTerrain = world.getGameRules().getBoolean("mobGriefing");
 
 		if (!holdingItem) // Isn't holding the weapon, so this is gonna
-				  // go off in their pockets
+		    // go off in their pockets
 		{
 		    entity.hurtResistantTime = 0; // No rest for the wicked
 		    world.createExplosion(entity, entity.posX, entity.posY, entity.posZ, (float) this.explosionTarget,
@@ -136,7 +126,7 @@ public class ERA extends _WeaponBase
 		{
 		    damageTerrain = this.dmgTerrain;
 		} // Players don't care about mob griefing rules, but play by
-		  // their own rules
+		// their own rules
 
 		if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("hasEmeraldMuzzle"))
 		{
@@ -151,24 +141,27 @@ public class ERA extends _WeaponBase
 			    damageTerrain); // Hurtin' more
 		}
 
-		// Spawn projectile and go
-		EnderAccelerator shot = new EnderAccelerator(world, entity, 5.0f);
+		if(!world.isRemote)
+		{
+		    // Spawn projectile and go
+		    EnderAccelerator shot = new EnderAccelerator(world, entity, 5.0f);
 
-		// Random Damage
-		int dmg_range = DmgMax - DmgMin; // If max dmg is 20 and min is
-						 // 10, then the range will be
-						 // 10
-		int dmg = world.rand.nextInt(dmg_range + 1); // Range will be
-							     // between 0 and 10
-		dmg += DmgMin; // Adding the min dmg of 10 back on top, giving
-			       // us the proper damage range (10-20)
+		    // Random Damage
+		    int dmg_range = DmgMax - DmgMin; // If max dmg is 20 and min is
+		    // 10, then the range will be
+		    // 10
+		    int dmg = world.rand.nextInt(dmg_range + 1); // Range will be
+		    // between 0 and 10
+		    dmg += DmgMin; // Adding the min dmg of 10 back on top, giving
+		    // us the proper damage range (10-20)
 
-		shot.damage = dmg;
-		shot.ticksInAirMax = 120; // 6 sec?
-		shot.damageTerrain = damageTerrain;
-		shot.explosionSize = (float) this.explosionTarget;
+		    shot.damage = dmg;
+		    shot.ticksInAirMax = 120; // 6 sec?
+		    shot.damageTerrain = damageTerrain;
+		    shot.explosionSize = (float) this.explosionTarget;
 
-		world.spawnEntity(shot);
+		    world.spawnEntity(shot);
+		}
 
 		// Set weapon to "burnt out" (if the user's a player and not in
 		// creative mode)
@@ -212,7 +205,7 @@ public class ERA extends _WeaponBase
 	{
 	    return false;
 	} // If this is higher than 0 then it's currently counting down to the
-	  // moment it fires
+	// moment it fires
 
 	return true; // Seems to check out
     }
@@ -330,6 +323,6 @@ public class ERA extends _WeaponBase
 	recipe[8] = new ItemStack(Blocks.QUARTZ_BLOCK); // 6 7 8
 
 	GameRegistry.addRecipe(new Recipe_Weapon(recipe, new ItemStack(this), 1)); // Emerald
-										   // Muzzle
+	// Muzzle
     }
 }

@@ -76,6 +76,7 @@ public class Endernymous extends _WeaponBase
     // Single firing action for something that fires multiple per trigger
     private void fireShot(World world, Entity entity)
     {
+	if(world.isRemote) return;
 	// Random Damage
 	int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
 						   // is 10, then the range will

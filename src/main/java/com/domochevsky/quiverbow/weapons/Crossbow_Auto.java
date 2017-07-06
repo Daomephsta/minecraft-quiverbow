@@ -93,22 +93,25 @@ public class Crossbow_Auto extends _WeaponBase implements ISpecialRender
 	// SFX
 	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 0.5F);
 
-	RegularArrow entityarrow = new RegularArrow(world, entity, (float) this.Speed);
+	if(!world.isRemote)
+	{
+	    RegularArrow entityarrow = new RegularArrow(world, entity, (float) this.Speed);
 
-	// Random Damage
-	int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
-	// is 10, then the range will
-	// be 10
-	int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
-	// and 10
-	dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
-	// the proper damage range (10-20)
+	    // Random Damage
+	    int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
+	    // is 10, then the range will
+	    // be 10
+	    int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
+	    // and 10
+	    dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
+	    // the proper damage range (10-20)
 
-	entityarrow.damage = dmg;
-	entityarrow.knockbackStrength = this.Knockback; // Comes with an inbuild
-	// knockback II
+	    entityarrow.damage = dmg;
+	    entityarrow.knockbackStrength = this.Knockback; // Comes with an inbuild
+	    // knockback II
 
-	world.spawnEntity(entityarrow); // pew
+	    world.spawnEntity(entityarrow); // pew
+	}
 
 	this.consumeAmmo(stack, entity, 1);
 	this.setCooldown(stack, this.Cooldown);

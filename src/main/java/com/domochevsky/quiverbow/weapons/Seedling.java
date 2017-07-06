@@ -36,25 +36,27 @@ public class Seedling extends _WeaponBase
 	}
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
+	// neutral firing function
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
     public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-									  // side
+    // side
     {
 	// Good to go (already verified)
 
 	entity.playSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.6F, 0.7F);
+	if(!world.isRemote)
+	{
+	    float spreadHor = world.rand.nextFloat() * 10 - 5; // Spread
+	    float spreadVert = world.rand.nextFloat() * 10 - 5;
 
-	float spreadHor = world.rand.nextFloat() * 10 - 5; // Spread
-	float spreadVert = world.rand.nextFloat() * 10 - 5;
+	    Seed shot = new Seed(world, entity, (float) this.Speed, spreadHor, spreadVert);
+	    shot.damage = this.Dmg;
 
-	Seed shot = new Seed(world, entity, (float) this.Speed, spreadHor, spreadVert);
-	shot.damage = this.Dmg;
-
-	world.spawnEntity(shot); // Firing
+	    world.spawnEntity(shot); // Firing
+	}
 
 	if (this.consumeAmmo(stack, entity, 1))
 	{

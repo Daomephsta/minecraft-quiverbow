@@ -99,6 +99,7 @@ public class SeedSweeper extends _WeaponBase
 
     private void fireShot(World world, Entity entity)
     {
+	if(world.isRemote) return;
 	float spreadHor = world.rand.nextFloat() * this.Spread - (this.Spread / 2);
 	float spreadVert = world.rand.nextFloat() * this.Spread - (this.Spread / 2);
 

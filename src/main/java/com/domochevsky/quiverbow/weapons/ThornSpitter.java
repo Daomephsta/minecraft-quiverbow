@@ -144,18 +144,21 @@ public class ThornSpitter extends _WeaponBase
 
     private void doBurstFire(ItemStack stack, World world, Entity entity)
     {
-	int dmg_range = DmgMax - DmgMin; // If max dmg is 20 and min is 10, then
-					 // the range will be 10
-	int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
-						     // and 10
-	dmg += DmgMin; // Adding the min dmg of 10 back on top, giving us the
-		       // proper damage range (10-20)
+	if(!world.isRemote)
+	{
+	    int dmg_range = DmgMax - DmgMin; // If max dmg is 20 and min is 10, then
+	    // the range will be 10
+	    int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
+	    // and 10
+	    dmg += DmgMin; // Adding the min dmg of 10 back on top, giving us the
+	    // proper damage range (10-20)
 
-	// Firing
-	Thorn projectile = new Thorn(world, (EntityLivingBase) entity, (float) Speed);
-	projectile.damage = dmg;
+	    // Firing
+	    Thorn projectile = new Thorn(world, (EntityLivingBase) entity, (float) Speed);
+	    projectile.damage = dmg;
 
-	world.spawnEntity(projectile);
+	    world.spawnEntity(projectile);
+	}
 
 	// SFX
 	entity.playSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.6F, 0.6F);

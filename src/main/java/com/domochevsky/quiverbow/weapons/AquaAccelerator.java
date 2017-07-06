@@ -38,21 +38,18 @@ public class AquaAccelerator extends _WeaponBase
 	if (this.getDamage(stack) >= stack.getMaxDamage()) // Is empty
 	{
 	    this.checkReloadFromWater(stack, world, player);// See if you can
-							    // reload
+	    // reload
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	}
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
+	// neutral firing function
 
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
-    public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-									  // side,
-									  // mob
-									  // usable
+    public void doSingleFire(ItemStack stack, World world, Entity entity)
     {
 	if (this.getCooldown(stack) > 0)
 	{
@@ -62,10 +59,12 @@ public class AquaAccelerator extends _WeaponBase
 	// SFX
 	Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 2.0F);
 
-	// Firing
-	WaterShot projectile = new WaterShot(world, entity, (float) Speed);
-	world.spawnEntity(projectile);
-
+	if(!world.isRemote)
+	{
+	    // Firing
+	    WaterShot projectile = new WaterShot(world, entity, (float) Speed);
+	    world.spawnEntity(projectile);
+	}
 	this.consumeAmmo(stack, entity, 1);
 	this.setCooldown(stack, this.Cooldown); // Cooling down now
     }
@@ -142,6 +141,6 @@ public class AquaAccelerator extends _WeaponBase
 	// Fill the AA with one water bucket
 	GameRegistry.addShapelessRecipe(new ItemStack(this), Items.WATER_BUCKET,
 		Helper.createEmptyWeaponOrAmmoStack(this, 1) // Empty
-	);
+		);
     }
 }

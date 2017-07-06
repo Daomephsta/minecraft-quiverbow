@@ -34,13 +34,13 @@ public class SoulCairn extends _WeaponBase
 	} // Is empty
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
+	// neutral firing function
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
     public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-									  // side
+    // side
     {
 	if (this.getCooldown(stack) > 0)
 	{
@@ -51,13 +51,15 @@ public class SoulCairn extends _WeaponBase
 
 	// Self Harm
 	entity.attackEntityFrom(DamageSource.causeThrownDamage(entity, entity), 2); // A
-										    // sacrifice
-										    // in
-										    // blood
-
-	// Projectile
-	SoulShot projectile = new SoulShot(world, entity, (float) this.Speed);
-	world.spawnEntity(projectile); // Firing!
+	// sacrifice
+	// in
+	// blood
+	if(!world.isRemote)
+	{
+	    // Projectile
+	    SoulShot projectile = new SoulShot(world, entity, (float) this.Speed);
+	    world.spawnEntity(projectile); // Firing!
+	}
 
 	// SFX
 	entity.playSound(SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 2.0F);

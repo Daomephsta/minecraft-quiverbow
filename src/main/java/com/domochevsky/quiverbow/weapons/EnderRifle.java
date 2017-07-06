@@ -36,13 +36,13 @@ public class EnderRifle extends _WeaponBase
 	} // Is empty
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
+	// neutral firing function
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
     public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-									  // side
+    // side
     {
 	if (this.getCooldown(stack) > 0)
 	{
@@ -51,20 +51,23 @@ public class EnderRifle extends _WeaponBase
 
 	Helper.knockUserBack(entity, this.Kickback); // Kickback
 
-	// Firing
-	EnderShot shot = new EnderShot(world, entity, (float) this.Speed); // Create
-									   // the
-									   // projectile
+	if(!world.isRemote)
+	{
+	    // Firing
+	    EnderShot shot = new EnderShot(world, entity, (float) this.Speed); // Create
+	    // the
+	    // projectile
 
-	shot.damage = this.DmgMin;
-	shot.damage_Max = this.DmgMax;
-	shot.damage_Increase = this.DmgIncrease; // Increases damage each tick
-						 // until the max has been
-						 // reached
+	    shot.damage = this.DmgMin;
+	    shot.damage_Max = this.DmgMax;
+	    shot.damage_Increase = this.DmgIncrease; // Increases damage each tick
+	    // until the max has been
+	    // reached
 
-	shot.knockbackStrength = this.Knockback;
+	    shot.knockbackStrength = this.Knockback;
 
-	world.spawnEntity(shot); // Pew.
+	    world.spawnEntity(shot); // Pew.
+	}
 
 	// SFX
 	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F);

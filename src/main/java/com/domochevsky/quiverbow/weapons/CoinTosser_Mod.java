@@ -87,6 +87,7 @@ public class CoinTosser_Mod extends _WeaponBase
 
     private void fireShot(World world, Entity entity, boolean centerShot)
     {
+	if(world.isRemote) return;
 	float spreadHor = 0;
 	float spreadVert = 0;
 

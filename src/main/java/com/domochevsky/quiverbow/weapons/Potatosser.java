@@ -34,13 +34,13 @@ public class Potatosser extends _WeaponBase
 	} // Is empty
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
+	// neutral firing function
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
     public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-									  // side
+    // side
     {
 	if (this.getCooldown(stack) > 0)
 	{
@@ -50,21 +50,24 @@ public class Potatosser extends _WeaponBase
 	// SFX
 	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ITEM_BREAK, 0.7F, 0.4F);
 
-	// Random Damage
-	int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
-						   // is 10, then the range will
-						   // be 10
-	int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
-						     // and 10
-	dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
-			    // the proper damage range (10-20)
+	if(!world.isRemote)
+	{
+	    // Random Damage
+	    int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
+	    // is 10, then the range will
+	    // be 10
+	    int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
+	    // and 10
+	    dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
+	    // the proper damage range (10-20)
 
-	// Firing
-	PotatoShot shot = new PotatoShot(world, entity, (float) this.Speed);
-	shot.damage = dmg;
-	shot.setDrop(this.shouldDrop);
+	    // Firing
+	    PotatoShot shot = new PotatoShot(world, entity, (float) this.Speed);
+	    shot.damage = dmg;
+	    shot.setDrop(this.shouldDrop);
 
-	world.spawnEntity(shot);
+	    world.spawnEntity(shot);
+	}
 
 	this.consumeAmmo(stack, entity, 1);
 	this.setCooldown(stack, this.Cooldown);

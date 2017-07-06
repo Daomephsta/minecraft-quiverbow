@@ -39,13 +39,13 @@ public class DragonBox_Quad extends _WeaponBase
 	} // Is empty
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
+	// neutral firing function
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
     public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-									  // side
+    // side
     {
 	if (this.getCooldown(stack) != 0)
 	{
@@ -60,22 +60,25 @@ public class DragonBox_Quad extends _WeaponBase
 	// Potential failure randomizer here? Causing the rockets to flip out
 	// and go off in random directions
 
-	float distanceMod = 5.0f;
-
-	int randNum = world.rand.nextInt(100) + 1; // 1-100
-
-	if (randNum >= 95)
+	if(!world.isRemote)
 	{
-	    distanceMod = world.rand.nextInt(40);
+	    float distanceMod = 5.0f;
 
-	    distanceMod -= 20; // Range of -20 to 20
+	    int randNum = world.rand.nextInt(100) + 1; // 1-100
+
+	    if (randNum >= 95)
+	    {
+		distanceMod = world.rand.nextInt(40);
+
+		distanceMod -= 20; // Range of -20 to 20
+	    }
+
+	    // Firing
+	    this.fireRocket(world, entity, 0, 0); // Center 1
+	    this.fireRocket(world, entity, distanceMod, 0); // Right 2
+	    this.fireRocket(world, entity, -distanceMod, 0);// Left 3
+	    this.fireRocket(world, entity, 0, -distanceMod);// Top 4
 	}
-
-	// Firing
-	this.fireRocket(world, entity, 0, 0); // Center 1
-	this.fireRocket(world, entity, distanceMod, 0); // Right 2
-	this.fireRocket(world, entity, -distanceMod, 0);// Left 3
-	this.fireRocket(world, entity, 0, -distanceMod);// Top 4
 
 	this.consumeAmmo(stack, entity, 4);
 	this.setCooldown(stack, this.Cooldown);
@@ -87,12 +90,12 @@ public class DragonBox_Quad extends _WeaponBase
 
 	// Random Damage
 	int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
-						   // is 10, then the range will
-						   // be 10
+	// is 10, then the range will
+	// be 10
 	int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
-						     // and 10
+	// and 10
 	dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
-			    // the proper damage range (10-20)
+	// the proper damage range (10-20)
 
 	// Properties
 	rocket.damage = dmg;

@@ -37,13 +37,13 @@ public class FenFire extends _WeaponBase
 	} // Is empty
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
+	// neutral firing function
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
     public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-									  // side
+    // side
     {
 	if (this.getCooldown(stack) > 0)
 	{
@@ -53,16 +53,19 @@ public class FenFire extends _WeaponBase
 	// SFX
 	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ARROW_SHOOT, 0.7F, 0.3F);
 
-	// Firing
-	FenGoop projectile = new FenGoop(world, entity, (float) this.Speed);
-	projectile.fireDuration = this.FireDur;
-
-	if (this.LightTick != 0)
+	if(!world.isRemote)
 	{
-	    projectile.lightTick = this.LightTick;
-	} // Scheduled to turn off again
+	    // Firing
+	    FenGoop projectile = new FenGoop(world, entity, (float) this.Speed);
+	    projectile.fireDuration = this.FireDur;
 
-	world.spawnEntity(projectile); // Firing!
+	    if (this.LightTick != 0)
+	    {
+		projectile.lightTick = this.LightTick;
+	    } // Scheduled to turn off again
+
+	    world.spawnEntity(projectile); // Firing!
+	}
 
 	this.consumeAmmo(stack, entity, 1);
 	this.setCooldown(stack, this.Cooldown);

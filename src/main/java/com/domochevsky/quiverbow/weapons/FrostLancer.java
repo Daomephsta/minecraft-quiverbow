@@ -48,13 +48,13 @@ public class FrostLancer extends _WeaponBase
 	} // Is empty
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
+	// neutral firing function
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
     public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-									  // side
+    // side
     {
 	if (this.getCooldown(stack) > 0)
 	{
@@ -68,25 +68,28 @@ public class FrostLancer extends _WeaponBase
 	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
 		(byte) 1); // smoke
 
-	// Firing
-	ColdIron shot = new ColdIron(world, entity, (float) this.Speed,
-		new PotionEffect(MobEffects.SLOWNESS, this.Slowness_Dur, this.Slowness_Str),
-		new PotionEffect(MobEffects.NAUSEA, this.Nausea_Dur, this.Nausea_Str));
+	if(!world.isRemote)
+	{
+	    // Firing
+	    ColdIron shot = new ColdIron(world, entity, (float) this.Speed,
+		    new PotionEffect(MobEffects.SLOWNESS, this.Slowness_Dur, this.Slowness_Str),
+		    new PotionEffect(MobEffects.NAUSEA, this.Nausea_Dur, this.Nausea_Str));
 
-	// Random Damage
-	int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
-						   // is 10, then the range will
-						   // be 10
-	int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
-						     // and 10
-	dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
-			    // the proper damage range (10-20)
+	    // Random Damage
+	    int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
+	    // is 10, then the range will
+	    // be 10
+	    int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
+	    // and 10
+	    dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
+	    // the proper damage range (10-20)
 
-	shot.damage = dmg;
+	    shot.damage = dmg;
 
-	shot.knockbackStrength = this.Knockback;
+	    shot.knockbackStrength = this.Knockback;
 
-	world.spawnEntity(shot); // Firing!
+	    world.spawnEntity(shot); // Firing!
+	}
 
 	this.consumeAmmo(stack, entity, 1);
 	this.setCooldown(stack, this.Cooldown);
@@ -170,10 +173,10 @@ public class FrostLancer extends _WeaponBase
 	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "qiq", "prs", " o ", 'o',
 		    Blocks.OBSIDIAN, 'q', Items.QUARTZ, 'i', Items.IRON_INGOT, 'p', Blocks.PISTON, 's',
 		    Blocks.STICKY_PISTON, 'r', Helper.getWeaponStackByClass(EnderRifle.class, true) // One
-												    // empty
-												    // Ender
-												    // Rifle
-	    );
+		    // empty
+		    // Ender
+		    // Rifle
+		    );
 	}
 	else if (Main.noCreative)
 	{

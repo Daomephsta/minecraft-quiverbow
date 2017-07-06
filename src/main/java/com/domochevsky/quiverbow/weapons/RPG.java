@@ -24,7 +24,7 @@ public class RPG extends _WeaponBase
 
     public double ExplosionSize;
     private int travelTime; // How many ticks the rocket can travel before
-			    // exploding
+    // exploding
     private boolean dmgTerrain; // Can our projectile damage terrain?
 
     @Override
@@ -37,13 +37,13 @@ public class RPG extends _WeaponBase
 	} // Is empty
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
+	// neutral firing function
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
     public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-									  // side
+    // side
     {
 	if (this.getCooldown(stack) > 0)
 	{
@@ -52,16 +52,19 @@ public class RPG extends _WeaponBase
 
 	Helper.knockUserBack(entity, this.Kickback); // Kickback
 
-	// Firing
-	BigRocket rocket = new BigRocket(world, entity, (float) this.Speed); // Projectile
-									     // Speed.
-									     // Inaccuracy
-									     // Hor/Vert
-	rocket.explosionSize = this.ExplosionSize;
-	rocket.travelTicksMax = this.travelTime;
-	rocket.dmgTerrain = this.dmgTerrain;
+	if(!world.isRemote)
+	{
+	    // Firing
+	    BigRocket rocket = new BigRocket(world, entity, (float) this.Speed); // Projectile
+	    // Speed.
+	    // Inaccuracy
+	    // Hor/Vert
+	    rocket.explosionSize = this.ExplosionSize;
+	    rocket.travelTicksMax = this.travelTime;
+	    rocket.dmgTerrain = this.dmgTerrain;
 
-	world.spawnEntity(rocket); // shoom.
+	    world.spawnEntity(rocket); // shoom.
+	}
 
 	// SFX
 	entity.playSound(SoundEvents.ENTITY_FIREWORK_LAUNCH, 2.0F, 0.6F);

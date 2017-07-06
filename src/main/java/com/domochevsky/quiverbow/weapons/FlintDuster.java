@@ -38,28 +38,31 @@ public class FlintDuster extends _WeaponBase
 	} // Is empty
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
+	// neutral firing function
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
     public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-									  // side
+    // side
     {
 	// Ignoring cooldown for firing purposes
 
 	// SFX
 	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_BAT_TAKEOFF, 0.5F, 0.6F);
 
-	// Ready
-	FlintDust shot = new FlintDust(world, entity, (float) this.Speed);
+	if(!world.isRemote)
+	{
+	    // Ready
+	    FlintDust shot = new FlintDust(world, entity, (float) this.Speed);
 
-	// Properties
-	shot.damage = this.Dmg;
-	shot.ticksInAirMax = this.MaxBlocks;
+	    // Properties
+	    shot.damage = this.Dmg;
+	    shot.ticksInAirMax = this.MaxBlocks;
 
-	// Go
-	world.spawnEntity(shot);
+	    // Go
+	    world.spawnEntity(shot);
+	}
 
 	this.consumeAmmo(stack, entity, 1);
 	this.setCooldown(stack, 4);

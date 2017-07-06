@@ -33,13 +33,13 @@ public class Mortar_Arrow extends _WeaponBase
 	} // Is empty
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
+	// neutral firing function
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
     public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-									  // side
+    // side
     {
 	// Good to go (already verified)
 	if (this.getCooldown(stack) > 0)
@@ -49,20 +49,23 @@ public class Mortar_Arrow extends _WeaponBase
 
 	Helper.knockUserBack(entity, this.Kickback); // Kickback
 
-	// Random Damage
-	int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
-						   // is 10, then the range will
-						   // be 10
-	int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
-						     // and 10
-	dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
-			    // the proper damage range (10-20)
+	if(!world.isRemote)
+	{
+	    // Random Damage
+	    int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
+	    // is 10, then the range will
+	    // be 10
+	    int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
+	    // and 10
+	    dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
+	    // the proper damage range (10-20)
 
-	// Firing
-	Sabot_Arrow projectile = new Sabot_Arrow(world, entity, (float) this.Speed);
-	projectile.damage = dmg;
+	    // Firing
+	    Sabot_Arrow projectile = new Sabot_Arrow(world, entity, (float) this.Speed);
+	    projectile.damage = dmg;
 
-	world.spawnEntity(projectile); // Firing!
+	    world.spawnEntity(projectile); // Firing!
+	}
 
 	// SFX
 	Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 2.0F);

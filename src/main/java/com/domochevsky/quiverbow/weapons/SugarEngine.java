@@ -72,7 +72,7 @@ public class SugarEngine extends _WeaponBase
 	{
 	    return;
 	} // Not ready yet, so keep spinning up
-	  // else, we're ready
+	// else, we're ready
 
 	this.setBurstFire(stack, 4); // Setting the rods left to fire to 4, then
 	// going through that via onUpdate (Will be
@@ -139,14 +139,14 @@ public class SugarEngine extends _WeaponBase
 	} // Init
 
 	if (stack.getTagCompound().getInteger("spinDownImmunity") == 0) // Not
-	// firing
-	// and
-	// no
-	// immunity
-	// left,
-	// so
-	// spinning
-	// down
+	    // firing
+	    // and
+	    // no
+	    // immunity
+	    // left,
+	    // so
+	    // spinning
+	    // down
 	{
 	    if (stack.getTagCompound().getInteger("spinning") > 0)
 	    {
@@ -157,7 +157,7 @@ public class SugarEngine extends _WeaponBase
 	    // else, not spinning
 	}
 	else // We're currently immune to spinning down, so decreasing that
-	     // immunity time until we actually can
+	    // immunity time until we actually can
 	{
 	    stack.getTagCompound().setInteger("spinDownImmunity",
 		    stack.getTagCompound().getInteger("spinDownImmunity") - 1);
@@ -179,16 +179,16 @@ public class SugarEngine extends _WeaponBase
 	    this.setBurstFire(stack, this.getBurstFire(stack) - 1); // One done
 
 	    if (stack.getItemDamage() < stack.getMaxDamage() && holdingItem) // Can
-	    // only
-	    // do
-	    // it
-	    // if
-	    // we're
-	    // loaded
-	    // and
-	    // holding
-	    // the
-	    // weapon
+		// only
+		// do
+		// it
+		// if
+		// we're
+		// loaded
+		// and
+		// holding
+		// the
+		// weapon
 	    {
 		this.doBurstFire(stack, world, entity);
 
@@ -204,36 +204,38 @@ public class SugarEngine extends _WeaponBase
     private void doBurstFire(ItemStack stack, World world, Entity entity)
     {
 	Helper.knockUserBack(entity, this.Kickback); // Kickback
+	if(!world.isRemote)
+	{
+	    // Firing
+	    float spreadHor = world.rand.nextFloat() * this.Spread - (this.Spread / 2); // Spread
+	    // between
+	    // -4
+	    // and
+	    // 4
+	    // at
+	    // (
+	    // (0.0
+	    // to
+	    // 1.0)
+	    // *
+	    // 16
+	    // -
+	    // 8)
+	    float spreadVert = world.rand.nextFloat() * this.Spread - (this.Spread / 2);
 
-	// Firing
-	float spreadHor = world.rand.nextFloat() * this.Spread - (this.Spread / 2); // Spread
-	// between
-	// -4
-	// and
-	// 4
-	// at
-	// (
-	// (0.0
-	// to
-	// 1.0)
-	// *
-	// 16
-	// -
-	// 8)
-	float spreadVert = world.rand.nextFloat() * this.Spread - (this.Spread / 2);
+	    int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
+	    // is 10, then the range will
+	    // be 10
+	    int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
+	    // and 10
+	    dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
+	    // the proper damage range (10-20)
 
-	int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
-	// is 10, then the range will
-	// be 10
-	int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
-	// and 10
-	dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
-	// the proper damage range (10-20)
+	    SugarRod projectile = new SugarRod(world, entity, (float) this.Speed, spreadHor, spreadVert);
+	    projectile.damage = dmg;
 
-	SugarRod projectile = new SugarRod(world, entity, (float) this.Speed, spreadHor, spreadVert);
-	projectile.damage = dmg;
-
-	world.spawnEntity(projectile);
+	    world.spawnEntity(projectile);
+	}
 
 	// SFX
 	entity.playSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.0F, 0.2F);

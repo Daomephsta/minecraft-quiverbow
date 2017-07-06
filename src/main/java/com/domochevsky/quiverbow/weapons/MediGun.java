@@ -34,28 +34,31 @@ public class MediGun extends _WeaponBase
 	} // Is empty
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
+	// neutral firing function
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
     public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-									  // side
+    // side
     {
 	// Good to go (already verified)
 
 	// SFX
 	Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.7F, 1.4F);
 
-	HealthBeam beam = new HealthBeam(entity.world, entity, (float) this.Speed);
+	if(!world.isRemote)
+	{
+	    HealthBeam beam = new HealthBeam(entity.world, entity, (float) this.Speed);
 
-	beam.ignoreFrustumCheck = true;
-	beam.ticksInAirMax = 40;
+	    beam.ignoreFrustumCheck = true;
+	    beam.ticksInAirMax = 40;
 
-	entity.world.spawnEntity(beam); // Firing!
+	    entity.world.spawnEntity(beam); // Firing!
 
-	this.consumeAmmo(stack, entity, 1);
-	this.setCooldown(stack, this.Cooldown);
+	    this.consumeAmmo(stack, entity, 1);
+	    this.setCooldown(stack, this.Cooldown);
+	}
     }
 
     @Override

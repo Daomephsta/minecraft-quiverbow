@@ -46,37 +46,40 @@ public class LapisCoil extends _WeaponBase
 	}
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
+	// neutral firing function
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
     public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-									  // side
+    // side
     {
 	// SFX
 	Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.0F, 0.5F);
 	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 3.0F);
 
-	// Random Damage
-	int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
-						   // is 10, then the range will
-						   // be 10
-	int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
-						     // and 10
-	dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
-			    // the proper damage range (10-20)
+	if(!world.isRemote)
+	{
+	    // Random Damage
+	    int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
+	    // is 10, then the range will
+	    // be 10
+	    int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
+	    // and 10
+	    dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
+	    // the proper damage range (10-20)
 
-	// Projectile
-	LapisShot projectile = new LapisShot(world, entity, (float) this.Speed,
-		new PotionEffect(MobEffects.NAUSEA, this.Nausea_Duration, 1),
-		new PotionEffect(MobEffects.HUNGER, this.Hunger_Duration, this.Hunger_Strength),
-		new PotionEffect(MobEffects.WEAKNESS, this.Weakness_Duration, this.Weakness_Strength));
-	projectile.damage = dmg;
+	    // Projectile
+	    LapisShot projectile = new LapisShot(world, entity, (float) this.Speed,
+		    new PotionEffect(MobEffects.NAUSEA, this.Nausea_Duration, 1),
+		    new PotionEffect(MobEffects.HUNGER, this.Hunger_Duration, this.Hunger_Strength),
+		    new PotionEffect(MobEffects.WEAKNESS, this.Weakness_Duration, this.Weakness_Strength));
+	    projectile.damage = dmg;
 
-	projectile.ticksInGroundMax = 100; // 5 sec before it disappears
+	    projectile.ticksInGroundMax = 100; // 5 sec before it disappears
 
-	world.spawnEntity(projectile); // Firing!
+	    world.spawnEntity(projectile); // Firing!
+	}
 
 	this.setCooldown(stack, 4); // For visual purposes
 	if (this.consumeAmmo(stack, entity, 1))
@@ -94,11 +97,11 @@ public class LapisCoil extends _WeaponBase
 	}
 
 	ItemStack clipStack = Helper.getAmmoStack(LapisMagazine.class, stack.getItemDamage()); // Unloading
-											       // all
-											       // ammo
-											       // into
-											       // that
-											       // clip
+	// all
+	// ammo
+	// into
+	// that
+	// clip
 
 	stack.setItemDamage(stack.getMaxDamage()); // Emptying out
 

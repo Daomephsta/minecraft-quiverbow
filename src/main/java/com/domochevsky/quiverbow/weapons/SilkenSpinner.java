@@ -7,37 +7,23 @@ import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class SilkenSpinner extends _WeaponBase
+public class SilkenSpinner extends ProjectileWeapon
 {
     public SilkenSpinner()
     {
 	super("silken_spinner", 8);
 	this.setCreativeTab(CreativeTabs.TOOLS); // This is a tool
     }
-
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
-    {
-	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= stack.getMaxDamage())
-	{
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
-	} // Is empty
-
-	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
-	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-    }
-
+    
     @Override
     public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
 									  // side
@@ -51,8 +37,11 @@ public class SilkenSpinner extends _WeaponBase
 	entity.playSound(SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 2.0F);
 
 	// Firing
-	WebShot projectile = new WebShot(world, entity, (float) this.Speed);
-	world.spawnEntity(projectile); // Firing!
+	if(!world.isRemote)
+	{
+	    WebShot projectile = new WebShot(world, entity, (float) this.Speed);
+	    world.spawnEntity(projectile); // Firing!
+	}
 
 	this.consumeAmmo(stack, entity, 1);
 	this.setCooldown(stack, this.Cooldown);

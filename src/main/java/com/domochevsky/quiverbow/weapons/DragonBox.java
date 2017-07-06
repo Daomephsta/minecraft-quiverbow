@@ -39,40 +39,43 @@ public class DragonBox extends _WeaponBase
 	} // Is empty
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
+	// neutral firing function
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
     public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-									  // side
+    // side
     {
 	if (this.getCooldown(stack) != 0)
 	{
 	    return;
 	} // Hasn't cooled down yet
 
-	// Random Damage
-	int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
-						   // is 10, then the range will
-						   // be 10
-	int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
-						     // and 10
-	dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
-			    // the proper damage range (10-20)
+	if(!world.isRemote)
+	{
+	    // Random Damage
+	    int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
+	    // is 10, then the range will
+	    // be 10
+	    int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
+	    // and 10
+	    dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
+	    // the proper damage range (10-20)
 
-	// SFX
-	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_FIREWORK_LAUNCH, 1.0F, 1.0F);
+	    // SFX
+	    Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_FIREWORK_LAUNCH, 1.0F, 1.0F);
 
-	// Firing
-	SmallRocket shot = new SmallRocket(world, entity, (float) this.Speed, 0, 0);
+	    // Firing
+	    SmallRocket shot = new SmallRocket(world, entity, (float) this.Speed, 0, 0);
 
-	shot.damage = dmg;
-	shot.fireDuration = this.FireDur;
-	shot.explosionSize = this.ExplosionSize;
-	shot.dmgTerrain = this.dmgTerrain;
+	    shot.damage = dmg;
+	    shot.fireDuration = this.FireDur;
+	    shot.explosionSize = this.ExplosionSize;
+	    shot.dmgTerrain = this.dmgTerrain;
 
-	world.spawnEntity(shot);
+	    world.spawnEntity(shot);
+	}
 
 	this.consumeAmmo(stack, entity, 1);
 	this.setCooldown(stack, this.Cooldown);

@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class LightningRed extends _WeaponBase
 {
     public LightningRed() // At 4 redstone used per shot that's 64 redstone per
-			  // magazine
+    // magazine
     {
 	super("lightning_red", 16);
     }
@@ -49,13 +49,13 @@ public class LightningRed extends _WeaponBase
 	} // Needs at least 4 redstone per shot
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
+	// neutral firing function
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
     public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-									  // side
+    // side
     {
 	if (this.getCooldown(stack) > 0)
 	{
@@ -70,27 +70,30 @@ public class LightningRed extends _WeaponBase
 
 	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.REDSTONE, (byte) 4);
 
-	// Firing
-	RedLight shot = new RedLight(world, entity, (float) this.Speed);
+	if(!world.isRemote)
+	{
+	    // Firing
+	    RedLight shot = new RedLight(world, entity, (float) this.Speed);
 
-	// Random Damage
-	int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
-						   // is 10, then the range will
-						   // be 10
-	int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
-						     // and 10
-	dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
-			    // the proper damage range (10-20)
+	    // Random Damage
+	    int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
+	    // is 10, then the range will
+	    // be 10
+	    int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
+	    // and 10
+	    dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
+	    // the proper damage range (10-20)
 
-	// The moving end point
-	shot.damage = dmg;
-	shot.targetsHitMax = this.PassThroughMax; // The maximum number of
-						  // entities to punch through
-						  // before ending
-	shot.ignoreFrustumCheck = true;
-	shot.ticksInAirMax = this.MaxTicks;
+	    // The moving end point
+	    shot.damage = dmg;
+	    shot.targetsHitMax = this.PassThroughMax; // The maximum number of
+	    // entities to punch through
+	    // before ending
+	    shot.ignoreFrustumCheck = true;
+	    shot.ticksInAirMax = this.MaxTicks;
 
-	world.spawnEntity(shot); // Firing!
+	    world.spawnEntity(shot); // Firing!
+	}
 
 	this.setCooldown(stack, this.Cooldown);
 	if (this.consumeAmmo(stack, entity, 4))
@@ -108,11 +111,11 @@ public class LightningRed extends _WeaponBase
 	}
 
 	ItemStack clipStack = Helper.getAmmoStack(RedstoneMagazine.class, stack.getItemDamage()); // Unloading
-												  // all
-												  // ammo
-												  // into
-												  // that
-												  // clip
+	// all
+	// ammo
+	// into
+	// that
+	// clip
 
 	stack.setItemDamage(stack.getMaxDamage()); // Emptying out
 
@@ -136,7 +139,7 @@ public class LightningRed extends _WeaponBase
 
     @Override
     void doCooldownSFX(World world, Entity entity) // Server side. Only done
-						   // when held
+    // when held
     {
 	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, 0.7F, 0.2F);
     }

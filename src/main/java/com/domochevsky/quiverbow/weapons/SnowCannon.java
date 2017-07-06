@@ -75,6 +75,7 @@ public class SnowCannon extends _WeaponBase
 
     private void fireShot(World world, Entity entity)
     {
+	if(world.isRemote) return;
 	float spreadHor = world.rand.nextFloat() * 20 - 10; // Spread between -5
 							    // and 5
 	float spreadVert = world.rand.nextFloat() * 20 - 10;

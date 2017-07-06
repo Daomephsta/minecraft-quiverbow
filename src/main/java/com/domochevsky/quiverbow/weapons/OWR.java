@@ -35,7 +35,7 @@ public class OWR extends _WeaponBase
     public int DmgMagicMax;
 
     private int Wither_Duration; // 20 ticks to a second, let's start with 3
-				 // seconds
+    // seconds
     private int Wither_Strength; // 2 dmg per second for 3 seconds = 6 dmg total
 
     @Override
@@ -54,13 +54,13 @@ public class OWR extends _WeaponBase
 	}
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
+	// neutral firing function
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
     public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-									  // side
+    // side
     {
 	if (this.getCooldown(stack) > 0)
 	{
@@ -69,33 +69,36 @@ public class OWR extends _WeaponBase
 
 	Helper.knockUserBack(entity, this.Kickback); // Kickback
 
-	// Firing
-	OWR_Shot projectile = new OWR_Shot(world, entity, (float) this.Speed,
-		new PotionEffect(MobEffects.WITHER, this.Wither_Duration, this.Wither_Strength));
+	if(!world.isRemote)
+	{
+	    // Firing
+	    OWR_Shot projectile = new OWR_Shot(world, entity, (float) this.Speed,
+		    new PotionEffect(MobEffects.WITHER, this.Wither_Duration, this.Wither_Strength));
 
-	// Random Damage
-	int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
-						   // is 10, then the range will
-						   // be 10
-	int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
-						     // and 10
-	dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
-			    // the proper damage range (10-20)
+	    // Random Damage
+	    int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
+	    // is 10, then the range will
+	    // be 10
+	    int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
+	    // and 10
+	    dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
+	    // the proper damage range (10-20)
 
-	projectile.damage = dmg;
+	    projectile.damage = dmg;
 
-	// Random Magic Damage
-	dmg_range = this.DmgMagicMax - this.DmgMagicMin; // If max dmg is 20 and
-							 // min is 10, then the
-							 // range will be 10
-	dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0 and
-						 // 10
-	dmg += this.DmgMagicMin; // Adding the min dmg of 10 back on top, giving
-				 // us the proper damage range (10-20)
+	    // Random Magic Damage
+	    dmg_range = this.DmgMagicMax - this.DmgMagicMin; // If max dmg is 20 and
+	    // min is 10, then the
+	    // range will be 10
+	    dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0 and
+	    // 10
+	    dmg += this.DmgMagicMin; // Adding the min dmg of 10 back on top, giving
+	    // us the proper damage range (10-20)
 
-	projectile.damage_Magic = dmg;
+	    projectile.damage_Magic = dmg;
 
-	world.spawnEntity(projectile); // Firing!
+	    world.spawnEntity(projectile); // Firing!
+	}
 
 	// SFX
 	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_GENERIC_EXPLODE, 0.5F, 1.5F);
@@ -119,11 +122,11 @@ public class OWR extends _WeaponBase
 	}
 
 	ItemStack clipStack = Helper.getAmmoStack(ObsidianMagazine.class, stack.getItemDamage()); // Unloading
-												  // all
-												  // ammo
-												  // into
-												  // that
-												  // clip
+	// all
+	// ammo
+	// into
+	// that
+	// clip
 
 	stack.setItemDamage(stack.getMaxDamage()); // Emptying out
 

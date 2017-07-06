@@ -27,7 +27,7 @@ public class OSP extends _WeaponBase
     }
 
     private int Wither_Duration; // 20 ticks to a second, let's start with 3
-				 // seconds
+    // seconds
     private int Wither_Strength; // 2 dmg per second for 3 seconds = 6 dmg total
 
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
@@ -45,13 +45,13 @@ public class OSP extends _WeaponBase
 	}
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
+	// neutral firing function
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
     public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-									  // side
+    // side
     {
 	if (this.getCooldown(stack) > 0)
 	{
@@ -63,22 +63,25 @@ public class OSP extends _WeaponBase
 	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
 		(byte) 1); // smoke
 
-	// Firing
-	OSP_Shot shot = new OSP_Shot(world, entity, (float) this.Speed,
-		new PotionEffect(MobEffects.WITHER, this.Wither_Duration, this.Wither_Strength));
+	if(!world.isRemote)
+	{
+	    // Firing
+	    OSP_Shot shot = new OSP_Shot(world, entity, (float) this.Speed,
+		    new PotionEffect(MobEffects.WITHER, this.Wither_Duration, this.Wither_Strength));
 
-	// Random Damage
-	int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
-						   // is 10, then the range will
-						   // be 10
-	int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
-						     // and 10
-	dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
-			    // the proper damage range (10-20)
+	    // Random Damage
+	    int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
+	    // is 10, then the range will
+	    // be 10
+	    int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
+	    // and 10
+	    dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
+	    // the proper damage range (10-20)
 
-	shot.damage = dmg;
+	    shot.damage = dmg;
 
-	world.spawnEntity(shot); // Firing!
+	    world.spawnEntity(shot); // Firing!
+	}
 
 	this.setCooldown(stack, this.Cooldown);
 	if (this.consumeAmmo(stack, entity, 1))
@@ -97,14 +100,14 @@ public class OSP extends _WeaponBase
 
 	ItemStack clipStack = Helper.getAmmoStack(ObsidianMagazine.class,
 		MathHelper.floor(stack.getItemDamage() / 2) + 1); // Unloading
-								  // all
-								  // ammo
-								  // into
-								  // that
-								  // clip,
-								  // with
-								  // some
-								  // loss
+	// all
+	// ammo
+	// into
+	// that
+	// clip,
+	// with
+	// some
+	// loss
 
 	stack.setItemDamage(stack.getMaxDamage()); // Emptying out
 

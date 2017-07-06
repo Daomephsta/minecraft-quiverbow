@@ -37,13 +37,13 @@ public class Crossbow_Double extends _WeaponBase
 	} // Is empty
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
+	// neutral firing function
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
     public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-									  // side
+    // side
     {
 	if (this.getCooldown(stack) != 0)
 	{
@@ -53,22 +53,25 @@ public class Crossbow_Double extends _WeaponBase
 	// SFX
 	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 0.5F);
 
-	RegularArrow entityarrow = new RegularArrow(world, entity, (float) this.Speed);
+	if(!world.isRemote)
+	{
+	    RegularArrow entityarrow = new RegularArrow(world, entity, (float) this.Speed);
 
-	// Random Damage
-	int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
-						   // is 10, then the range will
-						   // be 10
-	int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
-						     // and 10
-	dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
-			    // the proper damage range (10-20)
+	    // Random Damage
+	    int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
+	    // is 10, then the range will
+	    // be 10
+	    int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
+	    // and 10
+	    dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
+	    // the proper damage range (10-20)
 
-	entityarrow.damage = dmg;
-	entityarrow.knockbackStrength = this.Knockback; // Comes with an inbuild
-							// knockback II
+	    entityarrow.damage = dmg;
+	    entityarrow.knockbackStrength = this.Knockback; // Comes with an inbuild
+	    // knockback II
 
-	world.spawnEntity(entityarrow); // pew
+	    world.spawnEntity(entityarrow); // pew
+	}
 
 	this.consumeAmmo(stack, entity, 1);
 	this.setCooldown(stack, this.Cooldown);
@@ -121,20 +124,20 @@ public class Crossbow_Double extends _WeaponBase
 	} // Not enabled and not allowed to be in the creative menu
 
 	GameRegistry.addShapelessRecipe(new ItemStack(this), // Fill the empty
-							     // crossbow with
-							     // two arrows
+		// crossbow with
+		// two arrows
 		Items.ARROW, Items.ARROW, Helper.createEmptyWeaponOrAmmoStack(this, 1));
 
 	GameRegistry.addShapelessRecipe(new ItemStack(this, 1, 1), // Fill the
-								   // empty
-								   // crossbow
-								   // with one
-								   // arrow
+		// empty
+		// crossbow
+		// with one
+		// arrow
 		Items.ARROW, Helper.createEmptyWeaponOrAmmoStack(this, 1));
 
 	GameRegistry.addShapelessRecipe(new ItemStack(this), // Fill the half
-							     // empty crossbow
-							     // with one arrow
+		// empty crossbow
+		// with one arrow
 		Items.ARROW, new ItemStack(this, 1, 1));
     }
 }

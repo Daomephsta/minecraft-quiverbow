@@ -74,6 +74,7 @@ public class NetherBellows extends _WeaponBase
 
     private void fireSingle(World world, Entity entity)
     {
+	if(world.isRemote) return;
 	// Firing
 	float spreadHor = world.rand.nextFloat() * 20 - 10; // Spread between
 							    // -10 and 10

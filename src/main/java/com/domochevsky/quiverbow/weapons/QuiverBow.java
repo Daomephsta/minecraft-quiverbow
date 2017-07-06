@@ -70,30 +70,33 @@ public class QuiverBow extends WeaponBow
 	    f = 1.0F;
 	}
 
-	EntityArrow entityarrow = Helper.createArrow(world, entityLiving);
-	if (f == 1.0F)
-	{
-	    entityarrow.setIsCritical(true);
-	}
-
 	Helper.playSoundAtEntityPos(entityLiving, SoundEvents.ENTITY_ARROW_SHOOT, 1.0F,
 		1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
 
-	if (entityLiving instanceof EntityPlayer && ((EntityPlayer) entityLiving).capabilities.isCreativeMode)
+	if(!world.isRemote)
 	{
-	    entityarrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
-	}
-	else
-	{
-	    entityarrow.pickupStatus = EntityArrow.PickupStatus.ALLOWED;
-	    stack.setItemDamage(this.getDamage(stack) + 1); // Reversed.
-							    // MORE Damage
-							    // for a shorter
-							    // durability
-							    // bar
-	}
+	    EntityArrow entityarrow = Helper.createArrow(world, entityLiving);
+	    if (f == 1.0F)
+	    {
+		entityarrow.setIsCritical(true);
+	    }
 
-	world.spawnEntity(entityarrow);
+	    if (entityLiving instanceof EntityPlayer && ((EntityPlayer) entityLiving).capabilities.isCreativeMode)
+	    {
+		entityarrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
+	    }
+	    else
+	    {
+		entityarrow.pickupStatus = EntityArrow.PickupStatus.ALLOWED;
+		stack.setItemDamage(this.getDamage(stack) + 1); // Reversed.
+		// MORE Damage
+		// for a shorter
+		// durability
+		// bar
+	    }
+
+	    world.spawnEntity(entityarrow);
+	}
     }
 
     @Override
@@ -140,8 +143,8 @@ public class QuiverBow extends WeaponBow
 
     @Override
     public void addRecipes() // Enabled defines whether or not the item can be
-			     // crafted. Reloading existing weapons is always
-			     // permitted.
+    // crafted. Reloading existing weapons is always
+    // permitted.
     {
 	if (this.Enabled)
 	{
