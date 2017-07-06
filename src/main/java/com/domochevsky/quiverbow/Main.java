@@ -59,6 +59,7 @@ import com.domochevsky.quiverbow.projectiles.SunLight;
 import com.domochevsky.quiverbow.projectiles.Thorn;
 import com.domochevsky.quiverbow.projectiles.WaterShot;
 import com.domochevsky.quiverbow.projectiles.WebShot;
+import com.domochevsky.quiverbow.projectiles._ProjectileBase;
 import com.domochevsky.quiverbow.recipes.RecipeLoadMagazine;
 import com.domochevsky.quiverbow.recipes.Recipe_ERA;
 import com.domochevsky.quiverbow.recipes.Recipe_Weapon;
@@ -113,6 +114,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -287,63 +290,70 @@ public class Main
     void registerProjectiles() // Entities that get shot out of weapons as
     // projectiles
     {
-	this.addProjectile(RegularArrow.class, true, "arrow");
-	this.addProjectile(BlazeShot.class, true, "blaze");
-	this.addProjectile(CoinShot.class, true, "coin");
-	this.addProjectile(SmallRocket.class, true, "rocket_small");
+	this.addProjectileItem(RegularArrow.class, "arrow", Items.ARROW);
+	this.addProjectileItem(BlazeShot.class, "blaze", Items.FIRE_CHARGE);
+	this.addProjectileItem(CoinShot.class, "coin", Items.GOLD_NUGGET);
+	this.addProjectileItem(SmallRocket.class, "rocket_small", Items.FIREWORKS);
 
-	this.addProjectile(LapisShot.class, true, "lapis");
-	this.addProjectile(Thorn.class, true, "thorn");
-	this.addProjectile(ProxyThorn.class, true, "proximity_thorn");
-	this.addProjectile(SugarRod.class, true, "sugar");
+	this.addProjectileItem(LapisShot.class, "lapis", Items.DYE);
+	this.addProjectileItem(Thorn.class, "thorn", Blocks.CACTUS);
+	this.addProjectileItem(ProxyThorn.class, "proximity_thorn", Blocks.CACTUS);
+	this.addProjectileItem(SugarRod.class, "sugar", Items.REEDS);
 
-	this.addProjectile(BigRocket.class, true, "rocket_big");
+	this.addProjectileItem(BigRocket.class, "rocket_big", Items.FIREWORKS);
 
-	this.addProjectile(Sabot_Arrow.class, true, "sabot_arrow");
-	this.addProjectile(Sabot_Rocket.class, true, "sabot_rocket");
+	this.addProjectileItem(Sabot_Arrow.class, "sabot_arrow", Items.ARROW);
+	this.addProjectileItem(Sabot_Rocket.class, "sabot_rocket", Items.FIREWORKS);
 
-	this.addProjectile(Seed.class, true, "seed");
-	this.addProjectile(PotatoShot.class, true, "potato");
-	this.addProjectile(SnowShot.class, true, "snow");
+	this.addProjectileItem(Seed.class, "seed", Items.WHEAT_SEEDS);
+	this.addProjectileItem(PotatoShot.class, "potato", Items.BAKED_POTATO);
+	this.addProjectileItem(SnowShot.class, "snow", Items.SNOWBALL);
 
-	this.addProjectile(ScopedPredictive.class, true, "predictive");
-	this.addProjectile(EnderShot.class, true, "ender");
-	this.addProjectile(ColdIron.class, true, "cold_iron");
+	this.addProjectileItem(ScopedPredictive.class, "predictive", Items.ENDER_EYE);
+	this.addProjectileItem(EnderShot.class, "ender", Items.ENDER_PEARL);
+	this.addProjectileItem(ColdIron.class, "cold_iron", Items.IRON_INGOT);
 
-	this.addProjectile(OSP_Shot.class, true, "osp_shot");
-	this.addProjectile(OSR_Shot.class, true, "osr_shot");
-	this.addProjectile(OWR_Shot.class, true, "owr_shot");
+	this.addProjectileItem(OSP_Shot.class, "osp_shot", Blocks.OBSIDIAN);
+	this.addProjectileItem(OSR_Shot.class, "osr_shot", Blocks.OBSIDIAN);
+	this.addProjectileItem(OWR_Shot.class, "owr_shot", Blocks.OBSIDIAN);
 
-	this.addProjectile(FenGoop.class, true, "fen_light");
-	this.addProjectile(FlintDust.class, true, "flint_dust");
+	this.addProjectileItem(FenGoop.class, "fen_light", Items.GLOWSTONE_DUST);
+	this.addProjectileItem(FlintDust.class, "flint_dust", Items.FLINT);
 
-	this.addProjectile(RedLight.class, true, "red_light");
-	this.addProjectile(SunLight.class, true, "sunlight");
+	this.addProjectileItem(RedLight.class, "red_light", Blocks.REDSTONE_LAMP);
+	this.addProjectileItem(SunLight.class, "sunlight", Blocks.GLOWSTONE);
 
-	this.addProjectile(NetherFire.class, true, "nether_fire");
-	this.addProjectile(RedSpray.class, true, "red_spray");
+	this.addProjectileItem(NetherFire.class, "nether_fire", Items.BLAZE_POWDER);
+	this.addProjectileItem(RedSpray.class, "red_spray", Items.REDSTONE);
 
-	this.addProjectile(SoulShot.class, true, "soul");
+	this.addProjectileItem(SoulShot.class, "soul", Blocks.SOUL_SAND);
 
-	this.addProjectile(WaterShot.class, true, "water");
-	this.addProjectile(WebShot.class, true, "web");
+	this.addProjectileItem(WaterShot.class, "water", Items.WATER_BUCKET);
+	this.addProjectileItem(WebShot.class, "web", Blocks.WEB);
 
-	this.addProjectile(HealthBeam.class, true, "health");
+	this.addProjectileItem(HealthBeam.class, "health", Items.POTIONITEM);
 
-	this.addProjectile(EnderAccelerator.class, true, "era_shot");
-	this.addProjectile(EnderAno.class, true, "ano");
+	this.addProjectileItem(EnderAccelerator.class, "era_shot", Items.IRON_INGOT);
+	this.addProjectileItem(EnderAno.class, "ano", Items.ENDER_PEARL);
     }
 
-    private void addProjectile(Class<? extends Entity> entityClass, boolean hasRenderer, String name)
+    private void addProjectileItem(Class<? extends _ProjectileBase> entityClass, String name, Block block)
+    {
+	Item item = Item.getItemFromBlock(block);
+	if(item == null) throw new IllegalArgumentException(block + " does not have an ItemBlock!");
+	addProjectileItem(entityClass, name, item);
+    }
+    
+    private void addProjectileItem(Class<? extends _ProjectileBase> entityClass, String name, Item item)
+    {
+	addProjectile(entityClass, name);
+	proxy.registerItemProjectileRenderer(entityClass, item);
+    }
+    
+    private void addProjectile(Class<? extends _ProjectileBase> entityClass, String name)
     {
 	EntityRegistry.registerModEntity(new ResourceLocation(Constants.MODID, name), entityClass,
 		"projectilechevsky_" + name, projectileCount, this, 80, 1, true);
-
-	if (hasRenderer)
-	{
-	    proxy.registerProjectileRenderer(entityClass);
-	} // Entity-specific renderer
-
 	projectileCount += 1;
     }
 
