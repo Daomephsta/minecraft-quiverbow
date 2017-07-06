@@ -4,22 +4,117 @@ import java.util.ArrayList;
 
 import com.domochevsky.quiverbow.Main.Constants;
 import com.domochevsky.quiverbow.ArmsAssistant.Entity_AA;
-import com.domochevsky.quiverbow.ammo.*;
+import com.domochevsky.quiverbow.ammo.ArrowBundle;
+import com.domochevsky.quiverbow.ammo.BoxOfFlintDust;
+import com.domochevsky.quiverbow.ammo.ColdIronClip;
+import com.domochevsky.quiverbow.ammo.EnderQuartzClip;
+import com.domochevsky.quiverbow.ammo.GatlingAmmo;
+import com.domochevsky.quiverbow.ammo.GoldMagazine;
+import com.domochevsky.quiverbow.ammo.LapisMagazine;
+import com.domochevsky.quiverbow.ammo.LargeNetherrackMagazine;
+import com.domochevsky.quiverbow.ammo.LargeRedstoneMagazine;
+import com.domochevsky.quiverbow.ammo.LargeRocket;
+import com.domochevsky.quiverbow.ammo.NeedleMagazine;
+import com.domochevsky.quiverbow.ammo.ObsidianMagazine;
+import com.domochevsky.quiverbow.ammo.RedstoneMagazine;
+import com.domochevsky.quiverbow.ammo.RocketBundle;
+import com.domochevsky.quiverbow.ammo.SeedJar;
+import com.domochevsky.quiverbow.ammo._AmmoBase;
 import com.domochevsky.quiverbow.blocks.FenLight;
 import com.domochevsky.quiverbow.items.ItemRegistry;
-import com.domochevsky.quiverbow.miscitems.*;
+import com.domochevsky.quiverbow.miscitems.PackedUpAA;
+import com.domochevsky.quiverbow.miscitems.Part_GatlingBarrel;
+import com.domochevsky.quiverbow.miscitems.Part_GatlingBody;
 import com.domochevsky.quiverbow.models.ISpecialRender;
 import com.domochevsky.quiverbow.net.PacketHandler;
-import com.domochevsky.quiverbow.projectiles.*;
-import com.domochevsky.quiverbow.recipes.*;
+import com.domochevsky.quiverbow.projectiles.BigRocket;
+import com.domochevsky.quiverbow.projectiles.BlazeShot;
+import com.domochevsky.quiverbow.projectiles.CoinShot;
+import com.domochevsky.quiverbow.projectiles.ColdIron;
+import com.domochevsky.quiverbow.projectiles.EnderAccelerator;
+import com.domochevsky.quiverbow.projectiles.EnderAno;
+import com.domochevsky.quiverbow.projectiles.EnderShot;
+import com.domochevsky.quiverbow.projectiles.FenGoop;
+import com.domochevsky.quiverbow.projectiles.FlintDust;
+import com.domochevsky.quiverbow.projectiles.HealthBeam;
+import com.domochevsky.quiverbow.projectiles.LapisShot;
+import com.domochevsky.quiverbow.projectiles.NetherFire;
+import com.domochevsky.quiverbow.projectiles.OSP_Shot;
+import com.domochevsky.quiverbow.projectiles.OSR_Shot;
+import com.domochevsky.quiverbow.projectiles.OWR_Shot;
+import com.domochevsky.quiverbow.projectiles.PotatoShot;
+import com.domochevsky.quiverbow.projectiles.ProxyThorn;
+import com.domochevsky.quiverbow.projectiles.RedLight;
+import com.domochevsky.quiverbow.projectiles.RedSpray;
+import com.domochevsky.quiverbow.projectiles.RegularArrow;
+import com.domochevsky.quiverbow.projectiles.Sabot_Arrow;
+import com.domochevsky.quiverbow.projectiles.Sabot_Rocket;
+import com.domochevsky.quiverbow.projectiles.ScopedPredictive;
+import com.domochevsky.quiverbow.projectiles.Seed;
+import com.domochevsky.quiverbow.projectiles.SmallRocket;
+import com.domochevsky.quiverbow.projectiles.SnowShot;
+import com.domochevsky.quiverbow.projectiles.SoulShot;
+import com.domochevsky.quiverbow.projectiles.SugarRod;
+import com.domochevsky.quiverbow.projectiles.SunLight;
+import com.domochevsky.quiverbow.projectiles.Thorn;
+import com.domochevsky.quiverbow.projectiles.WaterShot;
+import com.domochevsky.quiverbow.projectiles.WebShot;
+import com.domochevsky.quiverbow.recipes.RecipeLoadMagazine;
+import com.domochevsky.quiverbow.recipes.Recipe_ERA;
+import com.domochevsky.quiverbow.recipes.Recipe_Weapon;
 import com.domochevsky.quiverbow.util.RegistryHelper;
-import com.domochevsky.quiverbow.weapons.*;
+import com.domochevsky.quiverbow.weapons.AA_Targeter;
+import com.domochevsky.quiverbow.weapons.AquaAccelerator;
+import com.domochevsky.quiverbow.weapons.CoinTosser;
+import com.domochevsky.quiverbow.weapons.CoinTosser_Mod;
+import com.domochevsky.quiverbow.weapons.Crossbow_Auto;
+import com.domochevsky.quiverbow.weapons.Crossbow_AutoImp;
+import com.domochevsky.quiverbow.weapons.Crossbow_Blaze;
+import com.domochevsky.quiverbow.weapons.Crossbow_Compact;
+import com.domochevsky.quiverbow.weapons.Crossbow_Double;
+import com.domochevsky.quiverbow.weapons.DragonBox;
+import com.domochevsky.quiverbow.weapons.DragonBox_Quad;
+import com.domochevsky.quiverbow.weapons.ERA;
+import com.domochevsky.quiverbow.weapons.EnderBow;
+import com.domochevsky.quiverbow.weapons.EnderRifle;
+import com.domochevsky.quiverbow.weapons.Endernymous;
+import com.domochevsky.quiverbow.weapons.FenFire;
+import com.domochevsky.quiverbow.weapons.FlintDuster;
+import com.domochevsky.quiverbow.weapons.FrostLancer;
+import com.domochevsky.quiverbow.weapons.LapisCoil;
+import com.domochevsky.quiverbow.weapons.LightningRed;
+import com.domochevsky.quiverbow.weapons.MediGun;
+import com.domochevsky.quiverbow.weapons.Mortar_Arrow;
+import com.domochevsky.quiverbow.weapons.Mortar_Dragon;
+import com.domochevsky.quiverbow.weapons.NetherBellows;
+import com.domochevsky.quiverbow.weapons.OSP;
+import com.domochevsky.quiverbow.weapons.OSR;
+import com.domochevsky.quiverbow.weapons.OWR;
+import com.domochevsky.quiverbow.weapons.Potatosser;
+import com.domochevsky.quiverbow.weapons.PowderKnuckle;
+import com.domochevsky.quiverbow.weapons.PowderKnuckle_Mod;
+import com.domochevsky.quiverbow.weapons.ProximityNeedler;
+import com.domochevsky.quiverbow.weapons.QuiverBow;
+import com.domochevsky.quiverbow.weapons.RPG;
+import com.domochevsky.quiverbow.weapons.RPG_Imp;
+import com.domochevsky.quiverbow.weapons.RedSprayer;
+import com.domochevsky.quiverbow.weapons.SeedSweeper;
+import com.domochevsky.quiverbow.weapons.Seedling;
+import com.domochevsky.quiverbow.weapons.SilkenSpinner;
+import com.domochevsky.quiverbow.weapons.SnowCannon;
+import com.domochevsky.quiverbow.weapons.SoulCairn;
+import com.domochevsky.quiverbow.weapons.SugarEngine;
+import com.domochevsky.quiverbow.weapons.Sunray;
+import com.domochevsky.quiverbow.weapons.ThornSpitter;
+import com.domochevsky.quiverbow.weapons._WeaponBase;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -30,9 +125,12 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.*;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import net.minecraftforge.oredict.RecipeSorter;
 
 @Mod(modid = Constants.MODID, name = Constants.NAME, version = "b102")
@@ -96,7 +194,16 @@ public class Main
     // Helper.tryBlockBreak() won't send a
     // BlockBreak event. Used by
     // protection plugins.
-
+    public static CreativeTabs 
+	QUIVERBOW_TAB = new CreativeTabs(Constants.MODID)
+    {
+	@Override
+	public ItemStack getTabIconItem()
+	{
+	    return new ItemStack(ItemRegistry.QUIVERBOW);
+	}
+    };
+    
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
@@ -163,7 +270,19 @@ public class Main
 	MinecraftForge.EVENT_BUS.register(listenerClient);
     }
 
-
+    @EventHandler
+    public void init(FMLInitializationEvent event)
+    {
+	//Init creative tab now that items are initialised
+	/*QUIVERBOW_TAB = new CreativeTabs(Constants.MODID)
+	    {
+		@Override
+		public ItemStack getTabIconItem()
+		{
+		    return new ItemStack(ItemRegistry.QUIVERBOW);
+		}
+	    };*/
+    }
 
     void registerProjectiles() // Entities that get shot out of weapons as
     // projectiles

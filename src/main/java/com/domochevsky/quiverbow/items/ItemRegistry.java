@@ -35,7 +35,7 @@ public class ItemRegistry
     public static final Item SEEDLING = null;
     public static final Item POTATOSSER = null;
     public static final Item SNOW_CANNON = null;
-    public static final Item QUIVER_BOW = null;
+    public static final Item QUIVERBOW = null;
     public static final Item ENDER_BOW = null;
     public static final Item ENDER_RIFLE = null;
     public static final Item FROST_LANCER = null;

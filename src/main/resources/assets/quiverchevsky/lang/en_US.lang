@@ -3,6 +3,9 @@ entity.quiverchevsky_turret.name=Arms Assistant
 entity.quiverchevsky.quiverchevsky_turret.name=Arms Assistant
 entity.quiverchevsky.projectilechevsky_Ano.name=the End
 
+//Creative tab
+itemGroup.quiverchevsky=Quiverbow
+
 //Ammo
 quiverchevsky.ammo.nocreative=Does not work in creative mode.
 quiverchevsky.ammo.infinite=§9Infinite Ammo
