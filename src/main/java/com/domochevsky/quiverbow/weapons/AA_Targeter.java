@@ -31,17 +31,6 @@ public class AA_Targeter extends _WeaponBase
 
     public double targetingDistance = 64;
 
-    /*
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * this.Icon =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/AA_Targeter"); }
-     * 
-     * 
-     * @Override public IIcon getIconFromDamage(int meta) { return this.Icon; }
-     */
-
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {

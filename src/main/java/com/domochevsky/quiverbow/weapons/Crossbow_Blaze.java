@@ -25,17 +25,6 @@ public class Crossbow_Blaze extends _WeaponBase
 
     private int FireDur;
 
-    /*
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * this.Icon =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/CrossbowBlaze");
-     * this.Icon_Empty =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/CrossbowBlaze_Empty"
-     * ); }
-     */
-
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {

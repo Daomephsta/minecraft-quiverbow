@@ -26,23 +26,6 @@ public class Crossbow_AutoImp extends _WeaponBase
 
     private String name = "Improved Auto-Crossbow";
 
-    /*
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) // We
-     * got need for // a non-typical // icon currently. // Will be phased // out
-     * { this.Icon =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/CrossbowAutoImp");
-     * this.Icon_Empty = par1IconRegister.registerIcon(
-     * "quiverchevsky:weapons/CrossbowAutoImp_Empty"); }
-     * 
-     * @Override public IIcon getIcon(ItemStack stack, int pass) // Onhand
-     * display { if (this.getDamage(stack) >= stack.getMaxDamage()) { return
-     * this.Icon_Empty; }
-     * 
-     * return this.Icon; }
-     */
-
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {

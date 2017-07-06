@@ -26,17 +26,6 @@ public class EnderRifle extends _WeaponBase
     public int ZoomMax;
     private double DmgIncrease;
 
-    /*
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * this.Icon =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/EnderRifle");
-     * this.Icon_Empty =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/EnderRifle_Empty");
-     * }
-     */
-
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {

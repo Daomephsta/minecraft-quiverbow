@@ -27,18 +27,6 @@ public class Mortar_Dragon extends _WeaponBase
     private int FireDur;
     private double ExplosionSize;
 
-    /*
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * this.Icon =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/DragonMortar"); }
-     * 
-     * @Override public IIcon getIconFromDamage(int meta) // This is for
-     * inventory display. // Comes in with metadata. Only // gets called on
-     * client side { return this.Icon; // Full, default }
-     */
-
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {

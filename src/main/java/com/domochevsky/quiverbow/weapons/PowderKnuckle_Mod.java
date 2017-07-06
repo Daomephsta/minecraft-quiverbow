@@ -32,16 +32,6 @@ public class PowderKnuckle_Mod extends _WeaponBase
 
     private boolean dmgTerrain;
 
-    /*
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * this.Icon = par1IconRegister.registerIcon(
-     * "quiverchevsky:weapons/PowderKnuckle_Modified"); this.Icon_Empty =
-     * par1IconRegister.registerIcon(
-     * "quiverchevsky:weapons/PowderKnuckle_Modified_Empty"); }
-     */
-
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing,
 	    float hitX, float hitY, float hitZ)

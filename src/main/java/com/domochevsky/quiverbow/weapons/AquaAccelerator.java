@@ -29,16 +29,6 @@ public class AquaAccelerator extends _WeaponBase
 	this.setCreativeTab(CreativeTabs.TOOLS); // This is a tool
     }
 
-    /*
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * this.Icon =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/WaterGun");
-     * this.Icon_Empty =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/WaterGun_Empty"); }
-     */
-
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {

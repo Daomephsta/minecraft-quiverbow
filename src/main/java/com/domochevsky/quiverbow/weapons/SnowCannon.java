@@ -27,17 +27,6 @@ public class SnowCannon extends _WeaponBase
     private int Slow_Strength; // -15% speed per level. Lvl 3 = -45%
     private int Slow_Duration;
 
-    /*
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * this.Icon =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/SnowCannon");
-     * this.Icon_Empty =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/SnowCannon_Empty");
-     * }
-     */
-
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {

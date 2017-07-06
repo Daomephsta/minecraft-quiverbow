@@ -27,15 +27,6 @@ public class RPG extends _WeaponBase
 			    // exploding
     private boolean dmgTerrain; // Can our projectile damage terrain?
 
-    /*
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/RPG");
-     * this.Icon_Empty =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/RPG_Empty"); }
-     */
-
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {

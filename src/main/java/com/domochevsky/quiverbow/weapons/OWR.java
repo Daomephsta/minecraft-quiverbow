@@ -38,15 +38,6 @@ public class OWR extends _WeaponBase
 				 // seconds
     private int Wither_Strength; // 2 dmg per second for 3 seconds = 6 dmg total
 
-    /*
-     * @SideOnly(Side.CLIENT)
-     * 
-     * @Override public void registerIcons(IIconRegister par1IconRegister) {
-     * this.Icon = par1IconRegister.registerIcon("quiverchevsky:weapons/OWR");
-     * this.Icon_Empty =
-     * par1IconRegister.registerIcon("quiverchevsky:weapons/OWR_Empty"); }
-     */
-
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {

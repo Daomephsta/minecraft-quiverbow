@@ -24,23 +24,6 @@ public class Mortar_Arrow extends _WeaponBase
 	super("arrow_mortar", 8);
     }
 
-    // @SideOnly(Side.CLIENT)
-    // @Override
-    // public void registerIcons(IIconRegister par1IconRegister)
-    // {
-    // this.Icon =
-    // par1IconRegister.registerIcon("quiverchevsky:weapons/ArrowMortar");
-    // }
-    //
-    // @Override
-    // public IIcon getIconFromDamage(int meta) // This is for inventory
-    // display.
-    // // Comes in with metadata. Only
-    // // gets called on client side
-    // {
-    // return this.Icon; // Full, default
-    // }
-
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
 	ItemStack stack = player.getHeldItem(hand);

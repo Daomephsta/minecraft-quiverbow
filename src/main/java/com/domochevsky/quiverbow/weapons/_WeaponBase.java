@@ -60,15 +60,6 @@ public class _WeaponBase extends QuiverBowItem
 	this.name = name;
     }
 
-    /*
-     * @Override
-     * 
-     * @SideOnly(Side.CLIENT) public IIcon getIconFromDamage(int meta) // This
-     * is for inventory display. Comes in with metadata. Only gets called on
-     * client side { if (meta == stack.getMaxDamage()) { return this.Icon_Empty;
-     * } // Empty return this.Icon; // Full, default }
-     */
-
     public String getName()
     {
 	return this.name;
