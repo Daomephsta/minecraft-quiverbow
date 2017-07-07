@@ -387,8 +387,8 @@ public class Main
 	public static void registerItems(RegistryEvent.Register<Item> e)
 	{
 	    registerMiscItems(e.getRegistry());
-	    registerWeapons(e.getRegistry());
 	    registerAmmo(e.getRegistry());
+	    registerWeapons(e.getRegistry());
 	}
 
 	private static void registerMiscItems(IForgeRegistry<Item> registry)
