@@ -4,6 +4,7 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.ScopedPredictive;
 import com.domochevsky.quiverbow.util.InventoryHelper;
+import com.domochevsky.quiverbow.weapons.base.WeaponBow;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
@@ -248,6 +249,7 @@ public class EnderBow extends WeaponBow
 		}
 
 		EntityArrow entityarrow = Helper.createArrow(world, player);
+		entityarrow.setAim(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0.0F, f * 3.0F, 0.5F);
 
 		if (f == 1.0F)
 		{
@@ -273,18 +275,6 @@ public class EnderBow extends WeaponBow
 		} // pew.
 	    }
 	}
-    }
-
-    @Override
-    public int getMaxItemUseDuration(ItemStack par1ItemStack)
-    {
-	return 72000;
-    }
-
-    @Override
-    public EnumAction getItemUseAction(ItemStack par1ItemStack)
-    {
-	return EnumAction.BOW;
     }
 
     @Override

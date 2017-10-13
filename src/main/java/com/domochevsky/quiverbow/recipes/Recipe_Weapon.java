@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.weapons._WeaponBase;
+import com.domochevsky.quiverbow.weapons.base._WeaponBase;
 
 public class Recipe_Weapon extends ShapedRecipes implements IRecipe
 {

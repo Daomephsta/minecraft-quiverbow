@@ -6,54 +6,59 @@ import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.EnderAccelerator;
 import com.domochevsky.quiverbow.recipes.Recipe_ERA;
 import com.domochevsky.quiverbow.recipes.Recipe_Weapon;
+import com.domochevsky.quiverbow.weapons.base.ProjectileWeapon;
+import com.domochevsky.quiverbow.weapons.base.firingbehaviours.FiringBehaviourBase;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
-import net.minecraft.item.*;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class ERA extends _WeaponBase
+public class ERA extends ProjectileWeapon
 {
-    public ERA()
+    private class ERAFiringBehaviour extends FiringBehaviourBase<ERA>
     {
-	super("ender_rail_accelerator", 1);
+	protected ERAFiringBehaviour()
+	{
+	    super(ERA.this);
+	}
+
+	@Override
+	public void fire(ItemStack stack, World world, Entity entity)
+	{
+	    if (ERA.isAccelerating(stack))
+	    {
+		return;
+	    } // Already in the middle of firing
+
+	    // Firing
+	    ERA.startAccelerating(stack);
+	}
+
+	@Override
+	public void update(ItemStack stack, World world, Entity entity, int animTick, boolean holdingItem)
+	{
+	}
     }
 
     private double explosionSelf;
     public double explosionTarget;
-
     private boolean dmgTerrain; // Can our projectile damage terrain?
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
+    public ERA()
     {
-	ItemStack stack = player.getHeldItem(hand);
-	if (stack.getItemDamage() >= stack.getMaxDamage())
-	{
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
-	} // Is burnt out
-
-	this.doSingleFire(stack, world, player);
-
-	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-    }
-
-    @Override
-    public void doSingleFire(ItemStack stack, World world, Entity entity)
-    {
-	if (this.isAccelerating(stack))
-	{
-	    return;
-	} // Already in the middle of firing
-
-	// Firing
-	this.startAccelerating(stack);
+	super("ender_rail_accelerator", 1);
+	setFiringBehaviour(new ERAFiringBehaviour());
     }
 
     @Override
@@ -63,7 +68,7 @@ public class ERA extends _WeaponBase
 	// triggered and before firing
 	// 54 ticks minimum per shot (movement in/out)
 
-	if (this.isAccelerating(stack))
+	if (ERA.isAccelerating(stack))
 	{
 	    stack.getTagCompound().setInteger("acceleration", stack.getTagCompound().getInteger("acceleration") - 1); // Ticking
 	    // down
@@ -183,7 +188,7 @@ public class ERA extends _WeaponBase
 	// else, all's chill
     }
 
-    private void startAccelerating(ItemStack stack)
+    private static void startAccelerating(ItemStack stack)
     {
 	if (stack.getTagCompound() == null)
 	{
@@ -194,7 +199,7 @@ public class ERA extends _WeaponBase
 	stack.getTagCompound().setFloat("accSFX", 0.02f);
     }
 
-    private boolean isAccelerating(ItemStack stack)
+    private static boolean isAccelerating(ItemStack stack)
     {
 	if (stack.getTagCompound() == null)
 	{

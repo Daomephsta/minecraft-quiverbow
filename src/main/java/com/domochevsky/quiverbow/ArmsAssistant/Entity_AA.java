@@ -29,7 +29,7 @@ import com.domochevsky.quiverbow.AI.Commands;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.util.InventoryHelper;
 import com.domochevsky.quiverbow.weapons.AA_Targeter;
-import com.domochevsky.quiverbow.weapons._WeaponBase;
+import com.domochevsky.quiverbow.weapons.base._WeaponBase;
 
 public class Entity_AA extends EntityLiving
 {

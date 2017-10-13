@@ -1,36 +1,35 @@
 package com.domochevsky.quiverbow.weapons;
 
-import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.*;
-import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.config.Configuration;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.GameType;
+import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class PowderKnuckle_Mod extends _WeaponBase
+public class PowderKnuckle_Mod extends PowderKnuckle
 {
     public PowderKnuckle_Mod()
     {
 	super("powder_knuckle_mod", 8);
     }
-
-    private double ExplosionSize;
-
-    private boolean dmgTerrain;
 
     @Override
     public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing,
@@ -44,6 +43,8 @@ public class PowderKnuckle_Mod extends _WeaponBase
 	} // Not loaded
 
 	this.consumeAmmo(stack, player, 1);
+	//Not safe for clients past here.
+	if(world.isRemote) return EnumActionResult.SUCCESS;
 
 	// SFX
 	NetHelper.sendParticleMessageToAllPlayers(world, player.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
@@ -61,74 +62,15 @@ public class PowderKnuckle_Mod extends _WeaponBase
 	    {
 		for (int zAxis = -1; zAxis <= 1; zAxis++) // Along the z axis
 		{
-		    this.doMining(world, (EntityPlayerMP) player, pos.add(xAxis, yAxis, zAxis)); // That
-												 // should
-												 // give
-												 // me
-												 // 3
-												 // iterations
-												 // of
-												 // each
-												 // axis
-												 // on
-												 // every
-												 // level
+		    this.doMining(world, (EntityPlayerMP) player, pos.add(xAxis, yAxis, zAxis));
 		}
 	    }
 	}
 
 	return EnumActionResult.SUCCESS;
     }
-
-    @Override
-    public boolean onLeftClickEntity(ItemStack stack, EntityPlayer player, Entity entity)
-    {
-	if (player.world.isRemote)
-	{
-	    return false;
-	} // Not doing this on client side
-
-	if (this.getDamage(stack) >= stack.getMaxDamage())
-	{
-	    entity.attackEntityFrom(DamageSource.causePlayerDamage(player), this.DmgMin);
-	    entity.hurtResistantTime = 0; // No invincibility frames
-
-	    return false; // We're not loaded, getting out of here with minimal
-			  // damage
-	}
-
-	this.consumeAmmo(stack, entity, 1);
-
-	// SFX
-	NetHelper.sendParticleMessageToAllPlayers(entity.world, player.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
-		(byte) 4); // smoke
-
-	// Dmg
-	entity.world.createExplosion(player, entity.posX, entity.posY + 0.5D, entity.posZ, (float) this.ExplosionSize,
-		this.dmgTerrain); // 4.0F is TNT
-	entity.setFire(2); // Setting fire to them for 2 sec, so pigs can drop
-			   // cooked porkchops
-
-	entity.attackEntityFrom(DamageSource.causePlayerDamage(player), this.DmgMax); // Dealing
-										      // damage
-										      // directly.
-										      // Screw
-										      // weapon
-										      // attributes
-
-	return false;
-    }
-
-    void doMining(World world, EntityPlayerMP player, BlockPos pos) // Calling
-								    // this
-								    // 27
-								    // times,
-								    // to
-								    // blast
-								    // mine
-								    // a
-								    // 3x3x3
-								    // area
+    
+    void doMining(World world, EntityPlayerMP player, BlockPos pos)
     {
 	IBlockState toBeBroken = world.getBlockState(pos);
 

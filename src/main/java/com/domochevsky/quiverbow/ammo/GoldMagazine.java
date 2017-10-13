@@ -15,10 +15,10 @@ public class GoldMagazine extends AmmoMagazine
     {
 	super(1, 8);
 	this.setMaxDamage(72); // Filled with gold nuggets (8 shots with 9
-			       // scatter, 24 with 3 scatter)
+	// scatter, 24 with 3 scatter)
 	this.setCreativeTab(CreativeTabs.COMBAT); // On the combat tab by
-						  // default, since this is
-						  // amunition
+	// default, since this is
+	// amunition
     }
 
     @Override

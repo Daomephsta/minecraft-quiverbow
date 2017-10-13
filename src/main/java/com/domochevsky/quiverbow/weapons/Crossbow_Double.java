@@ -7,12 +7,14 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.RegularArrow;
 import com.domochevsky.quiverbow.util.Newliner;
+import com.domochevsky.quiverbow.weapons.base.WeaponCrossbow;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -20,65 +22,33 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class Crossbow_Double extends _WeaponBase
+public class Crossbow_Double extends WeaponCrossbow
 {
     public Crossbow_Double()
     {
-	super("double_crossbow", 2);
-    }
-
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
-    {
-	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= stack.getMaxDamage())
+	super("double_crossbow", 2, (world, weaponStack, entity, data) ->
 	{
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
-	} // Is empty
-
-	this.doSingleFire(stack, world, player); // Handing it over to the
-	// neutral firing function
-	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-    }
-
-    @Override
-    public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-    // side
-    {
-	if (this.getCooldown(stack) != 0)
-	{
-	    return;
-	} // Hasn't cooled down yet
-
-	// SFX
-	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 0.5F);
-
-	if(!world.isRemote)
-	{
-	    RegularArrow entityarrow = new RegularArrow(world, entity, (float) this.Speed);
+	    Crossbow_Double weapon = (Crossbow_Double) weaponStack.getItem();
+	    RegularArrow entityarrow = new RegularArrow(world, entity, (float) weapon.Speed);
 
 	    // Random Damage
-	    int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
+	    int dmg_range = weapon.DmgMax - weapon.DmgMin; // If max dmg is 20 and min
 	    // is 10, then the range will
 	    // be 10
 	    int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
 	    // and 10
-	    dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
+	    dmg += weapon.DmgMin; // Adding the min dmg of 10 back on top, giving us
 	    // the proper damage range (10-20)
 
 	    entityarrow.damage = dmg;
-	    entityarrow.knockbackStrength = this.Knockback; // Comes with an inbuild
+	    entityarrow.knockbackStrength = weapon.Knockback; // Comes with an inbuild
 	    // knockback II
-
-	    world.spawnEntity(entityarrow); // pew
-	}
-
-	this.consumeAmmo(stack, entity, 1);
-	this.setCooldown(stack, this.Cooldown);
+	    return entityarrow;
+	});
     }
 
     @Override
-    void doCooldownSFX(World world, Entity entity) // Server side
+    protected void doCooldownSFX(World world, Entity entity) // Server side
     {
 	Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 0.4F);
     }

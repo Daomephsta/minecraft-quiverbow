@@ -5,11 +5,12 @@ import java.util.List;
 
 import com.domochevsky.quiverbow.miscitems.QuiverBowItem;
 import com.domochevsky.quiverbow.util.Newliner;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
-public class _AmmoBase extends QuiverBowItem
+public abstract class _AmmoBase extends QuiverBowItem
 {
     public _AmmoBase()
     {

@@ -5,56 +5,29 @@ import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.RocketBundle;
 import com.domochevsky.quiverbow.projectiles.SmallRocket;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
+import com.domochevsky.quiverbow.weapons.base.ProjectileWeapon;
+import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class DragonBox extends _WeaponBase
+public class DragonBox extends ProjectileWeapon
 {
+    private int FireDur;
+    private double ExplosionSize;
+    private boolean dmgTerrain;
+
     public DragonBox()
     {
 	super("dragonbox", 64);
-    }
-
-    private int FireDur;
-    private double ExplosionSize;
-
-    private boolean dmgTerrain;
-
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
-    {
-	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= stack.getMaxDamage())
-	{
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
-	} // Is empty
-
-	this.doSingleFire(stack, world, player); // Handing it over to the
-	// neutral firing function
-	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-    }
-
-    @Override
-    public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-    // side
-    {
-	if (this.getCooldown(stack) != 0)
-	{
-	    return;
-	} // Hasn't cooled down yet
-
-	if(!world.isRemote)
-	{
-	    // Random Damage
+	setFiringBehaviour(new SingleShotFiringBehaviour<DragonBox>(this, (world, weaponStack, entity, data) ->
+	{ // Random Damage
 	    int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
 	    // is 10, then the range will
 	    // be 10
@@ -62,9 +35,6 @@ public class DragonBox extends _WeaponBase
 	    // and 10
 	    dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
 	    // the proper damage range (10-20)
-
-	    // SFX
-	    Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_FIREWORK_LAUNCH, 1.0F, 1.0F);
 
 	    // Firing
 	    SmallRocket shot = new SmallRocket(world, entity, (float) this.Speed, 0, 0);
@@ -74,11 +44,14 @@ public class DragonBox extends _WeaponBase
 	    shot.explosionSize = this.ExplosionSize;
 	    shot.dmgTerrain = this.dmgTerrain;
 
-	    world.spawnEntity(shot);
-	}
+	    return shot;
+	}));
+    }
 
-	this.consumeAmmo(stack, entity, 1);
-	this.setCooldown(stack, this.Cooldown);
+    @Override
+    public void doFireFX(World world, Entity entity)
+    {
+	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_FIREWORK_LAUNCH, 1.0F, 1.0F);
     }
 
     @Override

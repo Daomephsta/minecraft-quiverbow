@@ -23,6 +23,7 @@ import com.domochevsky.quiverbow.ammo.SeedJar;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.util.InventoryHelper;
 import com.domochevsky.quiverbow.weapons.*;
+import com.domochevsky.quiverbow.weapons.base._WeaponBase;
 
 public class AI_WeaponHandler
 {

@@ -37,7 +37,7 @@ import com.domochevsky.quiverbow.weapons.MediGun;
 import com.domochevsky.quiverbow.weapons.RPG;
 import com.domochevsky.quiverbow.weapons.RPG_Imp;
 import com.domochevsky.quiverbow.weapons.Sunray;
-import com.domochevsky.quiverbow.weapons._WeaponBase;
+import com.domochevsky.quiverbow.weapons.base._WeaponBase;
 
 public class AI_Targeting
 {

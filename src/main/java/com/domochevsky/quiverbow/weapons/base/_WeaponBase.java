@@ -1,4 +1,4 @@
-package com.domochevsky.quiverbow.weapons;
+package com.domochevsky.quiverbow.weapons.base;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,7 +16,10 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -35,7 +38,7 @@ public class _WeaponBase extends QuiverBowItem
     public int Knockback;
     public byte Kickback;
 
-    protected int Cooldown;
+    public int Cooldown;
 
     protected boolean isMobUsable; // Default
 
@@ -83,7 +86,7 @@ public class _WeaponBase extends QuiverBowItem
 
     // Removes the passed in value from the ammo stack
     // Returns true if the ammo has been used up
-    boolean consumeAmmo(ItemStack stack, Entity entity, int ammo)
+    public boolean consumeAmmo(ItemStack stack, Entity entity, int ammo)
     {
 	// if (!(entity instanceof EntityPlayer)) { return false; } // Not a
 	// player, so not deducting ammo. Keep going!
@@ -112,7 +115,7 @@ public class _WeaponBase extends QuiverBowItem
 	return false; // There's still some left
     }
 
-    void setCooldown(ItemStack stack, int cooldown)
+    public void setCooldown(ItemStack stack, int cooldown)
     {
 	if (stack.getTagCompound() == null)
 	{
@@ -141,7 +144,7 @@ public class _WeaponBase extends QuiverBowItem
 	return stack.getTagCompound().getInteger("cooldown"); // Here ya go
     }
 
-    void setBurstFire(ItemStack stack, int amount) // Setting our burst fire to
+    public void setBurstFire(ItemStack stack, int amount) // Setting our burst fire to
 						   // this amount. Assumes the
 						   // tag to be valid
     {
@@ -172,7 +175,7 @@ public class _WeaponBase extends QuiverBowItem
 	ItemStack stack = player.getHeldItem(hand);
 	if (this.getDamage(stack) >= stack.getMaxDamage())
 	{
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
+	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
 
 	this.doSingleFire(stack, world, player); // Handing it over to the
@@ -201,7 +204,7 @@ public class _WeaponBase extends QuiverBowItem
     {} // Server side
 
     // Called one tick before cooldown is dealt with
-    void doCooldownSFX(World world, Entity entity)
+    protected void doCooldownSFX(World world, Entity entity)
     {}
 
     @Override

@@ -1,32 +1,39 @@
 package com.domochevsky.quiverbow.weapons;
 
+import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.Main;
+import com.domochevsky.quiverbow.AI.AI_Targeting;
+import com.domochevsky.quiverbow.projectiles.WaterShot;
+import com.domochevsky.quiverbow.weapons.base.ProjectileWeapon;
+import com.domochevsky.quiverbow.weapons.base._WeaponBase;
+import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
-
-import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.AI.AI_Targeting;
-import com.domochevsky.quiverbow.projectiles.WaterShot;
-
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class AquaAccelerator extends _WeaponBase
+public class AquaAccelerator extends ProjectileWeapon
 {
     public AquaAccelerator()
     {
 	super("aqua_accelerator", 1);
 	this.setCreativeTab(CreativeTabs.TOOLS); // This is a tool
+	setFiringBehaviour(new SingleShotFiringBehaviour<AquaAccelerator>(this, (world, weaponStack, entity, data) -> new WaterShot(world, entity, (float) ((_WeaponBase)weaponStack.getItem()).Speed)));
     }
 
     @Override
@@ -42,31 +49,16 @@ public class AquaAccelerator extends _WeaponBase
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	}
 
-	this.doSingleFire(stack, world, player); // Handing it over to the
+	firingBehaviour.fire(stack, world, player);
 	// neutral firing function
 
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
-
+    
     @Override
-    public void doSingleFire(ItemStack stack, World world, Entity entity)
+    public void doFireFX(World world, Entity entity)
     {
-	if (this.getCooldown(stack) > 0)
-	{
-	    return;
-	} // Hasn't cooled down yet
-
-	// SFX
 	Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 2.0F);
-
-	if(!world.isRemote)
-	{
-	    // Firing
-	    WaterShot projectile = new WaterShot(world, entity, (float) Speed);
-	    world.spawnEntity(projectile);
-	}
-	this.consumeAmmo(stack, entity, 1);
-	this.setCooldown(stack, this.Cooldown); // Cooling down now
     }
 
     private void checkReloadFromWater(ItemStack stack, World world, EntityPlayer player)

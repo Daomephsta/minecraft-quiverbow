@@ -4,53 +4,26 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.PotatoShot;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
+import com.domochevsky.quiverbow.weapons.base.ProjectileWeapon;
+import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class Potatosser extends _WeaponBase
+public class Potatosser extends ProjectileWeapon
 {
+    private boolean shouldDrop;
+
     public Potatosser()
     {
 	super("potatosser", 14);
-    }
-
-    private boolean shouldDrop;
-
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
-    {
-	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= stack.getMaxDamage())
-	{
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
-	} // Is empty
-
-	this.doSingleFire(stack, world, player); // Handing it over to the
-	// neutral firing function
-	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-    }
-
-    @Override
-    public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-    // side
-    {
-	if (this.getCooldown(stack) > 0)
-	{
-	    return;
-	} // Hasn't cooled down yet
-
-	// SFX
-	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ITEM_BREAK, 0.7F, 0.4F);
-
-	if(!world.isRemote)
+	setFiringBehaviour(new SingleShotFiringBehaviour<Potatosser>(this, (world, weaponStack, entity, data) ->
 	{
 	    // Random Damage
 	    int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
@@ -65,16 +38,18 @@ public class Potatosser extends _WeaponBase
 	    PotatoShot shot = new PotatoShot(world, entity, (float) this.Speed);
 	    shot.damage = dmg;
 	    shot.setDrop(this.shouldDrop);
-
-	    world.spawnEntity(shot);
-	}
-
-	this.consumeAmmo(stack, entity, 1);
-	this.setCooldown(stack, this.Cooldown);
+	    return shot;
+	}));
     }
 
     @Override
-    void doCooldownSFX(World world, Entity entity) // Server side
+    public void doFireFX(World world, Entity entity)
+    {
+	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ITEM_BREAK, 0.7F, 0.4F);
+    }
+
+    @Override
+    protected void doCooldownSFX(World world, Entity entity) // Server side
     {
 	Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.3F, 3.0F);
     }

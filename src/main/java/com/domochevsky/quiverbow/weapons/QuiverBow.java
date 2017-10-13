@@ -4,13 +4,13 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.ArrowBundle;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
+import com.domochevsky.quiverbow.weapons.base.WeaponBow;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -29,8 +29,6 @@ public class QuiverBow extends WeaponBow
     {
 	super("quiverbow", 256);
     }
-
-    String name = "Bow with Quiver";
 
     public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft)
     {
@@ -76,6 +74,7 @@ public class QuiverBow extends WeaponBow
 	if(!world.isRemote)
 	{
 	    EntityArrow entityarrow = Helper.createArrow(world, entityLiving);
+	    entityarrow.setAim(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0.0F, f * 3.0F, 1.0F);
 	    if (f == 1.0F)
 	    {
 		entityarrow.setIsCritical(true);
@@ -118,19 +117,7 @@ public class QuiverBow extends WeaponBow
 
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
-
-    @Override
-    public int getMaxItemUseDuration(ItemStack stack)
-    {
-	return 72000;
-    }
-
-    @Override
-    public EnumAction getItemUseAction(ItemStack stack)
-    {
-	return EnumAction.BOW;
-    }
-
+    
     @Override
     public void addProps(FMLPreInitializationEvent event, Configuration config)
     {

@@ -1,34 +1,66 @@
 package com.domochevsky.quiverbow.weapons;
 
-import net.minecraft.client.renderer.ItemMeshDefinition;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.*;
-import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.config.Configuration;
-
-import java.util.Collections;
-
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.Main.Constants;
 import com.domochevsky.quiverbow.ammo.ArrowBundle;
 import com.domochevsky.quiverbow.models.ISpecialRender;
 import com.domochevsky.quiverbow.projectiles.RegularArrow;
+import com.domochevsky.quiverbow.weapons.base.WeaponCrossbow;
+import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class Crossbow_Auto extends _WeaponBase implements ISpecialRender
+public class Crossbow_Auto extends WeaponCrossbow implements ISpecialRender
 {    
     public Crossbow_Auto()
     {
 	super("auto_crossbow", 8);
+	setFiringBehaviour(new SingleShotFiringBehaviour<Crossbow_Auto>(this, (world, weaponStack, entity, data) ->
+	{
+	    Crossbow_Auto weapon = (Crossbow_Auto) weaponStack.getItem();
+	    RegularArrow entityarrow = new RegularArrow(world, entity, (float) this.Speed);
+
+	    // Random Damage
+	    int dmg_range = weapon.DmgMax - weapon.DmgMin; // If max dmg is 20 and min
+	    // is 10, then the range will
+	    // be 10
+	    int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
+	    // and 10
+	    dmg += weapon.DmgMin; // Adding the min dmg of 10 back on top, giving us
+	    // the proper damage range (10-20)
+
+	    entityarrow.damage = dmg;
+	    entityarrow.knockbackStrength = weapon.Knockback; // Comes with an inbuild
+	    // knockback II
+
+	    return entityarrow;
+	})
+	{
+	    @Override
+	    public void fire(ItemStack stack, World world, Entity entity)
+	    {
+		super.fire(stack, world, entity);
+		Crossbow_Auto.setChambered(stack, world, entity, false);
+	    }
+	});
     }
 
     @Override
@@ -48,7 +80,6 @@ public class Crossbow_Auto extends _WeaponBase implements ISpecialRender
 		return chambered; 
 	    }
 	});
-	ModelLoader.setCustomStateMapper(Blocks.OBSIDIAN, (block) -> {return Collections.emptyMap();});
     }
 
     @Override
@@ -64,7 +95,7 @@ public class Crossbow_Auto extends _WeaponBase implements ISpecialRender
 	{
 	    if (player.isSneaking())
 	    {
-		this.setChambered(stack, world, player, true);
+		Crossbow_Auto.setChambered(stack, world, player, true);
 	    } // Setting up a new arrow
 
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
@@ -76,47 +107,8 @@ public class Crossbow_Auto extends _WeaponBase implements ISpecialRender
 	} // Still sneaking, even though you have an arrow on the rail? Not
 	// having it
 
-	this.doSingleFire(stack, world, player); // Handing it over to the
-	// neutral firing function
+	firingBehaviour.fire(stack, world, player);
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-    }
-
-    @Override
-    public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-    // side
-    {
-	if (this.getCooldown(stack) != 0)
-	{
-	    return;
-	} // Hasn't cooled down yet
-
-	// SFX
-	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 0.5F);
-
-	if(!world.isRemote)
-	{
-	    RegularArrow entityarrow = new RegularArrow(world, entity, (float) this.Speed);
-
-	    // Random Damage
-	    int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
-	    // is 10, then the range will
-	    // be 10
-	    int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
-	    // and 10
-	    dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
-	    // the proper damage range (10-20)
-
-	    entityarrow.damage = dmg;
-	    entityarrow.knockbackStrength = this.Knockback; // Comes with an inbuild
-	    // knockback II
-
-	    world.spawnEntity(entityarrow); // pew
-	}
-
-	this.consumeAmmo(stack, entity, 1);
-	this.setCooldown(stack, this.Cooldown);
-	this.setChambered(stack, world, entity, false); // That bolt has left
-	// the rail
     }
 
     private static boolean getChambered(ItemStack stack)
@@ -129,7 +121,7 @@ public class Crossbow_Auto extends _WeaponBase implements ISpecialRender
 	return stack.getTagCompound().getBoolean("isChambered");
     }
 
-    private void setChambered(ItemStack stack, World world, Entity entity, boolean toggle)
+    private static void setChambered(ItemStack stack, World world, Entity entity, boolean toggle)
     {
 	if (stack.getTagCompound() == null)
 	{

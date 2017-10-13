@@ -1,12 +1,15 @@
 package com.domochevsky.quiverbow.projectiles;
 
-import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.blocks.BlockRegistry;
 import com.domochevsky.quiverbow.blocks.FenLight;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.*;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -32,49 +35,42 @@ public class FenGoop extends _ProjectileBase
 	if (target.entityHit != null) // hit a entity
 	{
 	    target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity), (float) 0); // No
-														     // dmg,
-														     // but
-														     // knockback
+	    // dmg,
+	    // but
+	    // knockback
 	    target.entityHit.hurtResistantTime = 0;
 	    target.entityHit.setFire(fireDuration); // Some minor fire, for
-						    // flavor
+	    // flavor
 	}
 	else // hit the terrain
 	{
-	    BlockPos pos = target.getBlockPos().offset(target.sideHit.getOpposite());
-
-	    // Block targetBlock = this.world.getBlock(posiX, posiY, posiZ);
+	    BlockPos pos = target.getBlockPos().offset(target.sideHit);
 
 	    // Is the attached block a valid material?
 	    boolean canPlace = false;
-	    if (world.isSideSolid(pos, target.sideHit, false))
+
+	    if (world.isSideSolid(target.getBlockPos(), target.sideHit, false))
 	    {
 		canPlace = true;
 	    }
-
-	    // Glass breaking
-	    if (Helper.tryBlockBreak(this.world, this, target, 0))
+	    else if(this.world.getBlockState(target.getBlockPos()).getBlock().isReplaceable(world, target.getBlockPos()))
 	    {
-		canPlace = false;
+		canPlace = true;
+		pos = target.getBlockPos();
 	    }
 
-	    // Is the space free?
-	    if (this.world.getBlockState(pos).getBlock().isReplaceable(world, pos))
+	    // Putting light there (if we can), otherwise dropping 1 glowstone dust
+	    if (canPlace)
 	    {
-		// Putting light there (if we can)
-		if (canPlace)
+		FenLight.placeFenLight(world, pos, target.sideHit);
+
+		if (this.lightTick != 0)
 		{
-		    FenLight.placeFenLight(world, pos, target.sideHit);
-
-		    if (this.lightTick != 0)
-		    {
-			this.world.scheduleBlockUpdate(pos, BlockRegistry.FEN_LIGHT, this.lightTick, 1);
-		    }
-		    // else, stays on indefinitely
+		    this.world.scheduleBlockUpdate(pos, BlockRegistry.FEN_LIGHT, this.lightTick, 1);
 		}
-		// else, can't place. The block isn't of a valid material
 	    }
-	    // else, none of the allowed materials
+	    else if(!world.isRemote) 
+		world.spawnEntity(new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(Items.GLOWSTONE_DUST)));
 	}
 
 	// SFX

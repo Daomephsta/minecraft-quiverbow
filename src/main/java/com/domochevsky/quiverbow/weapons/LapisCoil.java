@@ -3,62 +3,34 @@ package com.domochevsky.quiverbow.weapons;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.LapisMagazine;
+import com.domochevsky.quiverbow.ammo._AmmoBase;
 import com.domochevsky.quiverbow.projectiles.LapisShot;
+import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
+import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
-import net.minecraft.item.ItemStack;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class LapisCoil extends _WeaponBase
+public class LapisCoil extends MagazineFedWeapon
 {
-    public LapisCoil()
-    {
-	super("lapis_coil", 100);
-    }
-
     int Weakness_Strength;
     int Weakness_Duration;
     int Nausea_Duration;
     int Hunger_Strength;
     int Hunger_Duration;
-
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
+    
+    public LapisCoil(_AmmoBase ammo)
     {
-	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= stack.getMaxDamage())
-	{
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
-	} // Is empty
-
-	if (player.isSneaking()) // Dropping the magazine
-	{
-	    this.dropMagazine(world, stack, player);
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-	}
-
-	this.doSingleFire(stack, world, player); // Handing it over to the
-	// neutral firing function
-	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-    }
-
-    @Override
-    public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-    // side
-    {
-	// SFX
-	Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.0F, 0.5F);
-	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 3.0F);
-
-	if(!world.isRemote)
+	super("lapis_coil", ammo, 100);
+	setFiringBehaviour(new SingleShotFiringBehaviour<LapisCoil>(this, (world, weaponStack, entity, data) -> 
 	{
 	    // Random Damage
 	    int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
@@ -77,49 +49,22 @@ public class LapisCoil extends _WeaponBase
 	    projectile.damage = dmg;
 
 	    projectile.ticksInGroundMax = 100; // 5 sec before it disappears
-
-	    world.spawnEntity(projectile); // Firing!
-	}
-
-	this.setCooldown(stack, 4); // For visual purposes
-	if (this.consumeAmmo(stack, entity, 1))
-	{
-	    this.dropMagazine(world, stack, entity);
-	}
+	    
+	    return projectile;
+	}));
+	this.Cooldown = 4;
     }
-
-    private void dropMagazine(World world, ItemStack stack, Entity entity)
+    
+    @Override
+    public void doFireFX(World world, Entity entity)
     {
-	if (!(entity instanceof EntityPlayer)) // For QuiverMobs/Arms Assistants
-	{
-	    this.setCooldown(stack, 60);
-	    return;
-	}
-
-	ItemStack clipStack = Helper.getAmmoStack(LapisMagazine.class, stack.getItemDamage()); // Unloading
-	// all
-	// ammo
-	// into
-	// that
-	// clip
-
-	stack.setItemDamage(stack.getMaxDamage()); // Emptying out
-
-	// Creating the clip
-	EntityItem entityitem = new EntityItem(world, entity.posX, entity.posY + 1.0d, entity.posZ, clipStack);
-	entityitem.setDefaultPickupDelay();
-
-	// And dropping it
-	if (entity.captureDrops)
-	{
-	    entity.capturedDrops.add(entityitem);
-	}
-	else
-	{
-	    world.spawnEntity(entityitem);
-	}
-
-	// SFX
+	Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.0F, 0.5F);
+	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 3.0F);
+    }
+    
+    @Override
+    protected void doUnloadFX(World world, Entity entity)
+    {
 	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F);
     }
 

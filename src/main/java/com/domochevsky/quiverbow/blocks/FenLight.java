@@ -2,6 +2,7 @@ package com.domochevsky.quiverbow.blocks;
 
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -39,48 +40,39 @@ public class FenLight extends BlockDirectional
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos)
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState state, IBlockAccess blockAccess, BlockPos pos)
     {
-	return null;
+	return getBoundingBox(state, blockAccess, pos);
     }
 
-    private static final AxisAlignedBB DOWN = new AxisAlignedBB(SIZE_MIN, SIZE_MIN + 0.375F, SIZE_MIN, SIZE_MAX,
+    private static final AxisAlignedBB DOWN = new AxisAlignedBB(SIZE_MIN, SIZE_MIN + 0.5F, SIZE_MIN, SIZE_MAX,
 	    SIZE_MAX + 0.375F, SIZE_MAX);
-    private static final AxisAlignedBB UP = new AxisAlignedBB(SIZE_MIN, SIZE_MIN - 0.375F, SIZE_MIN, SIZE_MAX,
-	    SIZE_MAX - 0.375F, SIZE_MAX);
-    private static final AxisAlignedBB NORTH = new AxisAlignedBB(SIZE_MIN + 0.375F, SIZE_MIN, SIZE_MIN,
+    private static final AxisAlignedBB UP = new AxisAlignedBB(SIZE_MIN, 0, SIZE_MIN, SIZE_MAX,
+	    SIZE_MAX - 0.5F, SIZE_MAX);
+    private static final AxisAlignedBB WEST = new AxisAlignedBB(SIZE_MIN + 0.5F, SIZE_MIN, SIZE_MIN,
 	    SIZE_MAX + 0.375F, SIZE_MAX, SIZE_MAX);
-    private static final AxisAlignedBB SOUTH = new AxisAlignedBB(SIZE_MIN - 0.375F, SIZE_MIN, SIZE_MIN,
-	    SIZE_MAX - 0.375F, SIZE_MAX, SIZE_MAX);
-    private static final AxisAlignedBB EAST = new AxisAlignedBB(SIZE_MIN, SIZE_MIN, SIZE_MIN + 0.375F, SIZE_MAX,
+    private static final AxisAlignedBB EAST = new AxisAlignedBB(SIZE_MIN - 0.375F, SIZE_MIN, SIZE_MIN,
+	    SIZE_MAX - 0.5F, SIZE_MAX, SIZE_MAX);
+    private static final AxisAlignedBB NORTH = new AxisAlignedBB(SIZE_MIN, SIZE_MIN, SIZE_MIN + 0.5F, SIZE_MAX,
 	    SIZE_MAX, SIZE_MAX + 0.375F);
-    private static final AxisAlignedBB WEST = new AxisAlignedBB(SIZE_MIN, SIZE_MIN, SIZE_MIN - 0.375F, SIZE_MAX,
-	    SIZE_MAX, SIZE_MAX - 0.375F);
+    private static final AxisAlignedBB SOUTH = new AxisAlignedBB(SIZE_MIN, SIZE_MIN, SIZE_MIN - 0.375F, SIZE_MAX,
+	    SIZE_MAX, SIZE_MAX - 0.5F);
+    private static final AxisAlignedBB[] BBS = new AxisAlignedBB[] {DOWN, UP, NORTH, SOUTH, WEST, EAST};
 
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess blockAccess, BlockPos pos)
     {
-	switch (state.getValue(FACING))
-	{
-	case DOWN:
-	    return DOWN;
-	case EAST:
-	    return EAST;
-	case NORTH:
-	    return NORTH;
-	case SOUTH:
-	    return SOUTH;
-	case UP:
-	    return UP;
-	case WEST:
-	    return WEST;
-	default:
-	    return FULL_BLOCK_AABB;
-	}
+	return BBS[state.getValue(FACING).getIndex()];
     }
 
     @Override
     public boolean isOpaqueCube(IBlockState state)
+    {
+	return false;
+    }
+    
+    @Override
+    public boolean isFullCube(IBlockState state)
     {
 	return false;
     }
@@ -104,34 +96,29 @@ public class FenLight extends BlockDirectional
     }
 
     @Override
-    public void onNeighborChange(IBlockAccess blockAccess, BlockPos pos, BlockPos neighbor)
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighbourType, BlockPos neighbor)
     {
-	// Ensure the blockAccess is a world, not a chunkcache
-	if (!(blockAccess instanceof World)) return;
-	World world = (World) blockAccess;
-
 	// Checking here to see if the block we're attached to is valid (and
 	// breaking if it isn't)
-	IBlockState state = world.getBlockState(pos);
 	switch (state.getValue(FACING))
 	{
 	case DOWN:
-	    if (world.isSideSolid(pos.offset(EnumFacing.UP), EnumFacing.DOWN)) world.setBlockToAir(pos);
+	    if (!world.isSideSolid(pos.offset(EnumFacing.UP), EnumFacing.DOWN)) world.destroyBlock(pos, false);
 	    break;
 	case EAST:
-	    if (world.isSideSolid(pos.offset(EnumFacing.WEST), EnumFacing.EAST)) world.setBlockToAir(pos);
+	    if (!world.isSideSolid(pos.offset(EnumFacing.WEST), EnumFacing.EAST)) world.destroyBlock(pos, false);
 	    break;
 	case NORTH:
-	    if (world.isSideSolid(pos.offset(EnumFacing.SOUTH), EnumFacing.NORTH)) world.setBlockToAir(pos);
+	    if (!world.isSideSolid(pos.offset(EnumFacing.SOUTH), EnumFacing.NORTH)) world.destroyBlock(pos, false);
 	    break;
 	case SOUTH:
-	    if (world.isSideSolid(pos.offset(EnumFacing.NORTH), EnumFacing.SOUTH)) world.setBlockToAir(pos);
+	    if (!world.isSideSolid(pos.offset(EnumFacing.NORTH), EnumFacing.SOUTH)) world.destroyBlock(pos, false);
 	    break;
 	case UP:
-	    if (world.isSideSolid(pos.offset(EnumFacing.DOWN), EnumFacing.UP)) world.setBlockToAir(pos);
+	    if (!world.isSideSolid(pos.offset(EnumFacing.DOWN), EnumFacing.UP)) world.destroyBlock(pos, false);
 	    break;
 	case WEST:
-	    if (world.isSideSolid(pos.offset(EnumFacing.EAST), EnumFacing.WEST)) world.setBlockToAir(pos);
+	    if (!world.isSideSolid(pos.offset(EnumFacing.EAST), EnumFacing.WEST)) world.destroyBlock(pos, false);
 	    break;
 	}
     }
@@ -143,7 +130,7 @@ public class FenLight extends BlockDirectional
 	// air, since the timer ran out
 	if (!world.isRemote)
 	{
-	    world.setBlockToAir(pos);
+	    world.destroyBlock(pos, false);
 
 	    // SFX
 	    for (int i = 0; i < 8; ++i)

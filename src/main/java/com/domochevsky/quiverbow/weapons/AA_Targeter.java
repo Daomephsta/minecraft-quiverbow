@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.util.Newliner;
+import com.domochevsky.quiverbow.weapons.base._WeaponBase;
 
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;

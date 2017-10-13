@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.ammo._AmmoBase;
 import com.domochevsky.quiverbow.weapons.OSP;
-import com.domochevsky.quiverbow.weapons._WeaponBase;
+import com.domochevsky.quiverbow.weapons.base._WeaponBase;
 
 public class RecipeLoadMagazine extends ShapelessRecipes implements IRecipe
 {

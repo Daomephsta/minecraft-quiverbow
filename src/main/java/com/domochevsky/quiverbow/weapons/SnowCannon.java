@@ -1,100 +1,55 @@
 package com.domochevsky.quiverbow.weapons;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.*;
-import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.SnowShot;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
+import com.domochevsky.quiverbow.weapons.base.ProjectileWeapon;
+import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SalvoFiringBehaviour;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.world.World;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class SnowCannon extends _WeaponBase
-{
-    public SnowCannon()
-    {
-	super("snow_cannon", 64);
-    }
-
+public class SnowCannon extends ProjectileWeapon
+{    
     private int Slow_Strength; // -15% speed per level. Lvl 3 = -45%
     private int Slow_Duration;
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
+    public SnowCannon()
     {
-	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= stack.getMaxDamage())
+	super("snow_cannon", 64);
+	setFiringBehaviour(new SalvoFiringBehaviour<SnowCannon>(this, 4, (world, weaponStack, entity, data) ->
 	{
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
-	} // Is empty
+	    float spreadHor = world.rand.nextFloat() * 20 - 10; // Spread between -5 and 5
+	    float spreadVert = world.rand.nextFloat() * 20 - 10;
+	    SnowShot snow = new SnowShot(world, entity, (float) this.Speed, spreadHor, spreadVert,
+		    new PotionEffect(MobEffects.SLOWNESS, this.Slow_Duration, this.Slow_Strength));
 
-	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
-	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
+	    // Random Damage
+	    int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
+	    // is 10, then the range will
+	    // be 10
+	    int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
+	    // and 10
+	    dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
+	    // the proper damage range (10-20)
+	    snow.damage = dmg;
+	    
+	    return snow;
+	}));
     }
-
+    
     @Override
-    public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-									  // side
+    public void doFireFX(World world, Entity entity)
     {
-	if (this.getCooldown(stack) > 0)
-	{
-	    return;
-	} // Hasn't cooled down yet
-
-	Helper.knockUserBack(entity, this.Kickback); // Kickback
-
-	// SFX
 	entity.playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F);
-
-	this.setCooldown(stack, this.Cooldown); // Cooling down now
-
-	int counter = 0;
-
-	while (counter < 4) // Scatter 4
-	{
-	    this.fireShot(world, entity); // Firing!
-
-	    if (this.consumeAmmo(stack, entity, 1))
-	    {
-		return;
-	    }
-	    // else, still has ammo left. Continue.
-
-	    counter += 1;
-	}
-    }
-
-    private void fireShot(World world, Entity entity)
-    {
-	if(world.isRemote) return;
-	float spreadHor = world.rand.nextFloat() * 20 - 10; // Spread between -5
-							    // and 5
-	float spreadVert = world.rand.nextFloat() * 20 - 10;
-
-	SnowShot snow = new SnowShot(world, entity, (float) this.Speed, spreadHor, spreadVert,
-		new PotionEffect(MobEffects.SLOWNESS, this.Slow_Duration, this.Slow_Strength));
-
-	// Random Damage
-	int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
-						   // is 10, then the range will
-						   // be 10
-	int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
-						     // and 10
-	dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
-			    // the proper damage range (10-20)
-
-	snow.damage = dmg;
-
-	world.spawnEntity(snow);
     }
 
     @Override

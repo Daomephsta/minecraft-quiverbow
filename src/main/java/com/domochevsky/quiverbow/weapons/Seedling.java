@@ -1,53 +1,30 @@
 package com.domochevsky.quiverbow.weapons;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
-import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.Seed;
+import com.domochevsky.quiverbow.weapons.base.ProjectileWeapon;
+import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class Seedling extends _WeaponBase
-{
+public class Seedling extends ProjectileWeapon
+{    
+    private int Dmg;
+
     public Seedling()
     {
 	super("seedling", 32);
-    }
-
-    private int Dmg;
-
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
-    {
-	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= stack.getMaxDamage())
-	{
-	    this.breakWeapon(world, stack, player);
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
-	}
-
-	this.doSingleFire(stack, world, player); // Handing it over to the
-	// neutral firing function
-	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-    }
-
-    @Override
-    public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-    // side
-    {
-	// Good to go (already verified)
-
-	entity.playSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.6F, 0.7F);
-	if(!world.isRemote)
+	setFiringBehaviour(new SingleShotFiringBehaviour<Seedling>(this, (world, weaponStack, entity, data) ->
 	{
 	    float spreadHor = world.rand.nextFloat() * 10 - 5; // Spread
 	    float spreadVert = world.rand.nextFloat() * 10 - 5;
@@ -55,13 +32,12 @@ public class Seedling extends _WeaponBase
 	    Seed shot = new Seed(world, entity, (float) this.Speed, spreadHor, spreadVert);
 	    shot.damage = this.Dmg;
 
-	    world.spawnEntity(shot); // Firing
-	}
-
-	if (this.consumeAmmo(stack, entity, 1))
+	    return shot;
+	})
 	{
-	    this.breakWeapon(world, stack, entity);
-	}
+	    @Override
+	    public void fire(ItemStack stack, World world, Entity entity) { if(stack.getItemDamage() >= stack.getMaxDamage()) weapon.breakWeapon(world, stack, entity); }
+	});
     }
 
     // All ammo has been used up, so breaking now
@@ -79,33 +55,19 @@ public class Seedling extends _WeaponBase
 	player.inventory.deleteStack(stack);
 	stack.setCount(0);
 
-	EntityItem piston = new EntityItem(world, player.posX, player.posY + 1.0F, player.posZ,
-		new ItemStack(Blocks.PISTON));
-	piston.setDefaultPickupDelay();
-
-	if (player.captureDrops)
+	if(!world.isRemote)
 	{
-	    player.capturedDrops.add(piston);
-	}
-	else
-	{
-	    world.spawnEntity(piston);
-	}
-
-	EntityItem hook = new EntityItem(world, player.posX, player.posY + 1.0F, player.posZ,
-		new ItemStack(Blocks.TRIPWIRE_HOOK));
-	hook.setDefaultPickupDelay();
-
-	if (player.captureDrops)
-	{
-	    player.capturedDrops.add(hook);
-	}
-	else
-	{
-	    world.spawnEntity(hook);
+	    entity.entityDropItem(new ItemStack(Blocks.PISTON), 1.0F);
+	    entity.entityDropItem(new ItemStack(Blocks.TRIPWIRE_HOOK), 1.0F);
 	}
 
 	Helper.playSoundAtEntityPos(player, SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 1.5F);
+    }
+
+    @Override
+    public void doFireFX(World world, Entity entity)
+    {
+	entity.playSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.6F, 0.7F);
     }
 
     @Override

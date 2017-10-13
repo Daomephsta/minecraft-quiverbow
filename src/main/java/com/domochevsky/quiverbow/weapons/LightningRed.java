@@ -5,6 +5,7 @@ import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.RedstoneMagazine;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.RedLight;
+import com.domochevsky.quiverbow.weapons.base._WeaponBase;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -138,7 +139,7 @@ public class LightningRed extends _WeaponBase
     }
 
     @Override
-    void doCooldownSFX(World world, Entity entity) // Server side. Only done
+    protected void doCooldownSFX(World world, Entity entity) // Server side. Only done
     // when held
     {
 	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, 0.7F, 0.2F);

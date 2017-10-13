@@ -1,42 +1,21 @@
 package com.domochevsky.quiverbow.projectiles;
 
+import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.net.NetHelper;
+
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.boss.EntityDragon;
-import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.monster.EntityBlaze;
-import net.minecraft.entity.monster.EntityCaveSpider;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.monster.EntityGhast;
-import net.minecraft.entity.monster.EntityMagmaCube;
-import net.minecraft.entity.monster.EntityPigZombie;
-import net.minecraft.entity.monster.EntitySilverfish;
-import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.monster.EntitySlime;
-import net.minecraft.entity.monster.EntitySpider;
-import net.minecraft.entity.monster.EntityWitch;
-import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.entity.passive.EntityBat;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.passive.EntityHorse;
-import net.minecraft.entity.passive.EntityMooshroom;
-import net.minecraft.entity.passive.EntityOcelot;
-import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.entity.passive.EntitySquid;
-import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-
-import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.net.NetHelper;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class SoulShot extends _ProjectileBase
 {
@@ -56,117 +35,20 @@ public class SoulShot extends _ProjectileBase
     {
 	if (target.entityHit != null)
 	{
-	    // Figuring out what we hit here now
-	    if (target.entityHit instanceof EntityCreeper)
+	    // Can't catch players or bosses
+	    if (target.entityHit instanceof EntityPlayer)
 	    {
-		doCapture(target, 50);
-	    }
-	    else if (target.entityHit instanceof EntityPigZombie)
-	    {
-		doCapture(target, 57);
-	    }
-	    else if (target.entityHit instanceof EntityCaveSpider)
-	    {
-		doCapture(target, 59);
-	    }
-	    else if (target.entityHit instanceof EntityMooshroom)
-	    {
-		doCapture(target, 96);
-	    }
-	    else if (target.entityHit instanceof EntitySkeleton)
-	    {
-		doCapture(target, 51);
-	    }
-	    else if (target.entityHit instanceof EntitySpider)
-	    {
-		doCapture(target, 52);
-	    }
-	    else if (target.entityHit instanceof EntityZombie)
-	    {
-		doCapture(target, 54);
-	    }
-	    else if (target.entityHit instanceof EntityMagmaCube)
-	    {
-		doCapture(target, 62);
-	    }
-	    else if (target.entityHit instanceof EntitySlime)
-	    {
-		doCapture(target, 55);
-	    }
-	    else if (target.entityHit instanceof EntityGhast)
-	    {
-		doCapture(target, 56);
-	    }
-	    else if (target.entityHit instanceof EntitySilverfish)
-	    {
-		doCapture(target, 60);
-	    }
-	    else if (target.entityHit instanceof EntityBlaze)
-	    {
-		doCapture(target, 61);
-	    }
-	    else if (target.entityHit instanceof EntityBat)
-	    {
-		doCapture(target, 65);
-	    }
-	    else if (target.entityHit instanceof EntityWitch)
-	    {
-		doCapture(target, 66);
-	    }
-	    else if (target.entityHit instanceof EntityPig)
-	    {
-		doCapture(target, 90);
-	    }
-	    else if (target.entityHit instanceof EntitySheep)
-	    {
-		doCapture(target, 91);
-	    }
-	    else if (target.entityHit instanceof EntityCow)
-	    {
-		doCapture(target, 92);
-	    }
-	    else if (target.entityHit instanceof EntityChicken)
-	    {
-		doCapture(target, 93);
-	    }
-	    else if (target.entityHit instanceof EntitySquid)
-	    {
-		doCapture(target, 94);
-	    }
-	    else if (target.entityHit instanceof EntityWolf)
-	    {
-		doCapture(target, 95);
-	    }
-	    else if (target.entityHit instanceof EntityOcelot)
-	    {
-		doCapture(target, 98);
-	    }
-	    else if (target.entityHit instanceof EntityHorse)
-	    {
-		doCapture(target, 100);
-	    }
-	    else if (target.entityHit instanceof EntityVillager)
-	    {
-		doCapture(target, 120);
-	    }
-
-	    // Can't catch Arceus
-	    else if (target.entityHit instanceof EntityPlayer)
-	    {
-		target.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.shootingEntity),
-			(float) 10);
+		target.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.shootingEntity), (float) 10);
 		this.damageShooter();
+		return;
 	    }
-
-	    else if (target.entityHit instanceof EntityDragon)
+	    else if (!target.entityHit.isNonBoss())
 	    {
 		this.damageShooter();
+		return;
 	    }
-	    else if (target.entityHit instanceof EntityWither)
-	    {
-		this.damageShooter();
-	    }
-	    // else, not a known entity
+	    //TODO: Add blacklist. Should be modifiable via config and IMC
+	    doCapture(target);
 
 	    NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SMOKE_LARGE,
 		    (byte) 4);
@@ -176,9 +58,6 @@ public class SoulShot extends _ProjectileBase
 	}
 	else // Hit the terrain
 	{
-	    // Block block = this.world.getBlock(target.getBlockPos().getX(),
-	    // target.getBlockPos().getY(), target.getBlockPos().getZ());
-
 	    // Glass breaking
 	    if (!Helper.tryBlockBreak(this.world, this, target, 1))
 	    {
@@ -187,12 +66,14 @@ public class SoulShot extends _ProjectileBase
 	}
     }
 
-    void doCapture(RayTraceResult movobj, int eggtype)
+    void doCapture(RayTraceResult target)
     {
 	// Make it dead and gimme the egg
-	movobj.entityHit.setDead();
+	target.entityHit.setDead();
 
-	ItemStack egg = new ItemStack(Items.SPAWN_EGG, 1, eggtype);
+	ResourceLocation entityID = ForgeRegistries.ENTITIES.getKey(EntityRegistry.getEntry(target.entityHit.getClass()));
+	ItemStack egg = new ItemStack(Items.SPAWN_EGG);
+	ItemMonsterPlacer.applyEntityIdToItemStack(egg, entityID);
 
 	if (this.shootingEntity == null) // Owner doesn't exist, so this has
 					 // likely been used by a mob. Dropping

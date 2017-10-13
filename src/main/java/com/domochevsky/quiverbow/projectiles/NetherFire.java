@@ -55,16 +55,16 @@ public class NetherFire extends _ProjectileBase
 	    // Glass breaking
 	    Helper.tryBlockBreak(this.world, this, target, 1); // Medium
 
-	    BlockPos upPos = target.getBlockPos().up();
-	    IBlockState upState = world.getBlockState(upPos);
+	    BlockPos pos = target.getBlockPos().offset(target.sideHit);
+	    IBlockState offsetState = world.getBlockState(pos);
 	    // Let's create fire here (if we're allowed to)
 	    if (this.world.getGameRules().getBoolean("doFireTick") && state != Blocks.FIRE)
 	    {
-		if (upState.getBlock().isAir(upState, world, upPos))
+		if (offsetState.getBlock().isAir(offsetState, world, pos))
 		{
 		    // the block above the block we hit is air, so let's set it
 		    // on fire!
-		    this.world.setBlockState(upPos, Blocks.FIRE.getDefaultState(), 3);
+		    this.world.setBlockState(pos, Blocks.FIRE.getDefaultState(), 3);
 		}
 	    }
 
@@ -99,9 +99,9 @@ public class NetherFire extends _ProjectileBase
 	    }
 
 	    // Did we hit grass? Burning it
-	    if (upState.getMaterial() == Material.PLANTS)
+	    if (offsetState.getMaterial() == Material.PLANTS)
 	    {
-		this.world.setBlockState(upPos, Blocks.FIRE.getDefaultState(), 3);
+		this.world.setBlockState(pos, Blocks.FIRE.getDefaultState(), 3);
 	    }
 	    if (state.getMaterial() == Material.PLANTS)
 	    {

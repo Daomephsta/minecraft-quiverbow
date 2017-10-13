@@ -5,6 +5,7 @@ import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.BoxOfFlintDust;
 import com.domochevsky.quiverbow.projectiles.FlintDust;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
+import com.domochevsky.quiverbow.weapons.base._WeaponBase;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;

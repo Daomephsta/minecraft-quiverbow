@@ -6,6 +6,7 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.HealthBeam;
 import com.domochevsky.quiverbow.recipes.Recipe_RayOfHope_Reload;
+import com.domochevsky.quiverbow.weapons.base._WeaponBase;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

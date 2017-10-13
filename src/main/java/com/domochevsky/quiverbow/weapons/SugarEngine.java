@@ -1,26 +1,82 @@
 package com.domochevsky.quiverbow.weapons;
 
+import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.Main;
+import com.domochevsky.quiverbow.ammo.GatlingAmmo;
+import com.domochevsky.quiverbow.ammo._AmmoBase;
+import com.domochevsky.quiverbow.items.ItemRegistry;
+import com.domochevsky.quiverbow.projectiles.SugarRod;
+import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
+import com.domochevsky.quiverbow.weapons.base.firingbehaviours.BurstFiringBehaviour;
+
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.*;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
-
-import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.ammo.GatlingAmmo;
-import com.domochevsky.quiverbow.projectiles.SugarRod;
-
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class SugarEngine extends _WeaponBase
+public class SugarEngine extends MagazineFedWeapon
 {
-    public SugarEngine()
+    private class GatlingFiringBehaviour extends BurstFiringBehaviour<SugarEngine>
     {
-	super("sugar_engine", 200);
+	public GatlingFiringBehaviour()
+	{
+	    super(SugarEngine.this, (world, weaponStack, entity, data) ->
+	    {
+		SugarEngine weapon = (SugarEngine) weaponStack.getItem();
+		float spreadHor = world.rand.nextFloat() * weapon.Spread - (weapon.Spread / 2); // Spread between -4 and 4 at ((0.0 to 1.0) * 16 - 8)
+		float spreadVert = world.rand.nextFloat() * weapon.Spread - (weapon.Spread / 2);
+
+		int dmg_range = weapon.DmgMax - weapon.DmgMin; // If max dmg is 20 and min is 10, then the range will be 10
+		int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0 and 10
+		dmg += weapon.DmgMin; // Adding the min dmg of 10 back on top, giving us the proper damage range (10-20)
+
+		SugarRod projectile = new SugarRod(world, entity, (float) weapon.Speed, spreadHor, spreadVert);
+		projectile.damage = dmg;
+		
+		return projectile;
+	    });
+	}
+
+	@Override
+	public void fire(ItemStack stack, World world, Entity entity)
+	{
+	    if (!stack.hasTagCompound())
+	    {
+		stack.setTagCompound(new NBTTagCompound());
+	    }
+	    // Weapon is ready, so we can spin up now. set spin-down immunity to x
+	    // ticks and spin up
+	    stack.getTagCompound().setInteger("spinDownImmunity", 20); // Can't spin down for 20 ticks. Also indicates our desire to spin up
+
+	    if (stack.getTagCompound().getInteger("spinning") < weapon.getSpinupTime())
+	    {
+		return;
+	    } // Not ready yet, so keep spinning up
+	    // else, we're ready
+
+	    weapon.setBurstFire(stack, 4); // Setting the rods left to fire to 4, then
+	    // going through that via onUpdate (Will be
+	    // constantly refreshed if we're still
+	    // spinning)
+	}
+
+	protected void doBurstFire(ItemStack weaponStack, World world, Entity entity)
+	{
+	    Helper.knockUserBack(entity, weapon.Kickback); // Kickback
+	    if(!world.isRemote) world.spawnEntity(projectileFactory.createProjectile(world, weaponStack, entity, null));
+	    doFireFX(world, entity);
+	}
+    }
+
+    public SugarEngine(_AmmoBase ammo)
+    {
+	super("sugar_engine", ammo, 200);
+	setFiringBehaviour(new GatlingFiringBehaviour());
     }
 
     public float Spread;
@@ -31,94 +87,23 @@ public class SugarEngine extends _WeaponBase
     } // Time in ticks until we can start firing
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
+    public void doFireFX(World world, Entity entity)
     {
-	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= stack.getMaxDamage())
-	{
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
-	} // Is empty
-
-	if (player.isSneaking()) // Dropping the magazine
-	{
-	    this.dropMagazine(world, stack, player);
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-	}
-
-	this.doSingleFire(stack, world, player); // Handing it over to the
-	// neutral firing function
-	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
+	entity.playSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.0F, 0.2F);
+	entity.playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.6F, 3.0F);
     }
 
     @Override
-    public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-    // side
+    protected void doUnloadFX(World world, Entity entity)
     {
-	if (!stack.hasTagCompound())
-	{
-	    stack.setTagCompound(new NBTTagCompound());
-	}
-	// Weapon is ready, so we can spin up now. set spin-down immunity to x
-	// ticks and spin up
-	stack.getTagCompound().setInteger("spinDownImmunity", 20); // Can't spin
-	// down for
-	// 20 ticks.
-	// Also
-	// indicates
-	// our desire
-	// to spin up
-
-	if (stack.getTagCompound().getInteger("spinning") < this.getSpinupTime())
-	{
-	    return;
-	} // Not ready yet, so keep spinning up
-	// else, we're ready
-
-	this.setBurstFire(stack, 4); // Setting the rods left to fire to 4, then
-	// going through that via onUpdate (Will be
-	// constantly refreshed if we're still
-	// spinning)
-    }
-
-    private void dropMagazine(World world, ItemStack stack, Entity entity)
-    {
-	if (!(entity instanceof EntityPlayer)) // For QuiverMobs/Arms Assistants
-	{
-	    this.setCooldown(stack, 80);
-	    return;
-	}
-
-	ItemStack clipStack = Helper.getAmmoStack(GatlingAmmo.class, stack.getItemDamage()); // Unloading
-	// all
-	// ammo
-	// into
-	// that
-	// clip
-
-	stack.setItemDamage(stack.getMaxDamage()); // Emptying out
-
-	// Creating the clip
-	EntityItem entityitem = new EntityItem(world, entity.posX, entity.posY + 1.0d, entity.posZ, clipStack);
-	entityitem.setDefaultPickupDelay();
-
-	// And dropping it
-	if (entity.captureDrops)
-	{
-	    entity.capturedDrops.add(entityitem);
-	}
-	else
-	{
-	    world.spawnEntity(entityitem);
-	}
-
-	// SFX
-	entity.playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F);
+	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F);
     }
 
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int animTick, boolean holdingItem) // Overhauled
     // default
     {
+	super.onUpdate(stack, world, entity, animTick, holdingItem);
 	if (world.isRemote)
 	{
 	    return;
@@ -173,73 +158,6 @@ public class SugarEngine extends _WeaponBase
 
 	    this.doSpinSFX(stack, world, entity); // Spin down SFX
 	}
-
-	if (this.getBurstFire(stack) > 0)
-	{
-	    this.setBurstFire(stack, this.getBurstFire(stack) - 1); // One done
-
-	    if (stack.getItemDamage() < stack.getMaxDamage() && holdingItem) // Can
-		// only
-		// do
-		// it
-		// if
-		// we're
-		// loaded
-		// and
-		// holding
-		// the
-		// weapon
-	    {
-		this.doBurstFire(stack, world, entity);
-
-		if (this.consumeAmmo(stack, entity, 1))
-		{
-		    this.dropMagazine(world, stack, entity);
-		} // You're empty
-	    }
-	    // else, either not loaded or not held
-	}
-    }
-
-    private void doBurstFire(ItemStack stack, World world, Entity entity)
-    {
-	Helper.knockUserBack(entity, this.Kickback); // Kickback
-	if(!world.isRemote)
-	{
-	    // Firing
-	    float spreadHor = world.rand.nextFloat() * this.Spread - (this.Spread / 2); // Spread
-	    // between
-	    // -4
-	    // and
-	    // 4
-	    // at
-	    // (
-	    // (0.0
-	    // to
-	    // 1.0)
-	    // *
-	    // 16
-	    // -
-	    // 8)
-	    float spreadVert = world.rand.nextFloat() * this.Spread - (this.Spread / 2);
-
-	    int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
-	    // is 10, then the range will
-	    // be 10
-	    int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
-	    // and 10
-	    dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
-	    // the proper damage range (10-20)
-
-	    SugarRod projectile = new SugarRod(world, entity, (float) this.Speed, spreadHor, spreadVert);
-	    projectile.damage = dmg;
-
-	    world.spawnEntity(projectile);
-	}
-
-	// SFX
-	entity.playSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.0F, 0.2F);
-	entity.playSound(SoundEvents.ENTITY_ITEM_BREAK, 0.6F, 3.0F);
     }
 
     private void doSpinSFX(ItemStack stack, World world, Entity player)
@@ -258,10 +176,10 @@ public class SugarEngine extends _WeaponBase
 	case 21:
 	case 23:
 	case 25:
-	    Helper.playSoundAtEntityPos(player, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.8F, 1.8F);
+	    world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.PLAYERS, 0.8F, 1.8F);
 	    break;
 	default:
-	    if (spin >= 27) Helper.playSoundAtEntityPos(player, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.8F, 1.8F);
+	    if (spin >= 27) world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.PLAYERS, 0.8F, 0.4F);
 	    break;
 	}
     }
@@ -289,18 +207,17 @@ public class SugarEngine extends _WeaponBase
     @Override
     public void addRecipes()
     {
-	/*
-	 * if (this.Enabled) { // One Sugar Gatling (empty)
-	 * GameRegistry.addRecipe(new ItemStack(this, 1 , stack.getMaxDamage()),
-	 * "b b", "b b", " m ", 'b',
-	 * Helper.getAmmoStack(Part_GatlingBarrel.class, 0), 'm',
-	 * Helper.getAmmoStack(Part_GatlingBody.class, 0) ); } else if
-	 * (Main.noCreative) { this.setCreativeTab(null); } // Not enabled and
-	 * not allowed to be in the creative menu
-	 * 
-	 * // Reloading with gatling ammo, setting its clip metadata as ours
-	 * (Need to be empty for that)
-	 * Helper.registerAmmoRecipe(GatlingAmmo.class, this);
-	 */
+	if (this.Enabled) 
+	{ 
+	    // One Sugar Gatling (empty)
+	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1),
+		    "b b", 
+		    "b b", 
+		    " m ", 
+		    'b',
+		    new ItemStack(ItemRegistry.PART_SUGAR_ENGINE_BARREL), 'm', new ItemStack(ItemRegistry.PART_SUGAR_ENGINE_BODY) ); 
+	} 
+	else if (Main.noCreative) this.setCreativeTab(null); // Not enabled and not allowed to be in the creative menu
+	Helper.registerAmmoRecipe(GatlingAmmo.class, this);
     }
 }

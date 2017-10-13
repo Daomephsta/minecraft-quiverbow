@@ -3,140 +3,67 @@ package com.domochevsky.quiverbow.weapons;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.NeedleMagazine;
+import com.domochevsky.quiverbow.ammo._AmmoBase;
 import com.domochevsky.quiverbow.projectiles.ProxyThorn;
+import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
+import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class ProximityNeedler extends _WeaponBase
+public class ProximityNeedler extends MagazineFedWeapon
 {
-    public ProximityNeedler()
-    {
-	super("proximity_thorn_thrower", 64);
-    }
-
     private int MaxTicks;
     private int ProxyCheck;
     private int ThornAmount;
     private double triggerDist;
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
+
+    public ProximityNeedler(_AmmoBase ammo)
     {
-	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= stack.getMaxDamage())
+	super("proximity_thorn_thrower", ammo, 64);
+	setFiringBehaviour(new SingleShotFiringBehaviour<ProximityNeedler>(this, 8, (world, weaponStack, entity, data) -> 
 	{
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
-	} // Is empty
+	    int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
+	    // is 10, then the range will
+	    // be 10
+	    int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 1
+	    // and 10 (inclusive both)
+	    dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
+	    // the proper damage range (10-20)
 
-	if (player.isSneaking()) // Dropping the magazine
-	{
-	    this.dropMagazine(world, stack, player);
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-	}
+	    ProxyThorn shot = new ProxyThorn(world, entity, (float) this.Speed);
+	    shot.damage = dmg;
+	    shot.ticksInGroundMax = this.MaxTicks;
+	    shot.triggerDistance = this.triggerDist; // Distance in blocks
 
-	if (this.getDamage(stack) >= stack.getMaxDamage() - 7)
-	{
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
-	} // Doesn't have enough ammo in it)
+	    shot.proxyDelay = this.ProxyCheck;
+	    shot.ThornAmount = this.ThornAmount;
 
-	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
-	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
+	    return shot;
+	}));
     }
 
     @Override
-    public void doSingleFire(ItemStack stack, World world, Entity entity)
+    public void doFireFX(World world, Entity entity)
     {
-	if (this.getCooldown(stack) > 0)
-	{
-	    return;
-	} // Hasn't cooled down yet
-
-	Helper.knockUserBack(entity, this.Kickback); // Kickback
-
-	// SFX
 	Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 0.3F);
-
-	this.setCooldown(stack, this.Cooldown); // Cooling down now
-
-	this.fireShot(world, entity); // Firing!
-
-	if (this.consumeAmmo(stack, entity, 8)) // We're done here
-	{
-	    this.dropMagazine(world, stack, entity);
-	}
     }
 
-    // Single firing action for something that fires multiple per trigger
-    private void fireShot(World world, Entity entity)
+    @Override
+    protected void doUnloadFX(World world, Entity entity)
     {
-	if(world.isRemote) return;
-	// Random Damage
-	int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
-						   // is 10, then the range will
-						   // be 10
-	int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 1
-						     // and 10 (inclusive both)
-	dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
-			    // the proper damage range (10-20)
-
-	ProxyThorn shot = new ProxyThorn(world, entity, (float) this.Speed);
-	shot.damage = dmg;
-	shot.ticksInGroundMax = this.MaxTicks;
-	shot.triggerDistance = this.triggerDist; // Distance in blocks
-
-	shot.proxyDelay = this.ProxyCheck;
-	shot.ThornAmount = this.ThornAmount;
-
-	world.spawnEntity(shot); // Firing
-    }
-
-    private void dropMagazine(World world, ItemStack stack, Entity entity)
-    {
-	if (!(entity instanceof EntityPlayer)) // For QuiverMobs/Arms Assistants
-	{
-	    this.setCooldown(stack, 60);
-	    return;
-	}
-
-	ItemStack clipStack = Helper.getAmmoStack(NeedleMagazine.class, stack.getItemDamage()); // Unloading
-												// all
-												// ammo
-												// into
-												// that
-												// clip
-
-	stack.setItemDamage(stack.getMaxDamage()); // Emptying out
-
-	// Creating the clip
-	EntityItem entityitem = new EntityItem(world, entity.posX, entity.posY + 1.0d, entity.posZ, clipStack);
-	entityitem.setDefaultPickupDelay();
-
-	// And dropping it
-	if (entity.captureDrops)
-	{
-	    entity.capturedDrops.add(entityitem);
-	}
-	else
-	{
-	    world.spawnEntity(entityitem);
-	}
-
-	// SFX
 	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.3F);
     }
 
     @Override
-    void doCooldownSFX(World world, Entity entity)
+    protected void doCooldownSFX(World world, Entity entity)
     {
 	Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_GLASS_BREAK, 0.3F, 0.3F);
     }

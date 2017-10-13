@@ -4,7 +4,7 @@ import java.util.Random;
 
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ArmsAssistant.Entity_AA;
-import com.domochevsky.quiverbow.weapons._WeaponBase;
+import com.domochevsky.quiverbow.weapons.base._WeaponBase;
 
 import net.minecraft.item.ItemStack;
 

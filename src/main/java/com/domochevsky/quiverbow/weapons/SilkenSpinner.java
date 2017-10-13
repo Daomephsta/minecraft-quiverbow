@@ -4,6 +4,9 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.WebShot;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
+import com.domochevsky.quiverbow.weapons.base.ProjectileWeapon;
+import com.domochevsky.quiverbow.weapons.base._WeaponBase;
+import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -22,29 +25,13 @@ public class SilkenSpinner extends ProjectileWeapon
     {
 	super("silken_spinner", 8);
 	this.setCreativeTab(CreativeTabs.TOOLS); // This is a tool
+	setFiringBehaviour(new SingleShotFiringBehaviour<SilkenSpinner>(this, (world, weaponStack, entity, data) -> new WebShot(world, entity, (float) ((_WeaponBase)weaponStack.getItem()).Speed)));
     }
     
     @Override
-    public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-									  // side
+    public void doFireFX(World world, Entity entity)
     {
-	if (this.getCooldown(stack) > 0)
-	{
-	    return;
-	} // Hasn't cooled down yet
-
-	// SFX
 	entity.playSound(SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 2.0F);
-
-	// Firing
-	if(!world.isRemote)
-	{
-	    WebShot projectile = new WebShot(world, entity, (float) this.Speed);
-	    world.spawnEntity(projectile); // Firing!
-	}
-
-	this.consumeAmmo(stack, entity, 1);
-	this.setCooldown(stack, this.Cooldown);
     }
 
     @Override

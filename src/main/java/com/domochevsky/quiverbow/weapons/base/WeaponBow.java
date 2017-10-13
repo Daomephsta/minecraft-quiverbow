@@ -1,8 +1,9 @@
-package com.domochevsky.quiverbow.weapons;
+package com.domochevsky.quiverbow.weapons.base;
 
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.IItemPropertyGetter;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -32,5 +33,17 @@ public class WeaponBow extends _WeaponBase
                 return entityIn != null && entityIn.isHandActive() && entityIn.getActiveItemStack() == stack ? 1.0F : 0.0F;
             }
         });
+    }
+
+    @Override
+    public int getMaxItemUseDuration(ItemStack par1ItemStack)
+    {
+	return 72000;
+    }
+
+    @Override
+    public EnumAction getItemUseAction(ItemStack par1ItemStack)
+    {
+	return EnumAction.BOW;
     }
 }

@@ -3,133 +3,62 @@ package com.domochevsky.quiverbow.weapons;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.EnderQuartzClip;
+import com.domochevsky.quiverbow.ammo._AmmoBase;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.EnderAno;
+import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
+import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class Endernymous extends _WeaponBase
+public class Endernymous extends MagazineFedWeapon
 {
-    public Endernymous()
-    {
-	super("hidden_ender_pistol", 8);
-    }
-
     private int MaxTicks;
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
+    public Endernymous(_AmmoBase ammo)
     {
-	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= stack.getMaxDamage())
+	super("hidden_ender_pistol", ammo, 8);
+	setFiringBehaviour(new SingleShotFiringBehaviour<Endernymous>(this, (world, weaponStack, entity, data) ->
 	{
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
-	} // Is empty
+	    // Random Damage
+	    int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
+	    // is 10, then the range will
+	    // be 10
+	    int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 1
+	    // and 10 (inclusive both)
+	    dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
+	    // the proper damage range (10-20)
 
-	if (player.isSneaking()) // Dropping the magazine
-	{
-	    this.dropMagazine(world, stack, player);
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-	}
-
-	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
-	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
+	    EnderAno shot = new EnderAno(world, entity, (float) this.Speed);
+	    shot.damage = dmg;
+	    shot.ticksInAirMax = this.MaxTicks;
+	    return shot;
+	}));
     }
 
     @Override
-    public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-									  // side,
-									  // mob
-									  // usable
+    public void doFireFX(World world, Entity entity)
     {
-	if (this.getCooldown(stack) > 0)
-	{
-	    return;
-	} // Hasn't cooled down yet
-
-	Helper.knockUserBack(entity, this.Kickback); // Kickback
-
-	// SFX
 	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_FIREWORK_LARGE_BLAST, 1.4F, 0.5F);
 	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.PORTAL, (byte) 4);
-
-	this.setCooldown(stack, this.Cooldown); // Cooling down now
-
-	this.fireShot(world, entity); // Firing!
-
-	if (this.consumeAmmo(stack, entity, 1)) // We're done here
-	{
-	    this.dropMagazine(world, stack, entity);
-	}
     }
 
-    // Single firing action for something that fires multiple per trigger
-    private void fireShot(World world, Entity entity)
+    @Override
+    protected void doUnloadFX(World world, Entity entity)
     {
-	if(world.isRemote) return;
-	// Random Damage
-	int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
-						   // is 10, then the range will
-						   // be 10
-	int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 1
-						     // and 10 (inclusive both)
-	dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
-			    // the proper damage range (10-20)
-
-	EnderAno shot = new EnderAno(world, entity, (float) this.Speed);
-	shot.damage = dmg;
-	shot.ticksInAirMax = this.MaxTicks;
-
-	world.spawnEntity(shot); // Firing
-    }
-
-    private void dropMagazine(World world, ItemStack stack, Entity entity)
-    {
-	if (!(entity instanceof EntityPlayer)) // For QuiverMobs/Arms Assistants
-	{
-	    this.setCooldown(stack, 60);
-	    return;
-	}
-
-	ItemStack clipStack = Helper.getAmmoStack(EnderQuartzClip.class, stack.getItemDamage()); // Unloading
-												 // all
-												 // ammo
-												 // into
-												 // that
-												 // clip
-
-	stack.setItemDamage(stack.getMaxDamage()); // Emptying out
-
-	// Creating the clip
-	EntityItem entityitem = new EntityItem(world, entity.posX, entity.posY + 1.0d, entity.posZ, clipStack);
-	entityitem.setDefaultPickupDelay();
-
-	// And dropping it
-	if (entity.captureDrops)
-	{
-	    entity.capturedDrops.add(entityitem);
-	}
-	else
-	{
-	    world.spawnEntity(entityitem);
-	}
-
-	// SFX
 	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.3F);
     }
 
     @Override
-    void doCooldownSFX(World world, Entity entity)
+    protected void doCooldownSFX(World world, Entity entity)
     {
 	Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_GLASS_BREAK, 0.3F, 0.3F);
     }

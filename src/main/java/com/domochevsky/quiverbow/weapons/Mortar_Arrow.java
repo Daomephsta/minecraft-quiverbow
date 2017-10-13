@@ -6,50 +6,26 @@ import com.domochevsky.quiverbow.ammo.ArrowBundle;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.Sabot_Arrow;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
+import com.domochevsky.quiverbow.weapons.base.ProjectileWeapon;
+import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class Mortar_Arrow extends _WeaponBase
+public class Mortar_Arrow extends ProjectileWeapon
 {
     public Mortar_Arrow()
     {
 	super("arrow_mortar", 8);
-    }
-
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
-    {
-	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= stack.getMaxDamage())
-	{
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
-	} // Is empty
-
-	this.doSingleFire(stack, world, player); // Handing it over to the
-	// neutral firing function
-	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-    }
-
-    @Override
-    public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-    // side
-    {
-	// Good to go (already verified)
-	if (this.getCooldown(stack) > 0)
-	{
-	    return;
-	} // Hasn't cooled down yet
-
-	Helper.knockUserBack(entity, this.Kickback); // Kickback
-
-	if(!world.isRemote)
+	setFiringBehaviour(new SingleShotFiringBehaviour<Mortar_Arrow>(this, (world, weaponStack, entity, data) ->
 	{
 	    // Random Damage
 	    int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
@@ -63,21 +39,20 @@ public class Mortar_Arrow extends _WeaponBase
 	    // Firing
 	    Sabot_Arrow projectile = new Sabot_Arrow(world, entity, (float) this.Speed);
 	    projectile.damage = dmg;
-
-	    world.spawnEntity(projectile); // Firing!
-	}
-
-	// SFX
+	    
+	    return projectile;
+	}));
+    }
+    
+    @Override
+    public void doFireFX(World world, Entity entity)
+    {
 	Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 2.0F);
-
 	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_LARGE, (byte) 1);
-
-	this.consumeAmmo(stack, entity, 1);
-	this.setCooldown(stack, this.Cooldown);
     }
 
     @Override
-    void doCooldownSFX(World world, Entity entity) // Server side
+    protected void doCooldownSFX(World world, Entity entity) // Server side
     {
 	Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.6F, 2.0F);
     }

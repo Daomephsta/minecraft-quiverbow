@@ -5,7 +5,9 @@ import com.domochevsky.quiverbow.util.InventoryHelper;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ObsidianMagazine extends AmmoMagazine
@@ -15,8 +17,8 @@ public class ObsidianMagazine extends AmmoMagazine
 	super();
 	this.setMaxDamage(16);
 	this.setCreativeTab(CreativeTabs.COMBAT); // On the combat tab by
-						  // default, since this is
-						  // amunition
+	// default, since this is
+	// amunition
     }
 
     @Override

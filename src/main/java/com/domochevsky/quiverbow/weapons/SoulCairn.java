@@ -1,72 +1,46 @@
 package com.domochevsky.quiverbow.weapons;
 
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
-import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.SoulShot;
+import com.domochevsky.quiverbow.weapons.base.ProjectileWeapon;
+import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
+import net.minecraft.world.World;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class SoulCairn extends _WeaponBase
+public class SoulCairn extends ProjectileWeapon
 {
     public SoulCairn()
     {
 	super("soul_cairn", 1);
 	this.setCreativeTab(CreativeTabs.TOOLS); // Tool, so on the tool tab
+	this.Cooldown = 20;
+	setFiringBehaviour(new SingleShotFiringBehaviour<SoulCairn>(this, (world, weaponStack, entity, data) -> new SoulShot(world, entity, (float) this.Speed))
+	{
+	    @Override
+	    public void fire(ItemStack stack, World world, Entity entity) 
+	    { 
+		entity.attackEntityFrom(DamageSource.causeThrownDamage(entity, entity), 2); // A sacrifice in blood
+		super.fire(stack, world, entity);
+	    }
+	});
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
+    public void doFireFX(World world, Entity entity)
     {
-	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= stack.getMaxDamage())
-	{
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
-	} // Is empty
-
-	this.doSingleFire(stack, world, player); // Handing it over to the
-	// neutral firing function
-	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-    }
-
-    @Override
-    public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-    // side
-    {
-	if (this.getCooldown(stack) > 0)
-	{
-	    return;
-	} // Hasn't cooled down yet
-
-	Helper.knockUserBack(entity, this.Kickback); // Kickback
-
-	// Self Harm
-	entity.attackEntityFrom(DamageSource.causeThrownDamage(entity, entity), 2); // A
-	// sacrifice
-	// in
-	// blood
-	if(!world.isRemote)
-	{
-	    // Projectile
-	    SoulShot projectile = new SoulShot(world, entity, (float) this.Speed);
-	    world.spawnEntity(projectile); // Firing!
-	}
-
-	// SFX
 	entity.playSound(SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 2.0F);
 	entity.playSound(SoundEvents.BLOCK_NOTE_BASS, 1.0F, 0.4F);
-
-	this.consumeAmmo(stack, entity, 1);
-	this.setCooldown(stack, 20);
     }
 
     @Override

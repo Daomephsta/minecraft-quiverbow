@@ -5,8 +5,15 @@ import java.util.ArrayList;
 import com.domochevsky.quiverbow.ammo._AmmoBase;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles._ProjectileBase;
-import com.domochevsky.quiverbow.recipes.*;
-import com.domochevsky.quiverbow.weapons._WeaponBase;
+import com.domochevsky.quiverbow.recipes.RecipeLoadMagazine;
+import com.domochevsky.quiverbow.recipes.Recipe_AA_Armor;
+import com.domochevsky.quiverbow.recipes.Recipe_AA_Communication;
+import com.domochevsky.quiverbow.recipes.Recipe_AA_Mobility;
+import com.domochevsky.quiverbow.recipes.Recipe_AA_Plating;
+import com.domochevsky.quiverbow.recipes.Recipe_AA_Riding;
+import com.domochevsky.quiverbow.recipes.Recipe_AA_Storage;
+import com.domochevsky.quiverbow.recipes.Recipe_AA_Weapon;
+import com.domochevsky.quiverbow.weapons.base._WeaponBase;
 
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -19,16 +26,19 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemArrow;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraft.item.ItemStack;
 
 public class Helper
 {

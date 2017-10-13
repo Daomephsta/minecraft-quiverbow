@@ -13,6 +13,8 @@ import net.minecraftforge.common.config.Configuration;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.SunLight;
+import com.domochevsky.quiverbow.weapons.base._WeaponBase;
+
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -108,7 +110,7 @@ public class Sunray extends _WeaponBase
     }
 
     @Override
-    void doCooldownSFX(World world, Entity entity) // Server side
+    protected void doCooldownSFX(World world, Entity entity) // Server side
     {
 	entity.playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 1.0F, 0.5F);
 	entity.playSound(SoundEvents.ENTITY_CAT_HISS, 0.6F, 2.0F);

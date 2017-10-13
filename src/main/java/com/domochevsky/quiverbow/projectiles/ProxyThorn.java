@@ -49,30 +49,40 @@ public class ProxyThorn extends _ProjectileBase
 
 	    this.goBoom();
 	    this.setDead(); // We've hit something, so begone with the
-			    // projectile
+	    // projectile
 	}
 
 	else // Hit the terrain
 	{
 	    if (Helper.tryBlockBreak(this.world, this, movPos, 1)) // Going
-								   // straight
-								   // through a
-								   // thing
+		// straight
+		// through a
+		// thing
 	    {
 		// this.goBoom();
 	    }
 	    else // Didn't manage to break that block, so we're stuck now for a
-		 // short while
+		// short while
 	    {
 		IBlockState stuckState = this.world.getBlockState(movPos.getBlockPos());
 		this.stuckBlock = stuckState.getBlock();
+		//Only make an impact sound if the block this is stuck in has changed
+		if(stuckBlockX != movPos.getBlockPos().getX() || stuckBlockY != movPos.getBlockPos().getY() || stuckBlockZ != movPos.getBlockPos().getZ())
+		{
+		    this.playSound(SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON, 1.0F, 0.3F);
+		    NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+			    (byte) 4);
+		}
+		stuckBlockX = movPos.getBlockPos().getX();
+		stuckBlockY = movPos.getBlockPos().getY();
+		stuckBlockZ = movPos.getBlockPos().getZ();
 
 		this.motionX = movPos.hitVec.xCoord - this.posX;
 		this.motionY = movPos.hitVec.yCoord - this.posY;
 		this.motionZ = movPos.hitVec.zCoord - this.posZ;
 
 		this.hitSide = movPos.sideHit; // Keeping track of the side we
-					       // hit, for when we go boom
+		// hit, for when we go boom
 
 		float distance = MathHelper
 			.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
@@ -95,9 +105,6 @@ public class ProxyThorn extends _ProjectileBase
 	}
 
 	// SFX
-	this.playSound(SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON, 1.0F, 0.3F);
-	NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
-		(byte) 4);
 
 	// this.setDead(); // We've hit something, so begone with the projectile
     }
@@ -110,7 +117,7 @@ public class ProxyThorn extends _ProjectileBase
 
     @Override
     public void doInGroundSFX() // Server side // Checking proximity for living
-				// entities, to see if I need to explode
+    // entities, to see if I need to explode
     {
 	if (this.ticksInGround == this.ticksInGroundMax - 1)
 	{
@@ -141,8 +148,8 @@ public class ProxyThorn extends _ProjectileBase
 	    potentialEntity = (Entity) list.get(counter);
 
 	    if (potentialEntity instanceof EntityPlayer) // Not triggering for
-							 // creative mode
-							 // players
+		// creative mode
+		// players
 	    {
 		EntityPlayer player = (EntityPlayer) potentialEntity;
 		if (player.capabilities.isCreativeMode)
@@ -152,15 +159,15 @@ public class ProxyThorn extends _ProjectileBase
 	    }
 
 	    if (!skip && Helper.canEntityBeSeen(this.world, this, potentialEntity)) // Only
-										    // if
-										    // we
-										    // have
-										    // a
-										    // line
-										    // of
-										    // sight
-										    // to
-										    // them
+		// if
+		// we
+		// have
+		// a
+		// line
+		// of
+		// sight
+		// to
+		// them
 	    {
 		this.goBoom(); // We can see them! Boom time!
 		return;
@@ -174,29 +181,30 @@ public class ProxyThorn extends _ProjectileBase
     // Spraying a bunch of thorns in random directions
     private void goBoom()
     {
-	// Moving out of the block we're stuck in, to get a clear shot
-	// Sides: Bottom = 0, Top = 1, East = 2, West = 3, North = 4, South = 5.
-
-	switch (this.hitSide)
+	if(this.hitSide != null)
 	{
-	case DOWN:
-	    this.posY -= 0.5;
-	    break;
-	case UP:
-	    this.posY += 0.5;
-	    break;
-	case EAST:
-	    this.posX += 0.5;
-	    break;
-	case WEST:
-	    this.posX -= 0.5;
-	    break;
-	case NORTH:
-	    this.posZ += 0.5;
-	    break;
-	case SOUTH:
-	    this.posZ -= 0.5;
-	    break;
+	    //Moving out of the block we're stuck in, to get a clear shot
+	    switch (this.hitSide)
+	    {
+	    case DOWN:
+		this.posY -= 0.5;
+		break;
+	    case UP:
+		this.posY += 0.5;
+		break;
+	    case EAST:
+		this.posX += 0.5;
+		break;
+	    case WEST:
+		this.posX -= 0.5;
+		break;
+	    case NORTH:
+		this.posZ += 0.5;
+		break;
+	    case SOUTH:
+		this.posZ -= 0.5;
+		break;
+	    }
 	}
 
 	int amount = this.ThornAmount;
@@ -220,22 +228,22 @@ public class ProxyThorn extends _ProjectileBase
     {
 	// Random dir
 	int thornYaw = this.world.rand.nextInt(360) + 1; // Range will be
-							 // between 1 and 360
+	// between 1 and 360
 	thornYaw -= 180; // Range between -180 and 180
 
 	int thornPitch = this.world.rand.nextInt(360) + 1; // Range will be
-							   // between 1 and 360
+	// between 1 and 360
 	thornPitch -= 180; // Range between -180 and 180
 
 	int dmg = this.world.rand.nextInt(2) + 1; // Range will be between 1 and
-						  // 2
+	// 2
 
 	// Firing
 	Thorn projectile = new Thorn(this.world, this, (float) this.thornSpeed, (float) thornYaw, (float) thornPitch);
 	projectile.damage = dmg;
 
 	projectile.shootingEntity = this.shootingEntity; // Keeping that chain
-							 // alive
+	// alive
 
 	this.world.spawnEntity(projectile);
     }

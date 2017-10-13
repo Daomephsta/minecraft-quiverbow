@@ -1,127 +1,56 @@
 package com.domochevsky.quiverbow.weapons;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.*;
-import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.LargeRedstoneMagazine;
+import com.domochevsky.quiverbow.ammo._AmmoBase;
 import com.domochevsky.quiverbow.projectiles.RedSpray;
+import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
+import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SalvoFiringBehaviour;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.world.World;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class RedSprayer extends _WeaponBase
+public class RedSprayer extends MagazineFedWeapon
 {
-    public RedSprayer()
-    {
-	super("redstone_sprayer", 200);
-    }
-
     private int Wither_Strength;
     private int Wither_Duration;
     private int Blindness_Duration;
-
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
+    
+    public RedSprayer(_AmmoBase ammo)
     {
-	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= stack.getMaxDamage())
+	super("redstone_sprayer", ammo, 200);
+	setFiringBehaviour(new SalvoFiringBehaviour<RedSprayer>(this, 5, (world, waeponStack, entity, data) ->
 	{
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
-	} // Is empty
+	    // Spread
+	    float spreadHor = world.rand.nextFloat() * 20 - 10; // Spread between
+	    // -10 and 10
+	    float spreadVert = world.rand.nextFloat() * 20 - 10;
 
-	if (player.isSneaking()) // Dropping the magazine
-	{
-	    this.dropMagazine(world, stack, player);
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-	}
-
-	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
-	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
+	    RedSpray shot = new RedSpray(entity.world, entity, (float) this.Speed, spreadHor, spreadVert,
+		    new PotionEffect(MobEffects.WITHER, this.Wither_Duration, this.Wither_Strength),
+		    new PotionEffect(MobEffects.BLINDNESS, this.Blindness_Duration, 1));
+	    return shot;
+	}));
     }
-
+    
     @Override
-    public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-									  // side
+    public void doFireFX(World world, Entity entity)
     {
-	this.setCooldown(stack, this.Cooldown);
-
-	// SFX
 	Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.7F, 1.5F);
-
-	int counter = 0;
-
-	while (counter < 5)
-	{
-	    this.fireSingle(world, entity);
-
-	    if (this.consumeAmmo(stack, entity, 1)) // We're done here
-	    {
-		this.dropMagazine(world, stack, entity);
-		return;
-	    }
-	    // else, still has ammo left. Continue.
-
-	    counter += 1;
-	}
     }
 
-    private void fireSingle(World world, Entity entity)
+    @Override
+    protected void doUnloadFX(World world, Entity entity)
     {
-	if(world.isRemote) return;
-	// Spread
-	float spreadHor = world.rand.nextFloat() * 20 - 10; // Spread between
-							    // -10 and 10
-	float spreadVert = world.rand.nextFloat() * 20 - 10;
-
-	RedSpray shot = new RedSpray(entity.world, entity, (float) this.Speed, spreadHor, spreadVert,
-		new PotionEffect(MobEffects.WITHER, this.Wither_Duration, this.Wither_Strength),
-		new PotionEffect(MobEffects.BLINDNESS, this.Blindness_Duration, 1));
-
-	entity.world.spawnEntity(shot);
-    }
-
-    private void dropMagazine(World world, ItemStack stack, Entity entity)
-    {
-	if (!(entity instanceof EntityPlayer)) // For QuiverMobs/Arms Assistants
-	{
-	    this.setCooldown(stack, 40);
-	    return;
-	}
-
-	ItemStack clipStack = Helper.getAmmoStack(LargeRedstoneMagazine.class, stack.getItemDamage()); // Unloading
-												       // all
-												       // ammo
-												       // into
-												       // that
-												       // clip
-
-	stack.setItemDamage(stack.getMaxDamage()); // Emptying out
-
-	// Creating the clip
-	EntityItem entityitem = new EntityItem(world, entity.posX, entity.posY + 1.0d, entity.posZ, clipStack);
-	entityitem.setDefaultPickupDelay();
-
-	// And dropping it
-	if (entity.captureDrops)
-	{
-	    entity.capturedDrops.add(entityitem);
-	}
-	else
-	{
-	    world.spawnEntity(entityitem);
-	}
-
-	// SFX
 	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F);
     }
 

@@ -1,74 +1,21 @@
 package com.domochevsky.quiverbow.weapons;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
-import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.LargeRocket;
-import com.domochevsky.quiverbow.projectiles.BigRocket;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class RPG_Imp extends _WeaponBase
+public class RPG_Imp extends RPG
 {
     public RPG_Imp()
     {
 	super("rocket_launcher_imp", 1);
-    }
-
-    public double ExplosionSize;
-    private boolean dmgTerrain; // Can our projectile damage terrain?
-
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
-    {
-	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= stack.getMaxDamage())
-	{
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
-	} // Is empty
-
-	this.doSingleFire(stack, world, player); // Handing it over to the
-	// neutral firing function
-	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-    }
-
-    @Override
-    public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-    // side
-    {
-	if (this.getCooldown(stack) > 0)
-	{
-	    return;
-	} // Hasn't cooled down yet
-
-	Helper.knockUserBack(entity, this.Kickback); // Kickback
-
-	if(!world.isRemote)
-	{
-	    // Firing
-	    BigRocket rocket = new BigRocket(world, entity, (float) this.Speed); // Projectile
-	    // Speed.
-	    // Inaccuracy
-	    // Hor/Vert
-	    rocket.explosionSize = this.ExplosionSize;
-	    rocket.dmgTerrain = this.dmgTerrain;
-
-	    world.spawnEntity(rocket); // shoom.
-	}
-
-	// SFX
-	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_FIREWORK_LAUNCH, 2.0F, 0.6F);
-
-	this.consumeAmmo(stack, entity, 1);
-	this.setCooldown(stack, 60);
     }
 
     @Override
@@ -83,7 +30,8 @@ public class RPG_Imp extends _WeaponBase
 		.getDouble();
 	this.dmgTerrain = config.get(this.name, "Can I damage terrain, when in player hands? (default true)", true)
 		.getBoolean(true);
-
+	this.travelTime = config
+		.get(this.name, "How many ticks can my rocket fly before exploding? (default 20 ticks)", 20).getInt();
 	this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
     }
 

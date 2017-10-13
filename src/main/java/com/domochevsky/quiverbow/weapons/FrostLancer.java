@@ -6,16 +6,22 @@ import java.util.List;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.ColdIronClip;
+import com.domochevsky.quiverbow.ammo._AmmoBase;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.ColdIron;
 import com.domochevsky.quiverbow.util.Newliner;
+import com.domochevsky.quiverbow.weapons.base.ProjectileWeapon;
+import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.*;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -23,11 +29,32 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class FrostLancer extends _WeaponBase
+public class FrostLancer extends ProjectileWeapon
 {
-    public FrostLancer()
+    public FrostLancer(_AmmoBase ammo)
     {
 	super("frost_lancer", 4);
+	setFiringBehaviour(new SingleShotFiringBehaviour<FrostLancer>(this, (world, weaponStack, entity, data) -> 
+	{
+	    FrostLancer weapon = (FrostLancer) weaponStack.getItem();
+	    ColdIron projectile = new ColdIron(world, entity, (float) weapon.Speed,
+		    new PotionEffect(MobEffects.SLOWNESS, weapon.Slowness_Dur, weapon.Slowness_Str),
+		    new PotionEffect(MobEffects.NAUSEA, weapon.Nausea_Dur, weapon.Nausea_Str));
+
+	    // Random Damage
+	    int dmg_range = weapon.DmgMax - weapon.DmgMin; // If max dmg is 20 and min
+	    // is 10, then the range will
+	    // be 10
+	    int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
+	    // and 10
+	    dmg += weapon.DmgMin; // Adding the min dmg of 10 back on top, giving us
+	    // the proper damage range (10-20)
+
+	    projectile.damage = dmg;
+
+	    projectile.knockbackStrength = weapon.Knockback;
+	    return projectile;
+	}));
     }
 
     public int ZoomMax;
@@ -35,90 +62,21 @@ public class FrostLancer extends _WeaponBase
     public int Slowness_Str;
     public int Slowness_Dur;
 
-    private int Nausea_Str;
-    private int Nausea_Dur;
+    public int Nausea_Str;
+    public int Nausea_Dur;
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
-    {
-	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= stack.getMaxDamage())
-	{
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
-	} // Is empty
-
-	this.doSingleFire(stack, world, player); // Handing it over to the
-	// neutral firing function
-	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-    }
-
-    @Override
-    public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-    // side
-    {
-	if (this.getCooldown(stack) > 0)
-	{
-	    return;
-	} // Hasn't cooled down yet
-
-	Helper.knockUserBack(entity, this.Kickback); // Kickback
-
-	// SFX
-	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_GENERIC_EXPLODE, 0.8F, 1.5F);
-	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
-		(byte) 1); // smoke
-
-	if(!world.isRemote)
-	{
-	    // Firing
-	    ColdIron shot = new ColdIron(world, entity, (float) this.Speed,
-		    new PotionEffect(MobEffects.SLOWNESS, this.Slowness_Dur, this.Slowness_Str),
-		    new PotionEffect(MobEffects.NAUSEA, this.Nausea_Dur, this.Nausea_Str));
-
-	    // Random Damage
-	    int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
-	    // is 10, then the range will
-	    // be 10
-	    int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
-	    // and 10
-	    dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
-	    // the proper damage range (10-20)
-
-	    shot.damage = dmg;
-
-	    shot.knockbackStrength = this.Knockback;
-
-	    world.spawnEntity(shot); // Firing!
-	}
-
-	this.consumeAmmo(stack, entity, 1);
-	this.setCooldown(stack, this.Cooldown);
-    }
-
-    @Override
-    public void onUpdate(ItemStack stack, World world, Entity entity, int animTick, boolean holdingItem) // Overhauled
-    {
-	if (world.isRemote) // Not doing this on client side
-	{
-	    // ZoomInterface.checkClientZoom(world, entity, stack,
-	    // this.ZoomMax); // client zoom
-	    return;
-	}
-
-	if (this.getCooldown(stack) > 0)
-	{
-	    this.setCooldown(stack, this.getCooldown(stack) - 1);
-	} // Cooling down
-	if (this.getCooldown(stack) == 1)
-	{
-	    this.doCooldownSFX(world, entity);
-	} // One tick before cooldown is done with, so SFX now
-    }
-
-    @Override
-    void doCooldownSFX(World world, Entity entity)
+    protected void doCooldownSFX(World world, Entity entity)
     {
 	Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.7F, 0.2F);
+	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+		(byte) 1); // smoke
+    }
+
+    @Override
+    public void doFireFX(World world, Entity entity)
+    {
+	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_GENERIC_EXPLODE, 0.8F, 1.5F);
 	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
 		(byte) 1); // smoke
     }

@@ -4,58 +4,30 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.FenGoop;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
+import com.domochevsky.quiverbow.weapons.base.ProjectileWeapon;
+import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class FenFire extends _WeaponBase
+public class FenFire extends ProjectileWeapon
 {
+    private int FireDur;
+    private int LightTick;
+    
     public FenFire()
     {
 	super("fen_fire", 32);
 	this.setCreativeTab(CreativeTabs.TOOLS); // Tool, so on the tool tab
-    }
-
-    private int FireDur;
-    private int LightTick;
-
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
-    {
-	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= stack.getMaxDamage())
+	setFiringBehaviour(new SingleShotFiringBehaviour<FenFire>(this, (world, weaponStack, entity, data) -> 
 	{
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
-	} // Is empty
-
-	this.doSingleFire(stack, world, player); // Handing it over to the
-	// neutral firing function
-	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-    }
-
-    @Override
-    public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-    // side
-    {
-	if (this.getCooldown(stack) > 0)
-	{
-	    return;
-	} // Hasn't cooled down yet
-
-	// SFX
-	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ARROW_SHOOT, 0.7F, 0.3F);
-
-	if(!world.isRemote)
-	{
-	    // Firing
 	    FenGoop projectile = new FenGoop(world, entity, (float) this.Speed);
 	    projectile.fireDuration = this.FireDur;
 
@@ -63,16 +35,19 @@ public class FenFire extends _WeaponBase
 	    {
 		projectile.lightTick = this.LightTick;
 	    } // Scheduled to turn off again
-
-	    world.spawnEntity(projectile); // Firing!
-	}
-
-	this.consumeAmmo(stack, entity, 1);
-	this.setCooldown(stack, this.Cooldown);
+	    
+	    return projectile;
+	}));
+    }
+    
+    @Override
+    public void doFireFX(World world, Entity entity)
+    {
+	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ARROW_SHOOT, 0.7F, 0.3F);
     }
 
     @Override
-    void doCooldownSFX(World world, Entity entity)
+    protected void doCooldownSFX(World world, Entity entity)
     {
 	Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.8F, 2.0F);
     }

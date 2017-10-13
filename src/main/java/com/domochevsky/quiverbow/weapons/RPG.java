@@ -1,76 +1,51 @@
 package com.domochevsky.quiverbow.weapons;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
-import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.BigRocket;
+import com.domochevsky.quiverbow.weapons.base.ProjectileWeapon;
+import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class RPG extends _WeaponBase
+public class RPG extends ProjectileWeapon
 {
+    public double ExplosionSize;
+    protected int travelTime; // How many ticks the rocket can travel before exploding
+    protected boolean dmgTerrain; // Can our projectile damage terrain?
+    
     public RPG()
     {
-	super("rocket_launcher", 1);
+	this("rocket_launcher", 1);
     }
-
-    public double ExplosionSize;
-    private int travelTime; // How many ticks the rocket can travel before
-    // exploding
-    private boolean dmgTerrain; // Can our projectile damage terrain?
-
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
+    
+    protected RPG(String name, int maxAmmo)
     {
-	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= stack.getMaxDamage())
+	super(name, maxAmmo);
+	this.Cooldown = 60;
+	setFiringBehaviour(new SingleShotFiringBehaviour<ProjectileWeapon>(this, (world, weaponStack, entity, data) ->
 	{
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
-	} // Is empty
-
-	this.doSingleFire(stack, world, player); // Handing it over to the
-	// neutral firing function
-	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-    }
-
-    @Override
-    public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-    // side
-    {
-	if (this.getCooldown(stack) > 0)
-	{
-	    return;
-	} // Hasn't cooled down yet
-
-	Helper.knockUserBack(entity, this.Kickback); // Kickback
-
-	if(!world.isRemote)
-	{
-	    // Firing
-	    BigRocket rocket = new BigRocket(world, entity, (float) this.Speed); // Projectile
-	    // Speed.
-	    // Inaccuracy
-	    // Hor/Vert
+	    BigRocket rocket = new BigRocket(world, entity, (float) this.Speed);
 	    rocket.explosionSize = this.ExplosionSize;
 	    rocket.travelTicksMax = this.travelTime;
 	    rocket.dmgTerrain = this.dmgTerrain;
-
-	    world.spawnEntity(rocket); // shoom.
-	}
-
-	// SFX
+	    
+	    return rocket;
+	}));
+    }
+    
+    @Override
+    public void doFireFX(World world, Entity entity)
+    {
 	entity.playSound(SoundEvents.ENTITY_FIREWORK_LAUNCH, 2.0F, 0.6F);
-
-	this.setCooldown(stack, 60);
-	this.consumeAmmo(stack, entity, 1);
     }
 
     @Override
