@@ -5,98 +5,43 @@ import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.EnderShot;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
-import com.domochevsky.quiverbow.weapons.base._WeaponBase;
+import com.domochevsky.quiverbow.weapons.base.ProjectileWeapon;
+import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class EnderRifle extends _WeaponBase
+public class EnderRifle extends ProjectileWeapon
 {
+    public int ZoomMax;
+    private double DmgIncrease;
+    
     public EnderRifle()
     {
 	super("ender_rifle", 8);
-    }
-
-    public int ZoomMax;
-    private double DmgIncrease;
-
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
-    {
-	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= stack.getMaxDamage())
+	setFiringBehaviour(new SingleShotFiringBehaviour<EnderRifle>(this, (world, weaponStack, entity, data) -> 
 	{
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
-	} // Is empty
-
-	this.doSingleFire(stack, world, player); // Handing it over to the
-	// neutral firing function
-	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-    }
-
-    @Override
-    public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-    // side
-    {
-	if (this.getCooldown(stack) > 0)
-	{
-	    return;
-	} // Hasn't cooled down yet
-
-	Helper.knockUserBack(entity, this.Kickback); // Kickback
-
-	if(!world.isRemote)
-	{
-	    // Firing
-	    EnderShot shot = new EnderShot(world, entity, (float) this.Speed); // Create
-	    // the
-	    // projectile
-
+	    EnderShot shot = new EnderShot(world, entity, (float) this.Speed);
 	    shot.damage = this.DmgMin;
 	    shot.damage_Max = this.DmgMax;
-	    shot.damage_Increase = this.DmgIncrease; // Increases damage each tick
-	    // until the max has been
-	    // reached
-
+	    shot.damage_Increase = this.DmgIncrease; // Increases damage each tick until the max has been reached
 	    shot.knockbackStrength = this.Knockback;
-
-	    world.spawnEntity(shot); // Pew.
-	}
-
-	// SFX
-	Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F);
-	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
-		(byte) 1); // smoke
-
-	this.consumeAmmo(stack, entity, 1);
-	this.setCooldown(stack, this.Cooldown);
+	    return shot;
+	}));
     }
-
+    
     @Override
-    public void onUpdate(ItemStack stack, World world, Entity entity, int animTick, boolean holdingItem) // Overhauled
+    public void doFireFX(World world, Entity entity)
     {
-	if (world.isRemote) // Not doing this on client side
-	{
-	    // ZoomInterface.checkClientZoom(world, entity, stack,
-	    // this.ZoomMax); // client zoom
-	    return;
-	}
-
-	if (this.getCooldown(stack) > 0)
-	{
-	    this.setCooldown(stack, this.getCooldown(stack) - 1);
-	} // Cooling down
-	if (this.getCooldown(stack) == 1)
-	{
-	    this.doCooldownSFX(world, entity);
-	} // One tick before cooldown is done with, so SFX now
+        Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F);
+	NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL, (byte) 1);
     }
 
     @Override
