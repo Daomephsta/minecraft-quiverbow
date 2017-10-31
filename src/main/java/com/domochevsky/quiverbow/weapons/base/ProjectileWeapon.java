@@ -12,14 +12,6 @@ import net.minecraft.world.World;
 
 public class ProjectileWeapon extends _WeaponBase
 {
-    protected IFiringBehaviour firingBehaviour = new IFiringBehaviour()
-    {
-	@Override
-	public void update(ItemStack stack, World world, Entity entity, int animTick, boolean holdingItem) {System.out.println("No firing behavior set");}
-
-	@Override
-	public void fire(ItemStack stack, World world, Entity entity) {System.out.println("No firing behavior set");}
-    };
     
     public ProjectileWeapon(String name, int maxAmmo)
     {

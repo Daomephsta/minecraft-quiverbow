@@ -7,6 +7,7 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main.Constants;
 import com.domochevsky.quiverbow.miscitems.QuiverBowItem;
 import com.domochevsky.quiverbow.util.Newliner;
+import com.domochevsky.quiverbow.weapons.base.firingbehaviours.IFiringBehaviour;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
@@ -40,14 +41,16 @@ public class _WeaponBase extends QuiverBowItem
 
     public int Cooldown;
 
-    protected boolean isMobUsable; // Default
+    protected boolean isMobUsable;
+    
+    protected IFiringBehaviour firingBehaviour = new IFiringBehaviour()
+    {
+	@Override
+	public void update(ItemStack stack, World world, Entity entity, int animTick, boolean holdingItem) {System.out.println("No firing behavior set");}
 
-    // Icons
-    /*
-     * @SideOnly(Side.CLIENT) public IIcon Icon;
-     * 
-     * @SideOnly(Side.CLIENT) public IIcon Icon_Empty;
-     */
+	@Override
+	public void fire(ItemStack stack, World world, Entity entity) {System.out.println("No firing behavior set");}
+    };
 
     public _WeaponBase(String name, int maxAmmo)
     {
@@ -169,6 +172,16 @@ public class _WeaponBase extends QuiverBowItem
 	return stack.getTagCompound().getInteger("burstFireLeft");
     }
 
+    public void setFiringBehaviour(IFiringBehaviour firingBehaviour)
+    {
+	this.firingBehaviour = firingBehaviour;
+    }
+
+    public IFiringBehaviour getFiringBehaviour()
+    {
+	return firingBehaviour;
+    }
+
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
@@ -200,12 +213,12 @@ public class _WeaponBase extends QuiverBowItem
     // Regular fire, as called by onItemRightClick. To be overridden by each
     // individual weapon
     // Can also be called by mobs
-    public void doSingleFire(ItemStack stack, World world, Entity entity)
-    {} // Server side
+    public void doSingleFire(ItemStack stack, World world, Entity entity) {}
 
     // Called one tick before cooldown is dealt with
-    protected void doCooldownSFX(World world, Entity entity)
-    {}
+    protected void doCooldownSFX(World world, Entity entity) {}
+    
+    public void doFireFX(World world, Entity entity) {}
 
     @Override
     public boolean showDurabilityBar(ItemStack stack)
