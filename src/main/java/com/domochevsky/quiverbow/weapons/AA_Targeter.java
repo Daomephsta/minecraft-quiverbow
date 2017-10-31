@@ -37,28 +37,17 @@ public class AA_Targeter extends _WeaponBase
     {
 	ItemStack stack = player.getHeldItem(hand);
 
-	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
+	this.setDamage(stack, 1); // Set to be firing
+	this.setCooldown(stack, 4); // 4 ticks
+
+	// SFX
+	player.playSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.3F, 2.0F);
 
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
-    public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-									  // side,
-									  // mob
-									  // usable
-    {
-	this.setDamage(stack, 1); // Set to be firing
-	this.setCooldown(stack, 4); // 4 ticks
-
-	// SFX
-	entity.playSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.3F, 2.0F);
-    }
-
-    @Override
-    public void onUpdate(ItemStack stack, World world, Entity entity, int animTick, boolean holdingItem) // Overhauled
-													 // default
+    public void onUpdate(ItemStack stack, World world, Entity entity, int animTick, boolean holdingItem)
     {
 	if (world.isRemote)
 	{
