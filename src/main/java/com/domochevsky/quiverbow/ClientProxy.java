@@ -1,8 +1,8 @@
 package com.domochevsky.quiverbow;
 
 import com.domochevsky.quiverbow.ArmsAssistant.Entity_AA;
-import com.domochevsky.quiverbow.Renderer.Render_AA;
 import com.domochevsky.quiverbow.projectiles._ProjectileBase;
+import com.domochevsky.quiverbow.renderer.Render_AA;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;

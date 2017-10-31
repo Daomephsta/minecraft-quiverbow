@@ -1,4 +1,4 @@
-package com.domochevsky.quiverbow.Renderer;
+package com.domochevsky.quiverbow.renderer;
 
 /*
  * public class Render_Projectile extends Render {

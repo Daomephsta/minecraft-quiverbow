@@ -1,4 +1,4 @@
-package com.domochevsky.quiverbow.Renderer;
+package com.domochevsky.quiverbow.renderer;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
