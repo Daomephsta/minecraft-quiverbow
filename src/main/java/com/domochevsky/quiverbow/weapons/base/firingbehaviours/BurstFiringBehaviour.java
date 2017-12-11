@@ -3,7 +3,9 @@ package com.domochevsky.quiverbow.weapons.base.firingbehaviours;
 import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 public class BurstFiringBehaviour<W extends MagazineFedWeapon> extends ProjectileFiringBehaviour<W>
@@ -14,7 +16,7 @@ public class BurstFiringBehaviour<W extends MagazineFedWeapon> extends Projectil
     }
 
     @Override
-    public void fire(ItemStack stack, World world, Entity entity)
+    public void fire(ItemStack stack, World world, EntityLivingBase entity, EnumHand hand)
     {
     }
 

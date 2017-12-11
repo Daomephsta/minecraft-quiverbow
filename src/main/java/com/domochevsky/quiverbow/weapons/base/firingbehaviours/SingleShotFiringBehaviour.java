@@ -2,13 +2,15 @@ package com.domochevsky.quiverbow.weapons.base.firingbehaviours;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
-import com.domochevsky.quiverbow.weapons.base.ProjectileWeapon;
+import com.domochevsky.quiverbow.weapons.base._WeaponBase;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
-public class SingleShotFiringBehaviour<W extends ProjectileWeapon> extends ProjectileFiringBehaviour<W>
+public class SingleShotFiringBehaviour<W extends _WeaponBase> extends ProjectileFiringBehaviour<W>
 {   
     private final int ammoCost;
     
@@ -24,7 +26,7 @@ public class SingleShotFiringBehaviour<W extends ProjectileWeapon> extends Proje
     }
 
     @Override
-    public void fire(ItemStack stack, World world, Entity entity)
+    public void fire(ItemStack stack, World world, EntityLivingBase entity, EnumHand hand)
     {
 	if (weapon.getCooldown(stack) > 0)
 	{

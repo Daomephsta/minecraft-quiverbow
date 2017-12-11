@@ -12,7 +12,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
-public class MagazineFedWeapon extends ProjectileWeapon
+public class MagazineFedWeapon extends _WeaponBase
 {
     protected final Item ammo;
     
@@ -37,7 +37,7 @@ public class MagazineFedWeapon extends ProjectileWeapon
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
 	}
 
-	firingBehaviour.fire(stack, world, player);
+	firingBehaviour.fire(stack, world, player, hand);
 	// neutral firing function
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }

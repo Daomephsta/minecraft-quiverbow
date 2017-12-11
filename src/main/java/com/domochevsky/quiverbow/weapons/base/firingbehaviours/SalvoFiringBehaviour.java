@@ -2,13 +2,15 @@ package com.domochevsky.quiverbow.weapons.base.firingbehaviours;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
-import com.domochevsky.quiverbow.weapons.base.ProjectileWeapon;
+import com.domochevsky.quiverbow.weapons.base._WeaponBase;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
-public class SalvoFiringBehaviour<W extends ProjectileWeapon> extends ProjectileFiringBehaviour<W>
+public class SalvoFiringBehaviour<W extends _WeaponBase> extends ProjectileFiringBehaviour<W>
 {
     public static class SalvoData implements IProjectileData
     {
@@ -29,7 +31,7 @@ public class SalvoFiringBehaviour<W extends ProjectileWeapon> extends Projectile
     }
 
     @Override
-    public void fire(ItemStack stack, World world, Entity entity)
+    public void fire(ItemStack stack, World world, EntityLivingBase entity, EnumHand hand)
     {
 	if (weapon.getCooldown(stack) > 0)
 	{

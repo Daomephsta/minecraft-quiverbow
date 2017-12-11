@@ -12,6 +12,7 @@ import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringB
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -55,9 +56,9 @@ public class Crossbow_Auto extends WeaponCrossbow implements ISpecialRender
 	})
 	{
 	    @Override
-	    public void fire(ItemStack stack, World world, Entity entity)
+	    public void fire(ItemStack stack, World world, EntityLivingBase entity, EnumHand hand)
 	    {
-		super.fire(stack, world, entity);
+		super.fire(stack, world, entity, hand);
 		Crossbow_Auto.setChambered(stack, world, entity, false);
 	    }
 	});
@@ -107,7 +108,7 @@ public class Crossbow_Auto extends WeaponCrossbow implements ISpecialRender
 	} // Still sneaking, even though you have an arrow on the rail? Not
 	// having it
 
-	firingBehaviour.fire(stack, world, player);
+	firingBehaviour.fire(stack, world, player, hand);
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
