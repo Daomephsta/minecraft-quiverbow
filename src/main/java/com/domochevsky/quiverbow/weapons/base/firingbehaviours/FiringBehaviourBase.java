@@ -16,9 +16,7 @@ public abstract class FiringBehaviourBase<W extends _WeaponBase> implements IFir
 	this.weapon = weapon;
     }
     
-    @Override
-    public void update(ItemStack stack, World world, Entity entity, int animTick, boolean holdingItem) {}
-    
-    @Override
-    public void onStopFiring(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft) {}
+    @Override public void update(ItemStack stack, World world, Entity entity, int animTick, boolean holdingItem) {}
+    @Override public void onStopFiring(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft) {}
+    @Override public void onFiringTick(ItemStack stack, EntityLivingBase player, int count) {}
 }

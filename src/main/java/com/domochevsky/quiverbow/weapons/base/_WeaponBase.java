@@ -7,20 +7,17 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main.Constants;
 import com.domochevsky.quiverbow.miscitems.QuiverBowItem;
 import com.domochevsky.quiverbow.util.Newliner;
+import com.domochevsky.quiverbow.weapons.base.firingbehaviours.FiringBehaviourBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.IFiringBehaviour;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -43,14 +40,14 @@ public class _WeaponBase extends QuiverBowItem
 
     protected boolean isMobUsable;
     
-    protected IFiringBehaviour firingBehaviour = new IFiringBehaviour()
-    {
-	@Override
-	public void update(ItemStack stack, World world, Entity entity, int animTick, boolean holdingItem) {System.out.println("No firing behavior set");}
-
-	@Override
-	public void fire(ItemStack stack, World world, Entity entity) {System.out.println("No firing behavior set");}
-    };
+    protected IFiringBehaviour firingBehaviour = new FiringBehaviourBase<_WeaponBase>(this)
+	{
+		@Override
+		public void fire(ItemStack stack, World world, EntityLivingBase entity, EnumHand hand)
+		{
+			System.out.println("No firing behavour implemented");
+		}
+	};
 
     public _WeaponBase(String name, int maxAmmo)
     {
@@ -191,14 +188,13 @@ public class _WeaponBase extends QuiverBowItem
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	} // Is empty
 
-	this.doSingleFire(stack, world, player); // Handing it over to the
-						 // neutral firing function
+	firingBehaviour.fire(stack, world, player, hand);
+	
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
-    public void onUpdate(ItemStack stack, World world, Entity entity, int animTick, boolean holdingItem) // Overhauled
-													 // default
+    public void onUpdate(ItemStack stack, World world, Entity entity, int animTick, boolean holdingItem)
     {
 	if (this.getCooldown(stack) > 0)
 	{
@@ -208,6 +204,19 @@ public class _WeaponBase extends QuiverBowItem
 	{
 	    this.doCooldownSFX(world, entity);
 	} // One tick before cooldown is done with, so SFX now
+	firingBehaviour.update(stack, world, entity, animTick, holdingItem);
+    }
+    
+    @Override
+    public void onPlayerStoppedUsing(ItemStack stack, World worldIn, EntityLivingBase entityLiving, int timeLeft)
+    {
+    	firingBehaviour.onStopFiring(stack, worldIn, entityLiving, timeLeft);
+    }
+    
+    @Override
+    public void onUsingTick(ItemStack stack, EntityLivingBase player, int count)
+    {
+    	firingBehaviour.onFiringTick(stack, player, count);
     }
 
     // Regular fire, as called by onItemRightClick. To be overridden by each

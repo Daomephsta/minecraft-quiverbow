@@ -12,5 +12,7 @@ public interface IFiringBehaviour
     
     public void update(ItemStack stack, World world, Entity entity, int animTick, boolean holdingItem);
     
+    public void onFiringTick(ItemStack stack, EntityLivingBase player, int count);
+    
     public void onStopFiring(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft);
 }
