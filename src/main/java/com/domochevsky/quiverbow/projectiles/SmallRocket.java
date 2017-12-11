@@ -70,7 +70,7 @@ public class SmallRocket extends _ProjectileBase
 	    IBlockState state = this.world.getBlockState(target.getBlockPos());
 
 	    // Glass breaking, once
-	    if (Helper.tryBlockBreak(this.world, this, target, 1) && this.targetsHit < 1)
+	    if (Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 1) && this.targetsHit < 1)
 	    {
 		this.targetsHit += 1;
 	    }

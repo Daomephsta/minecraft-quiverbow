@@ -44,7 +44,7 @@ public class OSR_Shot extends ProjectilePotionEffect
 	else // Hit the terrain
 	{
 	    // Glass breaking
-	    if (Helper.tryBlockBreak(this.world, this, movPos, 2) && this.entitiesHit < 2)
+	    if (Helper.tryBlockBreak(this.world, this, movPos.getBlockPos(), 2) && this.entitiesHit < 2)
 	    {
 		this.entitiesHit += 1;
 	    }

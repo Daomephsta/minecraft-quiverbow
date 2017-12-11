@@ -39,7 +39,7 @@ public class Thorn extends _ProjectileBase
 	}
 	else // Hit the terrain
 	{
-	    Helper.tryBlockBreak(this.world, this, movPos, 1);
+	    Helper.tryBlockBreak(this.world, this, movPos.getBlockPos(), 1);
 	}
 
 	// SFX

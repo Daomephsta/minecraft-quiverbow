@@ -125,7 +125,7 @@ public class RedLight extends _ProjectileBase implements IEntityAdditionalSpawnD
 			   // Checking the rest now
 	    {
 		// Glass breaking
-		Helper.tryBlockBreak(this.world, this, target, 3); // Very
+		Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 3); // Very
 								   // Strong
 	    }
 

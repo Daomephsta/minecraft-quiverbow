@@ -53,7 +53,7 @@ public class NetherFire extends _ProjectileBase
 	    IBlockState state = this.world.getBlockState(target.getBlockPos());
 
 	    // Glass breaking
-	    Helper.tryBlockBreak(this.world, this, target, 1); // Medium
+	    Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 1); // Medium
 
 	    BlockPos pos = target.getBlockPos().offset(target.sideHit);
 	    IBlockState offsetState = world.getBlockState(pos);

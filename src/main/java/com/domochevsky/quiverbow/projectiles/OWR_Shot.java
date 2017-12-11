@@ -54,7 +54,7 @@ public class OWR_Shot extends ProjectilePotionEffect
 	    this.blocksHit += 1;
 
 	    // Glass breaking
-	    if (!Helper.tryBlockBreak(this.world, this, target, 3))
+	    if (!Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 3))
 	    {
 		this.setDead();
 	    } // Punching through anything without restriction

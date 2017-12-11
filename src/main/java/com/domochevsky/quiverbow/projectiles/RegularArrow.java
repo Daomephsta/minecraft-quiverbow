@@ -113,7 +113,7 @@ public class RegularArrow extends _ProjectileBase implements IProjectile
 	else // Hit the terrain. Looks like we need to keep doing this on client
 	     // side as well, to properly update arrows stuck in the ground
 	{
-	    if (Helper.tryBlockBreak(this.world, this, hitPos, 1) && this.targetsHit < 1)
+	    if (Helper.tryBlockBreak(this.world, this, hitPos.getBlockPos(), 1) && this.targetsHit < 1)
 	    {
 		this.targetsHit += 1;
 	    } // Going straight through glass

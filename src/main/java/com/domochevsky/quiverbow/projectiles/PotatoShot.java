@@ -45,7 +45,7 @@ public class PotatoShot extends _ProjectileBase
 	else
 	{
 	    // Glass breaking
-	    Helper.tryBlockBreak(this.world, this, target, 1);
+	    Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 1);
 
 	    if (this.shouldDrop && this.canBePickedUp) // If we can be picked up
 						       // then we're dropping

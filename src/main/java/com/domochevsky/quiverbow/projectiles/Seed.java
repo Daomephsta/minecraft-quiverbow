@@ -42,7 +42,7 @@ public class Seed extends _ProjectileBase
 	    IBlockState stateAbove = this.world.getBlockState(target.getBlockPos().up());
 
 	    // Glass breaking
-	    Helper.tryBlockBreak(this.world, this, target, 0);
+	    Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 0);
 
 	    if (state.getBlock() == Blocks.FARMLAND && stateAbove.getMaterial() == Material.AIR)
 	    {

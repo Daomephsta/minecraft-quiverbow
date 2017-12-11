@@ -72,7 +72,7 @@ public class SunLight extends _ProjectileBase implements IEntityAdditionalSpawnD
 	    IBlockState state = this.world.getBlockState(target.getBlockPos());
 
 	    // Glass breaking
-	    Helper.tryBlockBreak(this.world, this, target, 2); // Strong
+	    Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 2); // Strong
 
 	    // Let's create fire here
 	    if (state.getBlock() != Blocks.FIRE)

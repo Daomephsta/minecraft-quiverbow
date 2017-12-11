@@ -72,7 +72,7 @@ public class EnderShot extends _ProjectileBase
 	else // Hit the terrain
 	{
 	    // Glass breaking
-	    if (Helper.tryBlockBreak(this.world, this, target, 1) && this.targetsHit < 2)
+	    if (Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 1) && this.targetsHit < 2)
 	    {
 		this.targetsHit += 1;
 	    }

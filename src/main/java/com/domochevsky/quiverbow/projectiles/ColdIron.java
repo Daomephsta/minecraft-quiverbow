@@ -67,7 +67,7 @@ public class ColdIron extends ProjectilePotionEffect
 	else // Hit the terrain
 	{
 	    // Glass breaking, 3 layers
-	    if (Helper.tryBlockBreak(this.world, this, target, 1) && this.targetsHit < 3)
+	    if (Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 1) && this.targetsHit < 3)
 	    {
 		this.targetsHit += 1;
 	    }

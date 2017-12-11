@@ -39,7 +39,7 @@ public class Sabot_Rocket extends _ProjectileBase
 	else // Hit the terrain
 	{
 	    // Glass breaking
-	    Helper.tryBlockBreak(this.world, this, target, 1);
+	    Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 1);
 	}
 
 	// Spawning a rose of rockets here

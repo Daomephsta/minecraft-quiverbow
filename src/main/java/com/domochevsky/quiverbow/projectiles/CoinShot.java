@@ -54,7 +54,7 @@ public class CoinShot extends _ProjectileBase
 	else
 	{
 	    // Glass breaking
-	    Helper.tryBlockBreak(this.world, this, hitPos, 1);
+	    Helper.tryBlockBreak(this.world, this, hitPos.getBlockPos(), 1);
 
 	    if (this.shootingEntity != null && this.shootingEntity instanceof EntityPlayer)
 	    {

@@ -74,7 +74,7 @@ public class BlazeShot extends _ProjectileBase
 	    }
 
 	    // Glass breaking, through 4 layers
-	    if (Helper.tryBlockBreak(this.world, this, hitPos, 2) && this.targetsHit < 4)
+	    if (Helper.tryBlockBreak(this.world, this, hitPos.getBlockPos(), 2) && this.targetsHit < 4)
 	    {
 		this.targetsHit += 1;
 	    } // Going straight through most things

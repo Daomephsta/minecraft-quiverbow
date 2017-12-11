@@ -1,18 +1,14 @@
 package com.domochevsky.quiverbow;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nullable;
 
 import com.domochevsky.quiverbow.ammo._AmmoBase;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles._ProjectileBase;
-import com.domochevsky.quiverbow.recipes.RecipeLoadMagazine;
-import com.domochevsky.quiverbow.recipes.Recipe_AA_Armor;
-import com.domochevsky.quiverbow.recipes.Recipe_AA_Communication;
-import com.domochevsky.quiverbow.recipes.Recipe_AA_Mobility;
-import com.domochevsky.quiverbow.recipes.Recipe_AA_Plating;
-import com.domochevsky.quiverbow.recipes.Recipe_AA_Riding;
-import com.domochevsky.quiverbow.recipes.Recipe_AA_Storage;
-import com.domochevsky.quiverbow.recipes.Recipe_AA_Weapon;
+import com.domochevsky.quiverbow.recipes.*;
 import com.domochevsky.quiverbow.weapons.base._WeaponBase;
 
 import net.minecraft.block.BlockLiquid;
@@ -26,15 +22,11 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemArrow;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.*;
+import net.minecraft.util.math.*;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
@@ -257,7 +249,7 @@ public class Helper
     // Time to make a mess!
     // Checking if the block hit can be broken
     // stronger weapons can break more block types
-    public static boolean tryBlockBreak(World world, Entity entity, RayTraceResult target, int strength)
+    public static boolean tryBlockBreak(World world, Entity entity, BlockPos pos, int strength)
     {
 	if (!Main.breakGlass)
 	{
@@ -278,11 +270,13 @@ public class Helper
 	    }
 	}
 
-	IBlockState state = world.getBlockState(target.getBlockPos());
+	IBlockState state = world.getBlockState(pos);
 	if (state == Blocks.AIR.getDefaultState())
 	{
 	    return false;
 	} // Didn't hit a valid block? Do we continue? Stop?
+	//No breaking bedrock
+	if(state.getBlockHardness(world, pos) == -1) return false;
 
 	boolean breakThis = false;
 
@@ -340,7 +334,7 @@ public class Helper
 		    {
 			GameType gametype = world.getWorldInfo().getGameType();
 			int result = ForgeHooks.onBlockBreakEvent(world, gametype, (EntityPlayerMP) shooter,
-				target.getBlockPos());
+				pos);
 
 			if (result == -1)
 			{
@@ -352,7 +346,7 @@ public class Helper
 		{
 		    GameType gametype = entity.world.getWorldInfo().getGameType();
 		    int result = ForgeHooks.onBlockBreakEvent(entity.world, gametype, (EntityPlayerMP) entity,
-			    target.getBlockPos());
+			    pos);
 
 		    if (result == -1)
 		    {
@@ -362,7 +356,7 @@ public class Helper
 	    }
 	    // else, not interested in sending such a event, so whatever
 
-	    world.destroyBlock(target.getBlockPos(), true);
+	    world.destroyBlock(pos, true);
 
 	    return true; // Successfully broken
 	}
@@ -442,5 +436,53 @@ public class Helper
     public static EntityArrow createArrow(World world, EntityLivingBase shooter)
     {
         return ((ItemArrow) Items.ARROW).createArrow(world, ARROW_STACK, shooter);
+    }
+    
+    public static RayTraceResult raytraceClosestObject(World world, @Nullable Entity exclude, Vec3d startVec, Vec3d endVec)
+    {
+    	RayTraceResult result = world.rayTraceBlocks(startVec, endVec);
+    	double blockHitDistance = 0.0D; //The distance to the block that was hit
+    	if(result != null) blockHitDistance = result.hitVec.distanceTo(startVec);
+    	
+    	//Encloses the entire area where entities that could collide with this ray exist
+    	AxisAlignedBB entitySearchArea = new AxisAlignedBB(startVec.xCoord, startVec.yCoord, startVec.zCoord, endVec.xCoord, endVec.yCoord, endVec.zCoord);
+    	Entity hitEntity = null; //The closest entity that was hit
+    	double entityHitDistance = 0.0D; //The squared distance to the closest entity that was hit
+    	for(Entity entity : world.getEntitiesInAABBexcluding(exclude, entitySearchArea, EntitySelectors.NOT_SPECTATING))
+    	{
+    		//The collision AABB of the entity expanded by the collision border size
+    		AxisAlignedBB collisionBB = entity.getEntityBoundingBox().expandXyz(entity.getCollisionBorderSize());
+    		RayTraceResult intercept = collisionBB.calculateIntercept(startVec, endVec);
+    		if(intercept != null)
+    		{
+    			double distance = startVec.distanceTo(intercept.hitVec);
+
+    			if((distance < blockHitDistance || blockHitDistance == 0) && (distance < entityHitDistance || entityHitDistance == 0.0D))
+    			{
+    				entityHitDistance = distance;
+    				hitEntity = entity;
+    			}
+    		}
+    	}
+    	
+    	if(hitEntity != null) result = new RayTraceResult(hitEntity, hitEntity.getPositionVector());
+    	
+    	return result;
+    }
+    
+    public static void raytraceAll(List<RayTraceResult> results, World world, @Nullable Entity exclude, Vec3d startVec, Vec3d endVec)
+    {
+    	RayTraceResult blockRaytrace = world.rayTraceBlocks(startVec, endVec);
+    	if(blockRaytrace != null) results.add(blockRaytrace);
+    	
+    	//Encloses the entire area where entities that could collide with this ray exist
+    	AxisAlignedBB entitySearchArea = new AxisAlignedBB(startVec.xCoord, startVec.yCoord, startVec.zCoord, endVec.xCoord, endVec.yCoord, endVec.zCoord);
+    	for(Entity entity : world.getEntitiesInAABBexcluding(exclude, entitySearchArea, EntitySelectors.NOT_SPECTATING))
+    	{
+    		//The collision AABB of the entity expanded by the collision border size
+    		AxisAlignedBB collisionBB = entity.getEntityBoundingBox().expandXyz(entity.getCollisionBorderSize());
+    		RayTraceResult intercept = collisionBB.calculateIntercept(startVec, endVec);
+    		if(intercept != null) results.add(new RayTraceResult(entity, intercept.hitVec));
+    	}
     }
 }

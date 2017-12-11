@@ -45,7 +45,7 @@ public class SnowShot extends ProjectilePotionEffect
 	else
 	{
 	    // Glass breaking
-	    Helper.tryBlockBreak(this.world, this, target, 1);
+	    Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 1);
 	}
 
 	// SFX

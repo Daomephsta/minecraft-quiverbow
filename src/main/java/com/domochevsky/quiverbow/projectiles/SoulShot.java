@@ -59,7 +59,7 @@ public class SoulShot extends _ProjectileBase
 	else // Hit the terrain
 	{
 	    // Glass breaking
-	    if (!Helper.tryBlockBreak(this.world, this, target, 1))
+	    if (!Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 1))
 	    {
 		this.setDead();
 	    } // Only begone if we didn't hit glass

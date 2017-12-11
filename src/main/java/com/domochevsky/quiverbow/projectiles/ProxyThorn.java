@@ -54,7 +54,7 @@ public class ProxyThorn extends _ProjectileBase
 
 	else // Hit the terrain
 	{
-	    if (Helper.tryBlockBreak(this.world, this, movPos, 1)) // Going
+	    if (Helper.tryBlockBreak(this.world, this, movPos.getBlockPos(), 1)) // Going
 		// straight
 		// through a
 		// thing

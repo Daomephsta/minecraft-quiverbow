@@ -64,7 +64,7 @@ public class EnderAno extends _ProjectileBase
 	else
 	{
 	    // Glass breaking
-	    Helper.tryBlockBreak(this.world, this, target, 1); // Medium
+	    Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 1); // Medium
 							       // strength
 
 	}
