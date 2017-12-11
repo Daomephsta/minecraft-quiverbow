@@ -405,7 +405,6 @@ public class Main
 		    addWeapon(new EnderRifle()),
 		    addWeapon(new FenFire()),
 		    addWeapon(new FlintDuster()),
-		    addWeapon(new LightningRed()),
 		    addWeapon(new Sunray()),
 		    addWeapon(new PowderKnuckle()),
 		    addWeapon(new PowderKnuckle_Mod()),
@@ -463,6 +462,10 @@ public class Main
 	    //Seed Sweeper and Seed Jar
 	    _AmmoBase seedJar = addAmmo(new SeedJar(), "seed_jar");
 	    registry.registerAll(seedJar, addWeapon(new SeedSweeper(seedJar)));
+	    
+	    //Lightning Red and Redstone Magazine
+	    _AmmoBase redstoneMagazine = addAmmo(new RedstoneMagazine(), "redstone_magazine");
+	    registry.registerAll(redstoneMagazine, addWeapon(new LightningRed(redstoneMagazine)));
 	}
 
 	// Helper function for taking care of weapon registration
@@ -479,8 +482,7 @@ public class Main
 	    registry.registerAll(addAmmo(new ArrowBundle(), "arrow_bundle"),
 		    addAmmo(new RocketBundle(), "rocket_bundle"),
 		    addAmmo(new LargeRocket(), "large_rocket"),
-		    addAmmo(new BoxOfFlintDust(), "box_of_flint_dust"),
-		    addAmmo(new RedstoneMagazine(), "redstone_magazine"));
+		    addAmmo(new BoxOfFlintDust(), "box_of_flint_dust"));
 	}
 
 	private static _AmmoBase addAmmo(_AmmoBase ammoBase, String name)
