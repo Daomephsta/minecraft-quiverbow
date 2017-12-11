@@ -3,22 +3,24 @@ package com.domochevsky.quiverbow.weapons;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.SoulShot;
-import com.domochevsky.quiverbow.weapons.base.ProjectileWeapon;
+import com.domochevsky.quiverbow.weapons.base._WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class SoulCairn extends ProjectileWeapon
+public class SoulCairn extends _WeaponBase
 {
     public SoulCairn()
     {
@@ -28,10 +30,10 @@ public class SoulCairn extends ProjectileWeapon
 	setFiringBehaviour(new SingleShotFiringBehaviour<SoulCairn>(this, (world, weaponStack, entity, data) -> new SoulShot(world, entity, (float) this.Speed))
 	{
 	    @Override
-	    public void fire(ItemStack stack, World world, Entity entity) 
+	    public void fire(ItemStack stack, World world, EntityLivingBase entity, EnumHand hand) 
 	    { 
 		entity.attackEntityFrom(DamageSource.causeThrownDamage(entity, entity), 2); // A sacrifice in blood
-		super.fire(stack, world, entity);
+		super.fire(stack, world, entity, hand);
 	    }
 	});
     }

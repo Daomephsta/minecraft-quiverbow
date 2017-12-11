@@ -6,7 +6,7 @@ import com.domochevsky.quiverbow.ammo.RocketBundle;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.Sabot_Rocket;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
-import com.domochevsky.quiverbow.weapons.base.ProjectileWeapon;
+import com.domochevsky.quiverbow.weapons.base._WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
 import net.minecraft.entity.Entity;
@@ -20,7 +20,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class Mortar_Dragon extends ProjectileWeapon
+public class Mortar_Dragon extends _WeaponBase
 {
     private int FireDur;
     private double ExplosionSize;
@@ -28,7 +28,7 @@ public class Mortar_Dragon extends ProjectileWeapon
     public Mortar_Dragon()
     {
 	super("dragon_mortar", 8);
-	setFiringBehaviour(new SingleShotFiringBehaviour<ProjectileWeapon>(this, (world, weaponStack, entity, data) -> 
+	setFiringBehaviour(new SingleShotFiringBehaviour<_WeaponBase>(this, (world, weaponStack, entity, data) -> 
 	{
 	 // Random Damage
 	    int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min

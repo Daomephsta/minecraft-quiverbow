@@ -3,21 +3,23 @@ package com.domochevsky.quiverbow.weapons;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.Seed;
-import com.domochevsky.quiverbow.weapons.base.ProjectileWeapon;
+import com.domochevsky.quiverbow.weapons.base._WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class Seedling extends ProjectileWeapon
+public class Seedling extends _WeaponBase
 {    
     private int Dmg;
 
@@ -36,7 +38,7 @@ public class Seedling extends ProjectileWeapon
 	})
 	{
 	    @Override
-	    public void fire(ItemStack stack, World world, Entity entity) { if(stack.getItemDamage() >= stack.getMaxDamage()) weapon.breakWeapon(world, stack, entity); }
+	    public void fire(ItemStack stack, World world, EntityLivingBase entity, EnumHand hand) { if(stack.getItemDamage() >= stack.getMaxDamage()) weapon.breakWeapon(world, stack, entity); }
 	});
     }
 

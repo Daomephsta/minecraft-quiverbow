@@ -8,7 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.world.World;
 
-public class WeaponCrossbow extends ProjectileWeapon
+public class WeaponCrossbow extends _WeaponBase
 {
     public WeaponCrossbow(String name, int maxAmmo)
     {

@@ -14,6 +14,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -39,7 +40,7 @@ public class ThornSpitter extends MagazineFedWeapon
 	}
 
 	@Override
-	public void fire(ItemStack stack, World world, Entity entity)
+	public void fire(ItemStack stack, World world, EntityLivingBase entity, EnumHand hand)
 	{
 	    weapon.setBurstFire(stack, 4);
 	}

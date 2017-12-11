@@ -3,7 +3,7 @@ package com.domochevsky.quiverbow.weapons;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.BigRocket;
-import com.domochevsky.quiverbow.weapons.base.ProjectileWeapon;
+import com.domochevsky.quiverbow.weapons.base._WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
 import net.minecraft.entity.Entity;
@@ -16,7 +16,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class RPG extends ProjectileWeapon
+public class RPG extends _WeaponBase
 {
     public double ExplosionSize;
     protected int travelTime; // How many ticks the rocket can travel before exploding
@@ -31,7 +31,7 @@ public class RPG extends ProjectileWeapon
     {
 	super(name, maxAmmo);
 	this.Cooldown = 60;
-	setFiringBehaviour(new SingleShotFiringBehaviour<ProjectileWeapon>(this, (world, weaponStack, entity, data) ->
+	setFiringBehaviour(new SingleShotFiringBehaviour<_WeaponBase>(this, (world, weaponStack, entity, data) ->
 	{
 	    BigRocket rocket = new BigRocket(world, entity, (float) this.Speed);
 	    rocket.explosionSize = this.ExplosionSize;

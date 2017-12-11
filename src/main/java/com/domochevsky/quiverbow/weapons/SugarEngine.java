@@ -10,9 +10,11 @@ import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.BurstFiringBehaviour;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
@@ -43,7 +45,7 @@ public class SugarEngine extends MagazineFedWeapon
 	}
 
 	@Override
-	public void fire(ItemStack stack, World world, Entity entity)
+	public void fire(ItemStack stack, World world, EntityLivingBase entity, EnumHand hand)
 	{
 	    if (!stack.hasTagCompound())
 	    {

@@ -4,7 +4,6 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.AI.AI_Targeting;
 import com.domochevsky.quiverbow.projectiles.WaterShot;
-import com.domochevsky.quiverbow.weapons.base.ProjectileWeapon;
 import com.domochevsky.quiverbow.weapons.base._WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
@@ -27,7 +26,7 @@ import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class AquaAccelerator extends ProjectileWeapon
+public class AquaAccelerator extends _WeaponBase
 {
     public AquaAccelerator()
     {
@@ -49,7 +48,7 @@ public class AquaAccelerator extends ProjectileWeapon
 	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 	}
 
-	firingBehaviour.fire(stack, world, player);
+	firingBehaviour.fire(stack, world, player, hand);
 	// neutral firing function
 
 	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
