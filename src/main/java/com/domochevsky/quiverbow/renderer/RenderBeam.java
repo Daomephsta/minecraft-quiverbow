@@ -42,10 +42,10 @@ public class RenderBeam
 			this.beamStart = beamStart;
 			this.beamEnd = beamEnd;
 		}
-		
+
 		public void resetDespawnTimer()
 		{
-			this.timeTillDespawn = 10;
+			this.timeTillDespawn = 5;
 		}
 	}
 
@@ -57,8 +57,8 @@ public class RenderBeam
 			Beam beam = iter.next();
 			if(beam.timeTillDespawn-- <= 0)
 			{
-				iter.remove();
-				continue;
+				//iter.remove();
+				//continue;
 			}
 
 			Tessellator tess = Tessellator.getInstance();
@@ -68,21 +68,57 @@ public class RenderBeam
 			double x = mc.player.posX * event.getPartialTicks() + mc.player.prevPosX * (1.0F - event.getPartialTicks());
 			double y = mc.player.posY * event.getPartialTicks() + mc.player.prevPosY * (1.0F - event.getPartialTicks());
 			double z = mc.player.posZ * event.getPartialTicks() + mc.player.prevPosZ * (1.0F - event.getPartialTicks());
-			
+
 			float colourR = ((beam.beamColour >> 16) & 255) / 255.0F;
 			float colourB = ((beam.beamColour >> 8) & 255) / 255.0F;
 			float colourG = (beam.beamColour & 255) / 255.0F;
-			
+
 			GlStateManager.pushMatrix();
-			GlStateManager.translate(-x, -y, -z);
+			GlStateManager.translate(376.0F - x, 10.5F - y, -947.0F - z);
 			GlStateManager.disableTexture2D();
-			vtxBuf.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-			vtxBuf.pos(beam.beamStart.xCoord, beam.beamStart.yCoord, beam.beamStart.zCoord).color(colourR, colourG, colourB, 1.0F).endVertex();
-			vtxBuf.pos(beam.beamEnd.xCoord + 0.5F, beam.beamEnd.yCoord, beam.beamEnd.zCoord).color(colourR, colourG, colourB, 1.0F).endVertex();
+			GlStateManager.disableCull();
+			vtxBuf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+			renderInnerBeam(vtxBuf, colourR, colourG, colourB);
 			tess.draw();
+			GlStateManager.enableCull();
 			GlStateManager.enableTexture2D();
 			GlStateManager.popMatrix();
 		}
+	}
+
+	private static void renderInnerBeam(VertexBuffer vtxBuf, float colourR, float colourG, float colourB)
+	{
+		//Top
+		float height = 2.0F;
+		vtxBuf.pos(0.0F, height, 0.0F).color(colourR, colourG, colourB, height).endVertex();
+		vtxBuf.pos(0.5F, height, 0.0F).color(colourR, colourG, colourB, height).endVertex();
+		vtxBuf.pos(0.5F, height, 0.5F).color(colourR, colourG, colourB, height).endVertex();
+		vtxBuf.pos(0.0F, height, 0.5F).color(colourR, colourG, colourB, height).endVertex();
+		//North
+		vtxBuf.pos(0.0F, height, 0.0F).color(colourR, colourG, colourB, height).endVertex();
+		vtxBuf.pos(0.5F, height, 0.0F).color(colourR, colourG, colourB, height).endVertex();
+		vtxBuf.pos(0.5F, 0.0F, 0.0F).color(colourR, colourG, colourB, height).endVertex();
+		vtxBuf.pos(0.0F, 0.0F, 0.0F).color(colourR, colourG, colourB, height).endVertex();
+		//South
+		vtxBuf.pos(0.0F, height, 0.5F).color(colourR, colourG, colourB, height).endVertex();
+		vtxBuf.pos(0.5F, height, 0.5F).color(colourR, colourG, colourB, height).endVertex();
+		vtxBuf.pos(0.5F, 0.0F, 0.5F).color(colourR, colourG, colourB, height).endVertex();
+		vtxBuf.pos(0.0F, 0.0F, 0.5F).color(colourR, colourG, colourB, height).endVertex();
+		//East
+		vtxBuf.pos(0.5F, height, 0.0F).color(colourR, colourG, colourB, height).endVertex();
+		vtxBuf.pos(0.5F, height, 0.5F).color(colourR, colourG, colourB, height).endVertex();
+		vtxBuf.pos(0.5F, 0.0F, 0.5F).color(colourR, colourG, colourB, height).endVertex();
+		vtxBuf.pos(0.5F, 0.0F, 0.0F).color(colourR, colourG, colourB, height).endVertex();
+		//West
+		vtxBuf.pos(0.0F, height, 0.0F).color(colourR, colourG, colourB, height).endVertex();
+		vtxBuf.pos(0.0F, height, 0.5F).color(colourR, colourG, colourB, height).endVertex();
+		vtxBuf.pos(0.0F, 0.0F, 0.5F).color(colourR, colourG, colourB, height).endVertex();
+		vtxBuf.pos(0.0F, 0.0F, 0.0F).color(colourR, colourG, colourB, height).endVertex();
+		//Bottom
+		vtxBuf.pos(0.0F, 0.0F, 0.0F).color(colourR, colourG, colourB, height).endVertex();
+		vtxBuf.pos(0.5F, 0.0F, 0.0F).color(colourR, colourG, colourB, height).endVertex();
+		vtxBuf.pos(0.5F, 0.0F, 0.5F).color(colourR, colourG, colourB, height).endVertex();
+		vtxBuf.pos(0.0F, 0.0F, 0.5F).color(colourR, colourG, colourB, height).endVertex();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -92,7 +128,7 @@ public class RenderBeam
 		{
 			_WeaponBase weapon = (_WeaponBase)player.getActiveItemStack().getItem();
 			BeamFiringBehaviour<_WeaponBase> beamFiringBehaviour = (BeamFiringBehaviour<_WeaponBase>) weapon.getFiringBehaviour();
-			
+
 			return new Beam(beamFiringBehaviour.getBeamColour(), start, end);
 		});
 		beam.resetDespawnTimer();
