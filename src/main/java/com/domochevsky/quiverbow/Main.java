@@ -404,14 +404,14 @@ public class Main
 		    addWeapon(new EnderBow()),
 		    addWeapon(new EnderRifle()),
 		    addWeapon(new FenFire()),
-		    addWeapon(new FlintDuster()),
-		    addWeapon(new Sunray()),
+		    //TODO: Reimplement addWeapon(new FlintDuster()),
+		    //TODO: Reimplement addWeapon(new Sunray()),
 		    addWeapon(new PowderKnuckle()),
 		    addWeapon(new PowderKnuckle_Mod()),
 		    addWeapon(new SoulCairn()),
 		    addWeapon(new AquaAccelerator()),
 		    addWeapon(new SilkenSpinner()),
-		    addWeapon(new MediGun()),
+		    //TODO: Reimplement addWeapon(new MediGun()),
 		    addWeapon(new ERA()),
 		    addWeapon(new AA_Targeter()));
 	    registerWeaponsWithAmmo(registry);
@@ -464,8 +464,8 @@ public class Main
 	    registry.registerAll(seedJar, addWeapon(new SeedSweeper(seedJar)));
 	    
 	    //Lightning Red and Redstone Magazine
-	    _AmmoBase redstoneMagazine = addAmmo(new RedstoneMagazine(), "redstone_magazine");
-	    registry.registerAll(redstoneMagazine, addWeapon(new LightningRed(redstoneMagazine)));
+	    /*TODO: Reimplement _AmmoBase redstoneMagazine = addAmmo(new RedstoneMagazine(), "redstone_magazine");
+	    registry.registerAll(redstoneMagazine, addWeapon(new LightningRed(redstoneMagazine)));*/
 	}
 
 	// Helper function for taking care of weapon registration
