@@ -1,6 +1,7 @@
 package com.domochevsky.quiverbow.projectiles;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -56,7 +57,8 @@ public class WaterShot extends _ProjectileBase
 	}
 
 	// Is the space free?
-	if (this.world.getBlockState(pos).getMaterial() == Material.AIR)
+	IBlockState hitState = this.world.getBlockState(pos);
+	if (hitState.getBlock().isReplaceable(world, pos) || hitState.getMaterial() == Material.PLANTS)
 	{
 	    // Can we edit this block at all?
 	    if (this.shootingEntity instanceof EntityPlayer)

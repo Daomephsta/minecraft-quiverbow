@@ -3,6 +3,7 @@ package com.domochevsky.quiverbow.projectiles;
 import com.domochevsky.quiverbow.net.NetHelper;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
@@ -33,7 +34,8 @@ public class WebShot extends _ProjectileBase
 	else pos = target.getBlockPos().offset(target.sideHit);
 
 	// Is the space free?
-	if (this.world.getBlockState(pos).getMaterial() == Material.AIR)
+	IBlockState hitState = this.world.getBlockState(pos);
+	if (hitState.getBlock().isReplaceable(world, pos) || hitState.getMaterial() == Material.PLANTS)
 	{
 	    // Putting a web there!
 	    this.world.setBlockState(pos, Blocks.WEB.getDefaultState(), 3);
