@@ -8,5 +8,5 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 @ObjectHolder(Constants.MODID)
 public class BlockRegistry
 {
-    public static final Block FEN_LIGHT = null;
+	public static final Block FEN_LIGHT = null;
 }

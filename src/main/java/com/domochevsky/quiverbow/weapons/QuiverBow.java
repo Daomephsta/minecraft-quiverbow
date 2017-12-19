@@ -25,127 +25,128 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class QuiverBow extends WeaponBow
 {
-    public QuiverBow()
-    {
-	super("quiverbow", 256);
-    }
-
-    public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft)
-    {
-	int j = this.getMaxItemUseDuration(stack) - timeLeft; // Reduces the
-	// durability by
-	// the
-	// ItemInUseCount
-	// (probably 1 for
-	// anything that
-	// isn't a tool)
-
-	if (entityLiving instanceof EntityPlayer)
+	public QuiverBow()
 	{
-	    ArrowLooseEvent event = new ArrowLooseEvent((EntityPlayer) entityLiving, stack, world, j, false);
-	    MinecraftForge.EVENT_BUS.post(event);
-	    if (event.isCanceled())
-	    {
-		return;
-	    }
-	    j = event.getCharge();
+		super("quiverbow", 256);
 	}
 
-	if (this.getDamage(stack) == stack.getMaxDamage())
+	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft)
 	{
-	    return;
-	} // No arrows in the quiver? Getting out of here early
+		int j = this.getMaxItemUseDuration(stack) - timeLeft; // Reduces the
+		// durability by
+		// the
+		// ItemInUseCount
+		// (probably 1 for
+		// anything that
+		// isn't a tool)
 
-	float f = j / 20.0F;
-	f = (f * f + f * 2.0F) / 3.0F;
+		if (entityLiving instanceof EntityPlayer)
+		{
+			ArrowLooseEvent event = new ArrowLooseEvent((EntityPlayer) entityLiving, stack, world, j, false);
+			MinecraftForge.EVENT_BUS.post(event);
+			if (event.isCanceled())
+			{
+				return;
+			}
+			j = event.getCharge();
+		}
 
-	if (f < 0.1D)
-	{
-	    return;
+		if (this.getDamage(stack) == stack.getMaxDamage())
+		{
+			return;
+		} // No arrows in the quiver? Getting out of here early
+
+		float f = j / 20.0F;
+		f = (f * f + f * 2.0F) / 3.0F;
+
+		if (f < 0.1D)
+		{
+			return;
+		}
+		if (f > 1.0F)
+		{
+			f = 1.0F;
+		}
+
+		Helper.playSoundAtEntityPos(entityLiving, SoundEvents.ENTITY_ARROW_SHOOT, 1.0F,
+				1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
+
+		if (!world.isRemote)
+		{
+			EntityArrow entityarrow = Helper.createArrow(world, entityLiving);
+			entityarrow.setAim(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0.0F, f * 3.0F,
+					1.0F);
+			if (f == 1.0F)
+			{
+				entityarrow.setIsCritical(true);
+			}
+
+			if (entityLiving instanceof EntityPlayer && ((EntityPlayer) entityLiving).capabilities.isCreativeMode)
+			{
+				entityarrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
+			}
+			else
+			{
+				entityarrow.pickupStatus = EntityArrow.PickupStatus.ALLOWED;
+				stack.setItemDamage(this.getDamage(stack) + 1); // Reversed.
+				// MORE Damage
+				// for a shorter
+				// durability
+				// bar
+			}
+
+			world.spawnEntity(entityarrow);
+		}
 	}
-	if (f > 1.0F)
+
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
 	{
-	    f = 1.0F;
+		ItemStack stack = player.getHeldItem(hand);
+		ArrowNockEvent event = new ArrowNockEvent(player, stack, hand, world, false);
+		MinecraftForge.EVENT_BUS.post(event);
+		if (event.isCanceled())
+		{
+			return event.getAction();
+		}
+
+		// Are there any arrows in the quiver?
+		if (this.getDamage(stack) < stack.getMaxDamage())
+		{
+			player.setActiveHand(hand);
+		}
+
+		return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
 	}
 
-	Helper.playSoundAtEntityPos(entityLiving, SoundEvents.ENTITY_ARROW_SHOOT, 1.0F,
-		1.0F / (itemRand.nextFloat() * 0.4F + 1.2F) + f * 0.5F);
-
-	if(!world.isRemote)
+	@Override
+	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-	    EntityArrow entityarrow = Helper.createArrow(world, entityLiving);
-	    entityarrow.setAim(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0.0F, f * 3.0F, 1.0F);
-	    if (f == 1.0F)
-	    {
-		entityarrow.setIsCritical(true);
-	    }
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-	    if (entityLiving instanceof EntityPlayer && ((EntityPlayer) entityLiving).capabilities.isCreativeMode)
-	    {
-		entityarrow.pickupStatus = EntityArrow.PickupStatus.CREATIVE_ONLY;
-	    }
-	    else
-	    {
-		entityarrow.pickupStatus = EntityArrow.PickupStatus.ALLOWED;
-		stack.setItemDamage(this.getDamage(stack) + 1); // Reversed.
-		// MORE Damage
-		// for a shorter
-		// durability
-		// bar
-	    }
-
-	    world.spawnEntity(entityarrow);
-	}
-    }
-
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
-    {
-	ItemStack stack = player.getHeldItem(hand);
-	ArrowNockEvent event = new ArrowNockEvent(player, stack, hand, world, false);
-	MinecraftForge.EVENT_BUS.post(event);
-	if (event.isCanceled())
-	{
-	    return event.getAction();
+		this.isMobUsable = config.get(this.name,
+				"Can I be used by QuiverMobs? (default false. They don't know how to span the string.)", false)
+				.getBoolean(true);
 	}
 
-	// Are there any arrows in the quiver?
-	if (this.getDamage(stack) < stack.getMaxDamage())
+	@Override
+	public void addRecipes() // Enabled defines whether or not the item can be
+	// crafted. Reloading existing weapons is always
+	// permitted.
 	{
-	    player.setActiveHand(hand);
+		if (this.Enabled)
+		{
+			// One quiverbow with 256 damage value (empty)
+			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "zxy", "xzy", "zxy", 'x', Items.STICK,
+					'y', Items.STRING, 'z', Items.LEATHER);
+		}
+		else if (Main.noCreative)
+		{
+			this.setCreativeTab(null);
+		} // Not enabled and not allowed to be in the creative menu
+
+		// Ammo
+		ItemStack bundle = Helper.getAmmoStack(ArrowBundle.class, 0);
+		GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(bundle.getItem(), 8));
 	}
-
-	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-    }
-    
-    @Override
-    public void addProps(FMLPreInitializationEvent event, Configuration config)
-    {
-	this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
-
-	this.isMobUsable = config.get(this.name,
-		"Can I be used by QuiverMobs? (default false. They don't know how to span the string.)", false)
-		.getBoolean(true);
-    }
-
-    @Override
-    public void addRecipes() // Enabled defines whether or not the item can be
-    // crafted. Reloading existing weapons is always
-    // permitted.
-    {
-	if (this.Enabled)
-	{
-	    // One quiverbow with 256 damage value (empty)
-	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "zxy", "xzy", "zxy", 'x', Items.STICK,
-		    'y', Items.STRING, 'z', Items.LEATHER);
-	}
-	else if (Main.noCreative)
-	{
-	    this.setCreativeTab(null);
-	} // Not enabled and not allowed to be in the creative menu
-
-	// Ammo
-	ItemStack bundle = Helper.getAmmoStack(ArrowBundle.class, 0);
-	GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(bundle.getItem(), 8));
-    }
 }

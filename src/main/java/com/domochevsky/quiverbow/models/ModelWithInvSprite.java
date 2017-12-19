@@ -15,61 +15,61 @@ import net.minecraftforge.client.model.IPerspectiveAwareModel;
 
 public class ModelWithInvSprite implements IPerspectiveAwareModel
 {
-    private final IPerspectiveAwareModel model, invSprite;
-    
-    public ModelWithInvSprite(IPerspectiveAwareModel model, IPerspectiveAwareModel invSprite)
-    {
-	this.model = model;
-	this.invSprite = invSprite;
-    }
-    
-    @Override
-    public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand)
-    {
-	return model.getQuads(state, side, rand);
-    }
+	private final IPerspectiveAwareModel model, invSprite;
 
-    @Override
-    public boolean isAmbientOcclusion()
-    {
-	return false;
-    }
+	public ModelWithInvSprite(IPerspectiveAwareModel model, IPerspectiveAwareModel invSprite)
+	{
+		this.model = model;
+		this.invSprite = invSprite;
+	}
 
-    @Override
-    public boolean isGui3d()
-    {
-	return false;
-    }
+	@Override
+	public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand)
+	{
+		return model.getQuads(state, side, rand);
+	}
 
-    @Override
-    public boolean isBuiltInRenderer()
-    {
-	return false;
-    }
+	@Override
+	public boolean isAmbientOcclusion()
+	{
+		return false;
+	}
 
-    @Override
-    public TextureAtlasSprite getParticleTexture()
-    {
-	return invSprite.getParticleTexture();
-    }
+	@Override
+	public boolean isGui3d()
+	{
+		return false;
+	}
 
-    @Override
-    public ItemCameraTransforms getItemCameraTransforms()
-    {
-	return ItemCameraTransforms.DEFAULT;
-    }
+	@Override
+	public boolean isBuiltInRenderer()
+	{
+		return false;
+	}
 
-    @Override
-    public ItemOverrideList getOverrides()
-    {
-	return ItemOverrideList.NONE;
-    }
+	@Override
+	public TextureAtlasSprite getParticleTexture()
+	{
+		return invSprite.getParticleTexture();
+	}
 
-    @Override
-    public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType)
-    {
-	if(cameraTransformType == TransformType.GUI) return invSprite.handlePerspective(cameraTransformType);
-	return model.handlePerspective(cameraTransformType);
-    }
+	@Override
+	public ItemCameraTransforms getItemCameraTransforms()
+	{
+		return ItemCameraTransforms.DEFAULT;
+	}
+
+	@Override
+	public ItemOverrideList getOverrides()
+	{
+		return ItemOverrideList.NONE;
+	}
+
+	@Override
+	public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType)
+	{
+		if (cameraTransformType == TransformType.GUI) return invSprite.handlePerspective(cameraTransformType);
+		return model.handlePerspective(cameraTransformType);
+	}
 
 }

@@ -11,52 +11,53 @@ import net.minecraft.world.World;
 
 public class SugarRod extends _ProjectileBase
 {
-    public SugarRod(World world)
-    {
-	super(world);
-    }
-
-    public SugarRod(World world, Entity entity, float speed, float accHor, float AccVert)
-    {
-	super(world);
-	this.doSetup(entity, speed, accHor, AccVert, entity.rotationYaw, entity.rotationPitch);
-    }
-
-    @Override
-    public void onImpact(RayTraceResult target)
-    {
-	if (target.entityHit != null)
+	public SugarRod(World world)
 	{
-	    target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
-		    (float) this.damage);
-	    target.entityHit.hurtResistantTime = 0;
-	}
-	else // Hit the terrain
-	{
-	    Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 1); // Glass breaking
+		super(world);
 	}
 
-	// SFX
-	NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.CRIT, (byte) 1);
+	public SugarRod(World world, Entity entity, float speed, float accHor, float AccVert)
+	{
+		super(world);
+		this.doSetup(entity, speed, accHor, AccVert, entity.rotationYaw, entity.rotationPitch);
+	}
 
-	this.setDead(); // We've hit something, so begone with the projectile
-    }
+	@Override
+	public void onImpact(RayTraceResult target)
+	{
+		if (target.entityHit != null)
+		{
+			target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
+					(float) this.damage);
+			target.entityHit.hurtResistantTime = 0;
+		}
+		else // Hit the terrain
+		{
+			Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 1); // Glass
+																				// breaking
+		}
 
-    @Override
-    public byte[] getRenderType()
-    {
-	byte[] type = new byte[3];
+		// SFX
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.CRIT, (byte) 1);
 
-	type[0] = 2; // Type 2, generic projectile
-	type[1] = 5; // Length
-	type[2] = 2; // Width
+		this.setDead(); // We've hit something, so begone with the projectile
+	}
 
-	return type;
-    }
+	@Override
+	public byte[] getRenderType()
+	{
+		byte[] type = new byte[3];
 
-    @Override
-    public String getEntityTexturePath()
-    {
-	return "textures/entity/sugar.png";
-    } // Our projectile texture
+		type[0] = 2; // Type 2, generic projectile
+		type[1] = 5; // Length
+		type[2] = 2; // Width
+
+		return type;
+	}
+
+	@Override
+	public String getEntityTexturePath()
+	{
+		return "textures/entity/sugar.png";
+	} // Our projectile texture
 }

@@ -10,26 +10,26 @@ import net.minecraft.world.World;
 
 public abstract class ProjectilePotionEffect extends _ProjectileBase
 {
-    private PotionEffect[] effects;
+	private PotionEffect[] effects;
 
-    public ProjectilePotionEffect(World world, PotionEffect... effects)
-    {
-	super(world);
-	this.effects = effects;
-    }
-
-    @Override
-    public void onImpact(RayTraceResult hitPos)
-    {
-	hitPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
-		(float) this.damage);
-	hitPos.entityHit.hurtResistantTime = 0; // No immunity frames
-	if (hitPos.entityHit instanceof EntityLivingBase) // We hit a LIVING
-							  // living thing!
+	public ProjectilePotionEffect(World world, PotionEffect... effects)
 	{
-	    EntityLivingBase entitylivingbase = (EntityLivingBase) hitPos.entityHit;
-	    for (PotionEffect effect : effects)
-		Helper.applyPotionEffect(entitylivingbase, effect);
+		super(world);
+		this.effects = effects;
 	}
-    }
+
+	@Override
+	public void onImpact(RayTraceResult hitPos)
+	{
+		hitPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
+				(float) this.damage);
+		hitPos.entityHit.hurtResistantTime = 0; // No immunity frames
+		if (hitPos.entityHit instanceof EntityLivingBase) // We hit a LIVING
+		// living thing!
+		{
+			EntityLivingBase entitylivingbase = (EntityLivingBase) hitPos.entityHit;
+			for (PotionEffect effect : effects)
+				Helper.applyPotionEffect(entitylivingbase, effect);
+		}
+	}
 }

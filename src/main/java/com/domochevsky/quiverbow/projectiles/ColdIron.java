@@ -12,87 +12,87 @@ import net.minecraft.world.World;
 
 public class ColdIron extends ProjectilePotionEffect
 {
-    public ColdIron(World world)
-    {
-	super(world);
-    }
-
-    public ColdIron(World world, Entity entity, float speed, PotionEffect... effects)
-    {
-	super(world, effects);
-	this.doSetup(entity, speed);
-    }
-
-    @Override
-    public boolean doDropOff()
-    {
-	return false;
-    } // If this returns false then we won't care about gravity
-
-    @Override
-    public void doFlightSFX()
-    {
-	// Doing our own (reduced) gravity
-	this.motionY -= 0.025; // Default is 0.05
-
-	NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SNOW_SHOVEL,
-		(byte) 1);
-	NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SPELL, (byte) 2);
-    }
-
-    @Override
-    public void onImpact(RayTraceResult target)
-    {
-	if (target.entityHit != null) // We hit a living thing!
+	public ColdIron(World world)
 	{
-	    super.onImpact(target);
+		super(world);
+	}
 
-	    // Knockback
-	    if (this.knockbackStrength > 0)
-	    {
-		float velocity = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
-		if (velocity > 0.0F)
+	public ColdIron(World world, Entity entity, float speed, PotionEffect... effects)
+	{
+		super(world, effects);
+		this.doSetup(entity, speed);
+	}
+
+	@Override
+	public boolean doDropOff()
+	{
+		return false;
+	} // If this returns false then we won't care about gravity
+
+	@Override
+	public void doFlightSFX()
+	{
+		// Doing our own (reduced) gravity
+		this.motionY -= 0.025; // Default is 0.05
+
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SNOW_SHOVEL,
+				(byte) 1);
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SPELL, (byte) 2);
+	}
+
+	@Override
+	public void onImpact(RayTraceResult target)
+	{
+		if (target.entityHit != null) // We hit a living thing!
 		{
-		    target.entityHit.addVelocity(
-			    this.motionX * (double) this.knockbackStrength * 0.6000000238418579D / (double) velocity,
-			    0.1D,
-			    this.motionZ * (double) this.knockbackStrength * 0.6000000238418579D / (double) velocity);
+			super.onImpact(target);
+
+			// Knockback
+			if (this.knockbackStrength > 0)
+			{
+				float velocity = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
+				if (velocity > 0.0F)
+				{
+					target.entityHit.addVelocity(
+							this.motionX * (double) this.knockbackStrength * 0.6000000238418579D / (double) velocity,
+							0.1D,
+							this.motionZ * (double) this.knockbackStrength * 0.6000000238418579D / (double) velocity);
+				}
+				// else, no velocity so no knockback
+			}
+			// else, no knockback
+
+			this.setDead(); // Hit something, so begone.
 		}
-		// else, no velocity so no knockback
-	    }
-	    // else, no knockback
-
-	    this.setDead(); // Hit something, so begone.
+		else // Hit the terrain
+		{
+			// Glass breaking, 3 layers
+			if (Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 1) && this.targetsHit < 3)
+			{
+				this.targetsHit += 1;
+			}
+			else
+			{
+				this.setDead();
+			} // Going straight through glass, up to twice
+		}
 	}
-	else // Hit the terrain
+
+	@Override
+	public byte[] getRenderType()
 	{
-	    // Glass breaking, 3 layers
-	    if (Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 1) && this.targetsHit < 3)
-	    {
-		this.targetsHit += 1;
-	    }
-	    else
-	    {
-		this.setDead();
-	    } // Going straight through glass, up to twice
+		byte[] type = new byte[3];
+
+		type[0] = 2; // Type 2, generic projectile
+		type[1] = 8; // Length
+		type[2] = 2; // Width
+
+		return type;
 	}
-    }
 
-    @Override
-    public byte[] getRenderType()
-    {
-	byte[] type = new byte[3];
-
-	type[0] = 2; // Type 2, generic projectile
-	type[1] = 8; // Length
-	type[2] = 2; // Width
-
-	return type;
-    }
-
-    @Override
-    public String getEntityTexturePath()
-    {
-	return "textures/entity/coldiron.png";
-    } // Our projectile texture
+	@Override
+	public String getEntityTexturePath()
+	{
+		return "textures/entity/coldiron.png";
+	} // Our projectile texture
 }

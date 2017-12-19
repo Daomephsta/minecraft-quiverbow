@@ -11,58 +11,58 @@ import com.domochevsky.quiverbow.net.NetHelper;
 
 public class Thorn extends _ProjectileBase
 {
-    public Thorn(World world)
-    {
-	super(world);
-    }
-
-    public Thorn(World world, Entity entity, float speed)
-    {
-	super(world);
-	this.doSetup(entity, speed);
-    }
-
-    public Thorn(World world, Entity entity, float speed, float yaw, float pitch)
-    {
-	super(world);
-	this.doSetup(entity, speed, 0, 0, yaw, pitch);
-    }
-
-    @Override
-    public void onImpact(RayTraceResult movPos) // Server-side
-    {
-	if (movPos.entityHit != null)
+	public Thorn(World world)
 	{
-	    movPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
-		    (float) this.damage);
-	    movPos.entityHit.hurtResistantTime = 0; // No rest for the wicked
-	}
-	else // Hit the terrain
-	{
-	    Helper.tryBlockBreak(this.world, this, movPos.getBlockPos(), 1);
+		super(world);
 	}
 
-	// SFX
-	NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.CRIT, (byte) 1);
+	public Thorn(World world, Entity entity, float speed)
+	{
+		super(world);
+		this.doSetup(entity, speed);
+	}
 
-	this.setDead(); // We've hit something, so begone with the projectile
-    }
+	public Thorn(World world, Entity entity, float speed, float yaw, float pitch)
+	{
+		super(world);
+		this.doSetup(entity, speed, 0, 0, yaw, pitch);
+	}
 
-    @Override
-    public byte[] getRenderType()
-    {
-	byte[] type = new byte[3];
+	@Override
+	public void onImpact(RayTraceResult movPos) // Server-side
+	{
+		if (movPos.entityHit != null)
+		{
+			movPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
+					(float) this.damage);
+			movPos.entityHit.hurtResistantTime = 0; // No rest for the wicked
+		}
+		else // Hit the terrain
+		{
+			Helper.tryBlockBreak(this.world, this, movPos.getBlockPos(), 1);
+		}
 
-	type[0] = 2; // Type 2, generic projectile
-	type[1] = 2; // Length
-	type[2] = 2; // Width
+		// SFX
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.CRIT, (byte) 1);
 
-	return type; // Fallback, 0 0 0
-    }
+		this.setDead(); // We've hit something, so begone with the projectile
+	}
 
-    @Override
-    public String getEntityTexturePath()
-    {
-	return "textures/entity/thorn.png";
-    } // Our projectile texture
+	@Override
+	public byte[] getRenderType()
+	{
+		byte[] type = new byte[3];
+
+		type[0] = 2; // Type 2, generic projectile
+		type[1] = 2; // Length
+		type[2] = 2; // Width
+
+		return type; // Fallback, 0 0 0
+	}
+
+	@Override
+	public String getEntityTexturePath()
+	{
+		return "textures/entity/thorn.png";
+	} // Our projectile texture
 }

@@ -8,14 +8,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class TurretInventoryPacket implements IMessageHandler<TurretInventoryMessage, IMessage>
 {
-    @Override
-    public IMessage onMessage(TurretInventoryMessage message, MessageContext ctx)
-    {
-	if (ctx.side.isClient()) // just to make sure that the side is correct
+	@Override
+	public IMessage onMessage(TurretInventoryMessage message, MessageContext ctx)
 	{
-	    Helper_Client.setTurretInventory(message.entityID, message.itemID, message.itemSlot, message.metadata);
-	}
+		if (ctx.side.isClient()) // just to make sure that the side is correct
+		{
+			Helper_Client.setTurretInventory(message.entityID, message.itemID, message.itemSlot, message.metadata);
+		}
 
-	return null; // Don't care about returning anything
-    }
+		return null; // Don't care about returning anything
+	}
 }

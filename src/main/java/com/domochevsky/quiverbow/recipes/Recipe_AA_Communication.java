@@ -12,49 +12,49 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class Recipe_AA_Communication extends ShapelessRecipes implements IRecipe
 {
-    public Recipe_AA_Communication(ItemStack result, List<ItemStack> components)
-    {
-	super(result, components);
-    }
-
-    @Override
-    public ItemStack getCraftingResult(InventoryCrafting matrix)
-    {
-	ItemStack stack = this.getRecipeOutput().copy();
-	ItemStack previousAA = this.getAAFromMatrix(matrix);
-
-	if (!previousAA.isEmpty() && previousAA.hasTagCompound()) // Copying
-							       // existing
-							       // properties
+	public Recipe_AA_Communication(ItemStack result, List<ItemStack> components)
 	{
-	    stack.setTagCompound((NBTTagCompound) previousAA.getTagCompound().copy());
-	}
-	else // ...or just applying new ones
-	{
-	    stack.setTagCompound(new NBTTagCompound());
+		super(result, components);
 	}
 
-	// Apply the new upgrade now
-	stack.getTagCompound().setBoolean("hasCommunicationUpgrade", true);
-
-	return stack;
-    }
-
-    private ItemStack getAAFromMatrix(InventoryCrafting matrix)
-    {
-	int counter = 0;
-
-	while (counter < matrix.getSizeInventory())
+	@Override
+	public ItemStack getCraftingResult(InventoryCrafting matrix)
 	{
-	    if (!matrix.getStackInSlot(counter).isEmpty()
-		    && matrix.getStackInSlot(counter).getItem() instanceof PackedUpAA)
-	    {
-		return matrix.getStackInSlot(counter); // Found it
-	    }
+		ItemStack stack = this.getRecipeOutput().copy();
+		ItemStack previousAA = this.getAAFromMatrix(matrix);
 
-	    counter += 1;
+		if (!previousAA.isEmpty() && previousAA.hasTagCompound()) // Copying
+		// existing
+		// properties
+		{
+			stack.setTagCompound((NBTTagCompound) previousAA.getTagCompound().copy());
+		}
+		else // ...or just applying new ones
+		{
+			stack.setTagCompound(new NBTTagCompound());
+		}
+
+		// Apply the new upgrade now
+		stack.getTagCompound().setBoolean("hasCommunicationUpgrade", true);
+
+		return stack;
 	}
 
-	return ItemStack.EMPTY;
-    }
+	private ItemStack getAAFromMatrix(InventoryCrafting matrix)
+	{
+		int counter = 0;
+
+		while (counter < matrix.getSizeInventory())
+		{
+			if (!matrix.getStackInSlot(counter).isEmpty()
+					&& matrix.getStackInSlot(counter).getItem() instanceof PackedUpAA)
+			{
+				return matrix.getStackInSlot(counter); // Found it
+			}
+
+			counter += 1;
+		}
+
+		return ItemStack.EMPTY;
+	}
 }

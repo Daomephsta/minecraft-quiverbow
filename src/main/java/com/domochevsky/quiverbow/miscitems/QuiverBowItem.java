@@ -13,18 +13,18 @@ import net.minecraft.item.ItemStack;
 
 public abstract class QuiverBowItem extends Item
 {
-    @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean unknown)
-    {
-	Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".description"));
-    }
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean unknown)
+	{
+		Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".description"));
+	}
 
-    public void addRecipes()
-    {} // Called once after all items have been registered and initialized
-    
-    @Override
-    public CreativeTabs getCreativeTab()
-    {
-        return Main.QUIVERBOW_TAB;
-    }
+	public void addRecipes()
+	{} // Called once after all items have been registered and initialized
+
+	@Override
+	public CreativeTabs getCreativeTab()
+	{
+		return Main.QUIVERBOW_TAB;
+	}
 }

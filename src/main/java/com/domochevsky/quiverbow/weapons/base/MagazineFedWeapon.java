@@ -14,62 +14,62 @@ import net.minecraft.world.World;
 
 public class MagazineFedWeapon extends _WeaponBase
 {
-    protected final Item ammo;
-    
-    public MagazineFedWeapon(String name, _AmmoBase ammo, int maxAmmo)
-    {
-	super(name, maxAmmo);
-	this.ammo = ammo;
-    }
+	protected final Item ammo;
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
-    {
-	ItemStack stack = player.getHeldItem(hand);
-	if (this.getDamage(stack) >= stack.getMaxDamage())
+	public MagazineFedWeapon(String name, _AmmoBase ammo, int maxAmmo)
 	{
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
-	} // Is empty
-
-	if (player.isSneaking()) // Dropping the magazine
-	{
-	    this.dropMagazine(world, stack, player);
-	    return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
+		super(name, maxAmmo);
+		this.ammo = ammo;
 	}
 
-	firingBehaviour.fire(stack, world, player, hand);
-	// neutral firing function
-	return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-    }
-
-    public void dropMagazine(World world, ItemStack stack, Entity entity)
-    {
-	if (!(entity instanceof EntityPlayer)) // For QuiverMobs/Arms Assistants
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
 	{
-	    this.setCooldown(stack, 120);
-	    return;
+		ItemStack stack = player.getHeldItem(hand);
+		if (this.getDamage(stack) >= stack.getMaxDamage())
+		{
+			return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
+		} // Is empty
+
+		if (player.isSneaking()) // Dropping the magazine
+		{
+			this.dropMagazine(world, stack, player);
+			return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
+		}
+
+		firingBehaviour.fire(stack, world, player, hand);
+		// neutral firing function
+		return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
 	}
 
-	if(!world.isRemote)
+	public void dropMagazine(World world, ItemStack stack, Entity entity)
 	{
-	    ItemStack clipStack = new ItemStack(getAmmo(), 1, stack.getItemDamage());
+		if (!(entity instanceof EntityPlayer)) // For QuiverMobs/Arms Assistants
+		{
+			this.setCooldown(stack, 120);
+			return;
+		}
 
-	    // Creating the clip
-	    EntityItem entityitem = new EntityItem(world, entity.posX, entity.posY + 1.0d, entity.posZ, clipStack);
-	    entityitem.setPickupDelay(40);
-	    world.spawnEntity(entityitem);
+		if (!world.isRemote)
+		{
+			ItemStack clipStack = new ItemStack(getAmmo(), 1, stack.getItemDamage());
+
+			// Creating the clip
+			EntityItem entityitem = new EntityItem(world, entity.posX, entity.posY + 1.0d, entity.posZ, clipStack);
+			entityitem.setPickupDelay(40);
+			world.spawnEntity(entityitem);
+		}
+		stack.setItemDamage(stack.getMaxDamage()); // Emptying out
+		doUnloadFX(world, entity);
 	}
-	stack.setItemDamage(stack.getMaxDamage()); // Emptying out
-	doUnloadFX(world, entity);
-    }
 
-    public Item getAmmo()
-    {
-	return ammo;
-    }
-    
-    protected void doUnloadFX(World world, Entity entity)
-    {
+	public Item getAmmo()
+	{
+		return ammo;
+	}
 
-    }
+	protected void doUnloadFX(World world, Entity entity)
+	{
+
+	}
 }

@@ -11,21 +11,21 @@ import net.minecraft.world.World;
 
 public abstract class ProjectileFiringBehaviour<W extends _WeaponBase> extends FiringBehaviourBase<W>
 {
-    public static interface IProjectileFactory
-    {
-	public _ProjectileBase createProjectile(World world, ItemStack weaponStack, Entity entity, @Nullable IProjectileData data);
-    }
-    
-    public static interface IProjectileData
-    {
-	
-    }
-    
-    protected final IProjectileFactory projectileFactory;
-    
-    protected ProjectileFiringBehaviour(W weapon, IProjectileFactory projectileFactory)
-    {
-	super(weapon);
-	this.projectileFactory = projectileFactory;
-    }
+	public static interface IProjectileFactory
+	{
+		public _ProjectileBase createProjectile(World world, ItemStack weaponStack, Entity entity, @Nullable IProjectileData data);
+	}
+
+	public static interface IProjectileData
+	{
+
+	}
+
+	protected final IProjectileFactory projectileFactory;
+
+	protected ProjectileFiringBehaviour(W weapon, IProjectileFactory projectileFactory)
+	{
+		super(weapon);
+		this.projectileFactory = projectileFactory;
+	}
 }

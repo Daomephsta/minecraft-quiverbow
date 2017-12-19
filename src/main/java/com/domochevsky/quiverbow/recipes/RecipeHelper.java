@@ -6,59 +6,59 @@ import net.minecraft.world.World;
 
 public class RecipeHelper
 {
-    // Returns true if these components are what I'm looking for to make my item
-    public static boolean doesRecipeMatch(ItemStack[] recipeItems, InventoryCrafting matrix, World world)
-    {
-	int requiredMatches = 9;
-	int matches = 0;
-
-	int currentSlot = 0;
-	ItemStack currentStack;
-
-	while (currentSlot < 9) // Going through all 9 slots
+	// Returns true if these components are what I'm looking for to make my item
+	public static boolean doesRecipeMatch(ItemStack[] recipeItems, InventoryCrafting matrix, World world)
 	{
-	    currentStack = matrix.getStackInSlot(currentSlot); // Hand me your
-							       // item, slot
+		int requiredMatches = 9;
+		int matches = 0;
 
-	    if (!currentStack.isEmpty() && !recipeItems[currentSlot].isEmpty())
-	    {
-		if (currentStack.getItem() != recipeItems[currentSlot].getItem())
+		int currentSlot = 0;
+		ItemStack currentStack;
+
+		while (currentSlot < 9) // Going through all 9 slots
 		{
-		    return false; // Not the right item
+			currentStack = matrix.getStackInSlot(currentSlot); // Hand me your
+			// item, slot
+
+			if (!currentStack.isEmpty() && !recipeItems[currentSlot].isEmpty())
+			{
+				if (currentStack.getItem() != recipeItems[currentSlot].getItem())
+				{
+					return false; // Not the right item
+				}
+				else if (currentStack.isItemStackDamageable()
+						&& currentStack.getItemDamage() != recipeItems[currentSlot].getItemDamage())
+				{
+					return false; // Damage doesn't match up
+				}
+				else if (currentStack.isStackable() && currentStack.getCount() < recipeItems[currentSlot].getCount())
+				{
+					return false; // Not the right amount
+				}
+				else
+				{
+					matches += 1; // Seems to check out
+				}
+			}
+			else if (currentStack.isEmpty() && recipeItems[currentSlot].isEmpty())
+			{
+				matches += 1; // Both null, so that works for me too
+			}
+
+			// Next!
+			currentSlot += 1;
 		}
-		else if (currentStack.isItemStackDamageable()
-			&& currentStack.getItemDamage() != recipeItems[currentSlot].getItemDamage())
+
+		// if (!world.isRemote) { System.out.println("[RECIPE] Found " + matches
+		// + " matches out of " + requiredMatches + "."); }
+
+		if (matches == requiredMatches)
 		{
-		    return false; // Damage doesn't match up
-		}
-		else if (currentStack.isStackable() && currentStack.getCount() < recipeItems[currentSlot].getCount())
-		{
-		    return false; // Not the right amount
-		}
+			return true;
+		} // Found all we need
 		else
 		{
-		    matches += 1; // Seems to check out
-		}
-	    }
-	    else if (currentStack.isEmpty() && recipeItems[currentSlot].isEmpty())
-	    {
-		matches += 1; // Both null, so that works for me too
-	    }
-
-	    // Next!
-	    currentSlot += 1;
+			return false;
+		} // Not enough
 	}
-
-	// if (!world.isRemote) { System.out.println("[RECIPE] Found " + matches
-	// + " matches out of " + requiredMatches + "."); }
-
-	if (matches == requiredMatches)
-	{
-	    return true;
-	} // Found all we need
-	else
-	{
-	    return false;
-	} // Not enough
-    }
 }

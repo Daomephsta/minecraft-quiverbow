@@ -1,7 +1,6 @@
 package com.domochevsky.quiverbow.renderer;
 
-/*
- * public class Render_Weapon implements IItemRenderer { byte weaponID;
+/* public class Render_Weapon implements IItemRenderer { byte weaponID;
  * 
  * //ModelBase model; ResourceLocation tex;
  * 
@@ -106,5 +105,4 @@ package com.domochevsky.quiverbow.renderer;
  * } else { Main.models.get(weaponID).render((Entity) data[1], 0.0F, 0.0F, 0.0F,
  * 0.0F, 0.0F, 0.0625F); } GL11.glPopMatrix(); break;
  * 
- * default: break; } } }
- */
+ * default: break; } } } */

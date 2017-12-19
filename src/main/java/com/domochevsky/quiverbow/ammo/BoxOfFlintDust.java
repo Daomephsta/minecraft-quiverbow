@@ -8,20 +8,20 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class BoxOfFlintDust extends _AmmoBase
 {
-    public BoxOfFlintDust()
-    {
-	this.setMaxDamage(16);
-	this.setCreativeTab(CreativeTabs.TOOLS);
+	public BoxOfFlintDust()
+	{
+		this.setMaxDamage(16);
+		this.setCreativeTab(CreativeTabs.TOOLS);
 
-	this.setHasSubtypes(true);
-    }
+		this.setHasSubtypes(true);
+	}
 
-    @Override
-    public void addRecipes()
-    {
-	// A box of flint dust (4 dust per flint, meaning 32 per box), merged
-	// with wooden planks
-	GameRegistry.addShapelessRecipe(new ItemStack(this), Items.FLINT, Items.FLINT, Items.FLINT, Items.FLINT,
-		Items.FLINT, Items.FLINT, Items.FLINT, Items.FLINT, Blocks.PLANKS);
-    }
+	@Override
+	public void addRecipes()
+	{
+		// A box of flint dust (4 dust per flint, meaning 32 per box), merged
+		// with wooden planks
+		GameRegistry.addShapelessRecipe(new ItemStack(this), Items.FLINT, Items.FLINT, Items.FLINT, Items.FLINT,
+				Items.FLINT, Items.FLINT, Items.FLINT, Items.FLINT, Blocks.PLANKS);
+	}
 }

@@ -7,11 +7,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ColdIronClip extends _AmmoBase
 {
-    @Override
-    public void addRecipes()
-    {
-	// A bundle of ice-laced iron ingots (4), merged with a slime ball
-	GameRegistry.addShapelessRecipe(new ItemStack(this), Items.IRON_INGOT, Items.IRON_INGOT, Items.IRON_INGOT,
-		Items.IRON_INGOT, Blocks.ICE, Blocks.ICE, Blocks.ICE, Blocks.ICE, Items.SLIME_BALL);
-    }
+	@Override
+	public void addRecipes()
+	{
+		// A bundle of ice-laced iron ingots (4), merged with a slime ball
+		GameRegistry.addShapelessRecipe(new ItemStack(this), Items.IRON_INGOT, Items.IRON_INGOT, Items.IRON_INGOT,
+				Items.IRON_INGOT, Blocks.ICE, Blocks.ICE, Blocks.ICE, Blocks.ICE, Items.SLIME_BALL);
+	}
 }

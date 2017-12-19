@@ -12,23 +12,23 @@ import net.minecraft.item.ItemStack;
 
 public abstract class _AmmoBase extends QuiverBowItem
 {
-    public _AmmoBase()
-    {
-	this.setMaxStackSize(16);
-	this.setCreativeTab(CreativeTabs.COMBAT); // On the combat tab by
-						  // default, since this is
-						  // amunition
-    }
+	public _AmmoBase()
+	{
+		this.setMaxStackSize(16);
+		this.setCreativeTab(CreativeTabs.COMBAT); // On the combat tab by
+		// default, since this is
+		// amunition
+	}
 
-    @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean unknown)
-    {
-	Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".description"));
-    }
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean unknown)
+	{
+		Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".description"));
+	}
 
-    @Override
-    public boolean showDurabilityBar(ItemStack stack)
-    {
-	return false;
-    } // Don't care about durabilities
+	@Override
+	public boolean showDurabilityBar(ItemStack stack)
+	{
+		return false;
+	} // Don't care about durabilities
 }

@@ -38,8 +38,8 @@ public class RenderBeam
 		private double endPosX, endPosY, endPosZ;
 		// The position where the beam ended last tick
 		private double prevEndPosX, prevEndPosY, prevEndPosZ;
-		//The length of the beam
-		private double length; 
+		// The length of the beam
+		private double length;
 
 		public Beam(int beamColour, Vec3d beamStart, Vec3d beamEnd)
 		{
@@ -53,7 +53,7 @@ public class RenderBeam
 			this.endPosZ = this.prevEndPosZ = beamEnd.zCoord;
 			this.length = beamStart.distanceTo(beamEnd);
 		}
-		
+
 		public void updateEnds(Vec3d beamStart, Vec3d beamEnd)
 		{
 			this.prevStartPosX = this.startPosX;
@@ -62,7 +62,7 @@ public class RenderBeam
 			this.startPosX = beamStart.xCoord;
 			this.startPosY = beamStart.yCoord;
 			this.startPosZ = beamStart.zCoord;
-			
+
 			this.prevEndPosX = this.endPosX;
 			this.prevEndPosY = this.endPosY;
 			this.prevEndPosZ = this.endPosZ;
@@ -81,10 +81,10 @@ public class RenderBeam
 	@SubscribeEvent
 	public static void renderBeam(RenderWorldLastEvent event)
 	{
-		for(Iterator<Beam> iter = beams.values().iterator(); iter.hasNext();) 
-		{		
+		for (Iterator<Beam> iter = beams.values().iterator(); iter.hasNext();)
+		{
 			Beam beam = iter.next();
-			if(beam.timeTillDespawn-- <= 0)
+			if (beam.timeTillDespawn-- <= 0)
 			{
 				iter.remove();
 				continue;
@@ -94,17 +94,26 @@ public class RenderBeam
 			VertexBuffer vtxBuf = tess.getBuffer();
 
 			Minecraft mc = Minecraft.getMinecraft();
-			double interpPlayerX = mc.player.posX * event.getPartialTicks() + mc.player.prevPosX * (1.0F - event.getPartialTicks());
-			double interpPlayerY = mc.player.posY * event.getPartialTicks() + mc.player.prevPosY * (1.0F - event.getPartialTicks());
-			double interpPlayerZ = mc.player.posZ * event.getPartialTicks() + mc.player.prevPosZ * (1.0F - event.getPartialTicks());
-			
-			double interpBeamStartX = beam.startPosX * event.getPartialTicks() + beam.prevStartPosX * (1.0F - event.getPartialTicks());
-			double interpBeamStartY = beam.startPosY * event.getPartialTicks() + beam.prevStartPosY * (1.0F - event.getPartialTicks());
-			double interpBeamStartZ = beam.startPosZ * event.getPartialTicks() + beam.prevStartPosZ * (1.0F - event.getPartialTicks());
-			
-			double interpBeamEndX = beam.endPosX * event.getPartialTicks() + beam.prevEndPosX * (1.0F - event.getPartialTicks());
-			double interpBeamEndY = beam.endPosY * event.getPartialTicks() + beam.prevEndPosY * (1.0F - event.getPartialTicks());
-			double interpBeamEndZ = beam.endPosZ * event.getPartialTicks() + beam.prevEndPosZ * (1.0F - event.getPartialTicks());
+			double interpPlayerX = mc.player.posX * event.getPartialTicks()
+					+ mc.player.prevPosX * (1.0F - event.getPartialTicks());
+			double interpPlayerY = mc.player.posY * event.getPartialTicks()
+					+ mc.player.prevPosY * (1.0F - event.getPartialTicks());
+			double interpPlayerZ = mc.player.posZ * event.getPartialTicks()
+					+ mc.player.prevPosZ * (1.0F - event.getPartialTicks());
+
+			double interpBeamStartX = beam.startPosX * event.getPartialTicks()
+					+ beam.prevStartPosX * (1.0F - event.getPartialTicks());
+			double interpBeamStartY = beam.startPosY * event.getPartialTicks()
+					+ beam.prevStartPosY * (1.0F - event.getPartialTicks());
+			double interpBeamStartZ = beam.startPosZ * event.getPartialTicks()
+					+ beam.prevStartPosZ * (1.0F - event.getPartialTicks());
+
+			double interpBeamEndX = beam.endPosX * event.getPartialTicks()
+					+ beam.prevEndPosX * (1.0F - event.getPartialTicks());
+			double interpBeamEndY = beam.endPosY * event.getPartialTicks()
+					+ beam.prevEndPosY * (1.0F - event.getPartialTicks());
+			double interpBeamEndZ = beam.endPosZ * event.getPartialTicks()
+					+ beam.prevEndPosZ * (1.0F - event.getPartialTicks());
 
 			float colourR = ((beam.beamColour >> 16) & 255) / 255.0F;
 			float colourB = ((beam.beamColour >> 8) & 255) / 255.0F;
@@ -115,9 +124,11 @@ public class RenderBeam
 			GlStateManager.disableTexture2D();
 			GlStateManager.disableCull();
 			vtxBuf.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-			vtxBuf.pos(interpBeamStartX, interpBeamStartY, interpBeamStartZ).color(colourR, colourG, colourB, 1.0F).endVertex();
-			vtxBuf.pos(interpBeamEndX, interpBeamEndY, interpBeamEndZ).color(colourR, colourG, colourB, 1.0F).endVertex();
-			//renderInnerBeam(vtxBuf, beam, colourR, colourG, colourB);
+			vtxBuf.pos(interpBeamStartX, interpBeamStartY, interpBeamStartZ).color(colourR, colourG, colourB, 1.0F)
+					.endVertex();
+			vtxBuf.pos(interpBeamEndX, interpBeamEndY, interpBeamEndZ).color(colourR, colourG, colourB, 1.0F)
+					.endVertex();
+			// renderInnerBeam(vtxBuf, beam, colourR, colourG, colourB);
 			tess.draw();
 			GlStateManager.enableCull();
 			GlStateManager.enableTexture2D();
@@ -127,32 +138,32 @@ public class RenderBeam
 
 	private static void renderInnerBeam(VertexBuffer vtxBuf, Beam beam, float colourR, float colourG, float colourB)
 	{
-		//Top
+		// Top
 		vtxBuf.pos(0.0F, beam.length, 0.0F).color(colourR / 2, colourG, colourB, 1.0F).endVertex();
 		vtxBuf.pos(0.5F, beam.length, 0.0F).color(colourR / 2, colourG, colourB, 1.0F).endVertex();
 		vtxBuf.pos(0.5F, beam.length, 0.5F).color(colourR / 2, colourG, colourB, 1.0F).endVertex();
 		vtxBuf.pos(0.0F, beam.length, 0.5F).color(colourR / 2, colourG, colourB, 1.0F).endVertex();
-		//North
+		// North
 		vtxBuf.pos(0.0F, beam.length, 0.0F).color(colourR / 2, colourG / 2, colourB, 1.0F).endVertex();
 		vtxBuf.pos(0.5F, beam.length, 0.0F).color(colourR / 2, colourG / 2, colourB, 1.0F).endVertex();
 		vtxBuf.pos(0.5F, 0.0F, 0.0F).color(colourR / 2, colourG / 2, colourB, 1.0F).endVertex();
 		vtxBuf.pos(0.0F, 0.0F, 0.0F).color(colourR / 2, colourG / 2, colourB, 1.0F).endVertex();
-		//South
+		// South
 		vtxBuf.pos(0.0F, beam.length, 0.5F).color(colourR, colourG / 2, colourB, 1.0F).endVertex();
 		vtxBuf.pos(0.5F, beam.length, 0.5F).color(colourR, colourG / 2, colourB, 1.0F).endVertex();
 		vtxBuf.pos(0.5F, 0.0F, 0.5F).color(colourR, colourG / 2, colourB, 1.0F).endVertex();
 		vtxBuf.pos(0.0F, 0.0F, 0.5F).color(colourR, colourG / 2, colourB, 1.0F).endVertex();
-		//East
+		// East
 		vtxBuf.pos(0.5F, beam.length, 0.0F).color(colourR, colourG / 2, colourB / 2, 1.0F).endVertex();
 		vtxBuf.pos(0.5F, beam.length, 0.5F).color(colourR, colourG / 2, colourB / 2, 1.0F).endVertex();
 		vtxBuf.pos(0.5F, 0.0F, 0.5F).color(colourR, colourG / 2, colourB / 2, 1.0F).endVertex();
 		vtxBuf.pos(0.5F, 0.0F, 0.0F).color(colourR, colourG / 2, colourB / 2, 1.0F).endVertex();
-		//West
+		// West
 		vtxBuf.pos(0.0F, beam.length, 0.0F).color(colourR, colourG, colourB / 2, 1.0F).endVertex();
 		vtxBuf.pos(0.0F, beam.length, 0.5F).color(colourR, colourG, colourB / 2, 1.0F).endVertex();
 		vtxBuf.pos(0.0F, 0.0F, 0.5F).color(colourR, colourG, colourB / 2, 1.0F).endVertex();
 		vtxBuf.pos(0.0F, 0.0F, 0.0F).color(colourR, colourG, colourB / 2, 1.0F).endVertex();
-		//Bottom
+		// Bottom
 		vtxBuf.pos(0.0F, 0.0F, 0.0F).color(colourR / 2, colourG, colourB / 2, 1.0F).endVertex();
 		vtxBuf.pos(0.5F, 0.0F, 0.0F).color(colourR / 2, colourG, colourB / 2, 1.0F).endVertex();
 		vtxBuf.pos(0.5F, 0.0F, 0.5F).color(colourR / 2, colourG, colourB / 2, 1.0F).endVertex();
@@ -162,10 +173,11 @@ public class RenderBeam
 	@SuppressWarnings("unchecked")
 	public static void updateBeam(Vec3d start, Vec3d end)
 	{
-		Beam beam = beams.computeIfAbsent(Minecraft.getMinecraft().player, player -> 
+		Beam beam = beams.computeIfAbsent(Minecraft.getMinecraft().player, player ->
 		{
-			_WeaponBase weapon = (_WeaponBase)player.getActiveItemStack().getItem();
-			BeamFiringBehaviour<_WeaponBase> beamFiringBehaviour = (BeamFiringBehaviour<_WeaponBase>) weapon.getFiringBehaviour();
+			_WeaponBase weapon = (_WeaponBase) player.getActiveItemStack().getItem();
+			BeamFiringBehaviour<_WeaponBase> beamFiringBehaviour = (BeamFiringBehaviour<_WeaponBase>) weapon
+					.getFiringBehaviour();
 
 			return new Beam(beamFiringBehaviour.getBeamColour(), start, end);
 		});

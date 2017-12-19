@@ -26,147 +26,146 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class PowderKnuckle_Mod extends PowderKnuckle
 {
-    public PowderKnuckle_Mod()
-    {
-	super("powder_knuckle_mod", 8);
-    }
-
-    @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing,
-	    float hitX, float hitY, float hitZ)
-    {
-	ItemStack stack = player.getHeldItem(hand);
-	// Right click
-	if (this.getDamage(stack) >= stack.getMaxDamage())
+	public PowderKnuckle_Mod()
 	{
-	    return EnumActionResult.FAIL;
-	} // Not loaded
+		super("powder_knuckle_mod", 8);
+	}
 
-	this.consumeAmmo(stack, player, 1);
-	//Not safe for clients past here.
-	if(world.isRemote) return EnumActionResult.SUCCESS;
-
-	// SFX
-	NetHelper.sendParticleMessageToAllPlayers(world, player.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
-		(byte) 4); // smoke
-
-	// Dmg
-	world.createExplosion(player, pos.getX(), pos.getY(), pos.getZ(), (float) this.ExplosionSize, true); // 4.0F
-	// is
-	// TNT
-
-	// Mining
-	for (int xAxis = -1; xAxis <= 1; xAxis++) // Along the x axis
+	@Override
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
-	    for (int yAxis = -1; yAxis <= 1; yAxis++) // Along the y axis
-	    {
-		for (int zAxis = -1; zAxis <= 1; zAxis++) // Along the z axis
+		ItemStack stack = player.getHeldItem(hand);
+		// Right click
+		if (this.getDamage(stack) >= stack.getMaxDamage())
 		{
-		    this.doMining(world, (EntityPlayerMP) player, pos.add(xAxis, yAxis, zAxis));
+			return EnumActionResult.FAIL;
+		} // Not loaded
+
+		this.consumeAmmo(stack, player, 1);
+		// Not safe for clients past here.
+		if (world.isRemote) return EnumActionResult.SUCCESS;
+
+		// SFX
+		NetHelper.sendParticleMessageToAllPlayers(world, player.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+				(byte) 4); // smoke
+
+		// Dmg
+		world.createExplosion(player, pos.getX(), pos.getY(), pos.getZ(), (float) this.ExplosionSize, true); // 4.0F
+		// is
+		// TNT
+
+		// Mining
+		for (int xAxis = -1; xAxis <= 1; xAxis++) // Along the x axis
+		{
+			for (int yAxis = -1; yAxis <= 1; yAxis++) // Along the y axis
+			{
+				for (int zAxis = -1; zAxis <= 1; zAxis++) // Along the z axis
+				{
+					this.doMining(world, (EntityPlayerMP) player, pos.add(xAxis, yAxis, zAxis));
+				}
+			}
 		}
-	    }
+
+		return EnumActionResult.SUCCESS;
 	}
 
-	return EnumActionResult.SUCCESS;
-    }
-    
-    void doMining(World world, EntityPlayerMP player, BlockPos pos)
-    {
-	IBlockState toBeBroken = world.getBlockState(pos);
+	void doMining(World world, EntityPlayerMP player, BlockPos pos)
+	{
+		IBlockState toBeBroken = world.getBlockState(pos);
 
-	if (toBeBroken.getBlockHardness(world, pos) == -1)
-	{
-	    return;
-	} // Unbreakable
+		if (toBeBroken.getBlockHardness(world, pos) == -1)
+		{
+			return;
+		} // Unbreakable
 
-	if (toBeBroken.getBlock().getHarvestLevel(toBeBroken) > 1)
-	{
-	    return;
-	}
-	if (toBeBroken.getMaterial() == Material.WATER)
-	{
-	    return;
-	}
-	if (toBeBroken.getMaterial() == Material.LAVA)
-	{
-	    return;
-	}
-	if (toBeBroken.getMaterial() == Material.AIR)
-	{
-	    return;
-	}
-	if (toBeBroken.getMaterial() == Material.PORTAL)
-	{
-	    return;
+		if (toBeBroken.getBlock().getHarvestLevel(toBeBroken) > 1)
+		{
+			return;
+		}
+		if (toBeBroken.getMaterial() == Material.WATER)
+		{
+			return;
+		}
+		if (toBeBroken.getMaterial() == Material.LAVA)
+		{
+			return;
+		}
+		if (toBeBroken.getMaterial() == Material.AIR)
+		{
+			return;
+		}
+		if (toBeBroken.getMaterial() == Material.PORTAL)
+		{
+			return;
+		}
+
+		// Need to do checks here against invalid blocks
+		if (toBeBroken == Blocks.WATER)
+		{
+			return;
+		}
+		if (toBeBroken == Blocks.FLOWING_WATER)
+		{
+			return;
+		}
+		if (toBeBroken == Blocks.LAVA)
+		{
+			return;
+		}
+		if (toBeBroken == Blocks.FLOWING_LAVA)
+		{
+			return;
+		}
+		if (toBeBroken == Blocks.OBSIDIAN)
+		{
+			return;
+		}
+		if (toBeBroken == Blocks.MOB_SPAWNER)
+		{
+			return;
+		}
+		GameType gametype = world.getWorldInfo().getGameType();
+		int result = ForgeHooks.onBlockBreakEvent(world, gametype, player, pos);
+		if (result == -1)
+		{
+			return;
+		} // Not allowed to do this
+		world.destroyBlock(pos, true);
 	}
 
-	// Need to do checks here against invalid blocks
-	if (toBeBroken == Blocks.WATER)
+	@Override
+	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-	    return;
-	}
-	if (toBeBroken == Blocks.FLOWING_WATER)
-	{
-	    return;
-	}
-	if (toBeBroken == Blocks.LAVA)
-	{
-	    return;
-	}
-	if (toBeBroken == Blocks.FLOWING_LAVA)
-	{
-	    return;
-	}
-	if (toBeBroken == Blocks.OBSIDIAN)
-	{
-	    return;
-	}
-	if (toBeBroken == Blocks.MOB_SPAWNER)
-	{
-	    return;
-	}
-	GameType gametype = world.getWorldInfo().getGameType();
-	int result = ForgeHooks.onBlockBreakEvent(world, gametype, player, pos);
-	if (result == -1)
-	{
-	    return;
-	} // Not allowed to do this
-	world.destroyBlock(pos, true);
-    }
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-    @Override
-    public void addProps(FMLPreInitializationEvent event, Configuration config)
-    {
-	this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+		this.DmgMin = config.get(this.name, "What's my minimum damage, when I'm empty? (default 2)", 2).getInt();
+		this.DmgMax = config.get(this.name, "What's my maximum damage when I explode? (default 14)", 14).getInt();
 
-	this.DmgMin = config.get(this.name, "What's my minimum damage, when I'm empty? (default 2)", 2).getInt();
-	this.DmgMax = config.get(this.name, "What's my maximum damage when I explode? (default 14)", 14).getInt();
+		this.ExplosionSize = config
+				.get(this.name, "How big are my explosions? (default 1.5 blocks. TNT is 4.0 blocks)", 1.5).getDouble();
+		this.dmgTerrain = config.get(this.name, "Can I damage terrain, when in player hands? (default true)", true)
+				.getBoolean(true);
 
-	this.ExplosionSize = config
-		.get(this.name, "How big are my explosions? (default 1.5 blocks. TNT is 4.0 blocks)", 1.5).getDouble();
-	this.dmgTerrain = config.get(this.name, "Can I damage terrain, when in player hands? (default true)", true)
-		.getBoolean(true);
-
-	this.isMobUsable = config.get(this.name,
-		"Can I be used by QuiverMobs? (default false. They don't know where the trigger on this thing is.)",
-		false).getBoolean(false);
-    }
-
-    @Override
-    public void addRecipes()
-    {
-	if (this.Enabled)
-	{
-	    // Modifying the powder knuckle once
-	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "ooo", "oco", "i i", 'c',
-		    Helper.getWeaponStackByClass(PowderKnuckle.class, true), 'o', Blocks.OBSIDIAN, 'i',
-		    Items.IRON_INGOT);
+		this.isMobUsable = config.get(this.name,
+				"Can I be used by QuiverMobs? (default false. They don't know where the trigger on this thing is.)",
+				false).getBoolean(false);
 	}
-	else if (Main.noCreative)
-	{
-	    this.setCreativeTab(null);
-	} // Not enabled and not allowed to be in the creative menu
 
-	GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(Items.GUNPOWDER, 1));
-    }
+	@Override
+	public void addRecipes()
+	{
+		if (this.Enabled)
+		{
+			// Modifying the powder knuckle once
+			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "ooo", "oco", "i i", 'c',
+					Helper.getWeaponStackByClass(PowderKnuckle.class, true), 'o', Blocks.OBSIDIAN, 'i',
+					Items.IRON_INGOT);
+		}
+		else if (Main.noCreative)
+		{
+			this.setCreativeTab(null);
+		} // Not enabled and not allowed to be in the creative menu
+
+		GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(Items.GUNPOWDER, 1));
+	}
 }

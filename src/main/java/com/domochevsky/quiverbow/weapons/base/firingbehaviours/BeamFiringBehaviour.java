@@ -52,36 +52,37 @@ public class BeamFiringBehaviour<W extends _WeaponBase> extends FiringBehaviourB
 		Vec3d eyeVec = shooter.getPositionVector().addVector(0.0D, shooter.getEyeHeight(), 0.0D);
 		Vec3d rayEndVec = eyeVec.add(shooter.getLookVec().scale(maxRange));
 
-		if(count % 10 == 0)
+		if (count % 10 == 0)
 		{
-			if(pierceCount > 1) //Piercing
+			if (pierceCount > 1) // Piercing
 			{
 				List<RayTraceResult> results = new ArrayList<>(pierceCount);
 				Helper.raytraceAll(results, world, shooter, eyeVec, rayEndVec);
-				if(results.isEmpty()) 
+				if (results.isEmpty())
 				{
 					RenderBeam.updateBeam(eyeVec, rayEndVec);
 					return;
 				}
-				//Sort the list in ascending order of distance from the shooter
-				results.sort((resultA, resultB) -> 
+				// Sort the list in ascending order of distance from the shooter
+				results.sort((resultA, resultB) ->
 				{
 					double distanceA = resultA.hitVec.distanceTo(shooter.getPositionVector());
 					double distanceB = resultB.hitVec.distanceTo(shooter.getPositionVector());
 					return Double.compare(distanceA, distanceB);
 				});
-				//Truncate the list to contain only the results that will be pierced/hit
+				// Truncate the list to contain only the results that will be
+				// pierced/hit
 				results = results.subList(0, Math.min(pierceCount, results.size()));
-				for(RayTraceResult result : results)
+				for (RayTraceResult result : results)
 				{
 					effect.apply(stack, world, shooter, result);
 				}
 				RenderBeam.updateBeam(eyeVec, results.get(results.size() - 1).hitVec);
 			}
-			else //Non-piercing
+			else // Non-piercing
 			{
 				RayTraceResult result = Helper.raytraceClosestObject(world, shooter, eyeVec, rayEndVec);
-				if(result != null)
+				if (result != null)
 				{
 					effect.apply(stack, world, shooter, result);
 					RenderBeam.updateBeam(eyeVec, result.hitVec);

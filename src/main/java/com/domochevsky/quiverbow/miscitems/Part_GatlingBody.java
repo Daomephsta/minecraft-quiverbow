@@ -8,22 +8,22 @@ import net.minecraft.item.ItemStack;
 
 public class Part_GatlingBody extends QuiverBowItem
 {
-    public Part_GatlingBody()
-    {
-	this.setMaxStackSize(1);
-	this.setCreativeTab(CreativeTabs.MATERIALS); // On the combat tab by
-						     // default, but this isn't
-						     // ammo. It's a building
-						     // part
-    }
+	public Part_GatlingBody()
+	{
+		this.setMaxStackSize(1);
+		this.setCreativeTab(CreativeTabs.MATERIALS); // On the combat tab by
+		// default, but this isn't
+		// ammo. It's a building
+		// part
+	}
 
-    @Override
-    public void addRecipes()
-    {
-	// Flavor as "over-indulgent" on pistons
+	@Override
+	public void addRecipes()
+	{
+		// Flavor as "over-indulgent" on pistons
 
-	// Sugar Gatling, main body
-	GameRegistry.addRecipe(new ItemStack(this), "rir", "ror", "tpb", 'o', Blocks.OBSIDIAN, 'i', Items.IRON_INGOT,
-		't', Blocks.TRIPWIRE_HOOK, 'r', Items.REPEATER, 'p', Blocks.PLANKS, 'b', Blocks.PISTON);
-    }
+		// Sugar Gatling, main body
+		GameRegistry.addRecipe(new ItemStack(this), "rir", "ror", "tpb", 'o', Blocks.OBSIDIAN, 'i', Items.IRON_INGOT,
+				't', Blocks.TRIPWIRE_HOOK, 'r', Items.REPEATER, 'p', Blocks.PLANKS, 'b', Blocks.PISTON);
+	}
 }

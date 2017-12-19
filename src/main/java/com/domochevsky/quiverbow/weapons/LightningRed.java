@@ -31,7 +31,7 @@ public class LightningRed extends MagazineFedWeapon
 	{
 		super("lightning_red", ammo, 16);
 		setFiringBehaviour(new BeamFiringBehaviour<LightningRed>(this, new IBeamEffect()
-		{	
+		{
 			@Override
 			public void apply(ItemStack stack, World world, EntityLivingBase shooter, RayTraceResult target)
 			{
@@ -39,15 +39,18 @@ public class LightningRed extends MagazineFedWeapon
 				{
 					// Damage
 					target.entityHit.attackEntityFrom(DamageSource.MAGIC, 9.0F);
-					target.entityHit.hurtResistantTime = 0; // No immunity frames
+					target.entityHit.hurtResistantTime = 0; // No immunity
+															// frames
 
 					// Bonus
-					/*EntityLightningBolt bolt = new EntityLightningBolt(world, target.entityHit.posX, target.entityHit.posY,
-							target.entityHit.posZ, false);*/
-					//world.addWeatherEffect(bolt);
-					//breakTerrain(world, shooter, target.entityHit.getPosition().down());
+					/* EntityLightningBolt bolt = new EntityLightningBolt(world,
+					 * target.entityHit.posX, target.entityHit.posY,
+					 * target.entityHit.posZ, false); */
+					// world.addWeatherEffect(bolt);
+					// breakTerrain(world, shooter,
+					// target.entityHit.getPosition().down());
 				}
-				else breakTerrain(world, shooter, target.getBlockPos());	
+				else breakTerrain(world, shooter, target.getBlockPos());
 			}
 
 			private void breakTerrain(World world, EntityLivingBase shooter, BlockPos pos)
@@ -61,7 +64,8 @@ public class LightningRed extends MagazineFedWeapon
 					breakThis = false;
 				}
 
-				if (breakThis) // Sorted out all blocks we don't want to break. Check defaults
+				if (breakThis) // Sorted out all blocks we don't want to break.
+								// Check defaults
 				{
 					Helper.tryBlockBreak(world, shooter, pos, 3); // Very
 					// Strong
@@ -90,18 +94,21 @@ public class LightningRed extends MagazineFedWeapon
 
 		NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.REDSTONE, (byte) 4);
 
-		if(!world.isRemote)
+		if (!world.isRemote)
 		{
 			// Firing
 			RedLight shot = new RedLight(world, entity, (float) this.Speed);
 
 			// Random Damage
-			int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and min
+			int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and
+														// min
 			// is 10, then the range will
 			// be 10
-			int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
+			int dmg = world.rand.nextInt(dmg_range + 1); // Range will be
+															// between 0
 			// and 10
-			dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving us
+			dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving
+								// us
 			// the proper damage range (10-20)
 
 			// The moving end point
@@ -123,7 +130,8 @@ public class LightningRed extends MagazineFedWeapon
 	}
 
 	@Override
-	protected void doCooldownSFX(World world, Entity entity) // Server side. Only done
+	protected void doCooldownSFX(World world, Entity entity) // Server side.
+																// Only done
 	// when held
 	{
 		Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, 0.7F, 0.2F);

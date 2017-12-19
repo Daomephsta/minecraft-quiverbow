@@ -8,15 +8,15 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class TurretStatePacket implements IMessageHandler<TurretStateMessage, IMessage>
 {
-    @Override
-    public IMessage onMessage(TurretStateMessage message, MessageContext ctx)
-    {
-	if (ctx.side.isClient()) // just to make sure that the side is correct
+	@Override
+	public IMessage onMessage(TurretStateMessage message, MessageContext ctx)
 	{
-	    Helper_Client.setTurretState(message.entityID, message.hasArmorUpgrade, message.hasWeaponUpgrade,
-		    message.hasRidingUpgrade, message.hasPlatingUpgrade, message.hasCommunicationUpgrade);
-	}
+		if (ctx.side.isClient()) // just to make sure that the side is correct
+		{
+			Helper_Client.setTurretState(message.entityID, message.hasArmorUpgrade, message.hasWeaponUpgrade,
+					message.hasRidingUpgrade, message.hasPlatingUpgrade, message.hasCommunicationUpgrade);
+		}
 
-	return null; // Don't care about returning anything
-    }
+		return null; // Don't care about returning anything
+	}
 }

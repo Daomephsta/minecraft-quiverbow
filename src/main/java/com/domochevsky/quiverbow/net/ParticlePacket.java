@@ -8,14 +8,14 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class ParticlePacket implements IMessageHandler<ParticleMessage, IMessage>
 {
-    @Override
-    public IMessage onMessage(ParticleMessage message, MessageContext ctx)
-    {
-	if (ctx.side.isClient()) // just to make sure that the side is correct
+	@Override
+	public IMessage onMessage(ParticleMessage message, MessageContext ctx)
 	{
-	    Helper_Client.displayParticles(message.entityID, message.particleType, message.strength);
-	}
+		if (ctx.side.isClient()) // just to make sure that the side is correct
+		{
+			Helper_Client.displayParticles(message.entityID, message.particleType, message.strength);
+		}
 
-	return null; // Don't care about returning anything
-    }
+		return null; // Don't care about returning anything
+	}
 }

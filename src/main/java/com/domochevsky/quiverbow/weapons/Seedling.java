@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Seedling extends _WeaponBase
-{    
+{
 	private int Dmg;
 
 	public Seedling()
@@ -38,10 +38,10 @@ public class Seedling extends _WeaponBase
 		})
 		{
 			@Override
-			public void fire(ItemStack stack, World world, EntityLivingBase entity, EnumHand hand) 
-			{ 
+			public void fire(ItemStack stack, World world, EntityLivingBase entity, EnumHand hand)
+			{
 				super.fire(stack, world, entity, hand);
-				if(stack.getItemDamage() >= stack.getMaxDamage()) weapon.breakWeapon(world, stack, entity); 
+				if (stack.getItemDamage() >= stack.getMaxDamage()) weapon.breakWeapon(world, stack, entity);
 			}
 		});
 	}
@@ -61,7 +61,7 @@ public class Seedling extends _WeaponBase
 		player.inventory.deleteStack(stack);
 		stack.setCount(0);
 
-		if(!world.isRemote)
+		if (!world.isRemote)
 		{
 			entity.entityDropItem(new ItemStack(Blocks.PISTON), 1.0F);
 			entity.entityDropItem(new ItemStack(Blocks.TRIPWIRE_HOOK), 1.0F);

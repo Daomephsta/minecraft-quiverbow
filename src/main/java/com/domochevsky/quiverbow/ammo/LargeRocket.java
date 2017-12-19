@@ -7,11 +7,11 @@ import net.minecraft.item.ItemStack;
 
 public class LargeRocket extends _AmmoBase
 {
-    @Override
-    public void addRecipes()
-    {
-	// A big rocket
-	GameRegistry.addRecipe(new ItemStack(this), "zaa", "aya", "aab", 'y', Blocks.TNT, 'z', Blocks.PLANKS, 'a',
-		Items.PAPER, 'b', Items.STRING);
-    }
+	@Override
+	public void addRecipes()
+	{
+		// A big rocket
+		GameRegistry.addRecipe(new ItemStack(this), "zaa", "aya", "aab", 'y', Blocks.TNT, 'z', Blocks.PLANKS, 'a',
+				Items.PAPER, 'b', Items.STRING);
+	}
 }

@@ -1,7 +1,6 @@
 package com.domochevsky.quiverbow.renderer;
 
-/*
- * public class Render_Projectile extends Render {
+/* public class Render_Projectile extends Render {
  * 
  * @Override public void doRender(Entity entity, double x, double y, double z,
  * float yaw, float tick) { _ProjectileBase shot = (_ProjectileBase) entity;
@@ -368,5 +367,4 @@ package com.domochevsky.quiverbow.renderer;
  * // reset openGl stuff? GL11.glEnable(GL11.GL_CULL_FACE);
  * GL11.glShadeModel(GL11.GL_FLAT); RenderHelper.enableStandardItemLighting();
  * 
- * GL11.glPopMatrix(); } }
- */
+ * GL11.glPopMatrix(); } } */

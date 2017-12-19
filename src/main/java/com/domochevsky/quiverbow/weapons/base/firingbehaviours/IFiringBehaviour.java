@@ -7,12 +7,12 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 public interface IFiringBehaviour
-{   
-    public void fire(ItemStack stack, World world, EntityLivingBase entity, EnumHand hand);
-    
-    public void update(ItemStack stack, World world, Entity entity, int animTick, boolean holdingItem);
-    
-    public void onFiringTick(ItemStack stack, EntityLivingBase player, int count);
-    
-    public void onStopFiring(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft);
+{
+	public void fire(ItemStack stack, World world, EntityLivingBase entity, EnumHand hand);
+
+	public void update(ItemStack stack, World world, Entity entity, int animTick, boolean holdingItem);
+
+	public void onFiringTick(ItemStack stack, EntityLivingBase player, int count);
+
+	public void onStopFiring(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft);
 }

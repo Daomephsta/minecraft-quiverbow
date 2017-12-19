@@ -11,84 +11,84 @@ import net.minecraft.world.World;
 
 public class Recipe_AA_Storage extends ShapedRecipes implements IRecipe
 {
-    private ItemStack result;
+	private ItemStack result;
 
-    public Recipe_AA_Storage(int sizeX, int sizeY, ItemStack[] components, ItemStack result)
-    {
-	super(sizeX, sizeY, components, result);
-
-	this.result = result;
-    }
-
-    @Override
-    public boolean matches(InventoryCrafting matrix, World world) // Returns
-								  // true if
-								  // these
-								  // components
-								  // are what
-								  // I'm looking
-								  // for to make
-								  // my item
-    {
-	return RecipeHelper.doesRecipeMatch(this.recipeItems, matrix, world);
-    }
-
-    @Override
-    public ItemStack getCraftingResult(InventoryCrafting matrix)
-    {
-	ItemStack stack = this.result.copy();
-	ItemStack previousAA = this.getAAFromMatrix(matrix);
-
-	if (!previousAA.isEmpty() && previousAA.hasTagCompound()) // Copying
-							       // existing
-							       // properties
+	public Recipe_AA_Storage(int sizeX, int sizeY, ItemStack[] components, ItemStack result)
 	{
-	    stack.setTagCompound((NBTTagCompound) previousAA.getTagCompound().copy());
-	}
-	else // ...or just applying new ones
-	{
-	    stack.setTagCompound(new NBTTagCompound());
+		super(sizeX, sizeY, components, result);
+
+		this.result = result;
 	}
 
-	// Apply the new upgrade now
-	stack.getTagCompound().setBoolean("hasStorageUpgrade", true);
-
-	if (stack.getTagCompound().getInteger("currentHealth") == 0) // Just
-								     // making
-								     // sure
-								     // it's not
-								     // shown
-								     // with 0
-								     // health
+	@Override
+	public boolean matches(InventoryCrafting matrix, World world) // Returns
+	// true if
+	// these
+	// components
+	// are what
+	// I'm looking
+	// for to make
+	// my item
 	{
-	    if (stack.getTagCompound().getBoolean("hasArmorUpgrade"))
-	    {
-		stack.getTagCompound().setInteger("currentHealth", 40);
-	    }
-	    else
-	    {
-		stack.getTagCompound().setInteger("currentHealth", 20);
-	    } // Fresh turret, so setting some health
+		return RecipeHelper.doesRecipeMatch(this.recipeItems, matrix, world);
 	}
 
-	return stack;
-    }
-
-    private ItemStack getAAFromMatrix(InventoryCrafting matrix)
-    {
-	int counter = 0;
-
-	while (counter < matrix.getSizeInventory())
+	@Override
+	public ItemStack getCraftingResult(InventoryCrafting matrix)
 	{
-	    if (!matrix.getStackInSlot(counter).isEmpty()
-		    && matrix.getStackInSlot(counter).getItem() instanceof PackedUpAA)
-	    {
-		return matrix.getStackInSlot(counter); // Found it
-	    }
+		ItemStack stack = this.result.copy();
+		ItemStack previousAA = this.getAAFromMatrix(matrix);
 
-	    counter += 1;
+		if (!previousAA.isEmpty() && previousAA.hasTagCompound()) // Copying
+		// existing
+		// properties
+		{
+			stack.setTagCompound((NBTTagCompound) previousAA.getTagCompound().copy());
+		}
+		else // ...or just applying new ones
+		{
+			stack.setTagCompound(new NBTTagCompound());
+		}
+
+		// Apply the new upgrade now
+		stack.getTagCompound().setBoolean("hasStorageUpgrade", true);
+
+		if (stack.getTagCompound().getInteger("currentHealth") == 0) // Just
+		// making
+		// sure
+		// it's not
+		// shown
+		// with 0
+		// health
+		{
+			if (stack.getTagCompound().getBoolean("hasArmorUpgrade"))
+			{
+				stack.getTagCompound().setInteger("currentHealth", 40);
+			}
+			else
+			{
+				stack.getTagCompound().setInteger("currentHealth", 20);
+			} // Fresh turret, so setting some health
+		}
+
+		return stack;
 	}
 
-	return ItemStack.EMPTY;
-    }
+	private ItemStack getAAFromMatrix(InventoryCrafting matrix)
+	{
+		int counter = 0;
+
+		while (counter < matrix.getSizeInventory())
+		{
+			if (!matrix.getStackInSlot(counter).isEmpty()
+					&& matrix.getStackInSlot(counter).getItem() instanceof PackedUpAA)
+			{
+				return matrix.getStackInSlot(counter); // Found it
+			}
+
+			counter += 1;
+		}
+
+		return ItemStack.EMPTY;
+	}
 }

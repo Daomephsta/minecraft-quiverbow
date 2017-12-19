@@ -19,64 +19,64 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class SeedSweeper extends MagazineFedWeapon
 {
-    private int Dmg;
-    private float Spread;
+	private int Dmg;
+	private float Spread;
 
-    public SeedSweeper(_AmmoBase ammo)
-    {
-	super("seed_sweeper", ammo, 512);
-	setFiringBehaviour(new SalvoFiringBehaviour<SeedSweeper>(this, 8, (world, weaponStack, entity, data) ->
+	public SeedSweeper(_AmmoBase ammo)
 	{
-	    float spreadHor = world.rand.nextFloat() * this.Spread - (this.Spread / 2);
-	    float spreadVert = world.rand.nextFloat() * this.Spread - (this.Spread / 2);
+		super("seed_sweeper", ammo, 512);
+		setFiringBehaviour(new SalvoFiringBehaviour<SeedSweeper>(this, 8, (world, weaponStack, entity, data) ->
+		{
+			float spreadHor = world.rand.nextFloat() * this.Spread - (this.Spread / 2);
+			float spreadVert = world.rand.nextFloat() * this.Spread - (this.Spread / 2);
 
-	    Seed shot = new Seed(world, entity, (float) this.Speed, spreadHor, spreadVert);
-	    shot.damage = this.Dmg;
-	    return shot;
-	}));
-    }
-
-    @Override
-    public void doFireFX(World world, Entity entity)
-    {
-	entity.playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.6F, 0.9F);
-    }
-
-    @Override
-    protected void doUnloadFX(World world, Entity entity)
-    {
-	entity.playSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.7F, 0.3F);
-    }
-
-    @Override
-    public void addProps(FMLPreInitializationEvent event, Configuration config)
-    {
-	this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
-
-	this.Dmg = config.get(this.name, "What damage am I dealing per projectile? (default 1)", 1).getInt();
-	this.Cooldown = config.get(this.name, "How long until I can fire again? (default 15 ticks)", 15).getInt();
-
-	this.Speed = config.get(this.name, "How fast are my projectiles? (default 1.6 BPT (Blocks Per Tick))", 1.6)
-		.getDouble();
-	this.Spread = (float) config.get(this.name, "How accurate am I? (default 26 spread)", 26).getDouble();
-
-	this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
-    }
-
-    @Override
-    public void addRecipes()
-    {
-	if (this.Enabled)
-	{
-	    // One Seed Sweeper (empty)
-	    GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), " i ", "ipi", " it", 'p', Blocks.PISTON,
-		    'i', Items.IRON_INGOT, 't', Blocks.TRIPWIRE_HOOK);
+			Seed shot = new Seed(world, entity, (float) this.Speed, spreadHor, spreadVert);
+			shot.damage = this.Dmg;
+			return shot;
+		}));
 	}
-	else if (Main.noCreative)
-	{
-	    this.setCreativeTab(null);
-	} // Not enabled and not allowed to be in the creative menu
 
-	Helper.registerAmmoRecipe(SeedJar.class, this);
-    }
+	@Override
+	public void doFireFX(World world, Entity entity)
+	{
+		entity.playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.6F, 0.9F);
+	}
+
+	@Override
+	protected void doUnloadFX(World world, Entity entity)
+	{
+		entity.playSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.7F, 0.3F);
+	}
+
+	@Override
+	public void addProps(FMLPreInitializationEvent event, Configuration config)
+	{
+		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+
+		this.Dmg = config.get(this.name, "What damage am I dealing per projectile? (default 1)", 1).getInt();
+		this.Cooldown = config.get(this.name, "How long until I can fire again? (default 15 ticks)", 15).getInt();
+
+		this.Speed = config.get(this.name, "How fast are my projectiles? (default 1.6 BPT (Blocks Per Tick))", 1.6)
+				.getDouble();
+		this.Spread = (float) config.get(this.name, "How accurate am I? (default 26 spread)", 26).getDouble();
+
+		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
+	}
+
+	@Override
+	public void addRecipes()
+	{
+		if (this.Enabled)
+		{
+			// One Seed Sweeper (empty)
+			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), " i ", "ipi", " it", 'p',
+					Blocks.PISTON, 'i', Items.IRON_INGOT, 't', Blocks.TRIPWIRE_HOOK);
+		}
+		else if (Main.noCreative)
+		{
+			this.setCreativeTab(null);
+		} // Not enabled and not allowed to be in the creative menu
+
+		Helper.registerAmmoRecipe(SeedJar.class, this);
+	}
 }
