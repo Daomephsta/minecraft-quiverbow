@@ -5,8 +5,10 @@ import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 import com.domochevsky.quiverbow.weapons.base._WeaponBase;
+import com.domochevsky.quiverbow.weapons.base.firingbehaviours.FiringBehaviourBase;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -29,6 +31,11 @@ public class PowderKnuckle extends _WeaponBase
     public PowderKnuckle()
     {
 	super("powder_knuckles", 8);
+	//Dummy behaviour, does nothing
+	setFiringBehaviour(new FiringBehaviourBase<_WeaponBase>(this)
+	{
+		@Override
+		public void fire(ItemStack stack, World world, EntityLivingBase entity, EnumHand hand) {}});
     }
 
     protected PowderKnuckle(String name, int maxAmmo)
