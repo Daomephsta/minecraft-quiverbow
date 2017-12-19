@@ -30,7 +30,7 @@ public class SilkenSpinner extends _WeaponBase
     @Override
     public void doFireFX(World world, Entity entity)
     {
-	entity.playSound(SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 2.0F);
+    	Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 2.0F);
     }
 
     @Override
