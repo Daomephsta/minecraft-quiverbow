@@ -7,99 +7,19 @@ import com.domochevsky.quiverbow.ArmsAssistant.Entity_AA;
 import com.domochevsky.quiverbow.ammo.*;
 import com.domochevsky.quiverbow.blocks.FenLight;
 import com.domochevsky.quiverbow.items.ItemRegistry;
-import com.domochevsky.quiverbow.miscitems.PackedUpAA;
-import com.domochevsky.quiverbow.miscitems.Part_GatlingBarrel;
-import com.domochevsky.quiverbow.miscitems.Part_GatlingBody;
+import com.domochevsky.quiverbow.miscitems.*;
 import com.domochevsky.quiverbow.models.ISpecialRender;
 import com.domochevsky.quiverbow.net.PacketHandler;
-import com.domochevsky.quiverbow.projectiles.BigRocket;
-import com.domochevsky.quiverbow.projectiles.BlazeShot;
-import com.domochevsky.quiverbow.projectiles.CoinShot;
-import com.domochevsky.quiverbow.projectiles.ColdIron;
-import com.domochevsky.quiverbow.projectiles.EnderAccelerator;
-import com.domochevsky.quiverbow.projectiles.EnderAno;
-import com.domochevsky.quiverbow.projectiles.EnderShot;
-import com.domochevsky.quiverbow.projectiles.FenGoop;
-import com.domochevsky.quiverbow.projectiles.FlintDust;
-import com.domochevsky.quiverbow.projectiles.HealthBeam;
-import com.domochevsky.quiverbow.projectiles.LapisShot;
-import com.domochevsky.quiverbow.projectiles.NetherFire;
-import com.domochevsky.quiverbow.projectiles.OSP_Shot;
-import com.domochevsky.quiverbow.projectiles.OSR_Shot;
-import com.domochevsky.quiverbow.projectiles.OWR_Shot;
-import com.domochevsky.quiverbow.projectiles.PotatoShot;
-import com.domochevsky.quiverbow.projectiles.ProxyThorn;
-import com.domochevsky.quiverbow.projectiles.RedLight;
-import com.domochevsky.quiverbow.projectiles.RedSpray;
-import com.domochevsky.quiverbow.projectiles.RegularArrow;
-import com.domochevsky.quiverbow.projectiles.Sabot_Arrow;
-import com.domochevsky.quiverbow.projectiles.Sabot_Rocket;
-import com.domochevsky.quiverbow.projectiles.ScopedPredictive;
-import com.domochevsky.quiverbow.projectiles.Seed;
-import com.domochevsky.quiverbow.projectiles.SmallRocket;
-import com.domochevsky.quiverbow.projectiles.SnowShot;
-import com.domochevsky.quiverbow.projectiles.SoulShot;
-import com.domochevsky.quiverbow.projectiles.SugarRod;
-import com.domochevsky.quiverbow.projectiles.SunLight;
-import com.domochevsky.quiverbow.projectiles.Thorn;
-import com.domochevsky.quiverbow.projectiles.WaterShot;
-import com.domochevsky.quiverbow.projectiles.WebShot;
-import com.domochevsky.quiverbow.projectiles._ProjectileBase;
-import com.domochevsky.quiverbow.recipes.RecipeLoadMagazine;
-import com.domochevsky.quiverbow.recipes.Recipe_ERA;
-import com.domochevsky.quiverbow.recipes.Recipe_Weapon;
+import com.domochevsky.quiverbow.projectiles.*;
+import com.domochevsky.quiverbow.recipes.*;
 import com.domochevsky.quiverbow.util.RegistryHelper;
-import com.domochevsky.quiverbow.weapons.AA_Targeter;
-import com.domochevsky.quiverbow.weapons.AquaAccelerator;
-import com.domochevsky.quiverbow.weapons.CoinTosser;
-import com.domochevsky.quiverbow.weapons.CoinTosser_Mod;
-import com.domochevsky.quiverbow.weapons.Crossbow_Auto;
-import com.domochevsky.quiverbow.weapons.Crossbow_AutoImp;
-import com.domochevsky.quiverbow.weapons.Crossbow_Blaze;
-import com.domochevsky.quiverbow.weapons.Crossbow_Compact;
-import com.domochevsky.quiverbow.weapons.Crossbow_Double;
-import com.domochevsky.quiverbow.weapons.DragonBox;
-import com.domochevsky.quiverbow.weapons.DragonBox_Quad;
-import com.domochevsky.quiverbow.weapons.ERA;
-import com.domochevsky.quiverbow.weapons.EnderBow;
-import com.domochevsky.quiverbow.weapons.EnderRifle;
-import com.domochevsky.quiverbow.weapons.Endernymous;
-import com.domochevsky.quiverbow.weapons.FenFire;
-import com.domochevsky.quiverbow.weapons.FlintDuster;
-import com.domochevsky.quiverbow.weapons.FrostLancer;
-import com.domochevsky.quiverbow.weapons.LapisCoil;
-import com.domochevsky.quiverbow.weapons.LightningRed;
-import com.domochevsky.quiverbow.weapons.MediGun;
-import com.domochevsky.quiverbow.weapons.Mortar_Arrow;
-import com.domochevsky.quiverbow.weapons.Mortar_Dragon;
-import com.domochevsky.quiverbow.weapons.NetherBellows;
-import com.domochevsky.quiverbow.weapons.OSP;
-import com.domochevsky.quiverbow.weapons.OSR;
-import com.domochevsky.quiverbow.weapons.OWR;
-import com.domochevsky.quiverbow.weapons.Potatosser;
-import com.domochevsky.quiverbow.weapons.PowderKnuckle;
-import com.domochevsky.quiverbow.weapons.PowderKnuckle_Mod;
-import com.domochevsky.quiverbow.weapons.ProximityNeedler;
-import com.domochevsky.quiverbow.weapons.QuiverBow;
-import com.domochevsky.quiverbow.weapons.RPG;
-import com.domochevsky.quiverbow.weapons.RPG_Imp;
-import com.domochevsky.quiverbow.weapons.RedSprayer;
-import com.domochevsky.quiverbow.weapons.SeedSweeper;
-import com.domochevsky.quiverbow.weapons.Seedling;
-import com.domochevsky.quiverbow.weapons.SilkenSpinner;
-import com.domochevsky.quiverbow.weapons.SnowCannon;
-import com.domochevsky.quiverbow.weapons.SoulCairn;
-import com.domochevsky.quiverbow.weapons.SugarEngine;
-import com.domochevsky.quiverbow.weapons.Sunray;
-import com.domochevsky.quiverbow.weapons.ThornSpitter;
+import com.domochevsky.quiverbow.weapons.*;
 import com.domochevsky.quiverbow.weapons.base._WeaponBase;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -109,16 +29,12 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.Mod.*;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.EntityEntry;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.common.registry.IForgeRegistry;
+import net.minecraftforge.fml.common.registry.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.oredict.RecipeSorter;
 
@@ -234,9 +150,7 @@ public class Main
 				this, 80, 1, true);
 		// EntityRegistry.registerModEntity(Entity_BB.class,
 		// "quiverchevsky_flyingBB", 1, this, 80, 1, true);
-
-		proxy.registerTurretRenderer();
-
+		proxy.registerRenderers();
 		RecipeSorter.register(Constants.MODID + ":ender_rail_accelerator", Recipe_ERA.class,
 				RecipeSorter.Category.SHAPED, "after:minecraft:shapeless");
 		RecipeSorter.register(Constants.MODID + ":era_upgrade", Recipe_Weapon.class, RecipeSorter.Category.SHAPED,
@@ -271,64 +185,48 @@ public class Main
 	void registerProjectiles() // Entities that get shot out of weapons as
 	// projectiles
 	{
-		this.addProjectileItem(RegularArrow.class, "arrow", Items.ARROW);
-		this.addProjectileItem(BlazeShot.class, "blaze", Items.FIRE_CHARGE);
-		this.addProjectileItem(CoinShot.class, "coin", Items.GOLD_NUGGET);
-		this.addProjectileItem(SmallRocket.class, "rocket_small", Items.FIREWORKS);
-
-		this.addProjectileItem(LapisShot.class, "lapis", Items.DYE);
-		this.addProjectileItem(Thorn.class, "thorn", Blocks.CACTUS);
-		this.addProjectileItem(ProxyThorn.class, "proximity_thorn", Blocks.CACTUS);
-		this.addProjectileItem(SugarRod.class, "sugar", Items.REEDS);
-
-		this.addProjectileItem(BigRocket.class, "rocket_big", Items.FIREWORKS);
-
-		this.addProjectileItem(Sabot_Arrow.class, "sabot_arrow", Items.ARROW);
-		this.addProjectileItem(Sabot_Rocket.class, "sabot_rocket", Items.FIREWORKS);
-
-		this.addProjectileItem(Seed.class, "seed", Items.WHEAT_SEEDS);
-		this.addProjectileItem(PotatoShot.class, "potato", Items.BAKED_POTATO);
-		this.addProjectileItem(SnowShot.class, "snow", Items.SNOWBALL);
-
-		this.addProjectileItem(ScopedPredictive.class, "predictive", Items.ENDER_EYE);
-		this.addProjectileItem(EnderShot.class, "ender", Items.ENDER_PEARL);
-		this.addProjectileItem(ColdIron.class, "cold_iron", Items.IRON_INGOT);
-
-		this.addProjectileItem(OSP_Shot.class, "osp_shot", Blocks.OBSIDIAN);
-		this.addProjectileItem(OSR_Shot.class, "osr_shot", Blocks.OBSIDIAN);
-		this.addProjectileItem(OWR_Shot.class, "owr_shot", Blocks.OBSIDIAN);
-
-		this.addProjectileItem(FenGoop.class, "fen_light", Items.GLOWSTONE_DUST);
-		this.addProjectileItem(FlintDust.class, "flint_dust", Items.FLINT);
-
-		this.addProjectileItem(RedLight.class, "red_light", Blocks.REDSTONE_LAMP);
-		this.addProjectileItem(SunLight.class, "sunlight", Blocks.GLOWSTONE);
-
-		this.addProjectileItem(NetherFire.class, "nether_fire", Items.BLAZE_POWDER);
-		this.addProjectileItem(RedSpray.class, "red_spray", Items.REDSTONE);
-
-		this.addProjectileItem(SoulShot.class, "soul", Blocks.SOUL_SAND);
-
-		this.addProjectileItem(WaterShot.class, "water", Items.WATER_BUCKET);
-		this.addProjectileItem(WebShot.class, "web", Blocks.WEB);
-
-		this.addProjectileItem(HealthBeam.class, "health", Items.POTIONITEM);
-
-		this.addProjectileItem(EnderAccelerator.class, "era_shot", Items.IRON_INGOT);
-		this.addProjectileItem(EnderAno.class, "ano", Items.ENDER_PEARL);
-	}
-
-	private void addProjectileItem(Class<? extends _ProjectileBase> entityClass, String name, Block block)
-	{
-		Item item = Item.getItemFromBlock(block);
-		if (item == null) throw new IllegalArgumentException(block + " does not have an ItemBlock!");
-		addProjectileItem(entityClass, name, item);
-	}
-
-	private void addProjectileItem(Class<? extends _ProjectileBase> entityClass, String name, Item item)
-	{
-		addProjectile(entityClass, name);
-		proxy.registerItemProjectileRenderer(entityClass, item);
+		this.addProjectile(RegularArrow.class, "arrow");
+		this.addProjectile(BlazeShot.class, "blaze");
+		this.addProjectile(CoinShot.class, "coin");
+		this.addProjectile(SmallRocket.class, "rocket_small");
+		this.addProjectile(LapisShot.class, "lapis");
+		this.addProjectile(Thorn.class, "thorn");
+		this.addProjectile(ProxyThorn.class, "proximity_thorn");
+		this.addProjectile(SugarRod.class, "sugar");
+		this.addProjectile(BigRocket.class, "rocket_big");
+		this.addProjectile(Sabot_Arrow.class, "sabot_arrow");
+		this.addProjectile(Sabot_Rocket.class, "sabot_rocket");
+                                                               
+		this.addProjectile(Seed.class, "seed");
+		this.addProjectile(PotatoShot.class, "potato");
+		this.addProjectile(SnowShot.class, "snow");
+                                                               
+		this.addProjectile(ScopedPredictive.class, "predictive");
+		this.addProjectile(EnderShot.class, "ender");
+		this.addProjectile(ColdIron.class, "cold_iron");
+                                                     
+		this.addProjectile(OSP_Shot.class, "osp_shot");
+		this.addProjectile(OSR_Shot.class, "osr_shot");
+		this.addProjectile(OWR_Shot.class, "owr_shot");
+                                                     
+		this.addProjectile(FenGoop.class, "fen_light");
+		this.addProjectile(FlintDust.class, "flint_dust");
+                                                          
+		this.addProjectile(RedLight.class, "red_light");
+		this.addProjectile(SunLight.class, "sunlight");
+                                                          
+		this.addProjectile(NetherFire.class, "nether_fire");
+		this.addProjectile(RedSpray.class, "red_spray");
+                                                          
+		this.addProjectile(SoulShot.class, "soul");
+                                                          
+		this.addProjectile(WaterShot.class, "water");
+		this.addProjectile(WebShot.class, "web");
+                                                          
+		this.addProjectile(HealthBeam.class, "health");
+                                                               
+		this.addProjectile(EnderAccelerator.class, "era_shot");
+		this.addProjectile(EnderAno.class, "ano");
 	}
 
 	private void addProjectile(Class<? extends _ProjectileBase> entityClass, String name)
