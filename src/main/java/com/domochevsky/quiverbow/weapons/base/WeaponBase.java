@@ -6,7 +6,6 @@ import java.util.List;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main.Constants;
 import com.domochevsky.quiverbow.miscitems.QuiverBowItem;
-import com.domochevsky.quiverbow.util.Newliner;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.FiringBehaviourBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.IFiringBehaviour;
 
@@ -78,9 +77,9 @@ public class WeaponBase extends QuiverBowItem
 	{
 		if (player.capabilities.isCreativeMode) list.add(I18n.format(Constants.MODID + ".ammo.infinite"));
 		else
-			Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".ammostatus",
+			list.add(I18n.format(getUnlocalizedName() + ".ammostatus",
 					stack.getMaxDamage() - stack.getItemDamage(), stack.getMaxDamage()));
-		Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".loadtext"));
+		list.add(I18n.format(getUnlocalizedName() + ".loadtext"));
 		super.addInformation(stack, player, list, unknown);
 	}
 

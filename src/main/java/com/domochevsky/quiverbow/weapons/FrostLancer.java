@@ -1,24 +1,20 @@
 package com.domochevsky.quiverbow.weapons;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.ammo.ColdIronClip;
 import com.domochevsky.quiverbow.ammo.AmmoBase;
+import com.domochevsky.quiverbow.ammo.ColdIronClip;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.ColdIron;
-import com.domochevsky.quiverbow.util.Newliner;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.init.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
@@ -38,8 +34,8 @@ public class FrostLancer extends WeaponBase
 		{
 			FrostLancer weapon = (FrostLancer) weaponStack.getItem();
 			ColdIron projectile = new ColdIron(world, entity, (float) weapon.speed,
-					new PotionEffect(MobEffects.SLOWNESS, weapon.Slowness_Dur, weapon.Slowness_Str),
-					new PotionEffect(MobEffects.NAUSEA, weapon.Nausea_Dur, weapon.Nausea_Str));
+					new PotionEffect(MobEffects.SLOWNESS, weapon.slownessDur, weapon.slownessStr),
+					new PotionEffect(MobEffects.NAUSEA, weapon.nauseaDur, weapon.nauseaStr));
 
 			// Random Damage
 			int dmg_range = weapon.damageMax - weapon.damageMin; // If max dmg is 20
@@ -60,13 +56,13 @@ public class FrostLancer extends WeaponBase
 		}));
 	}
 
-	public int ZoomMax;
+	public int zoomMax;
 
-	public int Slowness_Str;
-	public int Slowness_Dur;
+	public int slownessStr;
+	public int slownessDur;
 
-	public int Nausea_Str;
-	public int Nausea_Dur;
+	public int nauseaStr;
+	public int nauseaDur;
 
 	@Override
 	protected void doCooldownSFX(World world, Entity entity)
@@ -90,7 +86,7 @@ public class FrostLancer extends WeaponBase
 	{
 		super.addInformation(stack, player, list, par4);
 		if (this.getCooldown(stack) > 0)
-			Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".cooldown",
+			list.add(I18n.format(getUnlocalizedName() + ".cooldown",
 					this.displayInSec(this.getCooldown(stack))));
 	}
 
@@ -112,13 +108,13 @@ public class FrostLancer extends WeaponBase
 
 		this.cooldown = config.get(this.name, "How long until I can fire again? (default 40 ticks)", 40).getInt();
 
-		this.ZoomMax = config.get(this.name, "How far can I zoom in? (default 20. Lower means more zoom)", 20).getInt();
+		this.zoomMax = config.get(this.name, "How far can I zoom in? (default 20. Lower means more zoom)", 20).getInt();
 
-		this.Slowness_Str = config.get(this.name, "How strong is my Slowness effect? (default 3)", 3).getInt();
-		this.Slowness_Dur = config.get(this.name, "How long does my Slowness effect last? (default 120 ticks)", 120)
+		this.slownessStr = config.get(this.name, "How strong is my Slowness effect? (default 3)", 3).getInt();
+		this.slownessDur = config.get(this.name, "How long does my Slowness effect last? (default 120 ticks)", 120)
 				.getInt();
 
-		this.Nausea_Dur = config.get(this.name, "How long does my Nausea effect last? (default 120 ticks)", 120)
+		this.nauseaDur = config.get(this.name, "How long does my Nausea effect last? (default 120 ticks)", 120)
 				.getInt();
 
 		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);

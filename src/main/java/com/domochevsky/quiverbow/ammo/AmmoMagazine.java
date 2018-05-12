@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.util.Newliner;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -75,10 +74,10 @@ public abstract class AmmoMagazine extends AmmoBase
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean advancedTooltips)
 	{
-		Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".clipstatus",
+		list.add(I18n.format(getUnlocalizedName() + ".clipstatus",
 				stack.getMaxDamage() - stack.getItemDamage(), stack.getMaxDamage()));
-		Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".filltext"));
-		Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".description"));
+		list.add(I18n.format(getUnlocalizedName() + ".filltext"));
+		list.add(I18n.format(getUnlocalizedName() + ".description"));
 	}
 
 	@Override

@@ -1,25 +1,21 @@
 package com.domochevsky.quiverbow.weapons;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.ammo.ObsidianMagazine;
 import com.domochevsky.quiverbow.ammo.AmmoBase;
+import com.domochevsky.quiverbow.ammo.ObsidianMagazine;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.OSRShot;
 import com.domochevsky.quiverbow.projectiles.ProjectileBase;
-import com.domochevsky.quiverbow.util.Newliner;
 import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.init.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
@@ -39,7 +35,7 @@ public class OSR extends MagazineFedWeapon
 		{
 			OSR weapon = (OSR) weaponStack.getItem();
 			ProjectileBase projectile = new OSRShot(world, entity, (float) weapon.speed,
-					new PotionEffect(MobEffects.WITHER, weapon.Wither_Duration, weapon.Wither_Strength));
+					new PotionEffect(MobEffects.WITHER, weapon.witherDuration, weapon.witherStrength));
 
 			// Random Damage
 			int dmg_range = weapon.damageMax - weapon.damageMin; // If max dmg is 20
@@ -58,9 +54,9 @@ public class OSR extends MagazineFedWeapon
 		}));
 	}
 
-	public int Wither_Duration; // 20 ticks to a second, let's start with 3
+	public int witherDuration; // 20 ticks to a second, let's start with 3
 	// seconds
-	public int Wither_Strength; // 2 dmg per second for 3 seconds = 6 dmg total
+	public int witherStrength; // 2 dmg per second for 3 seconds = 6 dmg total
 
 	@Override
 	protected void doUnloadFX(World world, Entity entity)
@@ -90,7 +86,7 @@ public class OSR extends MagazineFedWeapon
 	{
 		super.addInformation(stack, player, list, par4);
 		if (this.getCooldown(stack) > 0)
-			Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".cooldown",
+			list.add(I18n.format(getUnlocalizedName() + ".cooldown",
 					this.displayInSec(this.getCooldown(stack))));
 	}
 
@@ -112,8 +108,8 @@ public class OSR extends MagazineFedWeapon
 
 		this.cooldown = config.get(this.name, "How long until I can fire again? (default 100 ticks)", 100).getInt();
 
-		this.Wither_Strength = config.get(this.name, "How strong is my Wither effect? (default 3)", 3).getInt();
-		this.Wither_Duration = config.get(this.name, "How long does my Wither effect last? (default 61 ticks)", 61)
+		this.witherStrength = config.get(this.name, "How strong is my Wither effect? (default 3)", 3).getInt();
+		this.witherDuration = config.get(this.name, "How long does my Wither effect last? (default 61 ticks)", 61)
 				.getInt();
 
 		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);

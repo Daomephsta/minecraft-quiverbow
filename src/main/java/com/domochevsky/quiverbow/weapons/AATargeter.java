@@ -1,17 +1,11 @@
 package com.domochevsky.quiverbow.weapons;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.util.Newliner;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
+import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,6 +15,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class AATargeter extends WeaponBase
 {
@@ -75,7 +73,7 @@ public class AATargeter extends WeaponBase
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean par4)
 	{
-		Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".description"));
+		list.add(I18n.format(getUnlocalizedName() + ".description"));
 	}
 
 	@Override

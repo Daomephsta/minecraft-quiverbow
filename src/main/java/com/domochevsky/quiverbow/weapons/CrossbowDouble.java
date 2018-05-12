@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.util.Newliner;
 import com.domochevsky.quiverbow.weapons.base.WeaponCrossbow;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -61,7 +61,7 @@ public class CrossbowDouble extends WeaponCrossbow
 	{
 		super.addInformation(stack, player, list, par4);
 		if (this.getCooldown(stack) > 0)
-			Collections.addAll(list, Newliner.translateAndParse(getUnlocalizedName() + ".cooldown",
+			list.add(I18n.format(getUnlocalizedName() + ".cooldown",
 					this.displayInSec(this.getCooldown(stack))));
 	}
 

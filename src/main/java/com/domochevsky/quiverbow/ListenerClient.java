@@ -67,7 +67,7 @@ public class ListenerClient
 		if (!(heldWeapon = InventoryHelper.findItemInHandsByClass(event.player, FrostLancer.class)).isEmpty())
 		{
 			holdingWeapon = true;
-			zoomFOV = ((FrostLancer) heldWeapon.getItem()).ZoomMax;
+			zoomFOV = ((FrostLancer) heldWeapon.getItem()).zoomMax;
 		}
 		else if (!(heldWeapon = InventoryHelper.findItemInHandsByClass(event.player, EnderRifle.class)).isEmpty())
 		{

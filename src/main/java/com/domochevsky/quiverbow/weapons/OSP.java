@@ -31,7 +31,7 @@ public class OSP extends MagazineFedWeapon
 		{
 			OSP weapon = (OSP) weaponStack.getItem();
 			ProjectileBase projectile = new OSPShot(world, entity, (float) weapon.speed,
-					new PotionEffect(MobEffects.WITHER, weapon.Wither_Duration, weapon.Wither_Strength));
+					new PotionEffect(MobEffects.WITHER, weapon.witherDuration, weapon.witherStrength));
 
 			// Random Damage
 			int dmg_range = weapon.damageMax - weapon.damageMin; // If max dmg is 20
@@ -50,9 +50,9 @@ public class OSP extends MagazineFedWeapon
 		}));
 	}
 
-	public int Wither_Duration; // 20 ticks to a second, let's start with 3
+	public int witherDuration; // 20 ticks to a second, let's start with 3
 	// seconds
-	public int Wither_Strength; // 2 dmg per second for 3 seconds = 6 dmg total
+	public int witherStrength; // 2 dmg per second for 3 seconds = 6 dmg total
 
 	@Override
 	protected void doUnloadFX(World world, Entity entity)
@@ -87,8 +87,8 @@ public class OSP extends MagazineFedWeapon
 
 		this.cooldown = config.get(this.name, "How long until I can fire again? (default 15 ticks)", 15).getInt();
 
-		this.Wither_Strength = config.get(this.name, "How strong is my Wither effect? (default 1)", 1).getInt();
-		this.Wither_Duration = config.get(this.name, "How long does my Wither effect last? (default 61 ticks)", 61)
+		this.witherStrength = config.get(this.name, "How strong is my Wither effect? (default 1)", 1).getInt();
+		this.witherDuration = config.get(this.name, "How long does my Wither effect last? (default 61 ticks)", 61)
 				.getInt();
 
 		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);
