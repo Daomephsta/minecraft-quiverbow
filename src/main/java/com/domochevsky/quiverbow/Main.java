@@ -185,7 +185,6 @@ public class Main
 	void registerProjectiles() // Entities that get shot out of weapons as
 	// projectiles
 	{
-		this.addProjectile(RegularArrow.class, "arrow");
 		this.addProjectile(BlazeShot.class, "blaze");
 		this.addProjectile(CoinShot.class, "coin");
 		this.addProjectile(SmallRocket.class, "rocket_small");

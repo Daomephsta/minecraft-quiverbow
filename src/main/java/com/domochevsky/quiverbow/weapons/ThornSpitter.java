@@ -53,7 +53,7 @@ public class ThornSpitter extends MagazineFedWeapon
 			weapon.setBurstFire(stack, 4);
 		}
 
-		protected void doBurstFire(ItemStack weaponStack, World world, Entity entity)
+		protected void doBurstFire(ItemStack weaponStack, World world, EntityLivingBase entity)
 		{
 			if (weapon.getCooldown(weaponStack) > 0) return;
 			Helper.knockUserBack(entity, weapon.Kickback); // Kickback

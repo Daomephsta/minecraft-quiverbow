@@ -3,10 +3,10 @@ package com.domochevsky.quiverbow.weapons;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.ArrowBundle;
-import com.domochevsky.quiverbow.projectiles.RegularArrow;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 import com.domochevsky.quiverbow.weapons.base.WeaponCrossbow;
 
+import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -21,7 +21,7 @@ public class Crossbow_AutoImp extends WeaponCrossbow
 		super("auto_crossbow_imp", 16, (world, weaponStack, entity, data) ->
 		{
 			Crossbow_AutoImp weapon = (Crossbow_AutoImp) weaponStack.getItem();
-			RegularArrow entityarrow = new RegularArrow(world, entity, (float) weapon.Speed);
+			EntityArrow entityarrow = Helper.createArrow(world, entity);
 
 			// Random Damage
 			int dmg_range = weapon.DmgMax - weapon.DmgMin; // If max dmg is 20
@@ -35,10 +35,9 @@ public class Crossbow_AutoImp extends WeaponCrossbow
 									// giving us
 			// the proper damage range (10-20)
 
-			entityarrow.damage = dmg;
-			entityarrow.knockbackStrength = weapon.Knockback; // Comes with an
-																// inbuild
-			// knockback I
+			entityarrow.setAim(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, (float)weapon.Speed, 0.5F);
+			entityarrow.setDamage(dmg);
+			entityarrow.setKnockbackStrength(weapon.Knockback);
 
 			return entityarrow;
 		});

@@ -101,7 +101,7 @@ public class SugarEngine extends MagazineFedWeapon
 			// spinning)
 		}
 
-		protected void doBurstFire(ItemStack weaponStack, World world, Entity entity)
+		protected void doBurstFire(ItemStack weaponStack, World world, EntityLivingBase entity)
 		{
 			Helper.knockUserBack(entity, weapon.Kickback); // Kickback
 			if (!world.isRemote)

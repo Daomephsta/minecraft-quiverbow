@@ -22,35 +22,24 @@ public class BurstFiringBehaviour<W extends MagazineFedWeapon> extends Projectil
 	@Override
 	public void update(ItemStack stack, World world, Entity entity, int animTick, boolean holdingItem)
 	{
-		if (weapon.getBurstFire(stack) > 0)
+		if (entity instanceof EntityLivingBase && weapon.getBurstFire(stack) <= 0)
+			return;
+		weapon.setBurstFire(stack, weapon.getBurstFire(stack) - 1); // One
+		// done
+
+		if (stack.getItemDamage() < stack.getMaxDamage() && holdingItem)
 		{
-			weapon.setBurstFire(stack, weapon.getBurstFire(stack) - 1); // One
-																		// done
+			this.doBurstFire(stack, world, (EntityLivingBase) entity);
 
-			if (stack.getItemDamage() < stack.getMaxDamage() && holdingItem) // Can
-			// only
-			// do
-			// it
-			// if
-			// we're
-			// loaded
-			// and
-			// holding
-			// the
-			// weapon
+			if (weapon.consumeAmmo(stack, entity, 1))
 			{
-				this.doBurstFire(stack, world, entity);
-
-				if (weapon.consumeAmmo(stack, entity, 1))
-				{
-					weapon.dropMagazine(world, stack, entity);
-				} // You're empty
-			}
-			// else, either not loaded or not held
+				weapon.dropMagazine(world, stack, entity);
+			} // You're empty
 		}
+		// else, either not loaded or not held
 	}
 
-	protected void doBurstFire(ItemStack stack, World world, Entity entity)
+	protected void doBurstFire(ItemStack stack, World world, EntityLivingBase entity)
 	{
 
 	}

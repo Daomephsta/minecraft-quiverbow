@@ -5,7 +5,6 @@ import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.Main.Constants;
 import com.domochevsky.quiverbow.ammo.ArrowBundle;
 import com.domochevsky.quiverbow.models.ISpecialRender;
-import com.domochevsky.quiverbow.projectiles.RegularArrow;
 import com.domochevsky.quiverbow.weapons.base.WeaponCrossbow;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
@@ -14,6 +13,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
@@ -37,7 +37,7 @@ public class Crossbow_Auto extends WeaponCrossbow implements ISpecialRender
 		setFiringBehaviour(new SingleShotFiringBehaviour<Crossbow_Auto>(this, (world, weaponStack, entity, data) ->
 		{
 			Crossbow_Auto weapon = (Crossbow_Auto) weaponStack.getItem();
-			RegularArrow entityarrow = new RegularArrow(world, entity, (float) this.Speed);
+			EntityArrow entityarrow = Helper.createArrow(world, entity);
 
 			// Random Damage
 			int dmg_range = weapon.DmgMax - weapon.DmgMin; // If max dmg is 20
@@ -51,10 +51,9 @@ public class Crossbow_Auto extends WeaponCrossbow implements ISpecialRender
 									// giving us
 			// the proper damage range (10-20)
 
-			entityarrow.damage = dmg;
-			entityarrow.knockbackStrength = weapon.Knockback; // Comes with an
-																// inbuild
-			// knockback II
+			entityarrow.setAim(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, (float)weapon.Speed, 0.5F);
+			entityarrow.setDamage(dmg);
+			entityarrow.setKnockbackStrength(weapon.Knockback);
 
 			return entityarrow;
 		})

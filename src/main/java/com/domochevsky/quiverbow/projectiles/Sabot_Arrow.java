@@ -2,6 +2,7 @@ package com.domochevsky.quiverbow.projectiles;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
@@ -62,11 +63,8 @@ public class Sabot_Arrow extends _ProjectileBase
 
 	private void fireArrow(float accHor, float accVert)
 	{
-		RegularArrow arrow = new RegularArrow(this.world, this, this.speed / 2, accHor, accVert); // Half
-		// speed
-
-		arrow.damage = this.damage;
-		arrow.shootingEntity = this.shootingEntity;
+		EntityArrow arrow = Helper.createArrow(world, null);
+		arrow.setDamage(this.damage);
 
 		this.world.spawnEntity(arrow);
 	}

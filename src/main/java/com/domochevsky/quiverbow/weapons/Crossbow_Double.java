@@ -5,15 +5,13 @@ import java.util.List;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.projectiles.RegularArrow;
 import com.domochevsky.quiverbow.util.Newliner;
 import com.domochevsky.quiverbow.weapons.base.WeaponCrossbow;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
@@ -29,7 +27,7 @@ public class Crossbow_Double extends WeaponCrossbow
 		super("double_crossbow", 2, (world, weaponStack, entity, data) ->
 		{
 			Crossbow_Double weapon = (Crossbow_Double) weaponStack.getItem();
-			RegularArrow entityarrow = new RegularArrow(world, entity, (float) weapon.Speed);
+			EntityArrow entityarrow = Helper.createArrow(world, entity);
 
 			// Random Damage
 			int dmg_range = weapon.DmgMax - weapon.DmgMin; // If max dmg is 20
@@ -43,10 +41,10 @@ public class Crossbow_Double extends WeaponCrossbow
 									// giving us
 			// the proper damage range (10-20)
 
-			entityarrow.damage = dmg;
-			entityarrow.knockbackStrength = weapon.Knockback; // Comes with an
-																// inbuild
-			// knockback II
+			entityarrow.setAim(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, (float)weapon.Speed, 0.5F);
+			entityarrow.setDamage(dmg);
+			entityarrow.setKnockbackStrength(weapon.Knockback);
+			
 			return entityarrow;
 		});
 	}
