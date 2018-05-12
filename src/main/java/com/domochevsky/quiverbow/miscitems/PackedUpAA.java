@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.AI.AI_Properties;
-import com.domochevsky.quiverbow.ArmsAssistant.Entity_AA;
+import com.domochevsky.quiverbow.ai.AIProperties;
+import com.domochevsky.quiverbow.armsassistant.EntityAA;
 import com.domochevsky.quiverbow.recipes.*;
 import com.mojang.realmsclient.gui.ChatFormatting;
 
@@ -85,7 +85,7 @@ public class PackedUpAA extends QuiverBowItem
 	{
 		ItemStack stack = player.getHeldItem(hand);
 
-		Entity_AA turret = new Entity_AA(world, player);
+		EntityAA turret = new EntityAA(world, player);
 
 		turret.setPosition(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
 		world.spawnEntity(turret);
@@ -93,7 +93,7 @@ public class PackedUpAA extends QuiverBowItem
 		// Custom name
 		if (stack.hasDisplayName())
 		{
-			AI_Properties.applyNameTag(player, turret, stack, false);
+			AIProperties.applyNameTag(player, turret, stack, false);
 		}
 
 		// Applying upgrades
@@ -101,31 +101,31 @@ public class PackedUpAA extends QuiverBowItem
 		{
 			if (stack.getTagCompound().getBoolean("hasArmorUpgrade"))
 			{
-				AI_Properties.applyArmorUpgrade(turret);
+				AIProperties.applyArmorUpgrade(turret);
 			}
 			if (stack.getTagCompound().getBoolean("hasHeavyPlatingUpgrade"))
 			{
-				AI_Properties.applyPlatingUpgrade(turret);
+				AIProperties.applyPlatingUpgrade(turret);
 			}
 			if (stack.getTagCompound().getBoolean("hasMobilityUpgrade"))
 			{
-				AI_Properties.applyMobilityUpgrade(turret);
+				AIProperties.applyMobilityUpgrade(turret);
 			}
 			if (stack.getTagCompound().getBoolean("hasStorageUpgrade"))
 			{
-				AI_Properties.applyStorageUpgrade(turret);
+				AIProperties.applyStorageUpgrade(turret);
 			}
 			if (stack.getTagCompound().getBoolean("hasWeaponUpgrade"))
 			{
-				AI_Properties.applyWeaponUpgrade(turret);
+				AIProperties.applyWeaponUpgrade(turret);
 			}
 			if (stack.getTagCompound().getBoolean("hasRidingUpgrade"))
 			{
-				AI_Properties.applyRidingUpgrade(turret);
+				AIProperties.applyRidingUpgrade(turret);
 			}
 			if (stack.getTagCompound().getBoolean("hasCommunicationUpgrade"))
 			{
-				AI_Properties.applyCommunicationUpgrade(turret);
+				AIProperties.applyCommunicationUpgrade(turret);
 			}
 
 			if (stack.getTagCompound().getInteger("currentHealth") > 0) // Tracking
@@ -169,19 +169,19 @@ public class PackedUpAA extends QuiverBowItem
 			this.setCreativeTab(null);
 		} // Not allowed to be on the creative tab either
 
-		RecipeSorter.register("quiverchevsky:recipehandler_aa_armor", Recipe_AA_Armor.class,
+		RecipeSorter.register("quiverchevsky:recipehandler_aa_armor", RecipeAAArmor.class,
 				RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
-		RecipeSorter.register("quiverchevsky:recipehandler_aa_mobility", Recipe_AA_Mobility.class,
+		RecipeSorter.register("quiverchevsky:recipehandler_aa_mobility", RecipeAAMobility.class,
 				RecipeSorter.Category.SHAPED, "after:minecraft:shapeless");
-		RecipeSorter.register("quiverchevsky:recipehandler_aa_storage", Recipe_AA_Storage.class,
+		RecipeSorter.register("quiverchevsky:recipehandler_aa_storage", RecipeAAStorage.class,
 				RecipeSorter.Category.SHAPED, "after:minecraft:shapeless");
-		RecipeSorter.register("quiverchevsky:recipehandler_aa_weapon", Recipe_AA_Weapon.class,
+		RecipeSorter.register("quiverchevsky:recipehandler_aa_weapon", RecipeAAWeapon.class,
 				RecipeSorter.Category.SHAPED, "after:minecraft:shapeless");
-		RecipeSorter.register("quiverchevsky:recipehandler_aa_riding", Recipe_AA_Riding.class,
+		RecipeSorter.register("quiverchevsky:recipehandler_aa_riding", RecipeAARiding.class,
 				RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
-		RecipeSorter.register("quiverchevsky:recipehandler_aa_plating", Recipe_AA_Plating.class,
+		RecipeSorter.register("quiverchevsky:recipehandler_aa_plating", RecipeAAPlating.class,
 				RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
-		RecipeSorter.register("quiverchevsky:recipehandler_aa_com", Recipe_AA_Communication.class,
+		RecipeSorter.register("quiverchevsky:recipehandler_aa_com", RecipeAACommunication.class,
 				RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
 
 		// Upgrades

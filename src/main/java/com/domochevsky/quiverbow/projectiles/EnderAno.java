@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.net.NetHelper;
 
-public class EnderAno extends _ProjectileBase
+public class EnderAno extends ProjectileBase
 {
 	public int travelTicksMax;
 	public int targetsHitMax;

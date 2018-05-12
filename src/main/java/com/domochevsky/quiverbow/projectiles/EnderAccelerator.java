@@ -11,7 +11,7 @@ import com.domochevsky.quiverbow.net.NetHelper;
 
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
-public class EnderAccelerator extends _ProjectileBase implements IEntityAdditionalSpawnData
+public class EnderAccelerator extends ProjectileBase implements IEntityAdditionalSpawnData
 {
 	public boolean damageTerrain;
 	public float explosionSize;

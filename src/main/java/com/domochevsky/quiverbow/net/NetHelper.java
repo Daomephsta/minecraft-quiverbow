@@ -2,15 +2,14 @@ package com.domochevsky.quiverbow.net;
 
 import java.util.List;
 
+import com.domochevsky.quiverbow.armsassistant.EntityAA;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
-
-import com.domochevsky.quiverbow.ArmsAssistant.Entity_AA;
-
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class NetHelper
@@ -116,7 +115,7 @@ public class NetHelper
 		}
 	}
 
-	public static void sendTurretStateMessageToPlayersInRange(World world, Entity_AA turret, boolean hasArmor, boolean hasWeaponUpgrade, boolean hasRidingUpgrade, boolean hasPlatingUpgrade, boolean hasComUpgrade)
+	public static void sendTurretStateMessageToPlayersInRange(World world, EntityAA turret, boolean hasArmor, boolean hasWeaponUpgrade, boolean hasRidingUpgrade, boolean hasPlatingUpgrade, boolean hasComUpgrade)
 	{
 		// Step 1, who's in range?
 		if (world.isRemote)
@@ -144,7 +143,7 @@ public class NetHelper
 		}
 	}
 
-	public static void sendTurretInventoryMessageToPlayersInRange(World world, Entity_AA turret, int itemID, int itemSlot, int metadata)
+	public static void sendTurretInventoryMessageToPlayersInRange(World world, EntityAA turret, int itemID, int itemSlot, int metadata)
 	{
 		// Step 1, who's in range?
 		if (world.isRemote)

@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.net.NetHelper;
 
-public class SmallRocket extends _ProjectileBase
+public class SmallRocket extends ProjectileBase
 {
 	public boolean dmgTerrain;
 

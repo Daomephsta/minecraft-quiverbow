@@ -2,9 +2,9 @@ package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.AI.AI_Targeting;
+import com.domochevsky.quiverbow.ai.AITargeting;
 import com.domochevsky.quiverbow.projectiles.WaterShot;
-import com.domochevsky.quiverbow.weapons.base._WeaponBase;
+import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
 import net.minecraft.block.state.IBlockState;
@@ -26,7 +26,7 @@ import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class AquaAccelerator extends _WeaponBase
+public class AquaAccelerator extends WeaponBase
 {
 	public AquaAccelerator()
 	{
@@ -34,7 +34,7 @@ public class AquaAccelerator extends _WeaponBase
 		this.setCreativeTab(CreativeTabs.TOOLS); // This is a tool
 		setFiringBehaviour(new SingleShotFiringBehaviour<AquaAccelerator>(this,
 				(world, weaponStack, entity, data) -> new WaterShot(world, entity,
-						(float) ((_WeaponBase) weaponStack.getItem()).Speed)));
+						(float) ((WeaponBase) weaponStack.getItem()).speed)));
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class AquaAccelerator extends _WeaponBase
 
 	private void checkReloadFromWater(ItemStack stack, World world, EntityPlayer player)
 	{
-		RayTraceResult movingobjectposition = AI_Targeting.getRayTraceResultFromPlayer(world, player, 8.0D);
+		RayTraceResult movingobjectposition = AITargeting.getRayTraceResultFromPlayer(world, player, 8.0D);
 		FillBucketEvent event = new FillBucketEvent(player, stack, world, movingobjectposition);
 
 		if (MinecraftForge.EVENT_BUS.post(event))
@@ -72,7 +72,7 @@ public class AquaAccelerator extends _WeaponBase
 			return;
 		}
 
-		RayTraceResult movObj = AI_Targeting.getRayTraceResultFromPlayer(world, player, 8.0D);
+		RayTraceResult movObj = AITargeting.getRayTraceResultFromPlayer(world, player, 8.0D);
 
 		if (movObj == null)
 		{
@@ -110,8 +110,8 @@ public class AquaAccelerator extends _WeaponBase
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
-		this.Speed = config.get(this.name, "How fast are my projectiles? (default 1.5 BPT (Blocks Per Tick))", 1.5)
+		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+		this.speed = config.get(this.name, "How fast are my projectiles? (default 1.5 BPT (Blocks Per Tick))", 1.5)
 				.getDouble();
 		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default false)", false)
 				.getBoolean(true);
@@ -120,7 +120,7 @@ public class AquaAccelerator extends _WeaponBase
 	@Override
 	public void addRecipes()
 	{
-		if (Enabled)
+		if (enabled)
 		{
 			// One Aqua Accelerator (empty)
 			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "ihi", "gpg", "iti", 'p',

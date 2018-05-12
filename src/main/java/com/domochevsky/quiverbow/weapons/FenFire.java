@@ -4,7 +4,7 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.FenGoop;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
-import com.domochevsky.quiverbow.weapons.base._WeaponBase;
+import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -17,10 +17,10 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class FenFire extends _WeaponBase
+public class FenFire extends WeaponBase
 {
-	private int FireDur;
-	private int LightTick;
+	private int fireDuration;
+	private int lightTick;
 
 	public FenFire()
 	{
@@ -28,12 +28,12 @@ public class FenFire extends _WeaponBase
 		this.setCreativeTab(CreativeTabs.TOOLS); // Tool, so on the tool tab
 		setFiringBehaviour(new SingleShotFiringBehaviour<FenFire>(this, (world, weaponStack, entity, data) ->
 		{
-			FenGoop projectile = new FenGoop(world, entity, (float) this.Speed);
-			projectile.fireDuration = this.FireDur;
+			FenGoop projectile = new FenGoop(world, entity, (float) this.speed);
+			projectile.fireDuration = this.fireDuration;
 
-			if (this.LightTick != 0)
+			if (this.lightTick != 0)
 			{
-				projectile.lightTick = this.LightTick;
+				projectile.lightTick = this.lightTick;
 			} // Scheduled to turn off again
 
 			return projectile;
@@ -55,13 +55,13 @@ public class FenFire extends _WeaponBase
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.Speed = config.get(this.name, "How fast are my projectiles? (default 1.5 BPT (Blocks Per Tick))", 1.5)
+		this.speed = config.get(this.name, "How fast are my projectiles? (default 1.5 BPT (Blocks Per Tick))", 1.5)
 				.getDouble();
-		this.Cooldown = config.get(this.name, "How long until I can fire again? (default 20 ticks)", 20).getInt();
-		this.FireDur = config.get(this.name, "How long is what I hit on fire? (default 1s)", 1).getInt();
-		this.LightTick = config
+		this.cooldown = config.get(this.name, "How long until I can fire again? (default 20 ticks)", 20).getInt();
+		this.fireDuration = config.get(this.name, "How long is what I hit on fire? (default 1s)", 1).getInt();
+		this.lightTick = config
 				.get(this.name, "How long do my lights stay lit? (default 0 ticks for infinite. 20 ticks = 1 sec)", 0)
 				.getInt();
 
@@ -73,7 +73,7 @@ public class FenFire extends _WeaponBase
 	@Override
 	public void addRecipes()
 	{
-		if (this.Enabled)
+		if (this.enabled)
 		{
 			// One Fen Fire (empty)
 			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "di ", "i i", " ts", 't',

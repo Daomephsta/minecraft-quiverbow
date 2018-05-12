@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-public class WebShot extends _ProjectileBase
+public class WebShot extends ProjectileBase
 {
 	public WebShot(World world)
 	{

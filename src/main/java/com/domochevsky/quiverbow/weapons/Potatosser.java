@@ -4,7 +4,7 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.PotatoShot;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
-import com.domochevsky.quiverbow.weapons.base._WeaponBase;
+import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
 import net.minecraft.entity.Entity;
@@ -16,7 +16,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class Potatosser extends _WeaponBase
+public class Potatosser extends WeaponBase
 {
 	private boolean shouldDrop;
 
@@ -26,19 +26,19 @@ public class Potatosser extends _WeaponBase
 		setFiringBehaviour(new SingleShotFiringBehaviour<Potatosser>(this, (world, weaponStack, entity, data) ->
 		{
 			// Random Damage
-			int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and
+			int dmg_range = this.damageMax - this.damageMin; // If max dmg is 20 and
 														// min
 			// is 10, then the range will
 			// be 10
 			int dmg = world.rand.nextInt(dmg_range + 1); // Range will be
 															// between 0
 			// and 10
-			dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving
+			dmg += this.damageMin; // Adding the min dmg of 10 back on top, giving
 								// us
 			// the proper damage range (10-20)
 
 			// Firing
-			PotatoShot shot = new PotatoShot(world, entity, (float) this.Speed);
+			PotatoShot shot = new PotatoShot(world, entity, (float) this.speed);
 			shot.damage = dmg;
 			shot.setDrop(this.shouldDrop);
 			return shot;
@@ -60,14 +60,14 @@ public class Potatosser extends _WeaponBase
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.DmgMin = config.get(this.name, "What damage am I dealing, at least? (default 2)", 2).getInt();
-		this.DmgMax = config.get(this.name, "What damage am I dealing, tops? (default 5)", 5).getInt();
+		this.damageMin = config.get(this.name, "What damage am I dealing, at least? (default 2)", 2).getInt();
+		this.damageMax = config.get(this.name, "What damage am I dealing, tops? (default 5)", 5).getInt();
 
-		this.Speed = config.get(this.name, "How fast are my projectiles? (default 1.5 BPT (Blocks Per Tick))", 1.5)
+		this.speed = config.get(this.name, "How fast are my projectiles? (default 1.5 BPT (Blocks Per Tick))", 1.5)
 				.getDouble();
-		this.Cooldown = config.get(this.name, "How long until I can fire again? (default 15)", 15).getInt();
+		this.cooldown = config.get(this.name, "How long until I can fire again? (default 15)", 15).getInt();
 
 		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);
 
@@ -78,7 +78,7 @@ public class Potatosser extends _WeaponBase
 	@Override
 	public void addRecipes()
 	{
-		if (this.Enabled)
+		if (this.enabled)
 		{
 			// One potatosser (empty)
 			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "xax", "zbx", "cdy", 'a',

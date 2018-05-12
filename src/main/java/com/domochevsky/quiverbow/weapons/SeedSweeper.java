@@ -3,7 +3,7 @@ package com.domochevsky.quiverbow.weapons;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.SeedJar;
-import com.domochevsky.quiverbow.ammo._AmmoBase;
+import com.domochevsky.quiverbow.ammo.AmmoBase;
 import com.domochevsky.quiverbow.projectiles.Seed;
 import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SalvoFiringBehaviour;
@@ -19,19 +19,19 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class SeedSweeper extends MagazineFedWeapon
 {
-	private int Dmg;
-	private float Spread;
+	private int damage;
+	private float spread;
 
-	public SeedSweeper(_AmmoBase ammo)
+	public SeedSweeper(AmmoBase ammo)
 	{
 		super("seed_sweeper", ammo, 512);
 		setFiringBehaviour(new SalvoFiringBehaviour<SeedSweeper>(this, 8, (world, weaponStack, entity, data) ->
 		{
-			float spreadHor = world.rand.nextFloat() * this.Spread - (this.Spread / 2);
-			float spreadVert = world.rand.nextFloat() * this.Spread - (this.Spread / 2);
+			float spreadHor = world.rand.nextFloat() * this.spread - (this.spread / 2);
+			float spreadVert = world.rand.nextFloat() * this.spread - (this.spread / 2);
 
-			Seed shot = new Seed(world, entity, (float) this.Speed, spreadHor, spreadVert);
-			shot.damage = this.Dmg;
+			Seed shot = new Seed(world, entity, (float) this.speed, spreadHor, spreadVert);
+			shot.damage = this.damage;
 			return shot;
 		}));
 	}
@@ -51,14 +51,14 @@ public class SeedSweeper extends MagazineFedWeapon
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.Dmg = config.get(this.name, "What damage am I dealing per projectile? (default 1)", 1).getInt();
-		this.Cooldown = config.get(this.name, "How long until I can fire again? (default 15 ticks)", 15).getInt();
+		this.damage = config.get(this.name, "What damage am I dealing per projectile? (default 1)", 1).getInt();
+		this.cooldown = config.get(this.name, "How long until I can fire again? (default 15 ticks)", 15).getInt();
 
-		this.Speed = config.get(this.name, "How fast are my projectiles? (default 1.6 BPT (Blocks Per Tick))", 1.6)
+		this.speed = config.get(this.name, "How fast are my projectiles? (default 1.6 BPT (Blocks Per Tick))", 1.6)
 				.getDouble();
-		this.Spread = (float) config.get(this.name, "How accurate am I? (default 26 spread)", 26).getDouble();
+		this.spread = (float) config.get(this.name, "How accurate am I? (default 26 spread)", 26).getDouble();
 
 		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
 	}
@@ -66,7 +66,7 @@ public class SeedSweeper extends MagazineFedWeapon
 	@Override
 	public void addRecipes()
 	{
-		if (this.Enabled)
+		if (this.enabled)
 		{
 			// One Seed Sweeper (empty)
 			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), " i ", "ipi", " it", 'p',

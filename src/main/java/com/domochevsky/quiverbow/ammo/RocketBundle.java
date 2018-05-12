@@ -4,7 +4,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-public class RocketBundle extends _AmmoBase
+public class RocketBundle extends AmmoBase
 {
 	@Override
 	public void addRecipes()

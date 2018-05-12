@@ -1,6 +1,6 @@
 package com.domochevsky.quiverbow.net;
 
-import com.domochevsky.quiverbow.Helper_Client;
+import com.domochevsky.quiverbow.HelperClient;
 
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -15,7 +15,7 @@ public class PositionPacket implements IMessageHandler<PositionMessage, IMessage
 		{
 			// Setting the position of the passed in entity, for precision
 			// purposes
-			Helper_Client.updateEntityPositionClient(message.entityID, message.posX, message.posY, message.posZ);
+			HelperClient.updateEntityPositionClient(message.entityID, message.posX, message.posY, message.posZ);
 		}
 
 		return null; // Don't care about returning anything

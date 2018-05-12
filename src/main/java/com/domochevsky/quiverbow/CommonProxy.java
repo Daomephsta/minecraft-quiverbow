@@ -1,6 +1,6 @@
 package com.domochevsky.quiverbow;
 
-import com.domochevsky.quiverbow.projectiles._ProjectileBase;
+import com.domochevsky.quiverbow.projectiles.ProjectileBase;
 
 import net.minecraft.item.Item;
 

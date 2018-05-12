@@ -4,7 +4,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 
 import com.domochevsky.quiverbow.weapons.ERA;
-import com.domochevsky.quiverbow.weapons.base._WeaponBase;
+import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
@@ -33,7 +33,7 @@ public class Listener
 		}
 		// else, not mine, so don't care
 
-		else if (!event.crafting.isEmpty() && event.crafting.getItem() instanceof _WeaponBase) // More
+		else if (!event.crafting.isEmpty() && event.crafting.getItem() instanceof WeaponBase) // More
 		// generic
 		// weapon
 		// check
@@ -63,7 +63,7 @@ public class Listener
 		{
 			ItemStack stack = craftMatrix.getStackInSlot(slot);
 
-			if (!stack.isEmpty() && stack.getItem() instanceof _WeaponBase) // Found
+			if (!stack.isEmpty() && stack.getItem() instanceof WeaponBase) // Found
 			// it.
 			// Does
 			// it

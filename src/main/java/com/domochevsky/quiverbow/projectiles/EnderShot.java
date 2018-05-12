@@ -10,10 +10,10 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-public class EnderShot extends _ProjectileBase
+public class EnderShot extends ProjectileBase
 {
-	public int damage_Max; // How much damage we can deal, tops
-	public double damage_Increase; // By how much we increase our current
+	public int damageMax; // How much damage we can deal, tops
+	public double damageIncrease; // By how much we increase our current
 	// damage, each tick
 
 	public EnderShot(World world)
@@ -39,9 +39,9 @@ public class EnderShot extends _ProjectileBase
 		// Doing our own (reduced) gravity
 		this.motionY -= 0.025; // Default is 0.05
 
-		if (this.damage < this.damage_Max)
+		if (this.damage < this.damageMax)
 		{
-			this.damage += (double) this.damage_Increase;
+			this.damage += (double) this.damageIncrease;
 		} // Increasing damage once per tick until we reach the max
 
 		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.PORTAL, (byte) 3);

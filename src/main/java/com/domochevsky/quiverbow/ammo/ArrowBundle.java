@@ -4,7 +4,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class ArrowBundle extends _AmmoBase
+public class ArrowBundle extends AmmoBase
 {
 	@Override
 	public void addRecipes()

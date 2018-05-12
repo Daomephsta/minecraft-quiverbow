@@ -2,14 +2,14 @@ package com.domochevsky.quiverbow.weapons.base.firingbehaviours;
 
 import javax.annotation.Nullable;
 
-import com.domochevsky.quiverbow.weapons.base._WeaponBase;
+import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public abstract class ProjectileFiringBehaviour<W extends _WeaponBase> extends FiringBehaviourBase<W>
+public abstract class ProjectileFiringBehaviour<W extends WeaponBase> extends FiringBehaviourBase<W>
 {
 	public static interface IProjectileFactory
 	{

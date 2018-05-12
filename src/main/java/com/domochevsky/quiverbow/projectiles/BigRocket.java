@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 
 import com.domochevsky.quiverbow.net.NetHelper;
 
-public class BigRocket extends _ProjectileBase
+public class BigRocket extends ProjectileBase
 {
 	public int travelTicksMax;
 	public boolean dmgTerrain;

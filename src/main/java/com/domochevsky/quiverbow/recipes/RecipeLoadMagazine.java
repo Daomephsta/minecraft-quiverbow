@@ -10,9 +10,9 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.world.World;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.ammo._AmmoBase;
+import com.domochevsky.quiverbow.ammo.AmmoBase;
 import com.domochevsky.quiverbow.weapons.OSP;
-import com.domochevsky.quiverbow.weapons.base._WeaponBase;
+import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 public class RecipeLoadMagazine extends ShapelessRecipes implements IRecipe
 {
@@ -68,7 +68,7 @@ public class RecipeLoadMagazine extends ShapelessRecipes implements IRecipe
 			if (!stack.isEmpty() && stack.getItem().getClass() == item.getClass()) // Found
 			// one!
 			{
-				if (stack.getItem() instanceof _WeaponBase) // Is a weapon, so
+				if (stack.getItem() instanceof WeaponBase) // Is a weapon, so
 				// need to ensure
 				// that it's empty
 				{
@@ -78,7 +78,7 @@ public class RecipeLoadMagazine extends ShapelessRecipes implements IRecipe
 					}
 					// else, isn't empty
 				}
-				else if (stack.getItem() instanceof _AmmoBase) // is ammo
+				else if (stack.getItem() instanceof AmmoBase) // is ammo
 				{
 					this.metadata = stack.getItemDamage(); // Keeping track of
 					// what this is gonna

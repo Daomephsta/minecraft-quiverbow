@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.net.NetHelper;
 
-public class PotatoShot extends _ProjectileBase
+public class PotatoShot extends ProjectileBase
 {
 	private boolean shouldDrop;
 

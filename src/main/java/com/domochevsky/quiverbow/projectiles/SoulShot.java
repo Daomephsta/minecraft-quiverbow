@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
-public class SoulShot extends _ProjectileBase
+public class SoulShot extends ProjectileBase
 {
 	public SoulShot(World world)
 	{

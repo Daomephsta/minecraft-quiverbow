@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.net.NetHelper;
 
-public class BlazeShot extends _ProjectileBase
+public class BlazeShot extends ProjectileBase
 {
 	public BlazeShot(World world)
 	{

@@ -5,11 +5,11 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.domochevsky.quiverbow.ammo._AmmoBase;
+import com.domochevsky.quiverbow.ammo.AmmoBase;
 import com.domochevsky.quiverbow.net.NetHelper;
-import com.domochevsky.quiverbow.projectiles._ProjectileBase;
+import com.domochevsky.quiverbow.projectiles.ProjectileBase;
 import com.domochevsky.quiverbow.recipes.*;
-import com.domochevsky.quiverbow.weapons.base._WeaponBase;
+import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -37,7 +37,7 @@ public class Helper
 	private static final ItemStack ARROW_STACK = new ItemStack(Items.ARROW);
 
 	// Overhauled method for registering ammo (specifically, using magazines)
-	public static void registerAmmoRecipe(Class<? extends _AmmoBase> ammoBase, Item weapon)
+	public static void registerAmmoRecipe(Class<? extends AmmoBase> ammoBase, Item weapon)
 	{
 		ArrayList<ItemStack> list = new ArrayList<ItemStack>();
 
@@ -67,7 +67,7 @@ public class Helper
 				counter += 1;
 			}
 
-			GameRegistry.addRecipe(new Recipe_AA_Armor(result, list));
+			GameRegistry.addRecipe(new RecipeAAArmor(result, list));
 		}
 
 		else if (upgradeType.equals("hasHeavyPlatingUpgrade"))
@@ -83,22 +83,22 @@ public class Helper
 				counter += 1;
 			}
 
-			GameRegistry.addRecipe(new Recipe_AA_Plating(result, list));
+			GameRegistry.addRecipe(new RecipeAAPlating(result, list));
 		}
 
 		else if (upgradeType.equals("hasMobilityUpgrade"))
 		{
-			GameRegistry.addRecipe(new Recipe_AA_Mobility(3, 3, input, result));
+			GameRegistry.addRecipe(new RecipeAAMobility(3, 3, input, result));
 		}
 
 		else if (upgradeType.equals("hasStorageUpgrade"))
 		{
-			GameRegistry.addRecipe(new Recipe_AA_Storage(3, 3, input, result));
+			GameRegistry.addRecipe(new RecipeAAStorage(3, 3, input, result));
 		}
 
 		else if (upgradeType.equals("hasWeaponUpgrade"))
 		{
-			GameRegistry.addRecipe(new Recipe_AA_Weapon(3, 3, input, result));
+			GameRegistry.addRecipe(new RecipeAAWeapon(3, 3, input, result));
 		}
 
 		else if (upgradeType.equals("hasRidingUpgrade"))
@@ -114,7 +114,7 @@ public class Helper
 				counter += 1;
 			}
 
-			GameRegistry.addRecipe(new Recipe_AA_Riding(result, list));
+			GameRegistry.addRecipe(new RecipeAARiding(result, list));
 		}
 
 		else if (upgradeType.equals("hasCommunicationUpgrade"))
@@ -130,13 +130,13 @@ public class Helper
 				counter += 1;
 			}
 
-			GameRegistry.addRecipe(new Recipe_AA_Communication(result, list));
+			GameRegistry.addRecipe(new RecipeAACommunication(result, list));
 		}
 	}
 
-	private static Item getAmmoByClass(Class<? extends _AmmoBase> targetClass)
+	private static Item getAmmoByClass(Class<? extends AmmoBase> targetClass)
 	{
-		for (_AmmoBase ammunition : Main.ammo)
+		for (AmmoBase ammunition : Main.ammo)
 		{
 			if (ammunition.getClass() == targetClass)
 			{
@@ -147,9 +147,9 @@ public class Helper
 		return null; // Don't have what you're looking for
 	}
 
-	public static ItemStack getAmmoStack(Class<? extends _AmmoBase> targetClass, int dmg)
+	public static ItemStack getAmmoStack(Class<? extends AmmoBase> targetClass, int dmg)
 	{
-		for (_AmmoBase ammunition : Main.ammo)
+		for (AmmoBase ammunition : Main.ammo)
 		{
 			if (ammunition.getClass() == targetClass)
 			{
@@ -160,9 +160,9 @@ public class Helper
 		return ItemStack.EMPTY; // No idea what you're looking for
 	}
 
-	public static ItemStack getWeaponStackByClass(Class<? extends _WeaponBase> targetClass, boolean isEmpty)
+	public static ItemStack getWeaponStackByClass(Class<? extends WeaponBase> targetClass, boolean isEmpty)
 	{
-		for (_WeaponBase weapon : Main.weapons)
+		for (WeaponBase weapon : Main.weapons)
 		{
 			if (weapon.getClass() == targetClass) // Found it
 			{
@@ -195,7 +195,7 @@ public class Helper
 
 	// Sets the projectile to be pickupable depending on player creative mode
 	// Used for throwable entities
-	public static void setThrownPickup(EntityLivingBase entity, _ProjectileBase shot)
+	public static void setThrownPickup(EntityLivingBase entity, ProjectileBase shot)
 	{
 		if (entity instanceof EntityPlayer) // Is a player
 		{
@@ -256,9 +256,9 @@ public class Helper
 			return false;
 		} // Not allowed to break anything in general
 
-		if (entity instanceof _ProjectileBase)
+		if (entity instanceof ProjectileBase)
 		{
-			_ProjectileBase projectile = (_ProjectileBase) entity;
+			ProjectileBase projectile = (ProjectileBase) entity;
 
 			if (projectile.shootingEntity != null && !(projectile.shootingEntity instanceof EntityPlayer))
 			{
@@ -322,9 +322,9 @@ public class Helper
 		{
 			if (Main.sendBlockBreak)
 			{
-				if (entity instanceof _ProjectileBase)
+				if (entity instanceof ProjectileBase)
 				{
-					_ProjectileBase projectile = (_ProjectileBase) entity;
+					ProjectileBase projectile = (ProjectileBase) entity;
 
 					// If you were shot by a player, are they allowed to break
 					// this block?
@@ -375,7 +375,7 @@ public class Helper
 		{
 			ItemStack stack = craftMatrix.getStackInSlot(slot);
 
-			if (!stack.isEmpty() && stack.getItem() instanceof _WeaponBase) // Found
+			if (!stack.isEmpty() && stack.getItem() instanceof WeaponBase) // Found
 			// it.
 			// Does
 			// it

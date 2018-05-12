@@ -14,7 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-public class FenGoop extends _ProjectileBase
+public class FenGoop extends ProjectileBase
 {
 	public FenGoop(World world)
 	{

@@ -6,7 +6,7 @@ import java.util.Map;
 import org.lwjgl.opengl.GL11;
 
 import com.domochevsky.quiverbow.Main.Constants;
-import com.domochevsky.quiverbow.weapons.base._WeaponBase;
+import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.BeamFiringBehaviour;
 import com.google.common.collect.MapMaker;
 
@@ -175,8 +175,8 @@ public class RenderBeam
 	{
 		Beam beam = beams.computeIfAbsent(Minecraft.getMinecraft().player, player ->
 		{
-			_WeaponBase weapon = (_WeaponBase) player.getActiveItemStack().getItem();
-			BeamFiringBehaviour<_WeaponBase> beamFiringBehaviour = (BeamFiringBehaviour<_WeaponBase>) weapon
+			WeaponBase weapon = (WeaponBase) player.getActiveItemStack().getItem();
+			BeamFiringBehaviour<WeaponBase> beamFiringBehaviour = (BeamFiringBehaviour<WeaponBase>) weapon
 					.getFiringBehaviour();
 
 			return new Beam(beamFiringBehaviour.getBeamColour(), start, end);

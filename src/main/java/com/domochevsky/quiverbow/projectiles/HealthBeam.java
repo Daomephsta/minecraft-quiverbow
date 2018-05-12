@@ -16,7 +16,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-public class HealthBeam extends _ProjectileBase implements IEntityAdditionalSpawnData
+public class HealthBeam extends ProjectileBase implements IEntityAdditionalSpawnData
 {
 	public int travelTicksMax;
 

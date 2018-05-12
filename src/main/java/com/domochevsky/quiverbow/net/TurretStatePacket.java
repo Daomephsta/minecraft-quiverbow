@@ -1,6 +1,6 @@
 package com.domochevsky.quiverbow.net;
 
-import com.domochevsky.quiverbow.Helper_Client;
+import com.domochevsky.quiverbow.HelperClient;
 
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -13,7 +13,7 @@ public class TurretStatePacket implements IMessageHandler<TurretStateMessage, IM
 	{
 		if (ctx.side.isClient()) // just to make sure that the side is correct
 		{
-			Helper_Client.setTurretState(message.entityID, message.hasArmorUpgrade, message.hasWeaponUpgrade,
+			HelperClient.setTurretState(message.entityID, message.hasArmorUpgrade, message.hasWeaponUpgrade,
 					message.hasRidingUpgrade, message.hasPlatingUpgrade, message.hasCommunicationUpgrade);
 		}
 

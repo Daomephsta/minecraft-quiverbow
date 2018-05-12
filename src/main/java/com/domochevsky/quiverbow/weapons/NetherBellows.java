@@ -3,7 +3,7 @@ package com.domochevsky.quiverbow.weapons;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.LargeNetherrackMagazine;
-import com.domochevsky.quiverbow.ammo._AmmoBase;
+import com.domochevsky.quiverbow.ammo.AmmoBase;
 import com.domochevsky.quiverbow.projectiles.NetherFire;
 import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SalvoFiringBehaviour;
@@ -19,10 +19,10 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class NetherBellows extends MagazineFedWeapon
 {
-	private int Dmg;
-	private int FireDur;
+	private int damage;
+	private int fireDuration;
 
-	public NetherBellows(_AmmoBase ammo)
+	public NetherBellows(AmmoBase ammo)
 	{
 		super("nether_bellows", ammo, 200);
 		setFiringBehaviour(new SalvoFiringBehaviour<NetherBellows>(this, 5, (world, weaponStack, entity, data) ->
@@ -32,9 +32,9 @@ public class NetherBellows extends MagazineFedWeapon
 			// -10 and 10
 			float spreadVert = world.rand.nextFloat() * 20 - 10;
 
-			NetherFire shot = new NetherFire(world, entity, (float) this.Speed, spreadHor, spreadVert);
-			shot.damage = this.Dmg;
-			shot.fireDuration = this.FireDur;
+			NetherFire shot = new NetherFire(world, entity, (float) this.speed, spreadHor, spreadVert);
+			shot.damage = this.damage;
+			shot.fireDuration = this.fireDuration;
 
 			return shot;
 		}));
@@ -55,11 +55,11 @@ public class NetherBellows extends MagazineFedWeapon
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
-		this.Speed = config.get(this.name, "How fast are my projectiles? (default 0.75 BPT (Blocks Per Tick))", 0.75)
+		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+		this.speed = config.get(this.name, "How fast are my projectiles? (default 0.75 BPT (Blocks Per Tick))", 0.75)
 				.getDouble();
-		this.Dmg = config.get(this.name, "What damage am I dealing per projectile? (default 1)", 1).getInt();
-		this.FireDur = config.get(this.name, "For how long do I set things on fire? (default 3 sec)", 3).getInt();
+		this.damage = config.get(this.name, "What damage am I dealing per projectile? (default 1)", 1).getInt();
+		this.fireDuration = config.get(this.name, "For how long do I set things on fire? (default 3 sec)", 3).getInt();
 
 		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);
 	}
@@ -67,7 +67,7 @@ public class NetherBellows extends MagazineFedWeapon
 	@Override
 	public void addRecipes()
 	{
-		if (this.Enabled)
+		if (this.enabled)
 		{
 			// One redstone sprayer (empty)
 			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "zxz", "zbz", "cya", 'x',

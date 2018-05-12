@@ -16,7 +16,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-public class RedLight extends _ProjectileBase implements IEntityAdditionalSpawnData
+public class RedLight extends ProjectileBase implements IEntityAdditionalSpawnData
 {
 	public int targetsHitMax;
 

@@ -6,7 +6,7 @@ import java.util.List;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.renderer.RenderBeam;
 import com.domochevsky.quiverbow.renderer.RenderBeam.Beam;
-import com.domochevsky.quiverbow.weapons.base._WeaponBase;
+import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -15,7 +15,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
-public class BeamFiringBehaviour<W extends _WeaponBase> extends FiringBehaviourBase<W>
+public class BeamFiringBehaviour<W extends WeaponBase> extends FiringBehaviourBase<W>
 {
 	public static interface IBeamEffect
 	{

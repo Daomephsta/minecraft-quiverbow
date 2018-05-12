@@ -44,7 +44,7 @@ public class EnderBow extends WeaponBow
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 		this.Ticks = config.get(this.name,
 				"How often should I display the predictive projectile? (default every 5 ticks. That's 4 per second.)",
 				5).getInt();
@@ -59,7 +59,7 @@ public class EnderBow extends WeaponBow
 	@Override
 	public void addRecipes()
 	{
-		if (Enabled)
+		if (enabled)
 		{
 			// One ender bow, all ready
 			GameRegistry.addRecipe(new ItemStack(this), "zxy", "xay", "zxy", 'x', Items.STICK, 'y', Items.STRING, 'z',

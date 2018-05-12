@@ -9,7 +9,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-public class SugarRod extends _ProjectileBase
+public class SugarRod extends ProjectileBase
 {
 	public SugarRod(World world)
 	{

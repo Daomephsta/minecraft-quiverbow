@@ -5,7 +5,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-public class LargeRocket extends _AmmoBase
+public class LargeRocket extends AmmoBase
 {
 	@Override
 	public void addRecipes()

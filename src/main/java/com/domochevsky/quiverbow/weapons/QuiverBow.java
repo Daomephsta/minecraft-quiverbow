@@ -122,7 +122,7 @@ public class QuiverBow extends WeaponBow
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
 		this.isMobUsable = config.get(this.name,
 				"Can I be used by QuiverMobs? (default false. They don't know how to span the string.)", false)
@@ -134,7 +134,7 @@ public class QuiverBow extends WeaponBow
 	// crafted. Reloading existing weapons is always
 	// permitted.
 	{
-		if (this.Enabled)
+		if (this.enabled)
 		{
 			// One quiverbow with 256 damage value (empty)
 			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "zxy", "xzy", "zxy", 'x', Items.STICK,

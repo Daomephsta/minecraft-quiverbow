@@ -3,10 +3,10 @@ package com.domochevsky.quiverbow.weapons;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.ObsidianMagazine;
-import com.domochevsky.quiverbow.ammo._AmmoBase;
+import com.domochevsky.quiverbow.ammo.AmmoBase;
 import com.domochevsky.quiverbow.net.NetHelper;
-import com.domochevsky.quiverbow.projectiles.OSP_Shot;
-import com.domochevsky.quiverbow.projectiles._ProjectileBase;
+import com.domochevsky.quiverbow.projectiles.OSPShot;
+import com.domochevsky.quiverbow.projectiles.ProjectileBase;
 import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
@@ -24,24 +24,24 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class OSP extends MagazineFedWeapon
 {
-	public OSP(_AmmoBase ammo)
+	public OSP(AmmoBase ammo)
 	{
 		super("splinter_pistol", ammo, 16);
 		setFiringBehaviour(new SingleShotFiringBehaviour<OSP>(this, (world, weaponStack, entity, data) ->
 		{
 			OSP weapon = (OSP) weaponStack.getItem();
-			_ProjectileBase projectile = new OSP_Shot(world, entity, (float) weapon.Speed,
+			ProjectileBase projectile = new OSPShot(world, entity, (float) weapon.speed,
 					new PotionEffect(MobEffects.WITHER, weapon.Wither_Duration, weapon.Wither_Strength));
 
 			// Random Damage
-			int dmg_range = weapon.DmgMax - weapon.DmgMin; // If max dmg is 20
+			int dmg_range = weapon.damageMax - weapon.damageMin; // If max dmg is 20
 															// and min
 			// is 10, then the range will
 			// be 10
 			int dmg = world.rand.nextInt(dmg_range + 1); // Range will be
 															// between 0
 			// and 10
-			dmg += weapon.DmgMin; // Adding the min dmg of 10 back on top,
+			dmg += weapon.damageMin; // Adding the min dmg of 10 back on top,
 									// giving us
 			// the proper damage range (10-20)
 
@@ -77,15 +77,15 @@ public class OSP extends MagazineFedWeapon
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.DmgMin = config.get(this.name, "What damage am I dealing, at least? (default 4)", 4).getInt();
-		this.DmgMax = config.get(this.name, "What damage am I dealing, tops? (default 8)", 8).getInt();
+		this.damageMin = config.get(this.name, "What damage am I dealing, at least? (default 4)", 4).getInt();
+		this.damageMax = config.get(this.name, "What damage am I dealing, tops? (default 8)", 8).getInt();
 
-		this.Speed = config.get(this.name, "How fast are my projectiles? (default 1.7 BPT (Blocks Per Tick))", 1.7)
+		this.speed = config.get(this.name, "How fast are my projectiles? (default 1.7 BPT (Blocks Per Tick))", 1.7)
 				.getDouble();
 
-		this.Cooldown = config.get(this.name, "How long until I can fire again? (default 15 ticks)", 15).getInt();
+		this.cooldown = config.get(this.name, "How long until I can fire again? (default 15 ticks)", 15).getInt();
 
 		this.Wither_Strength = config.get(this.name, "How strong is my Wither effect? (default 1)", 1).getInt();
 		this.Wither_Duration = config.get(this.name, "How long does my Wither effect last? (default 61 ticks)", 61)
@@ -97,7 +97,7 @@ public class OSP extends MagazineFedWeapon
 	@Override
 	public void addRecipes()
 	{
-		if (this.Enabled)
+		if (this.enabled)
 		{
 			// One Obsidian Splinter
 			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), " io", "ipi", "oft", 'o',

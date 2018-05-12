@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 
 import com.domochevsky.quiverbow.net.NetHelper;
 
-public class WaterShot extends _ProjectileBase
+public class WaterShot extends ProjectileBase
 {
 	public WaterShot(World world)
 	{

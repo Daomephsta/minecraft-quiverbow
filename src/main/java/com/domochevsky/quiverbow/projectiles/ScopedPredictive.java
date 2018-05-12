@@ -2,7 +2,7 @@ package com.domochevsky.quiverbow.projectiles;
 
 import java.util.List;
 
-import com.domochevsky.quiverbow.Helper_Client;
+import com.domochevsky.quiverbow.HelperClient;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -13,7 +13,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 
 //TODO: Make better way of displaying arrow trajectory
-public class ScopedPredictive extends _ProjectileBase
+public class ScopedPredictive extends ProjectileBase
 {
 	public ScopedPredictive(World world)
 	{
@@ -264,7 +264,7 @@ public class ScopedPredictive extends _ProjectileBase
 	@Override
 	public void doFlightSFX()
 	{
-		Helper_Client.displayParticles(this.getEntityId(), EnumParticleTypes.SPELL_WITCH, (byte) 1); // Client-side
+		HelperClient.displayParticles(this.getEntityId(), EnumParticleTypes.SPELL_WITCH, (byte) 1); // Client-side
 	}
 
 	@Override

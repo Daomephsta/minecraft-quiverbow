@@ -2,7 +2,7 @@ package com.domochevsky.quiverbow.weapons.base.firingbehaviours;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
-import com.domochevsky.quiverbow.weapons.base._WeaponBase;
+import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
-public class SingleShotFiringBehaviour<W extends _WeaponBase> extends ProjectileFiringBehaviour<W>
+public class SingleShotFiringBehaviour<W extends WeaponBase> extends ProjectileFiringBehaviour<W>
 {
 	private final int ammoCost;
 
@@ -34,14 +34,14 @@ public class SingleShotFiringBehaviour<W extends _WeaponBase> extends Projectile
 		} // Hasn't cooled down yet
 
 		// Good to go (already verified)
-		Helper.knockUserBack(entity, weapon.Kickback); // Kickback
+		Helper.knockUserBack(entity, weapon.kickback); // Kickback
 
 		if (!world.isRemote) world.spawnEntity(projectileFactory.createProjectile(world, stack, entity, null)); // Firing!
 
 		// SFX
 		weapon.doFireFX(world, entity);
 
-		weapon.setCooldown(stack, weapon.Cooldown);
+		weapon.setCooldown(stack, weapon.cooldown);
 		if (weapon.consumeAmmo(stack, entity, ammoCost) && weapon instanceof MagazineFedWeapon)
 		{
 			((MagazineFedWeapon) weapon).dropMagazine(world, stack, entity);

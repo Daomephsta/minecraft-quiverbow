@@ -6,7 +6,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class BoxOfFlintDust extends _AmmoBase
+public class BoxOfFlintDust extends AmmoBase
 {
 	public BoxOfFlintDust()
 	{

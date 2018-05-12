@@ -17,7 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class AmmoMagazine extends _AmmoBase
+public abstract class AmmoMagazine extends AmmoBase
 {
 	// How much should this magazine attempt to fill when sneak-clicked?
 	private int sneakFillQuantity;

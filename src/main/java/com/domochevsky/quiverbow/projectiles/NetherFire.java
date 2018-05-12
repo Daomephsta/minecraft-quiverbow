@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.net.NetHelper;
 
-public class NetherFire extends _ProjectileBase
+public class NetherFire extends ProjectileBase
 {
 	public NetherFire(World world)
 	{

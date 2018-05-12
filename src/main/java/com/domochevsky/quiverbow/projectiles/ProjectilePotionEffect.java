@@ -8,7 +8,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-public abstract class ProjectilePotionEffect extends _ProjectileBase
+public abstract class ProjectilePotionEffect extends ProjectileBase
 {
 	private PotionEffect[] effects;
 

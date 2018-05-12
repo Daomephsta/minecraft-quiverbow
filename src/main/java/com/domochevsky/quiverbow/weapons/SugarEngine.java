@@ -3,7 +3,7 @@ package com.domochevsky.quiverbow.weapons;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.GatlingAmmo;
-import com.domochevsky.quiverbow.ammo._AmmoBase;
+import com.domochevsky.quiverbow.ammo.AmmoBase;
 import com.domochevsky.quiverbow.items.ItemRegistry;
 import com.domochevsky.quiverbow.projectiles.SugarRod;
 import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
@@ -30,7 +30,7 @@ public class SugarEngine extends MagazineFedWeapon
 			super(SugarEngine.this, (world, weaponStack, entity, data) ->
 			{
 				SugarEngine weapon = (SugarEngine) weaponStack.getItem();
-				float spreadHor = world.rand.nextFloat() * weapon.Spread - (weapon.Spread / 2); // Spread
+				float spreadHor = world.rand.nextFloat() * weapon.spread - (weapon.spread / 2); // Spread
 																								// between
 																								// -4
 																								// and
@@ -43,9 +43,9 @@ public class SugarEngine extends MagazineFedWeapon
 																								// 16
 																								// -
 																								// 8)
-				float spreadVert = world.rand.nextFloat() * weapon.Spread - (weapon.Spread / 2);
+				float spreadVert = world.rand.nextFloat() * weapon.spread - (weapon.spread / 2);
 
-				int dmg_range = weapon.DmgMax - weapon.DmgMin; // If max dmg is
+				int dmg_range = weapon.damageMax - weapon.damageMin; // If max dmg is
 																// 20 and min is
 																// 10, then the
 																// range will be
@@ -53,11 +53,11 @@ public class SugarEngine extends MagazineFedWeapon
 				int dmg = world.rand.nextInt(dmg_range + 1); // Range will be
 																// between 0 and
 																// 10
-				dmg += weapon.DmgMin; // Adding the min dmg of 10 back on top,
+				dmg += weapon.damageMin; // Adding the min dmg of 10 back on top,
 										// giving us the proper damage range
 										// (10-20)
 
-				SugarRod projectile = new SugarRod(world, entity, (float) weapon.Speed, spreadHor, spreadVert);
+				SugarRod projectile = new SugarRod(world, entity, (float) weapon.speed, spreadHor, spreadVert);
 				projectile.damage = dmg;
 
 				return projectile;
@@ -103,20 +103,20 @@ public class SugarEngine extends MagazineFedWeapon
 
 		protected void doBurstFire(ItemStack weaponStack, World world, EntityLivingBase entity)
 		{
-			Helper.knockUserBack(entity, weapon.Kickback); // Kickback
+			Helper.knockUserBack(entity, weapon.kickback); // Kickback
 			if (!world.isRemote)
 				world.spawnEntity(projectileFactory.createProjectile(world, weaponStack, entity, null));
 			doFireFX(world, entity);
 		}
 	}
 
-	public SugarEngine(_AmmoBase ammo)
+	public SugarEngine(AmmoBase ammo)
 	{
 		super("sugar_engine", ammo, 200);
 		setFiringBehaviour(new GatlingFiringBehaviour());
 	}
 
-	public float Spread;
+	public float spread;
 
 	int getSpinupTime()
 	{
@@ -227,17 +227,17 @@ public class SugarEngine extends MagazineFedWeapon
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.DmgMin = config.get(this.name, "What damage am I dealing, at least? (default 1)", 1).getInt();
-		this.DmgMax = config.get(this.name, "What damage am I dealing, tops? (default 3)", 3).getInt();
+		this.damageMin = config.get(this.name, "What damage am I dealing, at least? (default 1)", 1).getInt();
+		this.damageMax = config.get(this.name, "What damage am I dealing, tops? (default 3)", 3).getInt();
 
-		this.Speed = config.get(this.name, "How fast are my projectiles? (default 2.0 BPT (Blocks Per Tick))", 2.0)
+		this.speed = config.get(this.name, "How fast are my projectiles? (default 2.0 BPT (Blocks Per Tick))", 2.0)
 				.getDouble();
 
-		this.Kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 1)", 1)
+		this.kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 1)", 1)
 				.getInt();
-		this.Spread = (float) config.get(this.name, "How accurate am I? (default 10 spread)", 10).getDouble();
+		this.spread = (float) config.get(this.name, "How accurate am I? (default 10 spread)", 10).getDouble();
 
 		this.isMobUsable = config
 				.get(this.name, "Can I be used by QuiverMobs? (default true. They'll probably figure it out.)", true)
@@ -247,7 +247,7 @@ public class SugarEngine extends MagazineFedWeapon
 	@Override
 	public void addRecipes()
 	{
-		if (this.Enabled)
+		if (this.enabled)
 		{
 			// One Sugar Gatling (empty)
 			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "b b", "b b", " m ", 'b',

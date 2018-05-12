@@ -5,7 +5,7 @@ import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.BoxOfFlintDust;
 import com.domochevsky.quiverbow.projectiles.FlintDust;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
-import com.domochevsky.quiverbow.weapons.base._WeaponBase;
+import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -18,7 +18,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class FlintDuster extends _WeaponBase
+public class FlintDuster extends WeaponBase
 {
 	public FlintDuster()
 	{
@@ -26,8 +26,8 @@ public class FlintDuster extends _WeaponBase
 		this.setCreativeTab(CreativeTabs.TOOLS); // Tool, so on the tool tab
 	}
 
-	private int Dmg;
-	private int MaxBlocks;
+	private int damage;
+	private int maxBlocks;
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
@@ -55,11 +55,11 @@ public class FlintDuster extends _WeaponBase
 		if (!world.isRemote)
 		{
 			// Ready
-			FlintDust shot = new FlintDust(world, entity, (float) this.Speed);
+			FlintDust shot = new FlintDust(world, entity, (float) this.speed);
 
 			// Properties
-			shot.damage = this.Dmg;
-			shot.ticksInAirMax = this.MaxBlocks;
+			shot.damage = this.damage;
+			shot.ticksInAirMax = this.maxBlocks;
 
 			// Go
 			world.spawnEntity(shot);
@@ -72,12 +72,12 @@ public class FlintDuster extends _WeaponBase
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.Speed = 1.5f; // Fixed value
+		this.speed = 1.5f; // Fixed value
 
-		this.Dmg = config.get(this.name, "What damage am I dealing? (default 1)", 1).getInt();
-		this.MaxBlocks = config.get(this.name, "How much range do I have? (default ~7 blocks)", 7).getInt();
+		this.damage = config.get(this.name, "What damage am I dealing? (default 1)", 1).getInt();
+		this.maxBlocks = config.get(this.name, "How much range do I have? (default ~7 blocks)", 7).getInt();
 
 		this.isMobUsable = config
 				.get(this.name, "Can I be used by QuiverMobs? (default false. They have no interest in dirt.)", false)
@@ -87,7 +87,7 @@ public class FlintDuster extends _WeaponBase
 	@Override
 	public void addRecipes()
 	{
-		if (this.Enabled)
+		if (this.enabled)
 		{
 			// One Flint Duster (Empty)
 			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "qhq", "qpq", "tsi", 'p',

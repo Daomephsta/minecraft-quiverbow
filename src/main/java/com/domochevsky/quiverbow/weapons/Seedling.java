@@ -3,7 +3,7 @@ package com.domochevsky.quiverbow.weapons;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.Seed;
-import com.domochevsky.quiverbow.weapons.base._WeaponBase;
+import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
 import net.minecraft.entity.Entity;
@@ -19,9 +19,9 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class Seedling extends _WeaponBase
+public class Seedling extends WeaponBase
 {
-	private int Dmg;
+	private int damage;
 
 	public Seedling()
 	{
@@ -31,8 +31,8 @@ public class Seedling extends _WeaponBase
 			float spreadHor = world.rand.nextFloat() * 10 - 5; // Spread
 			float spreadVert = world.rand.nextFloat() * 10 - 5;
 
-			Seed shot = new Seed(world, entity, (float) this.Speed, spreadHor, spreadVert);
-			shot.damage = this.Dmg;
+			Seed shot = new Seed(world, entity, (float) this.speed, spreadHor, spreadVert);
+			shot.damage = this.damage;
 
 			return shot;
 		})
@@ -79,11 +79,11 @@ public class Seedling extends _WeaponBase
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.Dmg = config.get(this.name, "What damage am I dealing per projectile? (default 1)", 1).getInt();
+		this.damage = config.get(this.name, "What damage am I dealing per projectile? (default 1)", 1).getInt();
 
-		this.Speed = config.get(this.name, "How fast are my projectiles? (default 1.3 BPT (Blocks Per Tick))", 1.3)
+		this.speed = config.get(this.name, "How fast are my projectiles? (default 1.3 BPT (Blocks Per Tick))", 1.3)
 				.getDouble();
 
 		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
@@ -92,7 +92,7 @@ public class Seedling extends _WeaponBase
 	@Override
 	public void addRecipes()
 	{
-		if (this.Enabled)
+		if (this.enabled)
 		{
 			// One Seedling (fully loaded, meaning 0 damage)
 			GameRegistry.addRecipe(new ItemStack(this, 1, 0), "ada", "ada", "bca", 'a', Items.REEDS, 'b',

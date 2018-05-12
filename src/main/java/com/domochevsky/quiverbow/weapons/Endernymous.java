@@ -3,7 +3,7 @@ package com.domochevsky.quiverbow.weapons;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.EnderQuartzClip;
-import com.domochevsky.quiverbow.ammo._AmmoBase;
+import com.domochevsky.quiverbow.ammo.AmmoBase;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.EnderAno;
 import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
@@ -21,28 +21,28 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Endernymous extends MagazineFedWeapon
 {
-	private int MaxTicks;
+	private int maxTicks;
 
-	public Endernymous(_AmmoBase ammo)
+	public Endernymous(AmmoBase ammo)
 	{
 		super("hidden_ender_pistol", ammo, 8);
 		setFiringBehaviour(new SingleShotFiringBehaviour<Endernymous>(this, (world, weaponStack, entity, data) ->
 		{
 			// Random Damage
-			int dmg_range = this.DmgMax - this.DmgMin; // If max dmg is 20 and
+			int dmg_range = this.damageMax - this.damageMin; // If max dmg is 20 and
 														// min
 			// is 10, then the range will
 			// be 10
 			int dmg = world.rand.nextInt(dmg_range + 1); // Range will be
 															// between 1
 			// and 10 (inclusive both)
-			dmg += this.DmgMin; // Adding the min dmg of 10 back on top, giving
+			dmg += this.damageMin; // Adding the min dmg of 10 back on top, giving
 								// us
 			// the proper damage range (10-20)
 
-			EnderAno shot = new EnderAno(world, entity, (float) this.Speed);
+			EnderAno shot = new EnderAno(world, entity, (float) this.speed);
 			shot.damage = dmg;
-			shot.ticksInAirMax = this.MaxTicks;
+			shot.ticksInAirMax = this.maxTicks;
 			return shot;
 		}));
 	}
@@ -69,20 +69,20 @@ public class Endernymous extends MagazineFedWeapon
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.DmgMin = config.get(this.name, "What damage am I dealing, at least? (default 16)", 16).getInt();
-		this.DmgMax = config.get(this.name, "What damage am I dealing, tops? (default 24)", 24).getInt();
+		this.damageMin = config.get(this.name, "What damage am I dealing, at least? (default 16)", 16).getInt();
+		this.damageMax = config.get(this.name, "What damage am I dealing, tops? (default 24)", 24).getInt();
 
-		this.Speed = config.get(this.name, "How fast are my projectiles? (default 5.0 BPT (Blocks Per Tick))", 5.0)
+		this.speed = config.get(this.name, "How fast are my projectiles? (default 5.0 BPT (Blocks Per Tick))", 5.0)
 				.getDouble();
-		this.MaxTicks = config.get(this.name, "How long does my projectile exist, tops? (default 40 ticks)", 40)
+		this.maxTicks = config.get(this.name, "How long does my projectile exist, tops? (default 40 ticks)", 40)
 				.getInt();
 
-		this.Kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 1)", 1)
+		this.kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 1)", 1)
 				.getInt();
 
-		this.Cooldown = config.get(this.name, "How long until I can fire again? (default 20 ticks)", 20).getInt();
+		this.cooldown = config.get(this.name, "How long until I can fire again? (default 20 ticks)", 20).getInt();
 
 		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default false)", false)
 				.getBoolean(true);
@@ -91,7 +91,7 @@ public class Endernymous extends MagazineFedWeapon
 	@Override
 	public void addRecipes()
 	{
-		if (this.Enabled)
+		if (this.enabled)
 		{
 			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "e e", "ofo", "oto", 'o',
 					Blocks.OBSIDIAN, 'e', Blocks.END_STONE, 't', Blocks.TRIPWIRE_HOOK, 'f', Items.FLINT_AND_STEEL);

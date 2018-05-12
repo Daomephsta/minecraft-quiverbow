@@ -17,12 +17,12 @@ import net.minecraft.world.World;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.net.NetHelper;
 
-public class ProxyThorn extends _ProjectileBase
+public class ProxyThorn extends ProjectileBase
 {
 	public int proxyDelay = 20; // Only checking every so often
 	private double thornSpeed = 1.5;
 	public double triggerDistance = 2.0;
-	public int ThornAmount = 32;
+	public int thornAmount = 32;
 
 	private EnumFacing hitSide;
 
@@ -209,7 +209,7 @@ public class ProxyThorn extends _ProjectileBase
 			}
 		}
 
-		int amount = this.ThornAmount;
+		int amount = this.thornAmount;
 
 		while (amount > 0)
 		{

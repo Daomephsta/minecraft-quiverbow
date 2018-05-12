@@ -3,7 +3,7 @@ package com.domochevsky.quiverbow.weapons;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.LargeRedstoneMagazine;
-import com.domochevsky.quiverbow.ammo._AmmoBase;
+import com.domochevsky.quiverbow.ammo.AmmoBase;
 import com.domochevsky.quiverbow.projectiles.RedSpray;
 import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SalvoFiringBehaviour;
@@ -21,11 +21,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class RedSprayer extends MagazineFedWeapon
 {
-	private int Wither_Strength;
-	private int Wither_Duration;
-	private int Blindness_Duration;
+	private int witherStrength;
+	private int witherDuration;
+	private int blindnessDuration;
 
-	public RedSprayer(_AmmoBase ammo)
+	public RedSprayer(AmmoBase ammo)
 	{
 		super("redstone_sprayer", ammo, 200);
 		setFiringBehaviour(new SalvoFiringBehaviour<RedSprayer>(this, 5, (world, waeponStack, entity, data) ->
@@ -36,9 +36,9 @@ public class RedSprayer extends MagazineFedWeapon
 			// -10 and 10
 			float spreadVert = world.rand.nextFloat() * 20 - 10;
 
-			RedSpray shot = new RedSpray(entity.world, entity, (float) this.Speed, spreadHor, spreadVert,
-					new PotionEffect(MobEffects.WITHER, this.Wither_Duration, this.Wither_Strength),
-					new PotionEffect(MobEffects.BLINDNESS, this.Blindness_Duration, 1));
+			RedSpray shot = new RedSpray(entity.world, entity, (float) this.speed, spreadHor, spreadVert,
+					new PotionEffect(MobEffects.WITHER, this.witherDuration, this.witherStrength),
+					new PotionEffect(MobEffects.BLINDNESS, this.blindnessDuration, 1));
 			return shot;
 		}));
 	}
@@ -58,15 +58,15 @@ public class RedSprayer extends MagazineFedWeapon
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.Speed = config.get(this.name, "How fast are my projectiles? (default 0.5 BPT (Blocks Per Tick))", 0.5)
+		this.speed = config.get(this.name, "How fast are my projectiles? (default 0.5 BPT (Blocks Per Tick))", 0.5)
 				.getDouble();
 
-		this.Wither_Strength = config.get(this.name, "How strong is my Wither effect? (default 2)", 2).getInt();
-		this.Wither_Duration = config.get(this.name, "How long does my Wither effect last? (default 20 ticks)", 20)
+		this.witherStrength = config.get(this.name, "How strong is my Wither effect? (default 2)", 2).getInt();
+		this.witherDuration = config.get(this.name, "How long does my Wither effect last? (default 20 ticks)", 20)
 				.getInt();
-		this.Blindness_Duration = config
+		this.blindnessDuration = config
 				.get(this.name, "How long does my Blindness effect last? (default 20 ticks)", 20).getInt();
 
 		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
@@ -75,7 +75,7 @@ public class RedSprayer extends MagazineFedWeapon
 	@Override
 	public void addRecipes()
 	{
-		if (this.Enabled)
+		if (this.enabled)
 		{
 			// One redstone sprayer (empty)
 			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "zxz", "aba", "zyz", 'x',

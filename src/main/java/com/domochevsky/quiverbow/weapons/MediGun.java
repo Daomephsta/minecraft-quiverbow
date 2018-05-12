@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.HealthBeam;
-import com.domochevsky.quiverbow.recipes.Recipe_RayOfHope_Reload;
-import com.domochevsky.quiverbow.weapons.base._WeaponBase;
+import com.domochevsky.quiverbow.recipes.RecipeRayOfHopeReload;
+import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.RecipeSorter;
 
-public class MediGun extends _WeaponBase
+public class MediGun extends WeaponBase
 {
 	public MediGun()
 	{
@@ -50,7 +50,7 @@ public class MediGun extends _WeaponBase
 
 		if (!world.isRemote)
 		{
-			HealthBeam beam = new HealthBeam(entity.world, entity, (float) this.Speed);
+			HealthBeam beam = new HealthBeam(entity.world, entity, (float) this.speed);
 
 			beam.ignoreFrustumCheck = true;
 			beam.ticksInAirMax = 40;
@@ -58,16 +58,16 @@ public class MediGun extends _WeaponBase
 			entity.world.spawnEntity(beam); // Firing!
 
 			this.consumeAmmo(stack, entity, 1);
-			this.setCooldown(stack, this.Cooldown);
+			this.setCooldown(stack, this.cooldown);
 		}
 	}
 
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.Speed = config.get(this.name, "How fast are my beams? (default 5.0 BPT (Blocks Per Tick))", 5.0)
+		this.speed = config.get(this.name, "How fast are my beams? (default 5.0 BPT (Blocks Per Tick))", 5.0)
 				.getDouble();
 
 		this.isMobUsable = config.get(this.name,
@@ -78,7 +78,7 @@ public class MediGun extends _WeaponBase
 	@Override
 	public void addRecipes()
 	{
-		if (this.Enabled)
+		if (this.enabled)
 		{
 			// Use a beacon for this (+ obsidian, tripwire hook... what else)
 			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "bi ", "ico", " ot", 'b',
@@ -90,7 +90,7 @@ public class MediGun extends _WeaponBase
 			this.setCreativeTab(null);
 		} // Not enabled and not allowed to be in the creative menu
 
-		RecipeSorter.register("quiverchevsky:recipehandler_roh_reload", Recipe_RayOfHope_Reload.class,
+		RecipeSorter.register("quiverchevsky:recipehandler_roh_reload", RecipeRayOfHopeReload.class,
 				RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
 
 		ArrayList<ItemStack> list = new ArrayList<ItemStack>();
@@ -98,7 +98,7 @@ public class MediGun extends _WeaponBase
 		list.add(new ItemStack(Items.POTIONITEM, 1, 8193));
 		list.add(new ItemStack(Items.POTIONITEM, 1, 8225));
 
-		GameRegistry.addRecipe(new Recipe_RayOfHope_Reload(new ItemStack(this), list,
+		GameRegistry.addRecipe(new RecipeRayOfHopeReload(new ItemStack(this), list,
 				new ItemStack(Items.POTIONITEM, 1, 8193), new ItemStack(Items.POTIONITEM, 1, 8225)));
 	}
 }

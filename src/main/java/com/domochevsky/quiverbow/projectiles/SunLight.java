@@ -16,7 +16,7 @@ import com.domochevsky.quiverbow.net.NetHelper;
 
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
-public class SunLight extends _ProjectileBase implements IEntityAdditionalSpawnData
+public class SunLight extends ProjectileBase implements IEntityAdditionalSpawnData
 {
 	public int travelTicksMax;
 	public int targetsHitMax;

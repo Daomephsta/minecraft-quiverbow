@@ -20,18 +20,18 @@ public class ClientProxy extends CommonProxy
 	{
 		registerCrossStyleRender(BlazeShot.class, new ResourceLocation(Constants.MODID, "textures/entity/rod.png"), 2, 6);
 		registerCrossStyleRender(SmallRocket.class, new ResourceLocation(Constants.MODID, "textures/entity/rocket.png"), 2, 8);
-		registerCrossStyleRender(Sabot_Rocket.class, new ResourceLocation(Constants.MODID, "textures/entity/rocketsabot.png"), 3, 10);
+		registerCrossStyleRender(SabotRocket.class, new ResourceLocation(Constants.MODID, "textures/entity/rocketsabot.png"), 3, 10);
 		registerCrossStyleRender(BigRocket.class, new ResourceLocation(Constants.MODID, "textures/entity/rocket.png"), 3, 10);
 		registerCrossStyleRender(LapisShot.class, new ResourceLocation(Constants.MODID, "textures/entity/lapis.png"), 2, 8);
 		registerCrossStyleRender(Thorn.class, new ResourceLocation(Constants.MODID, "textures/entity/thorn.png"), 2, 2);
 		registerCrossStyleRender(ProxyThorn.class, new ResourceLocation(Constants.MODID, "textures/entity/thorn.png"), 4, 8);
 		registerCrossStyleRender(ColdIron.class, new ResourceLocation(Constants.MODID, "textures/entity/coldiron.png"), 2, 8);
 		registerCrossStyleRender(SugarRod.class, new ResourceLocation(Constants.MODID, "textures/entity/sugar.png"), 2, 5);
-		registerCrossStyleRender(Sabot_Arrow.class, new ResourceLocation(Constants.MODID, "textures/entity/arrowsabot.png"), 3, 10);
+		registerCrossStyleRender(SabotArrow.class, new ResourceLocation(Constants.MODID, "textures/entity/arrowsabot.png"), 3, 10);
 		registerCrossStyleRender(EnderShot.class, new ResourceLocation(Constants.MODID, "textures/entity/ender.png"), 2, 4);
-		registerCrossStyleRender(OSP_Shot.class, new ResourceLocation(Constants.MODID, "textures/entity/obsidian.png"), 2, 4);
-		registerCrossStyleRender(OSR_Shot.class, new ResourceLocation(Constants.MODID, "textures/entity/obsidian.png"), 2, 16);
-		registerCrossStyleRender(OWR_Shot.class, new ResourceLocation(Constants.MODID, "textures/entity/obsidian.png"), 2, 16);
+		registerCrossStyleRender(OSPShot.class, new ResourceLocation(Constants.MODID, "textures/entity/obsidian.png"), 2, 4);
+		registerCrossStyleRender(OSRShot.class, new ResourceLocation(Constants.MODID, "textures/entity/obsidian.png"), 2, 16);
+		registerCrossStyleRender(OWRShot.class, new ResourceLocation(Constants.MODID, "textures/entity/obsidian.png"), 2, 16);
 		registerCrossStyleRender(SoulShot.class, new ResourceLocation(Constants.MODID, "textures/entity/soulshot.png"), 2, 10);
 		registerCrossStyleRender(RedSpray.class, new ResourceLocation(Constants.MODID, "textures/entity/redspray.png"), 2, 2);
 		registerCrossStyleRender(NetherFire.class, new ResourceLocation(Constants.MODID, "textures/entity/netherspray.png"), 2, 2);
@@ -45,7 +45,7 @@ public class ClientProxy extends CommonProxy
 		registerInvisibleRender(EnderAno.class);
 	}
 	
-	private <T extends _ProjectileBase> void registerCrossStyleRender(Class<T> entityClass, ResourceLocation texture, int width, int length)
+	private <T extends ProjectileBase> void registerCrossStyleRender(Class<T> entityClass, ResourceLocation texture, int width, int length)
 	{
 		RenderingRegistry.<T>registerEntityRenderingHandler(entityClass, manager -> new RenderCross(manager, texture, width, length));
 	}

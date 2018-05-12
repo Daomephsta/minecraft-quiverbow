@@ -1,13 +1,13 @@
 package com.domochevsky.quiverbow.weapons.base.firingbehaviours;
 
-import com.domochevsky.quiverbow.weapons.base._WeaponBase;
+import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public abstract class FiringBehaviourBase<W extends _WeaponBase> implements IFiringBehaviour
+public abstract class FiringBehaviourBase<W extends WeaponBase> implements IFiringBehaviour
 {
 	protected final W weapon;
 

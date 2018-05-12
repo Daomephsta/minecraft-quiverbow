@@ -2,7 +2,7 @@ package com.domochevsky.quiverbow.renderer;
 
 import org.lwjgl.opengl.GL11;
 
-import com.domochevsky.quiverbow.projectiles._ProjectileBase;
+import com.domochevsky.quiverbow.projectiles.ProjectileBase;
 
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.Render;
@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 
-public class RenderCross extends Render<_ProjectileBase>
+public class RenderCross extends Render<ProjectileBase>
 {
 	private final ResourceLocation textureLocation;
 	private final int widthPx, lengthPx;
@@ -24,7 +24,7 @@ public class RenderCross extends Render<_ProjectileBase>
 	}
 
 	@Override
-	public void doRender(_ProjectileBase entity, double x, double y, double z, float entityYaw, float partialTicks)
+	public void doRender(ProjectileBase entity, double x, double y, double z, float entityYaw, float partialTicks)
 	{
 		this.bindEntityTexture(entity);
 		GlStateManager.pushMatrix();
@@ -62,7 +62,7 @@ public class RenderCross extends Render<_ProjectileBase>
 	
 	
 	@Override
-	protected ResourceLocation getEntityTexture(_ProjectileBase entity)
+	protected ResourceLocation getEntityTexture(ProjectileBase entity)
 	{
 		return textureLocation;
 	}

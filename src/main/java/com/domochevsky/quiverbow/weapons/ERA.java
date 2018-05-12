@@ -4,9 +4,9 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.EnderAccelerator;
-import com.domochevsky.quiverbow.recipes.Recipe_ERA;
-import com.domochevsky.quiverbow.recipes.Recipe_Weapon;
-import com.domochevsky.quiverbow.weapons.base._WeaponBase;
+import com.domochevsky.quiverbow.recipes.RecipeERA;
+import com.domochevsky.quiverbow.recipes.RecipeWeapon;
+import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.FiringBehaviourBase;
 
 import net.minecraft.entity.Entity;
@@ -26,7 +26,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class ERA extends _WeaponBase
+public class ERA extends WeaponBase
 {
 	private class ERAFiringBehaviour extends FiringBehaviourBase<ERA>
 	{
@@ -86,7 +86,7 @@ public class ERA extends _WeaponBase
 			// to
 			// fire
 			{
-				Helper.knockUserBack(entity, this.Kickback); // Kickback
+				Helper.knockUserBack(entity, this.kickback); // Kickback
 
 				// Upgrade
 				if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("hasEmeraldMuzzle"))
@@ -153,14 +153,14 @@ public class ERA extends _WeaponBase
 					EnderAccelerator shot = new EnderAccelerator(world, entity, 5.0f);
 
 					// Random Damage
-					int dmg_range = DmgMax - DmgMin; // If max dmg is 20 and min
+					int dmg_range = damageMax - damageMin; // If max dmg is 20 and min
 														// is
 					// 10, then the range will be
 					// 10
 					int dmg = world.rand.nextInt(dmg_range + 1); // Range will
 																	// be
 					// between 0 and 10
-					dmg += DmgMin; // Adding the min dmg of 10 back on top,
+					dmg += damageMin; // Adding the min dmg of 10 back on top,
 									// giving
 					// us the proper damage range (10-20)
 
@@ -222,11 +222,11 @@ public class ERA extends _WeaponBase
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
 
-		this.DmgMin = config.get(this.name, "What damage am I dealing with a direct hit, at least? (default 120)", 120)
+		this.damageMin = config.get(this.name, "What damage am I dealing with a direct hit, at least? (default 120)", 120)
 				.getInt();
-		this.DmgMax = config.get(this.name, "What damage am I dealing with a direct hit, tops? (default 150)", 150)
+		this.damageMax = config.get(this.name, "What damage am I dealing with a direct hit, tops? (default 150)", 150)
 				.getInt();
 
 		this.explosionSelf = config.get(this.name,
@@ -237,7 +237,7 @@ public class ERA extends _WeaponBase
 						"How big are my explosions when hitting a target? (default 8.0 blocks. TNT is 4.0 blocks)", 8.0)
 				.getDouble();
 
-		this.Kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 30)", 30)
+		this.kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 30)", 30)
 				.getInt();
 
 		this.dmgTerrain = config.get(this.name, "Can I damage terrain, when in player hands? (default true)", true)
@@ -251,7 +251,7 @@ public class ERA extends _WeaponBase
 	@Override
 	public void addRecipes()
 	{
-		if (Enabled)
+		if (enabled)
 		{
 			this.registerRecipe();
 		}
@@ -287,7 +287,7 @@ public class ERA extends _WeaponBase
 		input[7] = new ItemStack(Items.IRON_INGOT);
 		input[8] = new ItemStack(Item.getItemFromBlock(Blocks.OBSIDIAN));
 
-		GameRegistry.addRecipe(new Recipe_ERA(input, new ItemStack(this)));
+		GameRegistry.addRecipe(new RecipeERA(input, new ItemStack(this)));
 	}
 
 	private void registerRepair()
@@ -309,7 +309,7 @@ public class ERA extends _WeaponBase
 		repair[7] = new ItemStack(Items.IRON_INGOT);
 		repair[8] = new ItemStack(Items.REDSTONE);
 
-		GameRegistry.addRecipe(new Recipe_ERA(repair, new ItemStack(this)));
+		GameRegistry.addRecipe(new RecipeERA(repair, new ItemStack(this)));
 	}
 
 	private void registerUpgrade()
@@ -331,7 +331,7 @@ public class ERA extends _WeaponBase
 		recipe[7] = new ItemStack(Blocks.EMERALD_BLOCK); // - - -
 		recipe[8] = new ItemStack(Blocks.QUARTZ_BLOCK); // 6 7 8
 
-		GameRegistry.addRecipe(new Recipe_Weapon(recipe, new ItemStack(this), 1)); // Emerald
+		GameRegistry.addRecipe(new RecipeWeapon(recipe, new ItemStack(this), 1)); // Emerald
 		// Muzzle
 	}
 }

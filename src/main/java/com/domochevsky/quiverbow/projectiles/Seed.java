@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 
 import com.domochevsky.quiverbow.Helper;
 
-public class Seed extends _ProjectileBase
+public class Seed extends ProjectileBase
 {
 	public Seed(World world)
 	{

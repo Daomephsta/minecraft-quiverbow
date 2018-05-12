@@ -1,6 +1,6 @@
 package com.domochevsky.quiverbow.net;
 
-import com.domochevsky.quiverbow.Helper_Client;
+import com.domochevsky.quiverbow.HelperClient;
 
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -13,7 +13,7 @@ public class TurretInventoryPacket implements IMessageHandler<TurretInventoryMes
 	{
 		if (ctx.side.isClient()) // just to make sure that the side is correct
 		{
-			Helper_Client.setTurretInventory(message.entityID, message.itemID, message.itemSlot, message.metadata);
+			HelperClient.setTurretInventory(message.entityID, message.itemID, message.itemSlot, message.metadata);
 		}
 
 		return null; // Don't care about returning anything

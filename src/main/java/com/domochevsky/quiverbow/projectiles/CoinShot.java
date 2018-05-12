@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.net.NetHelper;
 
-public class CoinShot extends _ProjectileBase
+public class CoinShot extends ProjectileBase
 {
 	private boolean shouldDrop;
 

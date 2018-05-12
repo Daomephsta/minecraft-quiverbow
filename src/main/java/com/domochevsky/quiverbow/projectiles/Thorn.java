@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.net.NetHelper;
 
-public class Thorn extends _ProjectileBase
+public class Thorn extends ProjectileBase
 {
 	public Thorn(World world)
 	{

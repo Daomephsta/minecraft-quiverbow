@@ -1,6 +1,6 @@
 package com.domochevsky.quiverbow.weapons.base;
 
-import com.domochevsky.quiverbow.ammo._AmmoBase;
+import com.domochevsky.quiverbow.ammo.AmmoBase;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -12,11 +12,11 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
-public class MagazineFedWeapon extends _WeaponBase
+public class MagazineFedWeapon extends WeaponBase
 {
 	protected final Item ammo;
 
-	public MagazineFedWeapon(String name, _AmmoBase ammo, int maxAmmo)
+	public MagazineFedWeapon(String name, AmmoBase ammo, int maxAmmo)
 	{
 		super(name, maxAmmo);
 		this.ammo = ammo;

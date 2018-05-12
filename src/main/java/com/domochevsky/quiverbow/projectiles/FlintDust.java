@@ -16,7 +16,7 @@ import com.domochevsky.quiverbow.net.NetHelper;
 
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
-public class FlintDust extends _ProjectileBase implements IEntityAdditionalSpawnData
+public class FlintDust extends ProjectileBase implements IEntityAdditionalSpawnData
 {
 	public FlintDust(World world)
 	{

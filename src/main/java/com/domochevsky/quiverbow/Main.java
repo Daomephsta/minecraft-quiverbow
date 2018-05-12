@@ -3,8 +3,8 @@ package com.domochevsky.quiverbow;
 import java.util.ArrayList;
 
 import com.domochevsky.quiverbow.Main.Constants;
-import com.domochevsky.quiverbow.ArmsAssistant.Entity_AA;
 import com.domochevsky.quiverbow.ammo.*;
+import com.domochevsky.quiverbow.armsassistant.EntityAA;
 import com.domochevsky.quiverbow.blocks.FenLight;
 import com.domochevsky.quiverbow.items.ItemRegistry;
 import com.domochevsky.quiverbow.miscitems.*;
@@ -14,7 +14,7 @@ import com.domochevsky.quiverbow.projectiles.*;
 import com.domochevsky.quiverbow.recipes.*;
 import com.domochevsky.quiverbow.util.RegistryHelper;
 import com.domochevsky.quiverbow.weapons.*;
-import com.domochevsky.quiverbow.weapons.base._WeaponBase;
+import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -55,7 +55,7 @@ public class Main
 
 	protected Configuration config; // Accessible from other files this way
 
-	public static ArrayList<_WeaponBase> weapons = new ArrayList<_WeaponBase>(); // Holder
+	public static ArrayList<WeaponBase> weapons = new ArrayList<WeaponBase>(); // Holder
 	// array
 	// for
 	// all
@@ -64,7 +64,7 @@ public class Main
 	// up)
 	// possible
 	// weapons
-	public static ArrayList<_AmmoBase> ammo = new ArrayList<_AmmoBase>(); // Same
+	public static ArrayList<AmmoBase> ammo = new ArrayList<AmmoBase>(); // Same
 	// with
 	// ammo,
 	// since
@@ -146,14 +146,14 @@ public class Main
 		// side
 
 		// Registering the Arms Assistant
-		EntityRegistry.registerModEntity(new ResourceLocation(Constants.MODID, "turret"), Entity_AA.class, "turret", 0,
+		EntityRegistry.registerModEntity(new ResourceLocation(Constants.MODID, "turret"), EntityAA.class, "turret", 0,
 				this, 80, 1, true);
 		// EntityRegistry.registerModEntity(Entity_BB.class,
 		// "quiverchevsky_flyingBB", 1, this, 80, 1, true);
 		proxy.registerRenderers();
-		RecipeSorter.register(Constants.MODID + ":ender_rail_accelerator", Recipe_ERA.class,
+		RecipeSorter.register(Constants.MODID + ":ender_rail_accelerator", RecipeERA.class,
 				RecipeSorter.Category.SHAPED, "after:minecraft:shapeless");
-		RecipeSorter.register(Constants.MODID + ":era_upgrade", Recipe_Weapon.class, RecipeSorter.Category.SHAPED,
+		RecipeSorter.register(Constants.MODID + ":era_upgrade", RecipeWeapon.class, RecipeSorter.Category.SHAPED,
 				"after:minecraft:shapeless");
 		RecipeSorter.register(Constants.MODID + ":load_magazine", RecipeLoadMagazine.class,
 				RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
@@ -193,8 +193,8 @@ public class Main
 		this.addProjectile(ProxyThorn.class, "proximity_thorn");
 		this.addProjectile(SugarRod.class, "sugar");
 		this.addProjectile(BigRocket.class, "rocket_big");
-		this.addProjectile(Sabot_Arrow.class, "sabot_arrow");
-		this.addProjectile(Sabot_Rocket.class, "sabot_rocket");
+		this.addProjectile(SabotArrow.class, "sabot_arrow");
+		this.addProjectile(SabotRocket.class, "sabot_rocket");
                                                                
 		this.addProjectile(Seed.class, "seed");
 		this.addProjectile(PotatoShot.class, "potato");
@@ -204,9 +204,9 @@ public class Main
 		this.addProjectile(EnderShot.class, "ender");
 		this.addProjectile(ColdIron.class, "cold_iron");
                                                      
-		this.addProjectile(OSP_Shot.class, "osp_shot");
-		this.addProjectile(OSR_Shot.class, "osr_shot");
-		this.addProjectile(OWR_Shot.class, "owr_shot");
+		this.addProjectile(OSPShot.class, "osp_shot");
+		this.addProjectile(OSRShot.class, "osr_shot");
+		this.addProjectile(OWRShot.class, "owr_shot");
                                                      
 		this.addProjectile(FenGoop.class, "fen_light");
 		this.addProjectile(FlintDust.class, "flint_dust");
@@ -228,7 +228,7 @@ public class Main
 		this.addProjectile(EnderAno.class, "ano");
 	}
 
-	private void addProjectile(Class<? extends _ProjectileBase> entityClass, String name)
+	private void addProjectile(Class<? extends ProjectileBase> entityClass, String name)
 	{
 		EntityRegistry.registerModEntity(new ResourceLocation(Constants.MODID, name), entityClass,
 				"projectilechevsky_" + name, projectileCount, this, 80, 1, true);
@@ -239,13 +239,13 @@ public class Main
 	private static void addAllProps(FMLPreInitializationEvent event, Configuration config)
 	{
 		// Ammo first
-		for (_AmmoBase ammunition : ammo)
+		for (AmmoBase ammunition : ammo)
 		{
 			ammunition.addRecipes();
 		}
 
 		// Weapons last
-		for (_WeaponBase weapon : weapons)
+		for (WeaponBase weapon : weapons)
 		{
 			weapon.addProps(event, config);
 			weapon.addRecipes();
@@ -272,8 +272,8 @@ public class Main
 		private static void registerMiscItems(IForgeRegistry<Item> registry)
 		{
 			registry.registerAll(
-					RegistryHelper.registerItem(new Part_GatlingBody(), ".misc.", "part_sugar_engine_body"),
-					RegistryHelper.registerItem(new Part_GatlingBarrel(), ".misc.", "part_sugar_engine_barrel"),
+					RegistryHelper.registerItem(new PartGatlingBody(), ".misc.", "part_sugar_engine_body"),
+					RegistryHelper.registerItem(new PartGatlingBarrel(), ".misc.", "part_sugar_engine_barrel"),
 					RegistryHelper.registerItem(new PackedUpAA(), ".misc.", "arms_assistant"));
 		}
 
@@ -281,19 +281,19 @@ public class Main
 																			// weapons
 																			// themselves
 		{
-			registry.registerAll(addWeapon(new Crossbow_Compact()), addWeapon(new Crossbow_Double()),
-					addWeapon(new Crossbow_Blaze()), addWeapon(new Crossbow_Auto()), addWeapon(new Crossbow_AutoImp()),
-					addWeapon(new DragonBox()), addWeapon(new DragonBox_Quad()), addWeapon(new RPG()),
-					addWeapon(new RPG_Imp()), addWeapon(new Mortar_Arrow()), addWeapon(new Mortar_Dragon()),
+			registry.registerAll(addWeapon(new CrossbowCompact()), addWeapon(new CrossbowDouble()),
+					addWeapon(new CrossbowBlaze()), addWeapon(new CrossbowAuto()), addWeapon(new CrossbowAutoImp()),
+					addWeapon(new DragonBox()), addWeapon(new DragonBoxQuad()), addWeapon(new RPG()),
+					addWeapon(new RPGImp()), addWeapon(new MortarArrow()), addWeapon(new MortarDragon()),
 					addWeapon(new Seedling()), addWeapon(new Potatosser()), addWeapon(new SnowCannon()),
 					addWeapon(new QuiverBow()), addWeapon(new EnderBow()), addWeapon(new EnderRifle()),
 					addWeapon(new FenFire()),
 					// TODO: Reimplement addWeapon(new FlintDuster()),
 					// TODO: Reimplement addWeapon(new Sunray()),
-					addWeapon(new PowderKnuckle()), addWeapon(new PowderKnuckle_Mod()), addWeapon(new SoulCairn()),
+					addWeapon(new PowderKnuckle()), addWeapon(new PowderKnuckleMod()), addWeapon(new SoulCairn()),
 					addWeapon(new AquaAccelerator()), addWeapon(new SilkenSpinner()),
 					// TODO: Reimplement addWeapon(new MediGun()),
-					addWeapon(new ERA()), addWeapon(new AA_Targeter()));
+					addWeapon(new ERA()), addWeapon(new AATargeter()));
 			registerWeaponsWithAmmo(registry);
 		}
 
@@ -302,46 +302,46 @@ public class Main
 		private static void registerWeaponsWithAmmo(IForgeRegistry<Item> registry)
 		{
 			// Sugar Engine and Sugar Magazine
-			_AmmoBase sugarMag = addAmmo(new GatlingAmmo(), "sugar_magazine");
+			AmmoBase sugarMag = addAmmo(new GatlingAmmo(), "sugar_magazine");
 			registry.registerAll(sugarMag, addWeapon(new SugarEngine(sugarMag)));
 
 			// Obsidian weapons and Obsidian Magazine
-			_AmmoBase obsidianMag = addAmmo(new ObsidianMagazine(), "obsidian_magazine");
+			AmmoBase obsidianMag = addAmmo(new ObsidianMagazine(), "obsidian_magazine");
 			registry.registerAll(obsidianMag, addWeapon(new OSR(obsidianMag)), addWeapon(new OSP(obsidianMag)),
 					addWeapon(new OWR(obsidianMag)));
 
 			// Frost Lancer and Cold Iron Clip
-			_AmmoBase coldIronClip = addAmmo(new ColdIronClip(), "cold_iron_clip");
+			AmmoBase coldIronClip = addAmmo(new ColdIronClip(), "cold_iron_clip");
 			registry.registerAll(coldIronClip, addWeapon(new FrostLancer(coldIronClip)));
 
 			// Coin Tossers and Gold Magazine
-			_AmmoBase goldMagazine = addAmmo(new GoldMagazine(), "gold_magazine");
+			AmmoBase goldMagazine = addAmmo(new GoldMagazine(), "gold_magazine");
 			registry.registerAll(goldMagazine, addWeapon(new CoinTosser(goldMagazine)),
-					addWeapon(new CoinTosser_Mod(goldMagazine)));
+					addWeapon(new CoinTosserMod(goldMagazine)));
 
 			// Hidden Ender Pistol and Ender Quartz Magazine
-			_AmmoBase enderQuartzMagazine = addAmmo(new EnderQuartzClip(), "ender_quartz_magazine");
+			AmmoBase enderQuartzMagazine = addAmmo(new EnderQuartzClip(), "ender_quartz_magazine");
 			registry.registerAll(enderQuartzMagazine, addWeapon(new Endernymous(enderQuartzMagazine)));
 
 			// Lapis Coil & Lapis Magazine
-			_AmmoBase lapisMagazine = addAmmo(new LapisMagazine(), "lapis_magazine");
+			AmmoBase lapisMagazine = addAmmo(new LapisMagazine(), "lapis_magazine");
 			registry.registerAll(lapisMagazine, addWeapon(new LapisCoil(lapisMagazine)));
 
 			// Nether Bellows and Large Netherrack Magazine
-			_AmmoBase largeNetherrackMagazine = addAmmo(new LargeNetherrackMagazine(), "large_netherrack_magazine");
+			AmmoBase largeNetherrackMagazine = addAmmo(new LargeNetherrackMagazine(), "large_netherrack_magazine");
 			registry.registerAll(largeNetherrackMagazine, addWeapon(new NetherBellows(largeNetherrackMagazine)));
 
 			// Thorn Spitter, Proximity Thorn Thrower and Thorn Magazine
-			_AmmoBase thornMagazine = addAmmo(new NeedleMagazine(), "thorn_magazine");
+			AmmoBase thornMagazine = addAmmo(new NeedleMagazine(), "thorn_magazine");
 			registry.registerAll(thornMagazine, addWeapon(new ThornSpitter(thornMagazine)),
 					addWeapon(new ProximityNeedler(thornMagazine)));
 
 			// Redstone Sprayer and Large Redstone Magazine
-			_AmmoBase largeRedstoneMagazine = addAmmo(new LargeRedstoneMagazine(), "large_redstone_magazine");
+			AmmoBase largeRedstoneMagazine = addAmmo(new LargeRedstoneMagazine(), "large_redstone_magazine");
 			registry.registerAll(largeRedstoneMagazine, addWeapon(new RedSprayer(largeRedstoneMagazine)));
 
 			// Seed Sweeper and Seed Jar
-			_AmmoBase seedJar = addAmmo(new SeedJar(), "seed_jar");
+			AmmoBase seedJar = addAmmo(new SeedJar(), "seed_jar");
 			registry.registerAll(seedJar, addWeapon(new SeedSweeper(seedJar)));
 
 			// Lightning Red and Redstone Magazine
@@ -352,7 +352,7 @@ public class Main
 		}
 
 		// Helper function for taking care of weapon registration
-		private static Item addWeapon(_WeaponBase weapon)
+		private static Item addWeapon(WeaponBase weapon)
 		{
 			Main.weapons.add(weapon);
 			weapon.setRegistryName(Constants.MODID, weapon.getName());
@@ -372,7 +372,7 @@ public class Main
 					addAmmo(new BoxOfFlintDust(), "box_of_flint_dust"));
 		}
 
-		private static _AmmoBase addAmmo(_AmmoBase ammoBase, String name)
+		private static AmmoBase addAmmo(AmmoBase ammoBase, String name)
 		{
 			Main.ammo.add(ammoBase);
 			ammoBase.setUnlocalizedName(Constants.MODID + ".ammo." + name);
@@ -393,7 +393,7 @@ public class Main
 		@SubscribeEvent
 		public static void registerModels(ModelRegistryEvent e)
 		{
-			for (_AmmoBase ammunition : ammo)
+			for (AmmoBase ammunition : ammo)
 			{
 				if (ammunition instanceof ISpecialRender) ((ISpecialRender) ammunition).registerRender();
 				else
@@ -405,7 +405,7 @@ public class Main
 											"inventory"));
 			}
 
-			for (_WeaponBase weapon : weapons)
+			for (WeaponBase weapon : weapons)
 			{
 				if (weapon instanceof ISpecialRender) ((ISpecialRender) weapon).registerRender();
 				else

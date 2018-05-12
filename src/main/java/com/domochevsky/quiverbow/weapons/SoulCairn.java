@@ -3,7 +3,7 @@ package com.domochevsky.quiverbow.weapons;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.SoulShot;
-import com.domochevsky.quiverbow.weapons.base._WeaponBase;
+import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -20,15 +20,15 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class SoulCairn extends _WeaponBase
+public class SoulCairn extends WeaponBase
 {
 	public SoulCairn()
 	{
 		super("soul_cairn", 1);
 		this.setCreativeTab(CreativeTabs.TOOLS); // Tool, so on the tool tab
-		this.Cooldown = 20;
+		this.cooldown = 20;
 		setFiringBehaviour(new SingleShotFiringBehaviour<SoulCairn>(this,
-				(world, weaponStack, entity, data) -> new SoulShot(world, entity, (float) this.Speed))
+				(world, weaponStack, entity, data) -> new SoulShot(world, entity, (float) this.speed))
 		{
 			@Override
 			public void fire(ItemStack stack, World world, EntityLivingBase entity, EnumHand hand)
@@ -52,10 +52,10 @@ public class SoulCairn extends _WeaponBase
 	@Override
 	public void addProps(FMLPreInitializationEvent event, Configuration config)
 	{
-		this.Enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
-		this.Speed = config.get(this.name, "How fast are my projectiles? (default 3.0 BPT (Blocks Per Tick))", 3.0)
+		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
+		this.speed = config.get(this.name, "How fast are my projectiles? (default 3.0 BPT (Blocks Per Tick))", 3.0)
 				.getDouble();
-		this.Kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 4)", 4)
+		this.kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 4)", 4)
 				.getInt();
 
 		this.isMobUsable = config
@@ -66,7 +66,7 @@ public class SoulCairn extends _WeaponBase
 	@Override
 	public void addRecipes()
 	{
-		if (this.Enabled)
+		if (this.enabled)
 		{
 			// One Soul Cairn (empty)
 			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "e e", "epe", "oto", 'o',

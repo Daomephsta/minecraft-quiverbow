@@ -2,7 +2,7 @@ package com.domochevsky.quiverbow.weapons.base.firingbehaviours;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
-import com.domochevsky.quiverbow.weapons.base._WeaponBase;
+import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
-public class SalvoFiringBehaviour<W extends _WeaponBase> extends ProjectileFiringBehaviour<W>
+public class SalvoFiringBehaviour<W extends WeaponBase> extends ProjectileFiringBehaviour<W>
 {
 	public static class SalvoData implements IProjectileData
 	{
@@ -38,9 +38,9 @@ public class SalvoFiringBehaviour<W extends _WeaponBase> extends ProjectileFirin
 			return;
 		} // Hasn't cooled down yet
 
-		Helper.knockUserBack(entity, weapon.Kickback); // Kickback
+		Helper.knockUserBack(entity, weapon.kickback); // Kickback
 
-		weapon.setCooldown(stack, weapon.Cooldown); // Cooling down now
+		weapon.setCooldown(stack, weapon.cooldown); // Cooling down now
 
 		for (int shot = 0; shot < shotQuantity; shot++)
 		{

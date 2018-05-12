@@ -5,7 +5,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class ColdIronClip extends _AmmoBase
+public class ColdIronClip extends AmmoBase
 {
 	@Override
 	public void addRecipes()
