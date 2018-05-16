@@ -5,7 +5,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Quiverbow;
+import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.ammo.*;
 import com.domochevsky.quiverbow.items.ItemRegistry;
 import com.domochevsky.quiverbow.weapons.*;
@@ -475,7 +475,7 @@ public class RecipeJSONifier
 		setupDir();
 		Map<String, Object> json = new LinkedHashMap<>();
 
-		json.put("type", Quiverbow.MODID + ":load_ammo");
+		json.put("type", QuiverbowMain.MODID + ":load_ammo");
 		json.put("weapon", weapon.getRegistryName().toString());
 
 		List<Map<String, Object>> componentList = new ArrayList<>();
@@ -521,12 +521,12 @@ public class RecipeJSONifier
 		setupDir();
 		Map<String, Object> json = new LinkedHashMap<>();
 
-		json.put("type", Quiverbow.MODID + ":load_magazine");
+		json.put("type", QuiverbowMain.MODID + ":load_magazine");
 		json.put("ammo", Helper.getAmmoByClass(ammoBase).getRegistryName().toString());
 		json.put("weapon", weapon.getRegistryName().toString());
 
 		Map<String, String> enabledCondition = new LinkedHashMap<>();
-		enabledCondition.put("type", Quiverbow.MODID + ":weapon_enabled");
+		enabledCondition.put("type", QuiverbowMain.MODID + ":weapon_enabled");
 		enabledCondition.put("id", weapon.getRegistryName().toString());
 		List<Map<String, String>> conditions = Lists.newArrayList(enabledCondition);
 		json.put("conditions", conditions);
@@ -556,7 +556,7 @@ public class RecipeJSONifier
 		if (result.getItem() instanceof WeaponBase)
 		{
 			Map<String, String> enabledCondition = new LinkedHashMap<>();
-			enabledCondition.put("type", Quiverbow.MODID + ":weapon_enabled");
+			enabledCondition.put("type", QuiverbowMain.MODID + ":weapon_enabled");
 			enabledCondition.put("id", result.getItem().getRegistryName().toString());
 			List<Map<String, String>> conditions = Lists.newArrayList(enabledCondition);
 			json.put("conditions", conditions);
@@ -637,7 +637,7 @@ public class RecipeJSONifier
 		if (result.getItem() instanceof WeaponBase)
 		{
 			Map<String, String> enabledCondition = new LinkedHashMap<>();
-			enabledCondition.put("type", Quiverbow.MODID + ":weapon_enabled");
+			enabledCondition.put("type", QuiverbowMain.MODID + ":weapon_enabled");
 			enabledCondition.put("id", result.getItem().getRegistryName().toString());
 			List<Map<String, String>> conditions = Lists.newArrayList(enabledCondition);
 			json.put("conditions", conditions);

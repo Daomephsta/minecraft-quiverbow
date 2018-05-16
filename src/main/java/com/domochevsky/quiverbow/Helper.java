@@ -41,7 +41,7 @@ public class Helper
 
 	public static Item getAmmoByClass(Class<? extends AmmoBase> targetClass)
 	{
-		for (AmmoBase ammunition : Quiverbow.ammo)
+		for (AmmoBase ammunition : QuiverbowMain.ammo)
 		{
 			if (ammunition.getClass() == targetClass)
 			{
@@ -54,7 +54,7 @@ public class Helper
 
 	public static ItemStack getAmmoStack(Class<? extends AmmoBase> targetClass, int dmg)
 	{
-		for (AmmoBase ammunition : Quiverbow.ammo)
+		for (AmmoBase ammunition : QuiverbowMain.ammo)
 		{
 			if (ammunition.getClass() == targetClass)
 			{
@@ -67,7 +67,7 @@ public class Helper
 
 	public static ItemStack getWeaponStackByClass(Class<? extends WeaponBase> targetClass, boolean isEmpty)
 	{
-		for (WeaponBase weapon : Quiverbow.weapons)
+		for (WeaponBase weapon : QuiverbowMain.weapons)
 		{
 			if (weapon.getClass() == targetClass) // Found it
 			{
@@ -156,7 +156,7 @@ public class Helper
 	// stronger weapons can break more block types
 	public static boolean tryBlockBreak(World world, Entity entity, BlockPos pos, int strength)
 	{
-		if (!Quiverbow.breakGlass)
+		if (!QuiverbowMain.breakGlass)
 		{
 			return false;
 		} // Not allowed to break anything in general
@@ -225,7 +225,7 @@ public class Helper
 
 		if (breakThis) // Breaking? Breaking!
 		{
-			if (Quiverbow.sendBlockBreak)
+			if (QuiverbowMain.sendBlockBreak)
 			{
 				if (entity instanceof ProjectileBase)
 				{

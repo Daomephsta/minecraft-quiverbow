@@ -1,11 +1,11 @@
 package com.domochevsky.quiverbow.blocks;
 
-import com.domochevsky.quiverbow.Quiverbow;
+import com.domochevsky.quiverbow.QuiverbowMain;
 
 import net.minecraft.block.Block;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
-@ObjectHolder(Quiverbow.MODID)
+@ObjectHolder(QuiverbowMain.MODID)
 public class BlockRegistry
 {
 	public static final Block FEN_LIGHT = null;

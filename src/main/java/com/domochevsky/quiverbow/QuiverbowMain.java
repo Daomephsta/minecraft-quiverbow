@@ -38,14 +38,14 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.registries.IForgeRegistry;
 
-@Mod(modid = Quiverbow.MODID, name = Quiverbow.NAME, version = "b102")
-public class Quiverbow
+@Mod(modid = QuiverbowMain.MODID, name = QuiverbowMain.NAME, version = "b102")
+public class QuiverbowMain
 {
 	public static final String NAME = "QuiverBow";
 	public static final String MODID = "quiverchevsky";
 
-	@Instance(Quiverbow.MODID)
-	public static Quiverbow instance;
+	@Instance(QuiverbowMain.MODID)
+	public static QuiverbowMain instance;
 
 	@SidedProxy(clientSide = "com.domochevsky.quiverbow.ClientProxy", serverSide = "com.domochevsky.quiverbow.CommonProxy")
 	public static CommonProxy proxy;
@@ -96,7 +96,7 @@ public class Quiverbow
 	// Helper.tryBlockBreak() won't send a
 	// BlockBreak event. Used by
 	// protection plugins.
-	public static CreativeTabs QUIVERBOW_TAB = new CreativeTabs(Quiverbow.MODID)
+	public static CreativeTabs QUIVERBOW_TAB = new CreativeTabs(QuiverbowMain.MODID)
 	{
 		@Override
 		public ItemStack getTabIconItem()
@@ -139,7 +139,7 @@ public class Quiverbow
 		// side
 
 		// Registering the Arms Assistant
-		EntityRegistry.registerModEntity(new ResourceLocation(Quiverbow.MODID, "turret"), EntityAA.class, "turret", 0,
+		EntityRegistry.registerModEntity(new ResourceLocation(QuiverbowMain.MODID, "turret"), EntityAA.class, "turret", 0,
 				this, 80, 1, true);
 		// EntityRegistry.registerModEntity(Entity_BB.class,
 		// "quiverchevsky_flyingBB", 1, this, 80, 1, true);
@@ -217,12 +217,12 @@ public class Quiverbow
 
 	private void addProjectile(Class<? extends ProjectileBase> entityClass, String name)
 	{
-		EntityRegistry.registerModEntity(new ResourceLocation(Quiverbow.MODID, name), entityClass,
+		EntityRegistry.registerModEntity(new ResourceLocation(QuiverbowMain.MODID, name), entityClass,
 				"projectilechevsky_" + name, projectileCount, this, 80, 1, true);
 		projectileCount += 1;
 	}
 
-	@Mod.EventBusSubscriber(modid = Quiverbow.MODID)
+	@Mod.EventBusSubscriber(modid = QuiverbowMain.MODID)
 	public static class RegistryHandler
 	{
 		@SubscribeEvent
@@ -325,9 +325,9 @@ public class Quiverbow
 		// Helper function for taking care of weapon registration
 		private static Item addWeapon(WeaponBase weapon)
 		{
-			Quiverbow.weapons.add(weapon);
-			weapon.setRegistryName(Quiverbow.MODID, weapon.getName());
-			weapon.setUnlocalizedName(Quiverbow.MODID + ".weapon." + weapon.getName());
+			QuiverbowMain.weapons.add(weapon);
+			weapon.setRegistryName(QuiverbowMain.MODID, weapon.getName());
+			weapon.setUnlocalizedName(QuiverbowMain.MODID + ".weapon." + weapon.getName());
 			return weapon;
 		}
 
@@ -345,9 +345,9 @@ public class Quiverbow
 
 		private static AmmoBase addAmmo(AmmoBase ammoBase, String name)
 		{
-			Quiverbow.ammo.add(ammoBase);
-			ammoBase.setUnlocalizedName(Quiverbow.MODID + ".ammo." + name);
-			ammoBase.setRegistryName(Quiverbow.MODID + ":" + name);
+			QuiverbowMain.ammo.add(ammoBase);
+			ammoBase.setUnlocalizedName(QuiverbowMain.MODID + ".ammo." + name);
+			ammoBase.setRegistryName(QuiverbowMain.MODID + ":" + name);
 			return ammoBase;
 		}
 		
@@ -364,7 +364,7 @@ public class Quiverbow
 		}
 	}
 
-	@EventBusSubscriber(modid = Quiverbow.MODID, value = Side.CLIENT)
+	@EventBusSubscriber(modid = QuiverbowMain.MODID, value = Side.CLIENT)
 	private static class ModelHandler
 	{
 		@SubscribeEvent
@@ -377,7 +377,7 @@ public class Quiverbow
 					ModelLoader
 							.setCustomModelResourceLocation(ammunition, 0,
 									new ModelResourceLocation(
-											new ResourceLocation(Quiverbow.MODID,
+											new ResourceLocation(QuiverbowMain.MODID,
 													"ammo/" + ammunition.getRegistryName().getResourcePath()),
 											"inventory"));
 			}
@@ -389,7 +389,7 @@ public class Quiverbow
 					ModelLoader
 							.setCustomModelResourceLocation(weapon, 0,
 									new ModelResourceLocation(
-											new ResourceLocation(Quiverbow.MODID,
+											new ResourceLocation(QuiverbowMain.MODID,
 													"weapons/" + weapon.getRegistryName().getResourcePath()),
 											"inventory"));
 			}

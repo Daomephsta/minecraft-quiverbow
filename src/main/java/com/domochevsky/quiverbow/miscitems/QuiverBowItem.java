@@ -2,7 +2,7 @@ package com.domochevsky.quiverbow.miscitems;
 
 import java.util.List;
 
-import com.domochevsky.quiverbow.Quiverbow;
+import com.domochevsky.quiverbow.QuiverbowMain;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -25,6 +25,6 @@ public abstract class QuiverBowItem extends Item
 	@Override
 	public CreativeTabs getCreativeTab()
 	{
-		return Quiverbow.QUIVERBOW_TAB;
+		return QuiverbowMain.QUIVERBOW_TAB;
 	}
 }

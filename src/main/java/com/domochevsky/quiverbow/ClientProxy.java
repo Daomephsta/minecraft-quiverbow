@@ -17,23 +17,23 @@ public class ClientProxy extends CommonProxy
 	@Override
 	public void registerRenderers()
 	{
-		registerCrossStyleRender(BlazeShot.class, new ResourceLocation(Quiverbow.MODID, "textures/entity/rod.png"), 2, 6);
-		registerCrossStyleRender(SmallRocket.class, new ResourceLocation(Quiverbow.MODID, "textures/entity/rocket.png"), 2, 8);
-		registerCrossStyleRender(SabotRocket.class, new ResourceLocation(Quiverbow.MODID, "textures/entity/rocketsabot.png"), 3, 10);
-		registerCrossStyleRender(BigRocket.class, new ResourceLocation(Quiverbow.MODID, "textures/entity/rocket.png"), 3, 10);
-		registerCrossStyleRender(LapisShot.class, new ResourceLocation(Quiverbow.MODID, "textures/entity/lapis.png"), 2, 8);
-		registerCrossStyleRender(Thorn.class, new ResourceLocation(Quiverbow.MODID, "textures/entity/thorn.png"), 2, 2);
-		registerCrossStyleRender(ProxyThorn.class, new ResourceLocation(Quiverbow.MODID, "textures/entity/thorn.png"), 4, 8);
-		registerCrossStyleRender(ColdIron.class, new ResourceLocation(Quiverbow.MODID, "textures/entity/coldiron.png"), 2, 8);
-		registerCrossStyleRender(SugarRod.class, new ResourceLocation(Quiverbow.MODID, "textures/entity/sugar.png"), 2, 5);
-		registerCrossStyleRender(SabotArrow.class, new ResourceLocation(Quiverbow.MODID, "textures/entity/arrowsabot.png"), 3, 10);
-		registerCrossStyleRender(EnderShot.class, new ResourceLocation(Quiverbow.MODID, "textures/entity/ender.png"), 2, 4);
-		registerCrossStyleRender(OSPShot.class, new ResourceLocation(Quiverbow.MODID, "textures/entity/obsidian.png"), 2, 4);
-		registerCrossStyleRender(OSRShot.class, new ResourceLocation(Quiverbow.MODID, "textures/entity/obsidian.png"), 2, 16);
-		registerCrossStyleRender(OWRShot.class, new ResourceLocation(Quiverbow.MODID, "textures/entity/obsidian.png"), 2, 16);
-		registerCrossStyleRender(SoulShot.class, new ResourceLocation(Quiverbow.MODID, "textures/entity/soulshot.png"), 2, 10);
-		registerCrossStyleRender(RedSpray.class, new ResourceLocation(Quiverbow.MODID, "textures/entity/redspray.png"), 2, 2);
-		registerCrossStyleRender(NetherFire.class, new ResourceLocation(Quiverbow.MODID, "textures/entity/netherspray.png"), 2, 2);
+		registerCrossStyleRender(BlazeShot.class, new ResourceLocation(QuiverbowMain.MODID, "textures/entity/rod.png"), 2, 6);
+		registerCrossStyleRender(SmallRocket.class, new ResourceLocation(QuiverbowMain.MODID, "textures/entity/rocket.png"), 2, 8);
+		registerCrossStyleRender(SabotRocket.class, new ResourceLocation(QuiverbowMain.MODID, "textures/entity/rocketsabot.png"), 3, 10);
+		registerCrossStyleRender(BigRocket.class, new ResourceLocation(QuiverbowMain.MODID, "textures/entity/rocket.png"), 3, 10);
+		registerCrossStyleRender(LapisShot.class, new ResourceLocation(QuiverbowMain.MODID, "textures/entity/lapis.png"), 2, 8);
+		registerCrossStyleRender(Thorn.class, new ResourceLocation(QuiverbowMain.MODID, "textures/entity/thorn.png"), 2, 2);
+		registerCrossStyleRender(ProxyThorn.class, new ResourceLocation(QuiverbowMain.MODID, "textures/entity/thorn.png"), 4, 8);
+		registerCrossStyleRender(ColdIron.class, new ResourceLocation(QuiverbowMain.MODID, "textures/entity/coldiron.png"), 2, 8);
+		registerCrossStyleRender(SugarRod.class, new ResourceLocation(QuiverbowMain.MODID, "textures/entity/sugar.png"), 2, 5);
+		registerCrossStyleRender(SabotArrow.class, new ResourceLocation(QuiverbowMain.MODID, "textures/entity/arrowsabot.png"), 3, 10);
+		registerCrossStyleRender(EnderShot.class, new ResourceLocation(QuiverbowMain.MODID, "textures/entity/ender.png"), 2, 4);
+		registerCrossStyleRender(OSPShot.class, new ResourceLocation(QuiverbowMain.MODID, "textures/entity/obsidian.png"), 2, 4);
+		registerCrossStyleRender(OSRShot.class, new ResourceLocation(QuiverbowMain.MODID, "textures/entity/obsidian.png"), 2, 16);
+		registerCrossStyleRender(OWRShot.class, new ResourceLocation(QuiverbowMain.MODID, "textures/entity/obsidian.png"), 2, 16);
+		registerCrossStyleRender(SoulShot.class, new ResourceLocation(QuiverbowMain.MODID, "textures/entity/soulshot.png"), 2, 10);
+		registerCrossStyleRender(RedSpray.class, new ResourceLocation(QuiverbowMain.MODID, "textures/entity/redspray.png"), 2, 2);
+		registerCrossStyleRender(NetherFire.class, new ResourceLocation(QuiverbowMain.MODID, "textures/entity/netherspray.png"), 2, 2);
 		registerSnowballStyleRender(CoinShot.class, Items.GOLD_NUGGET);
 		registerSnowballStyleRender(Seed.class, Items.MELON_SEEDS);
 		registerSnowballStyleRender(PotatoShot.class, Items.BAKED_POTATO);

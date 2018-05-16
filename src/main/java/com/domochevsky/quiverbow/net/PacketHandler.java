@@ -1,6 +1,6 @@
 package com.domochevsky.quiverbow.net;
 
-import com.domochevsky.quiverbow.Quiverbow;
+import com.domochevsky.quiverbow.QuiverbowMain;
 
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.*;
@@ -12,7 +12,7 @@ public class PacketHandler
 
 	public static void initPackets()
 	{
-		net = NetworkRegistry.INSTANCE.newSimpleChannel(Quiverbow.MODID.toUpperCase());
+		net = NetworkRegistry.INSTANCE.newSimpleChannel(QuiverbowMain.MODID.toUpperCase());
 
 		registerMessage(ParticlePacket.class, ParticleMessage.class);
 		registerMessage(PositionPacket.class, PositionMessage.class);
