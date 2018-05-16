@@ -1,0 +1,11 @@
+{
+  "type": "quiverchevsky:load_magazine",
+  "ammo": "quiverchevsky:thorn_magazine",
+  "weapon": "quiverchevsky:proximity_thorn_thrower",
+  "conditions": [
+    {
+      "type": "quiverchevsky:weapon_enabled",
+      "id": "quiverchevsky:proximity_thorn_thrower"
+    }
+  ]
+}

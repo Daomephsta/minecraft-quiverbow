@@ -1,11 +1,9 @@
 package com.domochevsky.quiverbow.projectiles;
 
-import io.netty.buffer.ByteBuf;
-
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.net.NetHelper;
 
-import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.MobEffects;
@@ -15,6 +13,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class HealthBeam extends ProjectileBase implements IEntityAdditionalSpawnData
 {
@@ -76,7 +75,7 @@ public class HealthBeam extends ProjectileBase implements IEntityAdditionalSpawn
 				* MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI));
 		this.motionY = (double) (-MathHelper.sin((this.rotationPitch) / 180.0F * (float) Math.PI));
 
-		this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, 0, 1.0F);
+		this.shoot(this.motionX, this.motionY, this.motionZ, 0, 1.0F);
 	}
 
 	@Override

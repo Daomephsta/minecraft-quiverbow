@@ -1,0 +1,30 @@
+{
+  "conditions": [
+    {
+      "type": "quiverchevsky:weapon_enabled",
+      "id": "quiverchevsky:compact_crossbow"
+    }
+  ],
+  "pattern": [
+    "zxy",
+    "xzy",
+    "zxy"
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:stick"
+    },
+    "y": {
+      "item": "minecraft:string"
+    },
+    "z": {
+      "item": "minecraft:planks",
+      "data": 0
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverchevsky:compact_crossbow",
+    "data": 1
+  }
+}

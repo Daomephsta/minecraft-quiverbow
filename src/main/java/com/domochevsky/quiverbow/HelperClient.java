@@ -1,5 +1,8 @@
 package com.domochevsky.quiverbow;
 
+import com.domochevsky.quiverbow.ai.AIProperties;
+import com.domochevsky.quiverbow.armsassistant.EntityAA;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,9 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-
-import com.domochevsky.quiverbow.ai.AIProperties;
-import com.domochevsky.quiverbow.armsassistant.EntityAA;
 
 public class HelperClient
 {

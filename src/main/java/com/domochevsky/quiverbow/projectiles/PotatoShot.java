@@ -1,5 +1,8 @@
 package com.domochevsky.quiverbow.projectiles;
 
+import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.net.NetHelper;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
@@ -9,9 +12,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-
-import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.net.NetHelper;
 
 public class PotatoShot extends ProjectileBase
 {

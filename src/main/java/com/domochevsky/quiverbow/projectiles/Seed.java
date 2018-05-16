@@ -1,5 +1,7 @@
 package com.domochevsky.quiverbow.projectiles;
 
+import com.domochevsky.quiverbow.Helper;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -8,8 +10,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-
-import com.domochevsky.quiverbow.Helper;
 
 public class Seed extends ProjectileBase
 {

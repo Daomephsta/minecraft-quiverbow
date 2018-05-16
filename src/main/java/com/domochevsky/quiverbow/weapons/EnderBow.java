@@ -1,8 +1,8 @@
 package com.domochevsky.quiverbow.weapons;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.projectiles.ScopedPredictive;
 import com.domochevsky.quiverbow.util.InventoryHelper;
 import com.domochevsky.quiverbow.weapons.base.WeaponBow;
 
@@ -14,7 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.*;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
@@ -23,7 +23,6 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class EnderBow extends WeaponBow
 {
@@ -54,21 +53,6 @@ public class EnderBow extends WeaponBow
 		this.isMobUsable = config.get(this.name,
 				"Can I be used by QuiverMobs? (default false. They don't know how to pull a string anymore.)", false)
 				.getBoolean();
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		if (enabled)
-		{
-			// One ender bow, all ready
-			GameRegistry.addRecipe(new ItemStack(this), "zxy", "xay", "zxy", 'x', Items.STICK, 'y', Items.STRING, 'z',
-					Items.ENDER_EYE, 'a', Items.IRON_INGOT);
-		}
-		else if (Main.noCreative)
-		{
-			this.setCreativeTab(null);
-		} // Not enabled and not allowed to be in the creative menu
 	}
 
 	@Override
@@ -249,7 +233,7 @@ public class EnderBow extends WeaponBow
 				}
 
 				EntityArrow entityarrow = Helper.createArrow(world, player);
-				entityarrow.setAim(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0.0F, f * 3.0F,
+				entityarrow.shoot(entityLiving, entityLiving.rotationPitch, entityLiving.rotationYaw, 0.0F, f * 3.0F,
 						0.5F);
 
 				if (f == 1.0F)
@@ -288,13 +272,7 @@ public class EnderBow extends WeaponBow
 			this.shotCounter += 1;
 			if (this.shotCounter >= Ticks)
 			{
-				// Only allowing this to happen when the right player uses this
-				// TODO: replace with OGL rendering
-				if (player.getDisplayName().getUnformattedText().equals(this.playerName))
-				{
-					ScopedPredictive entityarrow = new ScopedPredictive(player.world, player, 2.0F * 1.5F);
-					player.world.spawnEntity(entityarrow);
-				}
+				// TODO: predictive OGL rendering
 				this.shotCounter = 0;
 			}
 		}
@@ -343,8 +321,9 @@ public class EnderBow extends WeaponBow
 	}
 
 	@Override
-	public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> subItems)
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems)
 	{
-		subItems.add(new ItemStack(item, 1, 0));
+		if(!ArrayUtils.contains(this.getCreativeTabs(), tab)) return;
+		subItems.add(new ItemStack(this, 1, 0));
 	}
 }

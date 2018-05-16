@@ -1,0 +1,11 @@
+{
+  "type": "quiverchevsky:load_magazine",
+  "ammo": "quiverchevsky:large_redstone_magazine",
+  "weapon": "quiverchevsky:redstone_sprayer",
+  "conditions": [
+    {
+      "type": "quiverchevsky:weapon_enabled",
+      "id": "quiverchevsky:redstone_sprayer"
+    }
+  ]
+}

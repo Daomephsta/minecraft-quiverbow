@@ -1,10 +1,7 @@
 package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.ammo.GatlingAmmo;
 import com.domochevsky.quiverbow.ammo.AmmoBase;
-import com.domochevsky.quiverbow.items.ItemRegistry;
 import com.domochevsky.quiverbow.projectiles.SugarRod;
 import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.BurstFiringBehaviour;
@@ -19,7 +16,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class SugarEngine extends MagazineFedWeapon
 {
@@ -242,22 +238,5 @@ public class SugarEngine extends MagazineFedWeapon
 		this.isMobUsable = config
 				.get(this.name, "Can I be used by QuiverMobs? (default true. They'll probably figure it out.)", true)
 				.getBoolean(true);
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		if (this.enabled)
-		{
-			// One Sugar Gatling (empty)
-			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "b b", "b b", " m ", 'b',
-					new ItemStack(ItemRegistry.PART_SUGAR_ENGINE_BARREL), 'm',
-					new ItemStack(ItemRegistry.PART_SUGAR_ENGINE_BODY));
-		}
-		else if (Main.noCreative) this.setCreativeTab(null); // Not enabled and
-																// not allowed
-																// to be in the
-																// creative menu
-		Helper.registerAmmoRecipe(GatlingAmmo.class, this);
 	}
 }

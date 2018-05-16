@@ -1,29 +1,30 @@
 package com.domochevsky.quiverbow.recipes;
 
-import java.util.List;
+import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.Main.Constants;
+import com.domochevsky.quiverbow.ammo.AmmoBase;
+import com.domochevsky.quiverbow.weapons.OSP;
+import com.domochevsky.quiverbow.weapons.base.WeaponBase;
+import com.google.gson.JsonObject;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.ShapelessRecipes;
+import net.minecraft.util.JsonUtils;
 import net.minecraft.world.World;
+import net.minecraftforge.common.crafting.IRecipeFactory;
+import net.minecraftforge.common.crafting.JsonContext;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
-import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.ammo.AmmoBase;
-import com.domochevsky.quiverbow.weapons.OSP;
-import com.domochevsky.quiverbow.weapons.base.WeaponBase;
-
-public class RecipeLoadMagazine extends ShapelessRecipes implements IRecipe
+public class RecipeLoadMagazine extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
 {
-	private Item ammo;
-	private Item weapon;
+	private final AmmoBase ammo;
+	private final WeaponBase weapon;
 	private int metadata;
 
-	public RecipeLoadMagazine(Item ammo, Item weapon, List<ItemStack> recipe)
+	private RecipeLoadMagazine(AmmoBase ammo, WeaponBase weapon)
 	{
-		super(new ItemStack(weapon), recipe);
-
 		this.ammo = ammo;
 		this.weapon = weapon;
 	}
@@ -104,6 +105,18 @@ public class RecipeLoadMagazine extends ShapelessRecipes implements IRecipe
 	{
 		return new ItemStack(this.weapon, 1, this.metadata);
 	}
+	
+	@Override
+	public String getGroup()
+	{
+		return Constants.MODID + ":load_magazine";
+	}
+	
+	@Override
+	public boolean canFit(int width, int height)
+	{
+		return width * height >= 2;
+	}
 
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting matrix)
@@ -111,12 +124,23 @@ public class RecipeLoadMagazine extends ShapelessRecipes implements IRecipe
 		if (this.weapon instanceof OSP)
 		{
 			this.metadata *= 2;
-		} // Two shots per boolet
+		} // Two shots per bullet
 
 		ItemStack stack = new ItemStack(this.weapon, 1, this.metadata);
 
 		Helper.copyProps(matrix, stack);
 
 		return stack;
+	}
+	
+	public static class Factory implements IRecipeFactory
+	{
+		@Override
+		public IRecipe parse(JsonContext context, JsonObject json)
+		{
+			AmmoBase ammo = (AmmoBase) JsonUtils.getItem(json, "ammo");
+			WeaponBase weapon = (WeaponBase) JsonUtils.getItem(json, "weapon");
+			return new RecipeLoadMagazine(ammo, weapon);
+		}
 	}
 }

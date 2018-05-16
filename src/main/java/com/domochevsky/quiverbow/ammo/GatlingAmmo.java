@@ -5,8 +5,8 @@ import com.domochevsky.quiverbow.util.InventoryHelper;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 
 public class GatlingAmmo extends AmmoMagazine
 {
@@ -17,14 +17,6 @@ public class GatlingAmmo extends AmmoMagazine
 		this.setCreativeTab(CreativeTabs.COMBAT); // On the combat tab by
 		// default, since this is
 		// amunition
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		// First, the clip itself (empty)
-		GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "y y", "y y", "yxy", 'x', Items.IRON_INGOT,
-				'y', Blocks.PLANKS);
 	}
 
 	@Override

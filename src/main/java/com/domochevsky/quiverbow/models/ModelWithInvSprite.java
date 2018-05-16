@@ -11,13 +11,12 @@ import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.client.model.IPerspectiveAwareModel;
 
-public class ModelWithInvSprite implements IPerspectiveAwareModel
+public class ModelWithInvSprite implements IBakedModel
 {
-	private final IPerspectiveAwareModel model, invSprite;
+	private final IBakedModel model, invSprite;
 
-	public ModelWithInvSprite(IPerspectiveAwareModel model, IPerspectiveAwareModel invSprite)
+	public ModelWithInvSprite(IBakedModel model, IBakedModel invSprite)
 	{
 		this.model = model;
 		this.invSprite = invSprite;

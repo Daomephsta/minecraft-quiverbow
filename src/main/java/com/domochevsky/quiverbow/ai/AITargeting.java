@@ -2,42 +2,22 @@ package com.domochevsky.quiverbow.ai;
 
 import java.util.List;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
+import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.Main;
+import com.domochevsky.quiverbow.armsassistant.EntityAA;
+import com.domochevsky.quiverbow.weapons.*;
+import com.domochevsky.quiverbow.weapons.base.WeaponBase;
+
+import net.minecraft.entity.*;
 import net.minecraft.entity.boss.EntityDragon;
-import net.minecraft.entity.boss.EntityDragonPart;
 import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.monster.*;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.passive.EntityHorse;
-import net.minecraft.entity.passive.EntityMooshroom;
-import net.minecraft.entity.passive.EntityOcelot;
-import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.entity.passive.EntitySquid;
-import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.passive.EntityWolf;
+import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
-
-import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.armsassistant.EntityAA;
-import com.domochevsky.quiverbow.weapons.ERA;
-import com.domochevsky.quiverbow.weapons.EnderRifle;
-import com.domochevsky.quiverbow.weapons.Endernymous;
-import com.domochevsky.quiverbow.weapons.FrostLancer;
-import com.domochevsky.quiverbow.weapons.LightningRed;
-import com.domochevsky.quiverbow.weapons.MediGun;
-import com.domochevsky.quiverbow.weapons.RPG;
-import com.domochevsky.quiverbow.weapons.RPGImp;
-import com.domochevsky.quiverbow.weapons.Sunray;
-import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 public class AITargeting
 {
@@ -249,7 +229,7 @@ public class AITargeting
 
 			if (!skip) // Checks out?
 			{
-				double distance = turret.getDistanceSqToEntity(potentialEntity);
+				double distance = turret.getDistanceSq(potentialEntity);
 
 				if (distance < closestDistance)
 				{
@@ -353,7 +333,7 @@ public class AITargeting
 		{
 			return true;
 		}
-		else if (entity instanceof EntityDragonPart && isNameOnWhitelist(turret, "ender dragon"))
+		else if (entity instanceof MultiPartEntityPart && isNameOnWhitelist(turret, "ender dragon"))
 		{
 			return true;
 		}
@@ -551,7 +531,7 @@ public class AITargeting
 		// safe range
 		{
 			double minSafetyRange = getSafetyRange(turret, currentWeapon);
-			double distance = turret.getDistanceSqToEntity(turret.currentTarget);
+			double distance = turret.getDistanceSq(turret.currentTarget);
 
 			if (minSafetyRange != -1 && distance < minSafetyRange)
 			{

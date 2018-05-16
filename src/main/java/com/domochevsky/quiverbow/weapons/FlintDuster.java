@@ -1,22 +1,18 @@
 package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.ammo.BoxOfFlintDust;
 import com.domochevsky.quiverbow.projectiles.FlintDust;
-import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class FlintDuster extends WeaponBase
 {
@@ -82,24 +78,5 @@ public class FlintDuster extends WeaponBase
 		this.isMobUsable = config
 				.get(this.name, "Can I be used by QuiverMobs? (default false. They have no interest in dirt.)", false)
 				.getBoolean(true);
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		if (this.enabled)
-		{
-			// One Flint Duster (Empty)
-			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "qhq", "qpq", "tsi", 'p',
-					Blocks.PISTON, 's', Blocks.STICKY_PISTON, 'h', Blocks.HOPPER, 'q', Blocks.QUARTZ_BLOCK, 'i',
-					Items.IRON_INGOT, 't', Blocks.TRIPWIRE_HOOK);
-		}
-		else if (Main.noCreative)
-		{
-			this.setCreativeTab(null);
-		} // Not enabled and not allowed to be in the creative menu
-
-		ItemStack stack = Helper.getAmmoStack(BoxOfFlintDust.class, 0);
-		GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(stack.getItem(), 32));
 	}
 }

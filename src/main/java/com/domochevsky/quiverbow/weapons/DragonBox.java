@@ -1,21 +1,15 @@
 package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.ammo.RocketBundle;
 import com.domochevsky.quiverbow.projectiles.SmallRocket;
-import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class DragonBox extends WeaponBase
 {
@@ -84,24 +78,5 @@ public class DragonBox extends WeaponBase
 				.getBoolean(true);
 
 		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		if (this.enabled)
-		{
-			// One dragonbox (empty)
-			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "zxy", "azy", "zxy", 'x', Items.STICK,
-					'y', Items.STRING, 'z', Items.IRON_INGOT, 'a', Items.FLINT_AND_STEEL);
-		}
-		else if (Main.noCreative)
-		{
-			this.setCreativeTab(null);
-		} // Not enabled and not allowed to be in the creative menu
-
-		ItemStack stack = Helper.getAmmoStack(RocketBundle.class, 0);
-
-		GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(stack.getItem(), 8));
 	}
 }

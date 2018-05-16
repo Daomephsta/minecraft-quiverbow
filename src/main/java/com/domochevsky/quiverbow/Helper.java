@@ -1,6 +1,5 @@
 package com.domochevsky.quiverbow;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -8,7 +7,6 @@ import javax.annotation.Nullable;
 import com.domochevsky.quiverbow.ammo.AmmoBase;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.ProjectileBase;
-import com.domochevsky.quiverbow.recipes.*;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import net.minecraft.block.BlockLiquid;
@@ -25,116 +23,23 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.*;
+import net.minecraft.util.EntitySelectors;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.*;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Helper
 {
 	private static final ItemStack ARROW_STACK = new ItemStack(Items.ARROW);
 
-	// Overhauled method for registering ammo (specifically, using magazines)
-	public static void registerAmmoRecipe(Class<? extends AmmoBase> ammoBase, Item weapon)
-	{
-		ArrayList<ItemStack> list = new ArrayList<ItemStack>();
-
-		Item ammo = getAmmoByClass(ammoBase);
-
-		ItemStack weaponStack = Helper.createEmptyWeaponOrAmmoStack(weapon, 1);
-		ItemStack ammoStack = new ItemStack(ammo);
-
-		list.add(weaponStack);
-		list.add(ammoStack);
-
-		GameRegistry.addRecipe(new RecipeLoadMagazine(ammo, weapon, list));
-	}
-
 	public static void registerAAUpgradeRecipe(ItemStack result, ItemStack[] input, String upgradeType)
 	{
-		if (upgradeType.equals("hasArmorUpgrade"))
-		{
-			ArrayList<ItemStack> list = new ArrayList<ItemStack>();
-
-			int counter = 0;
-
-			while (counter < input.length)
-			{
-				list.add(input[counter]);
-
-				counter += 1;
-			}
-
-			GameRegistry.addRecipe(new RecipeAAArmor(result, list));
-		}
-
-		else if (upgradeType.equals("hasHeavyPlatingUpgrade"))
-		{
-			ArrayList<ItemStack> list = new ArrayList<ItemStack>();
-
-			int counter = 0;
-
-			while (counter < input.length)
-			{
-				list.add(input[counter]);
-
-				counter += 1;
-			}
-
-			GameRegistry.addRecipe(new RecipeAAPlating(result, list));
-		}
-
-		else if (upgradeType.equals("hasMobilityUpgrade"))
-		{
-			GameRegistry.addRecipe(new RecipeAAMobility(3, 3, input, result));
-		}
-
-		else if (upgradeType.equals("hasStorageUpgrade"))
-		{
-			GameRegistry.addRecipe(new RecipeAAStorage(3, 3, input, result));
-		}
-
-		else if (upgradeType.equals("hasWeaponUpgrade"))
-		{
-			GameRegistry.addRecipe(new RecipeAAWeapon(3, 3, input, result));
-		}
-
-		else if (upgradeType.equals("hasRidingUpgrade"))
-		{
-			ArrayList<ItemStack> list = new ArrayList<ItemStack>();
-
-			int counter = 0;
-
-			while (counter < input.length)
-			{
-				list.add(input[counter]);
-
-				counter += 1;
-			}
-
-			GameRegistry.addRecipe(new RecipeAARiding(result, list));
-		}
-
-		else if (upgradeType.equals("hasCommunicationUpgrade"))
-		{
-			ArrayList<ItemStack> list = new ArrayList<ItemStack>();
-
-			int counter = 0;
-
-			while (counter < input.length)
-			{
-				list.add(input[counter]);
-
-				counter += 1;
-			}
-
-			GameRegistry.addRecipe(new RecipeAACommunication(result, list));
-		}
+		
 	}
 
-	private static Item getAmmoByClass(Class<? extends AmmoBase> targetClass)
+	public static Item getAmmoByClass(Class<? extends AmmoBase> targetClass)
 	{
 		for (AmmoBase ammunition : Main.ammo)
 		{
@@ -445,8 +350,8 @@ public class Helper
 
 		// Encloses the entire area where entities that could collide with this
 		// ray exist
-		AxisAlignedBB entitySearchArea = new AxisAlignedBB(startVec.xCoord, startVec.yCoord, startVec.zCoord,
-				endVec.xCoord, endVec.yCoord, endVec.zCoord);
+		AxisAlignedBB entitySearchArea = new AxisAlignedBB(startVec.x, startVec.y, startVec.z,
+				endVec.x, endVec.y, endVec.z);
 		Entity hitEntity = null; // The closest entity that was hit
 		double entityHitDistance = 0.0D; // The squared distance to the closest
 											// entity that was hit
@@ -455,7 +360,7 @@ public class Helper
 		{
 			// The collision AABB of the entity expanded by the collision border
 			// size
-			AxisAlignedBB collisionBB = entity.getEntityBoundingBox().expandXyz(entity.getCollisionBorderSize());
+			AxisAlignedBB collisionBB = entity.getEntityBoundingBox().grow(entity.getCollisionBorderSize());
 			RayTraceResult intercept = collisionBB.calculateIntercept(startVec, endVec);
 			if (intercept != null)
 			{
@@ -482,14 +387,14 @@ public class Helper
 
 		// Encloses the entire area where entities that could collide with this
 		// ray exist
-		AxisAlignedBB entitySearchArea = new AxisAlignedBB(startVec.xCoord, startVec.yCoord, startVec.zCoord,
-				endVec.xCoord, endVec.yCoord, endVec.zCoord);
+		AxisAlignedBB entitySearchArea = new AxisAlignedBB(startVec.x, startVec.y, startVec.z,
+				endVec.x, endVec.y, endVec.z);
 		for (Entity entity : world.getEntitiesInAABBexcluding(exclude, entitySearchArea,
 				EntitySelectors.NOT_SPECTATING))
 		{
 			// The collision AABB of the entity expanded by the collision border
 			// size
-			AxisAlignedBB collisionBB = entity.getEntityBoundingBox().expandXyz(entity.getCollisionBorderSize());
+			AxisAlignedBB collisionBB = entity.getEntityBoundingBox().grow(entity.getCollisionBorderSize());
 			RayTraceResult intercept = collisionBB.calculateIntercept(startVec, endVec);
 			if (intercept != null) results.add(new RayTraceResult(entity, intercept.hitVec));
 		}

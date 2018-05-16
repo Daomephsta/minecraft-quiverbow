@@ -1,18 +1,11 @@
 package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.ammo.ArrowBundle;
-import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 import com.domochevsky.quiverbow.weapons.base.WeaponCrossbow;
 
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class CrossbowAutoImp extends WeaponCrossbow
 {
@@ -35,7 +28,7 @@ public class CrossbowAutoImp extends WeaponCrossbow
 									// giving us
 			// the proper damage range (10-20)
 
-			entityarrow.setAim(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, (float)weapon.speed, 0.5F);
+			entityarrow.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, (float)weapon.speed, 0.5F);
 			entityarrow.setDamage(dmg);
 			entityarrow.setKnockbackStrength(weapon.knockback);
 
@@ -60,27 +53,5 @@ public class CrossbowAutoImp extends WeaponCrossbow
 
 		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default false.)", false)
 				.getBoolean(true);
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		if (this.enabled)
-		{
-			// One auto-crossbow (empty)
-			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "iii", "scs", " i ", 'i',
-					Items.IRON_INGOT, 's', Blocks.STICKY_PISTON, 'c',
-					Helper.getWeaponStackByClass(CrossbowAuto.class, true));
-		}
-		else if (Main.noCreative)
-		{
-			this.setCreativeTab(null);
-		} // Not enabled and not allowed to be in the creative menu
-
-		ItemStack ammo = Helper.getAmmoStack(ArrowBundle.class, 0);
-
-		// Fill what can be filled. One arrow bundle for 8 shots, for up to 2
-		// bundles
-		GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(ammo.getItem(), 8, 1, 2));
 	}
 }

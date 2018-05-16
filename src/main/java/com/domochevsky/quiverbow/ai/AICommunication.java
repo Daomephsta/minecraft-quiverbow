@@ -1,10 +1,10 @@
 package com.domochevsky.quiverbow.ai;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.text.TextComponentString;
-
 import com.domochevsky.quiverbow.armsassistant.EntityAA;
 import com.mojang.realmsclient.gui.ChatFormatting;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.text.TextComponentString;
 
 public class AICommunication
 {

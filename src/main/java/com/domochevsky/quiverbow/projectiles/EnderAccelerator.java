@@ -1,14 +1,13 @@
 package com.domochevsky.quiverbow.projectiles;
 
+import com.domochevsky.quiverbow.net.NetHelper;
+
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-
-import com.domochevsky.quiverbow.net.NetHelper;
-
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EnderAccelerator extends ProjectileBase implements IEntityAdditionalSpawnData

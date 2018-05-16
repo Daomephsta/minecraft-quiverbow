@@ -7,7 +7,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class EnderQuartzClip extends AmmoMagazine
 {
@@ -18,13 +17,6 @@ public class EnderQuartzClip extends AmmoMagazine
 		this.setCreativeTab(CreativeTabs.COMBAT); // On the combat tab by
 		// default, since this is
 		// amunition
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "xxx", "ixi", "iii", 'x', Items.QUARTZ,
-				'i', Items.IRON_INGOT);
 	}
 
 	@Override

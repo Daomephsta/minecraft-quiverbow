@@ -1,15 +1,7 @@
 package com.domochevsky.quiverbow.weapons;
 
-import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.ammo.LargeRocket;
-
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class RPGImp extends RPG
 {
@@ -33,25 +25,5 @@ public class RPGImp extends RPG
 		this.travelTime = config
 				.get(this.name, "How many ticks can my rocket fly before exploding? (default 20 ticks)", 20).getInt();
 		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		if (this.enabled)
-		{
-			// One Improved Rocket Launcher (empty)
-			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "xxx", "yzy", "xxx", 'x',
-					Blocks.OBSIDIAN, // Adding an obsidian frame to the RPG
-					'y', Items.IRON_INGOT, 'z', Helper.getWeaponStackByClass(RPG.class, true));
-		}
-		else if (Main.noCreative)
-		{
-			this.setCreativeTab(null);
-		} // Not enabled and not allowed to be in the creative menu
-
-		// Fill the launcher with 1 big rocket
-		GameRegistry.addShapelessRecipe(new ItemStack(this), Helper.getAmmoStack(LargeRocket.class, 0),
-				new ItemStack(this, 1, 1));
 	}
 }

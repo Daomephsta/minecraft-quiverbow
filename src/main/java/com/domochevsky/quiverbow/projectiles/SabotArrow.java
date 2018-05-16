@@ -1,5 +1,8 @@
 package com.domochevsky.quiverbow.projectiles;
 
+import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.net.NetHelper;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -9,9 +12,6 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-
-import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.net.NetHelper;
 
 public class SabotArrow extends ProjectileBase
 {
@@ -86,24 +86,24 @@ public class SabotArrow extends ProjectileBase
 		}
 		else // Not invulnerable
 		{
-			this.setBeenAttacked();
+			this.markVelocityChanged();
 
-			if (source.getEntity() != null) // Damaged by a entity
+			if (source.getTrueSource() != null) // Damaged by a entity
 			{
-				Vec3d vec3 = source.getEntity().getLookVec(); // Which is
+				Vec3d vec3 = source.getTrueSource().getLookVec(); // Which is
 				// looking that
 				// way...
 
 				if (vec3 != null)
 				{
-					this.motionX = vec3.xCoord;
-					this.motionY = vec3.yCoord;
-					this.motionZ = vec3.zCoord;
+					this.motionX = vec3.x;
+					this.motionY = vec3.y;
+					this.motionZ = vec3.z;
 				}
 
-				if (source.getEntity() instanceof EntityLivingBase)
+				if (source.getTrueSource() instanceof EntityLivingBase)
 				{
-					this.shootingEntity = (EntityLivingBase) source.getEntity();
+					this.shootingEntity = (EntityLivingBase) source.getTrueSource();
 				}
 
 				return true;

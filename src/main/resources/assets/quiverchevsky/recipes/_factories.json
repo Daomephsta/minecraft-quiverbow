@@ -1,0 +1,11 @@
+{
+	"recipes":
+	{
+		"load_magazine": "com.domochevsky.quiverbow.recipes.RecipeLoadMagazine$Factory",
+		"load_ammo": "com.domochevsky.quiverbow.recipes.RecipeLoadAmmo$Factory"
+	},
+	"conditions":
+	{
+		"weapon_enabled": "com.domochevsky.quiverbow.recipes.RecipeConditionWeaponEnabledFactory"
+	}
+}

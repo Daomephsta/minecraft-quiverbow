@@ -1,0 +1,11 @@
+{
+  "type": "quiverchevsky:load_magazine",
+  "ammo": "quiverchevsky:obsidian_magazine",
+  "weapon": "quiverchevsky:splinter_rifle",
+  "conditions": [
+    {
+      "type": "quiverchevsky:weapon_enabled",
+      "id": "quiverchevsky:splinter_rifle"
+    }
+  ]
+}

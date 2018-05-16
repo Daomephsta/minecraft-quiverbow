@@ -1,7 +1,6 @@
 package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.Seed;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
@@ -10,14 +9,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class Seedling extends WeaponBase
 {
@@ -87,20 +84,5 @@ public class Seedling extends WeaponBase
 				.getDouble();
 
 		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		if (this.enabled)
-		{
-			// One Seedling (fully loaded, meaning 0 damage)
-			GameRegistry.addRecipe(new ItemStack(this, 1, 0), "ada", "ada", "bca", 'a', Items.REEDS, 'b',
-					Blocks.TRIPWIRE_HOOK, 'c', Blocks.PISTON, 'd', Blocks.MELON_BLOCK);
-		}
-		else if (Main.noCreative)
-		{
-			this.setCreativeTab(null);
-		} // Not enabled and not allowed to be in the creative menu
 	}
 }

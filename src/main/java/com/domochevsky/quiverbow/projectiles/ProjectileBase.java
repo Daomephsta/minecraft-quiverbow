@@ -2,21 +2,18 @@ package com.domochevsky.quiverbow.projectiles;
 
 import java.util.List;
 
+import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.net.NetHelper;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.IProjectile;
+import net.minecraft.entity.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
-
-import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.net.NetHelper;
-
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -104,7 +101,7 @@ public class ProjectileBase extends Entity implements IProjectile
 				* MathHelper.cos((this.rotationPitch + accVert) / 180.0F * (float) Math.PI));
 		this.motionY = (double) (-MathHelper.sin(((this.rotationPitch + accVert)) / 180.0F * (float) Math.PI));
 
-		this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, speed, 1.0F);
+		this.shoot(this.motionX, this.motionY, this.motionZ, speed, 1.0F);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -128,7 +125,7 @@ public class ProjectileBase extends Entity implements IProjectile
 	}
 
 	@Override
-	public void setThrowableHeading(double motX, double motY, double motZ, float speed, float unknown)
+	public void shoot(double motX, double motY, double motZ, float speed, float unknown)
 	{
 		float f2 = MathHelper.sqrt(motX * motX + motY * motY + motZ * motZ);
 		motX /= (double) f2;
@@ -184,7 +181,7 @@ public class ProjectileBase extends Entity implements IProjectile
 		{
 			AxisAlignedBB potentialAABB = state.getCollisionBoundingBox(this.world, stuckPos);
 
-			if (potentialAABB != null && potentialAABB.isVecInside(new Vec3d(this.posX, this.posY, this.posZ)))
+			if (potentialAABB != null && potentialAABB.contains(new Vec3d(this.posX, this.posY, this.posZ)))
 			{
 				this.inGround = true; // Hit a non-air block, so we're now stuck
 				// in the ground
@@ -258,12 +255,12 @@ public class ProjectileBase extends Entity implements IProjectile
 
 			if (hitPos != null) // Hit something
 			{
-				futureVec3d = new Vec3d(hitPos.hitVec.xCoord, hitPos.hitVec.yCoord, hitPos.hitVec.zCoord);
+				futureVec3d = new Vec3d(hitPos.hitVec.x, hitPos.hitVec.y, hitPos.hitVec.z);
 			}
 
 			Entity hitEntity = null;
 			List<?> candidateList = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox()
-					.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
+					.expand(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
 
 			double d0 = 0.0D;
 			int iteratori;

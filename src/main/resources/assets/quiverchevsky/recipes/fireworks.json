@@ -1,0 +1,12 @@
+{
+  "ingredients": [
+    {
+      "item": "quiverchevsky:rocket_bundle"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "minecraft:fireworks",
+    "count": 8
+  }
+}

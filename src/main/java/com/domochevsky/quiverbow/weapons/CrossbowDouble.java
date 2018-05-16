@@ -1,22 +1,19 @@
 package com.domochevsky.quiverbow.weapons;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.weapons.base.WeaponCrossbow;
 
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.*;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -41,7 +38,7 @@ public class CrossbowDouble extends WeaponCrossbow
 									// giving us
 			// the proper damage range (10-20)
 
-			entityarrow.setAim(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, (float)weapon.speed, 0.5F);
+			entityarrow.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, (float)weapon.speed, 0.5F);
 			entityarrow.setDamage(dmg);
 			entityarrow.setKnockbackStrength(weapon.knockback);
 			
@@ -57,9 +54,9 @@ public class CrossbowDouble extends WeaponCrossbow
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean par4)
+	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags)
 	{
-		super.addInformation(stack, player, list, par4);
+		super.addInformation(stack, world, list, flags);
 		if (this.getCooldown(stack) > 0)
 			list.add(I18n.format(getUnlocalizedName() + ".cooldown",
 					this.displayInSec(this.getCooldown(stack))));
@@ -80,37 +77,5 @@ public class CrossbowDouble extends WeaponCrossbow
 		this.cooldown = config.get(this.name, "How long until I can fire again? (default 25 ticks)", 25).getInt();
 
 		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		if (this.enabled)
-		{
-			// One empty double crossbow (upgraded from regular crossbow)
-			GameRegistry.addShapelessRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), Blocks.STICKY_PISTON,
-					Items.REPEATER, Helper.getWeaponStackByClass(CrossbowCompact.class, true));
-		}
-		else if (Main.noCreative)
-		{
-			this.setCreativeTab(null);
-		} // Not enabled and not allowed to be in the creative menu
-
-		GameRegistry.addShapelessRecipe(new ItemStack(this), // Fill the empty
-				// crossbow with
-				// two arrows
-				Items.ARROW, Items.ARROW, Helper.createEmptyWeaponOrAmmoStack(this, 1));
-
-		GameRegistry.addShapelessRecipe(new ItemStack(this, 1, 1), // Fill the
-				// empty
-				// crossbow
-				// with one
-				// arrow
-				Items.ARROW, Helper.createEmptyWeaponOrAmmoStack(this, 1));
-
-		GameRegistry.addShapelessRecipe(new ItemStack(this), // Fill the half
-				// empty crossbow
-				// with one arrow
-				Items.ARROW, new ItemStack(this, 1, 1));
 	}
 }

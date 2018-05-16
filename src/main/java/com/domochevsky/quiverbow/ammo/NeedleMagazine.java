@@ -5,8 +5,8 @@ import com.domochevsky.quiverbow.util.InventoryHelper;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 
 public class NeedleMagazine extends AmmoMagazine
 {
@@ -15,13 +15,6 @@ public class NeedleMagazine extends AmmoMagazine
 		super(1, 8);
 		this.setMaxDamage(64); // Filled with cactus thorns
 		this.setCreativeTab(CreativeTabs.COMBAT);
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "x x", "x x", "xix", 'x', Items.LEATHER,
-				'i', Items.IRON_INGOT);
 	}
 
 	@Override

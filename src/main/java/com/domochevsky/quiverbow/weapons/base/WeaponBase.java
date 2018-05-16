@@ -1,7 +1,8 @@
 package com.domochevsky.quiverbow.weapons.base;
 
-import java.util.Collections;
 import java.util.List;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.Main.Constants;
@@ -9,12 +10,15 @@ import com.domochevsky.quiverbow.miscitems.QuiverBowItem;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.FiringBehaviourBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.IFiringBehaviour;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.*;
+import net.minecraft.item.EnumAction;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
@@ -73,14 +77,15 @@ public class WeaponBase extends QuiverBowItem
 	} // Usable by default
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean unknown)
+	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags)
 	{
-		if (player.capabilities.isCreativeMode) list.add(I18n.format(Constants.MODID + ".ammo.infinite"));
+		if (Minecraft.getMinecraft().player != null && Minecraft.getMinecraft().player.capabilities.isCreativeMode)
+			list.add(I18n.format(Constants.MODID + ".ammo.infinite"));
 		else
 			list.add(I18n.format(getUnlocalizedName() + ".ammostatus",
 					stack.getMaxDamage() - stack.getItemDamage(), stack.getMaxDamage()));
 		list.add(I18n.format(getUnlocalizedName() + ".loadtext"));
-		super.addInformation(stack, player, list, unknown);
+		super.addInformation(stack, world, list, flags);
 	}
 
 	// Removes the passed in value from the ammo stack
@@ -245,10 +250,11 @@ public class WeaponBase extends QuiverBowItem
 	}
 
 	@Override
-	public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> subItems)
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems)
 	{
-		subItems.add(new ItemStack(item, 1, 0));
-		subItems.add(Helper.createEmptyWeaponOrAmmoStack(item, 1));
+		if(!ArrayUtils.contains(this.getCreativeTabs(), tab)) return;
+		subItems.add(new ItemStack(this, 1, 0));
+		subItems.add(Helper.createEmptyWeaponOrAmmoStack(this, 1));
 	}
 
 	public void addProps(FMLPreInitializationEvent event, Configuration config)

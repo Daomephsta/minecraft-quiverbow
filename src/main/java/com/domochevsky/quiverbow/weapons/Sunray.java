@@ -1,24 +1,20 @@
 package com.domochevsky.quiverbow.weapons;
 
+import org.apache.commons.lang3.ArrayUtils;
+
+import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.projectiles.SunLight;
+import com.domochevsky.quiverbow.weapons.base.WeaponBase;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
-import net.minecraft.item.Item;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
-
-import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.projectiles.SunLight;
-import com.domochevsky.quiverbow.weapons.base.WeaponBase;
-
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class Sunray extends WeaponBase
 {
@@ -144,25 +140,9 @@ public class Sunray extends WeaponBase
 	}
 
 	@Override
-	public void addRecipes()
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems)
 	{
-		if (enabled)
-		{
-			// Using a beacon and solar panels/Daylight Sensors, meaning a
-			// nether star is required. So this is a high power item
-			GameRegistry.addRecipe(new ItemStack(this), "bs ", "oos", " rt", 'b', Blocks.BEACON, 'o', Blocks.OBSIDIAN,
-					's', Blocks.DAYLIGHT_DETECTOR, 't', Blocks.TRIPWIRE_HOOK, 'r', Items.REPEATER);
-		}
-		else if (Main.noCreative)
-		{
-			this.setCreativeTab(null);
-		} // Not enabled and not allowed to be in the creative menu
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> subItems)
-	{
-		subItems.add(new ItemStack(item, 1, 0)); // Only one, and it's full
+		if(!ArrayUtils.contains(this.getCreativeTabs(), tab)) return;
+		subItems.add(new ItemStack(this, 1, 0)); // Only one, and it's full
 	}
 }

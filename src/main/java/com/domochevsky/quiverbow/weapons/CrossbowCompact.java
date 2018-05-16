@@ -1,16 +1,11 @@
 package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.weapons.base.WeaponCrossbow;
 
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class CrossbowCompact extends WeaponCrossbow
 {
@@ -33,7 +28,7 @@ public class CrossbowCompact extends WeaponCrossbow
 									// giving us
 			// the proper damage range (10-20)
 
-			entityarrow.setAim(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, (float)weapon.speed, 0.5F);
+			entityarrow.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, (float)weapon.speed, 0.5F);
 			entityarrow.setDamage(dmg);
 			entityarrow.setKnockbackStrength(weapon.knockback);
 			
@@ -56,25 +51,5 @@ public class CrossbowCompact extends WeaponCrossbow
 				.getInt();
 
 		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		if (this.enabled)
-		{
-			// One compact crossbow (empty)
-			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "zxy", "xzy", "zxy", 'x', Items.STICK,
-					'y', Items.STRING, 'z', Blocks.PLANKS);
-		}
-		else if (Main.noCreative)
-		{
-			this.setCreativeTab(null);
-		} // Not enabled and not allowed to be in the creative menu
-
-		GameRegistry.addShapelessRecipe(new ItemStack(this), // Fill the empty
-				// crossbow with
-				// one arrow
-				Items.ARROW, Helper.createEmptyWeaponOrAmmoStack(this, 1));
 	}
 }

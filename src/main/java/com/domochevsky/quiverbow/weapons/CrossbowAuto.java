@@ -1,9 +1,7 @@
 package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.Main.Constants;
-import com.domochevsky.quiverbow.ammo.ArrowBundle;
 import com.domochevsky.quiverbow.models.ISpecialRender;
 import com.domochevsky.quiverbow.weapons.base.WeaponCrossbow;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
@@ -14,20 +12,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class CrossbowAuto extends WeaponCrossbow implements ISpecialRender
 {
@@ -51,7 +43,7 @@ public class CrossbowAuto extends WeaponCrossbow implements ISpecialRender
 									// giving us
 			// the proper damage range (10-20)
 
-			entityarrow.setAim(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, (float)weapon.speed, 0.5F);
+			entityarrow.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, (float)weapon.speed, 0.5F);
 			entityarrow.setDamage(dmg);
 			entityarrow.setKnockbackStrength(weapon.knockback);
 
@@ -161,27 +153,5 @@ public class CrossbowAuto extends WeaponCrossbow implements ISpecialRender
 		this.isMobUsable = config.get(this.name,
 				"Can I be used by QuiverMobs? (default false. They don't know how to rechamber me.)", false)
 				.getBoolean(true);
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		if (this.enabled)
-		{
-			// One auto-crossbow (empty)
-			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "iii", "pcp", " t ", 'i',
-					Items.IRON_INGOT, 'p', Blocks.PISTON, 't', Blocks.TRIPWIRE_HOOK, 'c',
-					Helper.getWeaponStackByClass(CrossbowDouble.class, true));
-		}
-		else if (Main.noCreative)
-		{
-			this.setCreativeTab(null);
-		} // Not enabled and not allowed to be in the creative menu
-
-		GameRegistry.addShapelessRecipe(new ItemStack(this), // Fill the empty
-				// auto-crossbow
-				// with one arrow
-				// bundle
-				Helper.getAmmoStack(ArrowBundle.class, 0), Helper.createEmptyWeaponOrAmmoStack(this, 1));
 	}
 }

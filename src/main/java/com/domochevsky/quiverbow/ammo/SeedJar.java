@@ -5,8 +5,8 @@ import com.domochevsky.quiverbow.util.InventoryHelper;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 
 public class SeedJar extends AmmoMagazine
 {
@@ -19,13 +19,6 @@ public class SeedJar extends AmmoMagazine
 		this.setCreativeTab(CreativeTabs.COMBAT); // On the combat tab by
 		// default, since this is
 		// amunition
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "gwg", "g g", "gig", 'g',
-				Blocks.GLASS_PANE, 'i', Items.IRON_INGOT, 'w', Blocks.WOODEN_BUTTON);
 	}
 
 	@Override

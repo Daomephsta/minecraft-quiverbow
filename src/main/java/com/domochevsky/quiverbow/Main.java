@@ -11,7 +11,6 @@ import com.domochevsky.quiverbow.miscitems.*;
 import com.domochevsky.quiverbow.models.ISpecialRender;
 import com.domochevsky.quiverbow.net.PacketHandler;
 import com.domochevsky.quiverbow.projectiles.*;
-import com.domochevsky.quiverbow.recipes.*;
 import com.domochevsky.quiverbow.util.RegistryHelper;
 import com.domochevsky.quiverbow.weapons.*;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
@@ -22,6 +21,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -34,9 +34,10 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.*;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.oredict.RecipeSorter;
+import net.minecraftforge.registries.IForgeRegistry;
 
 @Mod(modid = Constants.MODID, name = Constants.NAME, version = "b102")
 public class Main
@@ -135,10 +136,6 @@ public class Main
 				true).getBoolean();
 
 		this.registerProjectiles();
-
-		addAllProps(event, this.config); // All items are registered now. Making
-		// recipes and recording props
-
 		this.config.save(); // Done with config, saving it
 
 		PacketHandler.initPackets(); // Used for sending particle packets, so I
@@ -151,12 +148,6 @@ public class Main
 		// EntityRegistry.registerModEntity(Entity_BB.class,
 		// "quiverchevsky_flyingBB", 1, this, 80, 1, true);
 		proxy.registerRenderers();
-		RecipeSorter.register(Constants.MODID + ":ender_rail_accelerator", RecipeERA.class,
-				RecipeSorter.Category.SHAPED, "after:minecraft:shapeless");
-		RecipeSorter.register(Constants.MODID + ":era_upgrade", RecipeWeapon.class, RecipeSorter.Category.SHAPED,
-				"after:minecraft:shapeless");
-		RecipeSorter.register(Constants.MODID + ":load_magazine", RecipeLoadMagazine.class,
-				RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
 
 		Listener listener = new Listener();
 
@@ -175,6 +166,7 @@ public class Main
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
+		//foo.RecipeJSONifier.generateRecipes();
 		// Init creative tab now that items are initialised
 		/* QUIVERBOW_TAB = new CreativeTabs(Constants.MODID) {
 		 * 
@@ -200,7 +192,6 @@ public class Main
 		this.addProjectile(PotatoShot.class, "potato");
 		this.addProjectile(SnowShot.class, "snow");
                                                                
-		this.addProjectile(ScopedPredictive.class, "predictive");
 		this.addProjectile(EnderShot.class, "ender");
 		this.addProjectile(ColdIron.class, "cold_iron");
                                                      
@@ -233,23 +224,6 @@ public class Main
 		EntityRegistry.registerModEntity(new ResourceLocation(Constants.MODID, name), entityClass,
 				"projectilechevsky_" + name, projectileCount, this, 80, 1, true);
 		projectileCount += 1;
-	}
-
-	// Adding props and recipes for all registered weapons now
-	private static void addAllProps(FMLPreInitializationEvent event, Configuration config)
-	{
-		// Ammo first
-		for (AmmoBase ammunition : ammo)
-		{
-			ammunition.addRecipes();
-		}
-
-		// Weapons last
-		for (WeaponBase weapon : weapons)
-		{
-			weapon.addProps(event, config);
-			weapon.addRecipes();
-		}
 	}
 
 	@Mod.EventBusSubscriber(modid = Constants.MODID)
@@ -291,9 +265,10 @@ public class Main
 					// TODO: Reimplement addWeapon(new FlintDuster()),
 					// TODO: Reimplement addWeapon(new Sunray()),
 					addWeapon(new PowderKnuckle()), addWeapon(new PowderKnuckleMod()), addWeapon(new SoulCairn()),
-					addWeapon(new AquaAccelerator()), addWeapon(new SilkenSpinner()),
+					addWeapon(new AquaAccelerator()), addWeapon(new SilkenSpinner())//,
 					// TODO: Reimplement addWeapon(new MediGun()),
-					addWeapon(new ERA()), addWeapon(new AATargeter()));
+					// TODO: Reimplement addWeapon(new ERA()), addWeapon(new AATargeter())
+					);
 			registerWeaponsWithAmmo(registry);
 		}
 
@@ -378,6 +353,12 @@ public class Main
 			ammoBase.setUnlocalizedName(Constants.MODID + ".ammo." + name);
 			ammoBase.setRegistryName(Constants.MODID + ":" + name);
 			return ammoBase;
+		}
+		
+		@SubscribeEvent
+		public static void registerRecipes(RegistryEvent.Register<IRecipe> e)
+		{
+
 		}
 
 		@SubscribeEvent

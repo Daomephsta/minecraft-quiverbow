@@ -2,21 +2,21 @@ package com.domochevsky.quiverbow.weapons;
 
 import java.util.List;
 
-import com.domochevsky.quiverbow.Main;
+import org.apache.commons.lang3.ArrayUtils;
+
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
-import net.minecraft.item.Item;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -71,7 +71,7 @@ public class AATargeter extends WeaponBase
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean par4)
+	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags)
 	{
 		list.add(I18n.format(getUnlocalizedName() + ".description"));
 	}
@@ -87,23 +87,10 @@ public class AATargeter extends WeaponBase
 	}
 
 	@Override
-	public void addRecipes()
-	{
-		if (enabled)
-		{
-			GameRegistry.addRecipe(new ItemStack(this), "bi ", "iri", " it", 'b', Blocks.NOTEBLOCK, 'r', Items.REPEATER,
-					't', Blocks.TRIPWIRE_HOOK, 'i', Items.IRON_INGOT);
-		}
-		else if (Main.noCreative)
-		{
-			this.setCreativeTab(null);
-		} // Not enabled and not allowed to be in the creative menu
-	}
-
-	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> subItems)
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems)
 	{
-		subItems.add(new ItemStack(item, 1, 0));
+		if(!ArrayUtils.contains(this.getCreativeTabs(), tab)) return;
+		subItems.add(new ItemStack(this, 1, 0));
 	}
 }

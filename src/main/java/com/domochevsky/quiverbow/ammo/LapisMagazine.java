@@ -3,13 +3,12 @@ package com.domochevsky.quiverbow.ammo;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.util.InventoryHelper;
 
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraft.client.Minecraft;
-
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
@@ -57,13 +56,6 @@ public class LapisMagazine extends AmmoMagazine
 		}
 
 		return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "x x", "x x", "xgx", 'x',
-				Blocks.GLASS_PANE, 'g', new ItemStack(Items.DYE, 1, 4));
 	}
 
 	@Override

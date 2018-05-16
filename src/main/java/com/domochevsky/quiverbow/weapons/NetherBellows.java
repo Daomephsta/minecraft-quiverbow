@@ -1,21 +1,16 @@
 package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.ammo.LargeNetherrackMagazine;
 import com.domochevsky.quiverbow.ammo.AmmoBase;
 import com.domochevsky.quiverbow.projectiles.NetherFire;
 import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SalvoFiringBehaviour;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class NetherBellows extends MagazineFedWeapon
 {
@@ -62,23 +57,5 @@ public class NetherBellows extends MagazineFedWeapon
 		this.fireDuration = config.get(this.name, "For how long do I set things on fire? (default 3 sec)", 3).getInt();
 
 		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		if (this.enabled)
-		{
-			// One redstone sprayer (empty)
-			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "zxz", "zbz", "cya", 'x',
-					Blocks.PISTON, 'y', Blocks.TRIPWIRE_HOOK, 'z', Blocks.OBSIDIAN, 'a', Items.REPEATER, 'b',
-					Blocks.STICKY_PISTON, 'c', Items.FLINT_AND_STEEL);
-		}
-		else if (Main.noCreative)
-		{
-			this.setCreativeTab(null);
-		} // Not enabled and not allowed to be in the creative menu
-
-		Helper.registerAmmoRecipe(LargeNetherrackMagazine.class, this);
 	}
 }

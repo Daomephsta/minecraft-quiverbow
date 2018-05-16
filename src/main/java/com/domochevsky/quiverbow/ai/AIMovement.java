@@ -90,19 +90,19 @@ public class AIMovement
 
 	private static void FollowOwner(EntityAA turret, EntityPlayer owner)
 	{
-		if (turret.getDistanceSqToEntity(owner) < (double) (10.0F * 10.0F))
+		if (turret.getDistanceSq(owner) < (double) (10.0F * 10.0F))
 		{
 			return;
 		} // Still close enough (min distance is 10� blocks)
 
-		if (!turret.getNavigator().noPath() && turret.getDistanceSqToEntity(owner) > (double) (2.0 * 2.0))
+		if (!turret.getNavigator().noPath() && turret.getDistanceSq(owner) > (double) (2.0 * 2.0))
 		{
 			return;
 		} // Already moving and distance to owner is beyond max
 
 		if (!turret.getNavigator().tryMoveToEntityLiving(owner, turret.movementSpeed))
 		{
-			if (turret.getDistanceSqToEntity(owner) >= 144.0D)
+			if (turret.getDistanceSq(owner) >= 144.0D)
 			{
 				int blockPosX = MathHelper.floor(owner.posX) - 2;
 				int blockPosY = MathHelper.floor(owner.posZ) - 2;
@@ -128,7 +128,7 @@ public class AIMovement
 							turret.setLocationAndAngles((double) ((float) (blockPosX + counterX) + 0.5F),
 									(double) blockPosZ, (double) ((float) (blockPosY + counterY) + 0.5F),
 									turret.rotationYaw, turret.rotationPitch);
-							turret.getNavigator().clearPathEntity();
+							turret.getNavigator().clearPath();
 							return;
 						}
 					}
@@ -163,7 +163,7 @@ public class AIMovement
 		// System.out.println("[ARMS ASSISTANT] Got a target position. Going
 		// there.");
 
-		turret.getNavigator().tryMoveToXYZ(targetPos.xCoord, targetPos.yCoord, targetPos.zCoord, turret.movementSpeed); // Get
+		turret.getNavigator().tryMoveToXYZ(targetPos.x, targetPos.y, targetPos.z, turret.movementSpeed); // Get
 		// moving
 	}
 
@@ -281,6 +281,6 @@ public class AIMovement
 		turret.stepHeight = 1.0F;
 		turret.jumpMovementFactor = turret.getAIMoveSpeed() * 0.1F;
 
-		turret.moveEntityWithHeading(strafe, forward);
+		turret.getMoveHelper().strafe(forward, strafe);
 	}
 }

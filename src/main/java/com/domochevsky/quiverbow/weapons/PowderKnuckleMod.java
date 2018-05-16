@@ -1,34 +1,26 @@
 package com.domochevsky.quiverbow.weapons;
 
-import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.net.NetHelper;
-import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class PowderKnuckleMod extends PowderKnuckle
 {
 	public PowderKnuckleMod()
 	{
-		super("powder_knuckle_mod", 8);
+		super("powder_knuckles_mod", 8);
 	}
 
 	@Override
@@ -149,23 +141,5 @@ public class PowderKnuckleMod extends PowderKnuckle
 		this.isMobUsable = config.get(this.name,
 				"Can I be used by QuiverMobs? (default false. They don't know where the trigger on this thing is.)",
 				false).getBoolean(false);
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		if (this.enabled)
-		{
-			// Modifying the powder knuckle once
-			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "ooo", "oco", "i i", 'c',
-					Helper.getWeaponStackByClass(PowderKnuckle.class, true), 'o', Blocks.OBSIDIAN, 'i',
-					Items.IRON_INGOT);
-		}
-		else if (Main.noCreative)
-		{
-			this.setCreativeTab(null);
-		} // Not enabled and not allowed to be in the creative menu
-
-		GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(Items.GUNPOWDER, 1));
 	}
 }

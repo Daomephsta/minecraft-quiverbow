@@ -1,17 +1,11 @@
 package com.domochevsky.quiverbow.weapons;
 
-import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.ammo.GoldMagazine;
 import com.domochevsky.quiverbow.ammo.AmmoBase;
 import com.domochevsky.quiverbow.projectiles.CoinShot;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SalvoFiringBehaviour;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class CoinTosserMod extends CoinTosser
 {
@@ -66,24 +60,5 @@ public class CoinTosserMod extends CoinTosser
 
 		this.shouldDrop = config.get(this.name, "Do I drop gold nuggets on misses? (default true)", true)
 				.getBoolean(true);
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		if (this.enabled)
-		{
-			// Modifying the Coin Tosser with double piston tech
-			GameRegistry.addShapelessRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1),
-					Helper.getWeaponStackByClass(CoinTosser.class, true), Blocks.STICKY_PISTON, Blocks.TRIPWIRE_HOOK,
-					Items.IRON_INGOT, Items.IRON_INGOT);
-		}
-		else if (Main.noCreative)
-		{
-			this.setCreativeTab(null);
-		} // Not enabled and not allowed to be in the creative menu
-
-		// Ammo
-		Helper.registerAmmoRecipe(GoldMagazine.class, this);
 	}
 }

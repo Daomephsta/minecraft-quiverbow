@@ -1,0 +1,33 @@
+{
+  "conditions": [
+    {
+      "type": "quiverchevsky:weapon_enabled",
+      "id": "quiverchevsky:wither_rifle"
+    }
+  ],
+  "pattern": [
+    "odo",
+    "owo",
+    "oso"
+  ],
+  "key": {
+    "s": {
+      "item": "minecraft:nether_star"
+    },
+    "d": {
+      "item": "minecraft:diamond"
+    },
+    "w": {
+      "item": "quiverchevsky:splinter_rifle",
+      "data": 16
+    },
+    "o": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverchevsky:wither_rifle",
+    "data": 16
+  }
+}

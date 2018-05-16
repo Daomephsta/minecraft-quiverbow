@@ -1,27 +1,18 @@
 package com.domochevsky.quiverbow.weapons;
 
-import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.net.NetHelper;
-import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.FiringBehaviourBase;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class PowderKnuckle extends WeaponBase
 {
@@ -118,22 +109,5 @@ public class PowderKnuckle extends WeaponBase
 		this.isMobUsable = config.get(this.name,
 				"Can I be used by QuiverMobs? (default false. They don't know where the trigger on this thing is.)",
 				false).getBoolean(false);
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		if (this.enabled)
-		{
-			// One Powder Knuckle with 8 damage value (empty)
-			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "yyy", "xzx", "x x", 'x',
-					Items.LEATHER, 'y', Items.IRON_INGOT, 'z', Items.STICK);
-		}
-		else if (Main.noCreative)
-		{
-			this.setCreativeTab(null);
-		} // Not enabled and not allowed to be in the creative menu
-
-		GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(Items.GUNPOWDER, 1));
 	}
 }

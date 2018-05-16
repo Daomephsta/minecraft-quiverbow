@@ -1,5 +1,8 @@
 package com.domochevsky.quiverbow.projectiles;
 
+import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.net.NetHelper;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,9 +11,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-
-import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.net.NetHelper;
 
 public class EnderAno extends ProjectileBase
 {

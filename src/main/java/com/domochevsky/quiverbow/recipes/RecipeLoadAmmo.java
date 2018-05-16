@@ -1,27 +1,32 @@
 package com.domochevsky.quiverbow.recipes;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-import com.google.common.collect.Maps;
+import org.apache.commons.lang3.tuple.Pair;
 
-import net.minecraft.block.Block;
+import com.google.gson.*;
+
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.JsonUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.crafting.*;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
-public class RecipeLoadAmmo implements IRecipe
+public class RecipeLoadAmmo extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
 {
 	private final Item targetWeapon;
-	private final HashMap<Item, AmmoData> ammoComponents = Maps.newHashMap();
+	private final List<Map.Entry<Ingredient, AmmoData>> ammoComponents;
 
-	public RecipeLoadAmmo(Item targetWeapon)
+	private RecipeLoadAmmo(Item targetWeapon, List<Map.Entry<Ingredient, AmmoData>> ammoComponents)
 	{
 		this.targetWeapon = targetWeapon;
+		this.ammoComponents = ammoComponents;
 	}
 
 	@Override
@@ -39,16 +44,19 @@ public class RecipeLoadAmmo implements IRecipe
 				if (!weaponFound) weaponFound = true;
 				else return false; // Cannot reload two weapons at the same time
 			}
-			else if (!ammoComponents.containsKey(stack.getItem())) return false;
+			else
+			{
+
+			}
 		}
-		for (Map.Entry<Item, AmmoData> componentEntry : ammoComponents.entrySet())
+		for (Map.Entry<Ingredient, AmmoData> componentEntry : ammoComponents)
 		{
 			int componentCount = 0;
 			for (int s = 0; s < invCrafting.getSizeInventory(); s++)
 			{
 				ItemStack stack = invCrafting.getStackInSlot(s);
 				if (stack.isEmpty()) continue;
-				if (stack.getItem() == componentEntry.getKey())
+				if (componentEntry.getKey().apply(stack))
 				{
 					componentCount++;
 					if (componentCount > componentEntry.getValue().max) return false;
@@ -77,43 +85,34 @@ public class RecipeLoadAmmo implements IRecipe
 		{
 			ItemStack stack = invCrafting.getStackInSlot(s);
 			if (stack.isEmpty()) continue;
-			if (ammoComponents.containsKey(stack.getItem()))
+			for (Map.Entry<Ingredient, AmmoData> ammoComponent : ammoComponents)
 			{
-				int ammoValue = ammoComponents.get(stack.getItem()).ammoValue;
-				weapon.setItemDamage(weapon.getItemDamage() - ammoValue);
+				if (ammoComponent.getKey().apply(stack))
+				{
+					int ammoValue = ammoComponent.getValue().ammoValue;
+					weapon.setItemDamage(weapon.getItemDamage() - ammoValue);
+					break;
+				}
 			}
 		}
 		return weapon;
 	}
 
-	public RecipeLoadAmmo addComponent(Block block, int ammoValue)
+	public RecipeLoadAmmo addComponent(Ingredient ingredient, int ammoValue)
 	{
-		ammoComponents.put(Item.getItemFromBlock(block), new AmmoData(ammoValue));
-		return this;
+		return addComponent(ingredient, ammoValue, 1, 8);
 	}
 
-	public RecipeLoadAmmo addComponent(Block block, int ammoValue, int min, int max)
+	public RecipeLoadAmmo addComponent(Ingredient ingredient, int ammoValue, int min, int max)
 	{
-		ammoComponents.put(Item.getItemFromBlock(block), new AmmoData(ammoValue, min, max));
-		return this;
-	}
-
-	public RecipeLoadAmmo addComponent(Item item, int ammoValue)
-	{
-		ammoComponents.put(item, new AmmoData(ammoValue));
-		return this;
-	}
-
-	public RecipeLoadAmmo addComponent(Item item, int ammoValue, int min, int max)
-	{
-		ammoComponents.put(item, new AmmoData(ammoValue, min, max));
+		ammoComponents.add(Pair.of(ingredient, new AmmoData(ammoValue, min, max)));
 		return this;
 	}
 
 	@Override
-	public int getRecipeSize()
+	public boolean canFit(int width, int height)
 	{
-		return 10;
+		return width * height >= 2;
 	}
 
 	@Override
@@ -122,18 +121,17 @@ public class RecipeLoadAmmo implements IRecipe
 		return ItemStack.EMPTY;
 	}
 
+	@Override
+	public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv)
+	{
+		return ForgeHooks.defaultRecipeGetRemainingItems(inv);
+	}
+
 	private static class AmmoData
 	{
 		private int ammoValue;
 		private int min;
 		private int max;
-
-		public AmmoData(int ammoValue)
-		{
-			this.ammoValue = ammoValue;
-			this.min = 1;
-			this.max = 8;
-		}
 
 		public AmmoData(int ammoValue, int min, int max)
 		{
@@ -143,9 +141,34 @@ public class RecipeLoadAmmo implements IRecipe
 		}
 	}
 
-	@Override
-	public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv)
+	public static class Factory implements IRecipeFactory
 	{
-		return ForgeHooks.defaultRecipeGetRemainingItems(inv);
+		@Override
+		public IRecipe parse(JsonContext context, JsonObject json)
+		{
+			Item weapon = JsonUtils.getItem(json, "weapon");
+			JsonArray componentsJSON = JsonUtils.getJsonArray(json, "components");
+			List<Map.Entry<Ingredient, AmmoData>> components = new ArrayList<>();
+			for (JsonElement element : componentsJSON)
+			{
+				if (!element.isJsonObject())
+					throw new JsonSyntaxException("Expected " + element + " to be a JSON object");
+				components.add(deserialiseIngredientAmmoDataEntry((JsonObject) element, context));
+			}
+			return new RecipeLoadAmmo(weapon, components);
+		}
+
+		private static Map.Entry<Ingredient, AmmoData> deserialiseIngredientAmmoDataEntry(JsonObject entry, JsonContext context)
+		{
+			Ingredient ingredient = CraftingHelper.getIngredient(entry.get("ing"), context);
+			AmmoData ammoData = deserialiseAmmoData(JsonUtils.getJsonObject(entry, "data"));
+			return new AbstractMap.SimpleImmutableEntry<Ingredient, AmmoData>(ingredient, ammoData);
+		}
+
+		private static AmmoData deserialiseAmmoData(JsonObject jsonObj)
+		{
+			return new AmmoData(JsonUtils.getInt(jsonObj, "ammoValue"), JsonUtils.getInt(jsonObj, "min"),
+					JsonUtils.getInt(jsonObj, "max"));
+		}
 	}
 }

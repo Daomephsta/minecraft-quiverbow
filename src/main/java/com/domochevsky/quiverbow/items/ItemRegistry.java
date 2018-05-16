@@ -46,8 +46,8 @@ public class ItemRegistry
 	public static final Item FLINT_DUSTER = null;
 	public static final Item LIGHTNING_RED = null;
 	public static final Item SUNRAY = null;
-	public static final Item POWDER_KNUCKLE = null;
-	public static final Item POWDER_KNUCKLE_MOD = null;
+	public static final Item POWDER_KNUCKLES = null;
+	public static final Item POWDER_KNUCKLES_MOD = null;
 	public static final Item NETHER_BELLOWS = null;
 	public static final Item REDSTONE_SPRAYER = null;
 	public static final Item SOUL_CAIRN = null;

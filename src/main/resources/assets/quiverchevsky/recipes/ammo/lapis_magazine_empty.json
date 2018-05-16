@@ -1,0 +1,21 @@
+{
+  "pattern": [
+    "x x",
+    "x x",
+    "xgx"
+  ],
+  "key": {
+    "g": {
+      "item": "minecraft:dye",
+      "data": 4
+    },
+    "x": {
+      "item": "minecraft:glass_pane"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverchevsky:lapis_magazine",
+    "data": 150
+  }
+}

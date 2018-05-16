@@ -1,0 +1,22 @@
+{
+  "conditions": [
+    {
+      "type": "quiverchevsky:weapon_enabled",
+      "id": "quiverchevsky:soul_cairn"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "quiverchevsky:soul_cairn",
+      "data": 1
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "quiverchevsky:soul_cairn",
+    "data": 0
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "conditions": [
+    {
+      "type": "quiverchevsky:weapon_enabled",
+      "id": "quiverchevsky:dragon_mortar"
+    }
+  ],
+  "pattern": [
+    "ipi",
+    "isr",
+    "tsf"
+  ],
+  "key": {
+    "p": {
+      "item": "minecraft:piston"
+    },
+    "r": {
+      "item": "minecraft:repeater"
+    },
+    "s": {
+      "item": "minecraft:sticky_piston"
+    },
+    "t": {
+      "item": "minecraft:tripwire_hook"
+    },
+    "f": {
+      "item": "minecraft:flint_and_steel"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverchevsky:dragon_mortar",
+    "data": 8
+  }
+}

@@ -1,8 +1,6 @@
 package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.ammo.NeedleMagazine;
 import com.domochevsky.quiverbow.ammo.AmmoBase;
 import com.domochevsky.quiverbow.projectiles.Thorn;
 import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
@@ -10,15 +8,12 @@ import com.domochevsky.quiverbow.weapons.base.firingbehaviours.BurstFiringBehavi
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ThornSpitter extends MagazineFedWeapon
 {
@@ -111,23 +106,5 @@ public class ThornSpitter extends MagazineFedWeapon
 		this.cooldown = config.get(this.name, "How long until I can fire again? (default 10 ticks)", 10).getInt();
 
 		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		if (enabled)
-		{
-			// One Thorn Spitter (empty)
-			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "bib", "php", "sts", 't',
-					Blocks.TRIPWIRE_HOOK, 'b', Blocks.IRON_BARS, 'i', Items.IRON_INGOT, 'h', Blocks.HOPPER, 's',
-					Blocks.STICKY_PISTON, 'p', Blocks.PISTON);
-		}
-		else if (Main.noCreative)
-		{
-			this.setCreativeTab(null);
-		} // Not enabled and not allowed to be in the creative menu
-
-		Helper.registerAmmoRecipe(NeedleMagazine.class, this);
 	}
 }

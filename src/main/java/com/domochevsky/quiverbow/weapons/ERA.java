@@ -1,30 +1,22 @@
 package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.EnderAccelerator;
-import com.domochevsky.quiverbow.recipes.RecipeERA;
-import com.domochevsky.quiverbow.recipes.RecipeWeapon;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.FiringBehaviourBase;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.init.SoundEvents;
+import net.minecraft.init.*;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ERA extends WeaponBase
 {
@@ -248,8 +240,8 @@ public class ERA extends WeaponBase
 				.getBoolean();
 	}
 
-	@Override
-	public void addRecipes()
+	//TODO Convert to JSON
+/*	public void addRecipes()
 	{
 		if (enabled)
 		{
@@ -264,8 +256,9 @@ public class ERA extends WeaponBase
 
 		this.registerRepair();
 		this.registerUpgrade();
-	}
-
+	}*/
+	
+	//TODO Convert to JSON
 	private void registerRecipe()
 	{
 		// Fully loaded
@@ -287,9 +280,10 @@ public class ERA extends WeaponBase
 		input[7] = new ItemStack(Items.IRON_INGOT);
 		input[8] = new ItemStack(Item.getItemFromBlock(Blocks.OBSIDIAN));
 
-		GameRegistry.addRecipe(new RecipeERA(input, new ItemStack(this)));
+//		GameRegistry.addRecipe(new RecipeERA(input, new ItemStack(this)));
 	}
-
+	
+	//TODO Convert to JSON
 	private void registerRepair()
 	{
 		ItemStack[] repair = new ItemStack[9];
@@ -309,9 +303,10 @@ public class ERA extends WeaponBase
 		repair[7] = new ItemStack(Items.IRON_INGOT);
 		repair[8] = new ItemStack(Items.REDSTONE);
 
-		GameRegistry.addRecipe(new RecipeERA(repair, new ItemStack(this)));
+//		GameRegistry.addRecipe(new RecipeERA(repair, new ItemStack(this)));
 	}
 
+	//TODO Convert to JSON
 	private void registerUpgrade()
 	{
 		ItemStack[] recipe = new ItemStack[9];
@@ -331,7 +326,7 @@ public class ERA extends WeaponBase
 		recipe[7] = new ItemStack(Blocks.EMERALD_BLOCK); // - - -
 		recipe[8] = new ItemStack(Blocks.QUARTZ_BLOCK); // 6 7 8
 
-		GameRegistry.addRecipe(new RecipeWeapon(recipe, new ItemStack(this), 1)); // Emerald
+//		GameRegistry.addRecipe(new RecipeWeapon(recipe, new ItemStack(this), 1)); // Emerald
 		// Muzzle
 	}
 }

@@ -1,22 +1,16 @@
 package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.ammo.RocketBundle;
 import com.domochevsky.quiverbow.projectiles.SmallRocket;
-import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SalvoFiringBehaviour;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SalvoFiringBehaviour.SalvoData;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class DragonBoxQuad extends WeaponBase
 {
@@ -114,27 +108,5 @@ public class DragonBoxQuad extends WeaponBase
 		this.isMobUsable = config
 				.get(this.name, "Can I be used by QuiverMobs? (default false. A bit too high-power for them.)", false)
 				.getBoolean();
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		if (this.enabled)
-		{
-			// One QuadBox (empty) An upgrade from the regular Dragonbox (so 3
-			// more flint&steel + Pistons for reloading mechanism + more
-			// barrels)
-			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "ddd", "pdp", "sts", 'p',
-					Blocks.PISTON, 's', Blocks.STICKY_PISTON, 't', Blocks.TRIPWIRE_HOOK, 'd',
-					Helper.getWeaponStackByClass(DragonBox.class, true));
-		}
-		else if (Main.noCreative)
-		{
-			this.setCreativeTab(null);
-		} // Not enabled and not allowed to be in the creative menu
-
-		ItemStack stack = Helper.getAmmoStack(RocketBundle.class, 0);
-
-		GameRegistry.addRecipe(new RecipeLoadAmmo(this).addComponent(stack.getItem(), 8));
 	}
 }

@@ -1,21 +1,15 @@
 package com.domochevsky.quiverbow.weapons;
 
-import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.ammo.SeedJar;
 import com.domochevsky.quiverbow.ammo.AmmoBase;
 import com.domochevsky.quiverbow.projectiles.Seed;
 import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SalvoFiringBehaviour;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class SeedSweeper extends MagazineFedWeapon
 {
@@ -61,22 +55,5 @@ public class SeedSweeper extends MagazineFedWeapon
 		this.spread = (float) config.get(this.name, "How accurate am I? (default 26 spread)", 26).getDouble();
 
 		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		if (this.enabled)
-		{
-			// One Seed Sweeper (empty)
-			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), " i ", "ipi", " it", 'p',
-					Blocks.PISTON, 'i', Items.IRON_INGOT, 't', Blocks.TRIPWIRE_HOOK);
-		}
-		else if (Main.noCreative)
-		{
-			this.setCreativeTab(null);
-		} // Not enabled and not allowed to be in the creative menu
-
-		Helper.registerAmmoRecipe(SeedJar.class, this);
 	}
 }

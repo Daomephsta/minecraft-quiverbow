@@ -3,9 +3,7 @@ package com.domochevsky.quiverbow.weapons;
 import java.util.List;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ammo.AmmoBase;
-import com.domochevsky.quiverbow.ammo.ObsidianMagazine;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.OWRShot;
 import com.domochevsky.quiverbow.projectiles.ProjectileBase;
@@ -13,16 +11,16 @@ import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
+import net.minecraft.init.MobEffects;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -100,9 +98,9 @@ public class OWR extends MagazineFedWeapon
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean par4)
+	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags)
 	{
-		super.addInformation(stack, player, list, par4);
+		super.addInformation(stack, world, list, flags);
 		if (this.getCooldown(stack) > 0)
 			list.add(I18n.format(getUnlocalizedName() + ".cooldown", this.displayInSec(this.getCooldown(stack))));
 	}
@@ -135,25 +133,5 @@ public class OWR extends MagazineFedWeapon
 		this.isMobUsable = config
 				.get(this.name, "Can I be used by QuiverMobs? (default false. Too high-power for them.)", false)
 				.getBoolean();
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		if (this.enabled)
-		{
-			// One wither rifle (empty)
-			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "odo", "owo", "oso", 'o',
-					Blocks.OBSIDIAN, 'd', Items.DIAMOND, 's', Items.NETHER_STAR, 'w',
-					Helper.getWeaponStackByClass(OSR.class, true));
-		}
-		else if (Main.noCreative)
-		{
-			this.setCreativeTab(null);
-		} // Not enabled and not allowed to be in the creative menu
-
-		// Reloading with obsidian magazine, setting its ammo metadata as ours
-		// (Need to be empty for that)
-		Helper.registerAmmoRecipe(ObsidianMagazine.class, this);
 	}
 }

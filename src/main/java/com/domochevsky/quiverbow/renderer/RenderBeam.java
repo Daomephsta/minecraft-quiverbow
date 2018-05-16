@@ -45,12 +45,12 @@ public class RenderBeam
 		{
 			this.beamColour = beamColour;
 			resetDespawnTimer();
-			this.startPosX = this.prevStartPosX = beamStart.xCoord;
-			this.startPosY = this.prevStartPosY = beamStart.yCoord;
-			this.startPosZ = this.prevStartPosZ = beamStart.zCoord;
-			this.endPosX = this.prevEndPosX = beamEnd.xCoord;
-			this.endPosY = this.prevEndPosY = beamEnd.yCoord;
-			this.endPosZ = this.prevEndPosZ = beamEnd.zCoord;
+			this.startPosX = this.prevStartPosX = beamStart.x;
+			this.startPosY = this.prevStartPosY = beamStart.y;
+			this.startPosZ = this.prevStartPosZ = beamStart.z;
+			this.endPosX = this.prevEndPosX = beamEnd.x;
+			this.endPosY = this.prevEndPosY = beamEnd.y;
+			this.endPosZ = this.prevEndPosZ = beamEnd.z;
 			this.length = beamStart.distanceTo(beamEnd);
 		}
 
@@ -59,16 +59,16 @@ public class RenderBeam
 			this.prevStartPosX = this.startPosX;
 			this.prevStartPosY = this.startPosY;
 			this.prevStartPosZ = this.startPosZ;
-			this.startPosX = beamStart.xCoord;
-			this.startPosY = beamStart.yCoord;
-			this.startPosZ = beamStart.zCoord;
+			this.startPosX = beamStart.x;
+			this.startPosY = beamStart.y;
+			this.startPosZ = beamStart.z;
 
 			this.prevEndPosX = this.endPosX;
 			this.prevEndPosY = this.endPosY;
 			this.prevEndPosZ = this.endPosZ;
-			this.endPosX = beamEnd.xCoord;
-			this.endPosY = beamEnd.yCoord;
-			this.endPosZ = beamEnd.zCoord;
+			this.endPosX = beamEnd.x;
+			this.endPosY = beamEnd.y;
+			this.endPosZ = beamEnd.z;
 			this.length = beamStart.distanceTo(beamEnd);
 		}
 
@@ -91,7 +91,7 @@ public class RenderBeam
 			}
 
 			Tessellator tess = Tessellator.getInstance();
-			VertexBuffer vtxBuf = tess.getBuffer();
+			BufferBuilder bufBuilder = tess.getBuffer();
 
 			Minecraft mc = Minecraft.getMinecraft();
 			double interpPlayerX = mc.player.posX * event.getPartialTicks()
@@ -123,10 +123,10 @@ public class RenderBeam
 			GlStateManager.translate(-interpPlayerX, -interpPlayerY, -interpPlayerZ);
 			GlStateManager.disableTexture2D();
 			GlStateManager.disableCull();
-			vtxBuf.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-			vtxBuf.pos(interpBeamStartX, interpBeamStartY, interpBeamStartZ).color(colourR, colourG, colourB, 1.0F)
+			bufBuilder.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
+			bufBuilder.pos(interpBeamStartX, interpBeamStartY, interpBeamStartZ).color(colourR, colourG, colourB, 1.0F)
 					.endVertex();
-			vtxBuf.pos(interpBeamEndX, interpBeamEndY, interpBeamEndZ).color(colourR, colourG, colourB, 1.0F)
+			bufBuilder.pos(interpBeamEndX, interpBeamEndY, interpBeamEndZ).color(colourR, colourG, colourB, 1.0F)
 					.endVertex();
 			// renderInnerBeam(vtxBuf, beam, colourR, colourG, colourB);
 			tess.draw();
@@ -136,38 +136,38 @@ public class RenderBeam
 		}
 	}
 
-	private static void renderInnerBeam(VertexBuffer vtxBuf, Beam beam, float colourR, float colourG, float colourB)
+	private static void renderInnerBeam(BufferBuilder bufBuilder, Beam beam, float colourR, float colourG, float colourB)
 	{
 		// Top
-		vtxBuf.pos(0.0F, beam.length, 0.0F).color(colourR / 2, colourG, colourB, 1.0F).endVertex();
-		vtxBuf.pos(0.5F, beam.length, 0.0F).color(colourR / 2, colourG, colourB, 1.0F).endVertex();
-		vtxBuf.pos(0.5F, beam.length, 0.5F).color(colourR / 2, colourG, colourB, 1.0F).endVertex();
-		vtxBuf.pos(0.0F, beam.length, 0.5F).color(colourR / 2, colourG, colourB, 1.0F).endVertex();
+		bufBuilder.pos(0.0F, beam.length, 0.0F).color(colourR / 2, colourG, colourB, 1.0F).endVertex();
+		bufBuilder.pos(0.5F, beam.length, 0.0F).color(colourR / 2, colourG, colourB, 1.0F).endVertex();
+		bufBuilder.pos(0.5F, beam.length, 0.5F).color(colourR / 2, colourG, colourB, 1.0F).endVertex();
+		bufBuilder.pos(0.0F, beam.length, 0.5F).color(colourR / 2, colourG, colourB, 1.0F).endVertex();
 		// North
-		vtxBuf.pos(0.0F, beam.length, 0.0F).color(colourR / 2, colourG / 2, colourB, 1.0F).endVertex();
-		vtxBuf.pos(0.5F, beam.length, 0.0F).color(colourR / 2, colourG / 2, colourB, 1.0F).endVertex();
-		vtxBuf.pos(0.5F, 0.0F, 0.0F).color(colourR / 2, colourG / 2, colourB, 1.0F).endVertex();
-		vtxBuf.pos(0.0F, 0.0F, 0.0F).color(colourR / 2, colourG / 2, colourB, 1.0F).endVertex();
+		bufBuilder.pos(0.0F, beam.length, 0.0F).color(colourR / 2, colourG / 2, colourB, 1.0F).endVertex();
+		bufBuilder.pos(0.5F, beam.length, 0.0F).color(colourR / 2, colourG / 2, colourB, 1.0F).endVertex();
+		bufBuilder.pos(0.5F, 0.0F, 0.0F).color(colourR / 2, colourG / 2, colourB, 1.0F).endVertex();
+		bufBuilder.pos(0.0F, 0.0F, 0.0F).color(colourR / 2, colourG / 2, colourB, 1.0F).endVertex();
 		// South
-		vtxBuf.pos(0.0F, beam.length, 0.5F).color(colourR, colourG / 2, colourB, 1.0F).endVertex();
-		vtxBuf.pos(0.5F, beam.length, 0.5F).color(colourR, colourG / 2, colourB, 1.0F).endVertex();
-		vtxBuf.pos(0.5F, 0.0F, 0.5F).color(colourR, colourG / 2, colourB, 1.0F).endVertex();
-		vtxBuf.pos(0.0F, 0.0F, 0.5F).color(colourR, colourG / 2, colourB, 1.0F).endVertex();
+		bufBuilder.pos(0.0F, beam.length, 0.5F).color(colourR, colourG / 2, colourB, 1.0F).endVertex();
+		bufBuilder.pos(0.5F, beam.length, 0.5F).color(colourR, colourG / 2, colourB, 1.0F).endVertex();
+		bufBuilder.pos(0.5F, 0.0F, 0.5F).color(colourR, colourG / 2, colourB, 1.0F).endVertex();
+		bufBuilder.pos(0.0F, 0.0F, 0.5F).color(colourR, colourG / 2, colourB, 1.0F).endVertex();
 		// East
-		vtxBuf.pos(0.5F, beam.length, 0.0F).color(colourR, colourG / 2, colourB / 2, 1.0F).endVertex();
-		vtxBuf.pos(0.5F, beam.length, 0.5F).color(colourR, colourG / 2, colourB / 2, 1.0F).endVertex();
-		vtxBuf.pos(0.5F, 0.0F, 0.5F).color(colourR, colourG / 2, colourB / 2, 1.0F).endVertex();
-		vtxBuf.pos(0.5F, 0.0F, 0.0F).color(colourR, colourG / 2, colourB / 2, 1.0F).endVertex();
+		bufBuilder.pos(0.5F, beam.length, 0.0F).color(colourR, colourG / 2, colourB / 2, 1.0F).endVertex();
+		bufBuilder.pos(0.5F, beam.length, 0.5F).color(colourR, colourG / 2, colourB / 2, 1.0F).endVertex();
+		bufBuilder.pos(0.5F, 0.0F, 0.5F).color(colourR, colourG / 2, colourB / 2, 1.0F).endVertex();
+		bufBuilder.pos(0.5F, 0.0F, 0.0F).color(colourR, colourG / 2, colourB / 2, 1.0F).endVertex();
 		// West
-		vtxBuf.pos(0.0F, beam.length, 0.0F).color(colourR, colourG, colourB / 2, 1.0F).endVertex();
-		vtxBuf.pos(0.0F, beam.length, 0.5F).color(colourR, colourG, colourB / 2, 1.0F).endVertex();
-		vtxBuf.pos(0.0F, 0.0F, 0.5F).color(colourR, colourG, colourB / 2, 1.0F).endVertex();
-		vtxBuf.pos(0.0F, 0.0F, 0.0F).color(colourR, colourG, colourB / 2, 1.0F).endVertex();
+		bufBuilder.pos(0.0F, beam.length, 0.0F).color(colourR, colourG, colourB / 2, 1.0F).endVertex();
+		bufBuilder.pos(0.0F, beam.length, 0.5F).color(colourR, colourG, colourB / 2, 1.0F).endVertex();
+		bufBuilder.pos(0.0F, 0.0F, 0.5F).color(colourR, colourG, colourB / 2, 1.0F).endVertex();
+		bufBuilder.pos(0.0F, 0.0F, 0.0F).color(colourR, colourG, colourB / 2, 1.0F).endVertex();
 		// Bottom
-		vtxBuf.pos(0.0F, 0.0F, 0.0F).color(colourR / 2, colourG, colourB / 2, 1.0F).endVertex();
-		vtxBuf.pos(0.5F, 0.0F, 0.0F).color(colourR / 2, colourG, colourB / 2, 1.0F).endVertex();
-		vtxBuf.pos(0.5F, 0.0F, 0.5F).color(colourR / 2, colourG, colourB / 2, 1.0F).endVertex();
-		vtxBuf.pos(0.0F, 0.0F, 0.5F).color(colourR / 2, colourG, colourB / 2, 1.0F).endVertex();
+		bufBuilder.pos(0.0F, 0.0F, 0.0F).color(colourR / 2, colourG, colourB / 2, 1.0F).endVertex();
+		bufBuilder.pos(0.5F, 0.0F, 0.0F).color(colourR / 2, colourG, colourB / 2, 1.0F).endVertex();
+		bufBuilder.pos(0.5F, 0.0F, 0.5F).color(colourR / 2, colourG, colourB / 2, 1.0F).endVertex();
+		bufBuilder.pos(0.0F, 0.0F, 0.5F).color(colourR / 2, colourG, colourB / 2, 1.0F).endVertex();
 	}
 
 	@SuppressWarnings("unchecked")

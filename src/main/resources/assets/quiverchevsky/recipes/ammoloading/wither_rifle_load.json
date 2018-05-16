@@ -1,0 +1,11 @@
+{
+  "type": "quiverchevsky:load_magazine",
+  "ammo": "quiverchevsky:obsidian_magazine",
+  "weapon": "quiverchevsky:wither_rifle",
+  "conditions": [
+    {
+      "type": "quiverchevsky:weapon_enabled",
+      "id": "quiverchevsky:wither_rifle"
+    }
+  ]
+}

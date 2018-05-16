@@ -1,0 +1,37 @@
+{
+  "conditions": [
+    {
+      "type": "quiverchevsky:weapon_enabled",
+      "id": "quiverchevsky:rocket_launcher"
+    }
+  ],
+  "pattern": [
+    " ab",
+    "zya",
+    " x "
+  ],
+  "key": {
+    "a": {
+      "item": "minecraft:paper"
+    },
+    "b": {
+      "item": "minecraft:string"
+    },
+    "x": {
+      "item": "quiverchevsky:rocket_launcher",
+      "data": 1
+    },
+    "y": {
+      "item": "minecraft:tnt"
+    },
+    "z": {
+      "item": "minecraft:planks",
+      "data": 0
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverchevsky:rocket_launcher",
+    "data": 0
+  }
+}

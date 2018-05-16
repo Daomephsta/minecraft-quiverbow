@@ -1,0 +1,30 @@
+{
+  "conditions": [
+    {
+      "type": "quiverchevsky:weapon_enabled",
+      "id": "quiverchevsky:powder_knuckles_mod"
+    }
+  ],
+  "pattern": [
+    "ooo",
+    "oco",
+    "i i"
+  ],
+  "key": {
+    "c": {
+      "item": "quiverchevsky:powder_knuckles",
+      "data": 8
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "o": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverchevsky:powder_knuckles_mod",
+    "data": 8
+  }
+}

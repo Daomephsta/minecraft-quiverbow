@@ -5,8 +5,8 @@ import com.domochevsky.quiverbow.util.InventoryHelper;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 
 public class LargeNetherrackMagazine extends AmmoMagazine
 {
@@ -18,13 +18,6 @@ public class LargeNetherrackMagazine extends AmmoMagazine
 		this.setCreativeTab(CreativeTabs.COMBAT); // On the combat tab by
 		// default, since this is
 		// amunition
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "x x", "x x", "xgx", 'x',
-				Blocks.NETHER_BRICK, 'g', Items.IRON_INGOT);
 	}
 
 	@Override

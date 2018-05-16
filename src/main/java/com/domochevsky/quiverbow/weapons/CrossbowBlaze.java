@@ -1,19 +1,15 @@
 package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.BlazeShot;
 import com.domochevsky.quiverbow.weapons.base.WeaponCrossbow;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class CrossbowBlaze extends WeaponCrossbow
 {
@@ -76,26 +72,5 @@ public class CrossbowBlaze extends WeaponCrossbow
 
 		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default false)", false)
 				.getBoolean(true);
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		if (this.enabled)
-		{
-			// One blaze crossbow (empty)
-			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "bib", "ici", "bib", 'b',
-					Items.BLAZE_POWDER, 'i', Items.IRON_INGOT, 'c',
-					Helper.getWeaponStackByClass(CrossbowCompact.class, true));
-		}
-		else if (Main.noCreative)
-		{
-			this.setCreativeTab(null);
-		} // Not enabled and not allowed to be in the creative menu
-
-		GameRegistry.addShapelessRecipe(new ItemStack(this), // Fill the empty
-				// blaze crossbow
-				// with one rod
-				Items.BLAZE_ROD, Helper.createEmptyWeaponOrAmmoStack(this, 1));
 	}
 }

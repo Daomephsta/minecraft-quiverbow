@@ -1,0 +1,20 @@
+{
+  "pattern": [
+    "xxx",
+    "ixi",
+    "iii"
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:quartz"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverchevsky:ender_quartz_magazine",
+    "data": 8
+  }
+}

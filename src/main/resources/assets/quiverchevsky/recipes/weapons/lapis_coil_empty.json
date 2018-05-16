@@ -1,0 +1,32 @@
+{
+  "conditions": [
+    {
+      "type": "quiverchevsky:weapon_enabled",
+      "id": "quiverchevsky:lapis_coil"
+    }
+  ],
+  "pattern": [
+    "z z",
+    "axa",
+    " y "
+  ],
+  "key": {
+    "a": {
+      "item": "minecraft:repeater"
+    },
+    "x": {
+      "item": "minecraft:piston"
+    },
+    "y": {
+      "item": "minecraft:lever"
+    },
+    "z": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverchevsky:lapis_coil",
+    "data": 100
+  }
+}

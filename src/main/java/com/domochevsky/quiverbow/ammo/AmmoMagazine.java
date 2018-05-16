@@ -1,20 +1,19 @@
 package com.domochevsky.quiverbow.ammo;
 
-import java.util.Collections;
 import java.util.List;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 import com.domochevsky.quiverbow.Helper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class AmmoMagazine extends AmmoBase
 {
@@ -70,22 +69,22 @@ public abstract class AmmoMagazine extends AmmoBase
 		}
 		if (consumeComponentItems(player, amount)) stack.setItemDamage(stack.getItemDamage() - amount);
 	}
-
+	
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean advancedTooltips)
+	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags)
 	{
 		list.add(I18n.format(getUnlocalizedName() + ".clipstatus",
 				stack.getMaxDamage() - stack.getItemDamage(), stack.getMaxDamage()));
 		list.add(I18n.format(getUnlocalizedName() + ".filltext"));
 		list.add(I18n.format(getUnlocalizedName() + ".description"));
 	}
-
+	
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> subItems)
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems)
 	{
-		subItems.add(new ItemStack(item, 1, 0));
-		subItems.add(Helper.createEmptyWeaponOrAmmoStack(item, 1));
+		if(!ArrayUtils.contains(this.getCreativeTabs(), tab)) return;
+		subItems.add(new ItemStack(this, 1, 0));
+		subItems.add(Helper.createEmptyWeaponOrAmmoStack(this, 1));
 	}
 
 	@Override

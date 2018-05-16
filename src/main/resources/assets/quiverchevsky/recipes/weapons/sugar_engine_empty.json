@@ -1,0 +1,26 @@
+{
+  "conditions": [
+    {
+      "type": "quiverchevsky:weapon_enabled",
+      "id": "quiverchevsky:sugar_engine"
+    }
+  ],
+  "pattern": [
+    "b b",
+    "b b",
+    " m "
+  ],
+  "key": {
+    "b": {
+      "item": "quiverchevsky:part_sugar_engine_barrel"
+    },
+    "m": {
+      "item": "quiverchevsky:part_sugar_engine_body"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverchevsky:sugar_engine",
+    "data": 200
+  }
+}

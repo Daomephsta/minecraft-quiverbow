@@ -2,6 +2,9 @@ package com.domochevsky.quiverbow.projectiles;
 
 import java.util.List;
 
+import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.net.NetHelper;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -9,13 +12,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.*;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
-
-import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.net.NetHelper;
 
 public class ProxyThorn extends ProjectileBase
 {
@@ -79,9 +77,9 @@ public class ProxyThorn extends ProjectileBase
 				stuckBlockY = movPos.getBlockPos().getY();
 				stuckBlockZ = movPos.getBlockPos().getZ();
 
-				this.motionX = movPos.hitVec.xCoord - this.posX;
-				this.motionY = movPos.hitVec.yCoord - this.posY;
-				this.motionZ = movPos.hitVec.zCoord - this.posZ;
+				this.motionX = movPos.hitVec.x - this.posX;
+				this.motionY = movPos.hitVec.y - this.posY;
+				this.motionZ = movPos.hitVec.z - this.posZ;
 
 				this.hitSide = movPos.sideHit; // Keeping track of the side we
 				// hit, for when we go boom

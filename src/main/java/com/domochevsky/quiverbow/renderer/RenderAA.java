@@ -1,5 +1,11 @@
 package com.domochevsky.quiverbow.renderer;
 
+import org.lwjgl.opengl.GL11;
+
+import com.domochevsky.quiverbow.Main.Constants;
+import com.domochevsky.quiverbow.armsassistant.EntityAA;
+import com.domochevsky.quiverbow.armsassistant.ModelAA;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderLiving;
@@ -7,12 +13,6 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
-
-import com.domochevsky.quiverbow.Main.Constants;
-import com.domochevsky.quiverbow.armsassistant.EntityAA;
-import com.domochevsky.quiverbow.armsassistant.ModelAA;
 
 public class RenderAA extends RenderLiving<EntityAA>
 {
@@ -58,7 +58,7 @@ public class RenderAA extends RenderLiving<EntityAA>
 			GL11.glRotatef(-20.0F, 1.0F, 0.0F, 0.0F); // -100
 			GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
 
-			int color = Minecraft.getMinecraft().getItemColors().getColorFromItemstack(itemstack, 0);
+			int color = Minecraft.getMinecraft().getItemColors().colorMultiplier(itemstack, 0);
 			float colorR = (float) (color >> 16 & 255) / 255.0F;
 			float colorB = (float) (color >> 8 & 255) / 255.0F;
 			float colorG = (float) (color & 255) / 255.0F;
@@ -91,7 +91,7 @@ public class RenderAA extends RenderLiving<EntityAA>
 				GL11.glRotatef(-20.0F, 1.0F, 0.0F, 0.0F); // -100
 				GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
 
-				int color = Minecraft.getMinecraft().getItemColors().getColorFromItemstack(itemstack, 0);
+				int color = Minecraft.getMinecraft().getItemColors().colorMultiplier(itemstack, 0);
 				float colorR = (float) (color >> 16 & 255) / 255.0F;
 				float colorB = (float) (color >> 8 & 255) / 255.0F;
 				float colorG = (float) (color & 255) / 255.0F;
@@ -136,7 +136,7 @@ public class RenderAA extends RenderLiving<EntityAA>
 				GL11.glScalef(scale, -scale, scale);
 				GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
 
-				int color = Minecraft.getMinecraft().getItemColors().getColorFromItemstack(itemstack, 0);
+				int color = Minecraft.getMinecraft().getItemColors().colorMultiplier(itemstack, 0);
 				float f4 = (float) (color >> 16 & 255) / 255.0F;
 				float f5 = (float) (color >> 8 & 255) / 255.0F;
 				float f2 = (float) (color & 255) / 255.0F;

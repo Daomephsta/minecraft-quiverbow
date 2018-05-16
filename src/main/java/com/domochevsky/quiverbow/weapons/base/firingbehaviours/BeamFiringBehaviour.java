@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.renderer.RenderBeam;
-import com.domochevsky.quiverbow.renderer.RenderBeam.Beam;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import net.minecraft.entity.EntityLivingBase;

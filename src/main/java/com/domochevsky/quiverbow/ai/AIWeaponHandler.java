@@ -1,29 +1,17 @@
 package com.domochevsky.quiverbow.ai;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
-
-import com.domochevsky.quiverbow.ammo.ArrowBundle;
-import com.domochevsky.quiverbow.ammo.ColdIronClip;
-import com.domochevsky.quiverbow.ammo.GatlingAmmo;
-import com.domochevsky.quiverbow.ammo.GoldMagazine;
-import com.domochevsky.quiverbow.ammo.LapisMagazine;
-import com.domochevsky.quiverbow.ammo.LargeNetherrackMagazine;
-import com.domochevsky.quiverbow.ammo.LargeRedstoneMagazine;
-import com.domochevsky.quiverbow.ammo.LargeRocket;
-import com.domochevsky.quiverbow.ammo.NeedleMagazine;
-import com.domochevsky.quiverbow.ammo.ObsidianMagazine;
-import com.domochevsky.quiverbow.ammo.RedstoneMagazine;
-import com.domochevsky.quiverbow.ammo.RocketBundle;
-import com.domochevsky.quiverbow.ammo.SeedJar;
+import com.domochevsky.quiverbow.ammo.*;
 import com.domochevsky.quiverbow.armsassistant.EntityAA;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.util.InventoryHelper;
 import com.domochevsky.quiverbow.weapons.*;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 
 public class AIWeaponHandler
 {

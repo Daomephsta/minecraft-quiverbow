@@ -1,0 +1,16 @@
+{
+  "type": "quiverchevsky:load_ammo",
+  "weapon": "quiverchevsky:quiverbow",
+  "components": [
+    {
+      "ing": {
+        "item": "quiverchevsky:arrow_bundle"
+      },
+      "data": {
+        "ammoValue": 8,
+        "min": 1,
+        "max": 8
+      }
+    }
+  ]
+}

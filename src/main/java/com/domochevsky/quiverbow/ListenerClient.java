@@ -1,10 +1,11 @@
 package com.domochevsky.quiverbow;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
 import com.domochevsky.quiverbow.util.InventoryHelper;
 import com.domochevsky.quiverbow.weapons.EnderRifle;
 import com.domochevsky.quiverbow.weapons.FrostLancer;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 

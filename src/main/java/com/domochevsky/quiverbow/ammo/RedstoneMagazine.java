@@ -7,7 +7,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class RedstoneMagazine extends AmmoMagazine
 {
@@ -19,13 +18,6 @@ public class RedstoneMagazine extends AmmoMagazine
 		this.setCreativeTab(CreativeTabs.COMBAT); // On the combat tab by
 		// default, since this is
 		// amunition
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "x x", "x x", "xgx", 'x', Items.IRON_INGOT,
-				'g', Items.REDSTONE);
 	}
 
 	@Override

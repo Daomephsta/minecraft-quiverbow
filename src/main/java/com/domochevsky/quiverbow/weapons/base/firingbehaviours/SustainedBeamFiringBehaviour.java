@@ -2,10 +2,6 @@ package com.domochevsky.quiverbow.weapons.base.firingbehaviours;
 
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-
 public class SustainedBeamFiringBehaviour<W extends WeaponBase> extends BeamFiringBehaviour<W>
 {
 	// The maximum number of ticks the beam should fire for. -1 results in

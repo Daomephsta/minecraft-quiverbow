@@ -1,0 +1,26 @@
+{
+  "pattern": [
+    "zaa",
+    "aya",
+    "aab"
+  ],
+  "key": {
+    "a": {
+      "item": "minecraft:paper"
+    },
+    "b": {
+      "item": "minecraft:string"
+    },
+    "y": {
+      "item": "minecraft:tnt"
+    },
+    "z": {
+      "item": "minecraft:planks",
+      "data": 0
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverchevsky:large_rocket"
+  }
+}

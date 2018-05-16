@@ -37,20 +37,20 @@ public class RenderCross extends Render<ProjectileBase>
 			GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F, 0.0F, 1.0F, 0.0F);
 	        GlStateManager.rotate(90.0F + entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, 0.0F, 0.0F, 1.0F);
 			Tessellator tess = Tessellator.getInstance();
-			VertexBuffer vtxBuf = tess.getBuffer();
+			BufferBuilder bufBuilder = tess.getBuffer();
 			float halfWidth = 0.5F * this.widthPx / 16;
 			float halfLength = 0.5F * this.lengthPx / 16;
-			vtxBuf.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+			bufBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 			//Plane A
-			vtxBuf.pos(-halfWidth, -halfLength, 0.0F).tex(1.0D, 1.0D).endVertex();
-			vtxBuf.pos(halfWidth, -halfLength, 0.0F).tex(0.0D, 1.0D).endVertex();
-			vtxBuf.pos(halfWidth, halfLength, 0.0F).tex(0.0D, 0.0D).endVertex();
-			vtxBuf.pos(-halfWidth, halfLength, 0.0F).tex(1.0D, 0.0D).endVertex();
+			bufBuilder.pos(-halfWidth, -halfLength, 0.0F).tex(1.0D, 1.0D).endVertex();
+			bufBuilder.pos(halfWidth, -halfLength, 0.0F).tex(0.0D, 1.0D).endVertex();
+			bufBuilder.pos(halfWidth, halfLength, 0.0F).tex(0.0D, 0.0D).endVertex();
+			bufBuilder.pos(-halfWidth, halfLength, 0.0F).tex(1.0D, 0.0D).endVertex();
 			//Plane B
-			vtxBuf.pos(0.0F, -halfLength, -halfWidth).tex(1.0D, 1.0D).endVertex();
-			vtxBuf.pos(0.0F, halfLength, -halfWidth).tex(1.0D, 0.0D).endVertex();
-			vtxBuf.pos(0.0F, halfLength, halfWidth).tex(0.0D, 0.0D).endVertex();
-			vtxBuf.pos(0.0F, -halfLength, halfWidth).tex(0.0D, 1.0D).endVertex();
+			bufBuilder.pos(0.0F, -halfLength, -halfWidth).tex(1.0D, 1.0D).endVertex();
+			bufBuilder.pos(0.0F, halfLength, -halfWidth).tex(1.0D, 0.0D).endVertex();
+			bufBuilder.pos(0.0F, halfLength, halfWidth).tex(0.0D, 0.0D).endVertex();
+			bufBuilder.pos(0.0F, -halfLength, halfWidth).tex(0.0D, 1.0D).endVertex();
 			tess.draw();
 			 //Reset the GL state as best we can 
 			GlStateManager.enableLighting();

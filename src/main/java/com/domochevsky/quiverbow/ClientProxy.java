@@ -1,8 +1,8 @@
 package com.domochevsky.quiverbow;
 
+import com.domochevsky.quiverbow.Main.Constants;
 import com.domochevsky.quiverbow.projectiles.*;
 import com.domochevsky.quiverbow.renderer.RenderCross;
-import com.domochevsky.quiverbow.Main.Constants;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;

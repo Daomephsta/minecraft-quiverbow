@@ -1,5 +1,8 @@
 package com.domochevsky.quiverbow.projectiles;
 
+import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.net.NetHelper;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -11,9 +14,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
-
-import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.net.NetHelper;
 
 public class BlazeShot extends ProjectileBase
 {
@@ -90,9 +90,9 @@ public class BlazeShot extends ProjectileBase
 				IBlockState stuckState = this.world.getBlockState(stuckPos);
 				this.stuckBlock = stuckState.getBlock();
 
-				this.motionX = (double) ((float) (hitPos.hitVec.xCoord - this.posX));
-				this.motionY = (double) ((float) (hitPos.hitVec.yCoord - this.posY));
-				this.motionZ = (double) ((float) (hitPos.hitVec.zCoord - this.posZ));
+				this.motionX = (double) ((float) (hitPos.hitVec.x - this.posX));
+				this.motionY = (double) ((float) (hitPos.hitVec.y - this.posY));
+				this.motionZ = (double) ((float) (hitPos.hitVec.z - this.posZ));
 
 				float distance = MathHelper
 						.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);

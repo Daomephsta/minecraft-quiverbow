@@ -1,0 +1,20 @@
+{
+  "pattern": [
+    "x x",
+    "x x",
+    "xgx"
+  ],
+  "key": {
+    "g": {
+      "item": "minecraft:redstone_block"
+    },
+    "x": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverchevsky:large_redstone_magazine",
+    "data": 200
+  }
+}

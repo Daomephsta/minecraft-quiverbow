@@ -3,13 +3,11 @@ package com.domochevsky.quiverbow.miscitems;
 import java.util.List;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.ai.AIProperties;
 import com.domochevsky.quiverbow.armsassistant.EntityAA;
-import com.domochevsky.quiverbow.recipes.*;
 import com.mojang.realmsclient.gui.ChatFormatting;
 
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -18,12 +16,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.oredict.RecipeSorter;
 
 public class PackedUpAA extends QuiverBowItem
 {
 	@Override // TODO Figure out how to localise this
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean unknown)
+	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags)
 	{
 		list.add(ChatFormatting.BLUE + "Use to deploy.");
 		list.add(ChatFormatting.YELLOW + "Use Assistant to give it your current weapon.");
@@ -150,48 +147,6 @@ public class PackedUpAA extends QuiverBowItem
 		}
 
 		return EnumActionResult.SUCCESS;
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		if (Main.allowTurret)
-		{
-			// Uses a Wither Skull and two eyes of ender
-			// Plus a frame, legs, weapon rail...
-
-			GameRegistry.addRecipe(new ItemStack(this), "ewe", "ibi", "ppp", 'w', new ItemStack(Items.SKULL, 1, 1), // Wither
-					// skull
-					'e', Items.ENDER_EYE, 'b', Blocks.IRON_BLOCK, 'i', Items.IRON_INGOT, 'p', Blocks.STICKY_PISTON);
-		}
-		else if (Main.noCreative)
-		{
-			this.setCreativeTab(null);
-		} // Not allowed to be on the creative tab either
-
-		RecipeSorter.register("quiverchevsky:recipehandler_aa_armor", RecipeAAArmor.class,
-				RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
-		RecipeSorter.register("quiverchevsky:recipehandler_aa_mobility", RecipeAAMobility.class,
-				RecipeSorter.Category.SHAPED, "after:minecraft:shapeless");
-		RecipeSorter.register("quiverchevsky:recipehandler_aa_storage", RecipeAAStorage.class,
-				RecipeSorter.Category.SHAPED, "after:minecraft:shapeless");
-		RecipeSorter.register("quiverchevsky:recipehandler_aa_weapon", RecipeAAWeapon.class,
-				RecipeSorter.Category.SHAPED, "after:minecraft:shapeless");
-		RecipeSorter.register("quiverchevsky:recipehandler_aa_riding", RecipeAARiding.class,
-				RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
-		RecipeSorter.register("quiverchevsky:recipehandler_aa_plating", RecipeAAPlating.class,
-				RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
-		RecipeSorter.register("quiverchevsky:recipehandler_aa_com", RecipeAACommunication.class,
-				RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
-
-		// Upgrades
-		this.registerArmorRecipe();
-		this.registerPlatingRecipe();
-		this.registerMobilityRecipe();
-		this.registerStorageRecipe();
-		this.registerSecondRailRecipe();
-		this.registerRidingRecipe();
-		this.registerCommunicationRecipe();
 	}
 
 	private void registerArmorRecipe()

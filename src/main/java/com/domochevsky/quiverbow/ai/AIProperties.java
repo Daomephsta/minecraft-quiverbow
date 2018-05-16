@@ -1,14 +1,14 @@
 package com.domochevsky.quiverbow.ai;
 
+import com.domochevsky.quiverbow.armsassistant.EntityAA;
+import com.domochevsky.quiverbow.net.NetHelper;
+
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
-
-import com.domochevsky.quiverbow.armsassistant.EntityAA;
-import com.domochevsky.quiverbow.net.NetHelper;
+import net.minecraft.util.EnumParticleTypes;
 
 public class AIProperties
 {

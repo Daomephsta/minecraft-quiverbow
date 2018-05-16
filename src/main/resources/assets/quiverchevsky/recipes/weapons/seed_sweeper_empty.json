@@ -1,0 +1,29 @@
+{
+  "conditions": [
+    {
+      "type": "quiverchevsky:weapon_enabled",
+      "id": "quiverchevsky:seed_sweeper"
+    }
+  ],
+  "pattern": [
+    " i ",
+    "ipi",
+    " it"
+  ],
+  "key": {
+    "p": {
+      "item": "minecraft:piston"
+    },
+    "t": {
+      "item": "minecraft:tripwire_hook"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverchevsky:seed_sweeper",
+    "data": 512
+  }
+}

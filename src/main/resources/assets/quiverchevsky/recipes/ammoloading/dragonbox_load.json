@@ -1,0 +1,16 @@
+{
+  "type": "quiverchevsky:load_ammo",
+  "weapon": "quiverchevsky:dragonbox",
+  "components": [
+    {
+      "ing": {
+        "item": "quiverchevsky:rocket_bundle"
+      },
+      "data": {
+        "ammoValue": 8,
+        "min": 1,
+        "max": 8
+      }
+    }
+  ]
+}

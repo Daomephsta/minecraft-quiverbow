@@ -1,9 +1,13 @@
 package com.domochevsky.quiverbow.armsassistant;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
+import com.domochevsky.quiverbow.Main;
+import com.domochevsky.quiverbow.ai.*;
+import com.domochevsky.quiverbow.net.NetHelper;
+import com.domochevsky.quiverbow.util.InventoryHelper;
+import com.domochevsky.quiverbow.weapons.AATargeter;
+import com.domochevsky.quiverbow.weapons.base.WeaponBase;
+
+import net.minecraft.entity.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.*;
 import net.minecraft.item.Item;
@@ -11,18 +15,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.*;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
-
-import com.domochevsky.quiverbow.Main;
-import com.domochevsky.quiverbow.ai.*;
-import com.domochevsky.quiverbow.net.NetHelper;
-import com.domochevsky.quiverbow.util.InventoryHelper;
-import com.domochevsky.quiverbow.weapons.AATargeter;
-import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 public class EntityAA extends EntityLiving
 {
@@ -513,7 +508,7 @@ public class EntityAA extends EntityLiving
 		} // Client side. Doesn't have the same info, so makes a different
 			// decision. Ugh.
 			// They'll just shoot when trying to equip this with a weapon
-		if (!player.getDisplayName().equals(this.ownerName))
+		if (!player.getDisplayName().getUnformattedText().equals(this.ownerName))
 		{
 			return false;
 		} // Not the owner, so not doing this
@@ -610,12 +605,12 @@ public class EntityAA extends EntityLiving
 	public void onDeath(DamageSource dmg)
 	{
 		if (ForgeHooks.onLivingDeath(this, dmg)) return;
-		Entity entity = dmg.getEntity();
+		Entity entity = dmg.getTrueSource();
 		EntityLivingBase entitylivingbase = this.getAttackingEntity();
 
 		if (this.scoreValue >= 0 && entitylivingbase != null)
 		{
-			entitylivingbase.addToPlayerScore(this, this.scoreValue);
+			entitylivingbase.awardKillScore(this, this.scoreValue, dmg);
 		}
 
 		if (entity != null)
@@ -650,7 +645,7 @@ public class EntityAA extends EntityLiving
 	}
 
 	@Override
-	protected SoundEvent getHurtSound()
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn)
 	{
 		return SoundEvents.BLOCK_ANVIL_LAND;
 	}

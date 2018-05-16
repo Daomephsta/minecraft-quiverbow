@@ -1,0 +1,32 @@
+{
+  "conditions": [
+    {
+      "type": "quiverchevsky:weapon_enabled",
+      "id": "quiverchevsky:soul_cairn"
+    }
+  ],
+  "pattern": [
+    "e e",
+    "epe",
+    "oto"
+  ],
+  "key": {
+    "p": {
+      "item": "minecraft:piston"
+    },
+    "t": {
+      "item": "minecraft:tripwire_hook"
+    },
+    "e": {
+      "item": "minecraft:end_stone"
+    },
+    "o": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverchevsky:soul_cairn",
+    "data": 1
+  }
+}

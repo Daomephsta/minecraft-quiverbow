@@ -1,5 +1,10 @@
 package com.domochevsky.quiverbow.ai;
 
+import com.domochevsky.quiverbow.ammo.AmmoBase;
+import com.domochevsky.quiverbow.armsassistant.EntityAA;
+import com.domochevsky.quiverbow.items.ItemRegistry;
+import com.domochevsky.quiverbow.net.NetHelper;
+
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.*;
@@ -7,11 +12,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
-
-import com.domochevsky.quiverbow.ammo.AmmoBase;
-import com.domochevsky.quiverbow.armsassistant.EntityAA;
-import com.domochevsky.quiverbow.items.ItemRegistry;
-import com.domochevsky.quiverbow.net.NetHelper;
 
 public class AIStorage
 {

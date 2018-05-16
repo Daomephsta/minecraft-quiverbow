@@ -56,9 +56,9 @@ public class LapisShot extends ProjectilePotionEffect
 				IBlockState stuckState = world.getBlockState(movPos.getBlockPos());
 				this.stuckBlock = stuckState.getBlock();
 
-				this.motionX = (double) ((float) (movPos.hitVec.xCoord - this.posX));
-				this.motionY = (double) ((float) (movPos.hitVec.yCoord - this.posY));
-				this.motionZ = (double) ((float) (movPos.hitVec.zCoord - this.posZ));
+				this.motionX = (double) ((float) (movPos.hitVec.x - this.posX));
+				this.motionY = (double) ((float) (movPos.hitVec.y - this.posY));
+				this.motionZ = (double) ((float) (movPos.hitVec.z - this.posZ));
 
 				float distance = MathHelper
 						.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);

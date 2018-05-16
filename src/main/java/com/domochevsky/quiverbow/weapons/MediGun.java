@@ -1,23 +1,17 @@
 package com.domochevsky.quiverbow.weapons;
 
-import java.util.ArrayList;
-
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
 import com.domochevsky.quiverbow.projectiles.HealthBeam;
-import com.domochevsky.quiverbow.recipes.RecipeRayOfHopeReload;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.RecipeSorter;
 
 public class MediGun extends WeaponBase
 {
@@ -73,32 +67,5 @@ public class MediGun extends WeaponBase
 		this.isMobUsable = config.get(this.name,
 				"Can I be used by QuiverMobs? (default false. They don't know what friends are.)", false)
 				.getBoolean(true);
-	}
-
-	@Override
-	public void addRecipes()
-	{
-		if (this.enabled)
-		{
-			// Use a beacon for this (+ obsidian, tripwire hook... what else)
-			GameRegistry.addRecipe(Helper.createEmptyWeaponOrAmmoStack(this, 1), "bi ", "ico", " ot", 'b',
-					Blocks.BEACON, 'o', Blocks.OBSIDIAN, 't', Blocks.TRIPWIRE_HOOK, 'c', Items.CAULDRON, 'i',
-					Items.IRON_INGOT);
-		}
-		else if (Main.noCreative)
-		{
-			this.setCreativeTab(null);
-		} // Not enabled and not allowed to be in the creative menu
-
-		RecipeSorter.register("quiverchevsky:recipehandler_roh_reload", RecipeRayOfHopeReload.class,
-				RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
-
-		ArrayList<ItemStack> list = new ArrayList<ItemStack>();
-
-		list.add(new ItemStack(Items.POTIONITEM, 1, 8193));
-		list.add(new ItemStack(Items.POTIONITEM, 1, 8225));
-
-		GameRegistry.addRecipe(new RecipeRayOfHopeReload(new ItemStack(this), list,
-				new ItemStack(Items.POTIONITEM, 1, 8193), new ItemStack(Items.POTIONITEM, 1, 8225)));
 	}
 }
