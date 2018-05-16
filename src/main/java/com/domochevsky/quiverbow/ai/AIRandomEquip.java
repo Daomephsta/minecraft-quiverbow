@@ -2,7 +2,7 @@ package com.domochevsky.quiverbow.ai;
 
 import java.util.Random;
 
-import com.domochevsky.quiverbow.Main;
+import com.domochevsky.quiverbow.Quiverbow;
 import com.domochevsky.quiverbow.armsassistant.EntityAA;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
@@ -58,12 +58,12 @@ public class AIRandomEquip
 
 		while (weapon == null) // Until we hit a valid weapon
 		{
-			randNum = rand.nextInt(Main.weapons.size()); // Grabbing a number
+			randNum = rand.nextInt(Quiverbow.weapons.size()); // Grabbing a number
 			// between the list's
 			// length and its
 			// starting point
 
-			weapon = Main.weapons.get(randNum);
+			weapon = Quiverbow.weapons.get(randNum);
 
 			if (weapon != null && !weapon.isMobUsable())
 			{
@@ -100,12 +100,12 @@ public class AIRandomEquip
 
 		while (weapon == null) // Until we hit a valid weapon
 		{
-			randNum = rand.nextInt(Main.weapons.size()); // Grabbing a number
+			randNum = rand.nextInt(Quiverbow.weapons.size()); // Grabbing a number
 			// between the list's
 			// length and its
 			// starting point
 
-			weapon = Main.weapons.get(randNum);
+			weapon = Quiverbow.weapons.get(randNum);
 
 			if (weapon != null && !weapon.isMobUsable())
 			{

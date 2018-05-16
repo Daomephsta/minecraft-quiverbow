@@ -1,7 +1,7 @@
 package com.domochevsky.quiverbow.recipes;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main.Constants;
+import com.domochevsky.quiverbow.Quiverbow;
 import com.domochevsky.quiverbow.ammo.AmmoBase;
 import com.domochevsky.quiverbow.weapons.OSP;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
@@ -109,7 +109,7 @@ public class RecipeLoadMagazine extends IForgeRegistryEntry.Impl<IRecipe> implem
 	@Override
 	public String getGroup()
 	{
-		return Constants.MODID + ":load_magazine";
+		return Quiverbow.MODID + ":load_magazine";
 	}
 	
 	@Override

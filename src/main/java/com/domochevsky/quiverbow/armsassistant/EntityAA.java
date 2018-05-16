@@ -1,6 +1,6 @@
 package com.domochevsky.quiverbow.armsassistant;
 
-import com.domochevsky.quiverbow.Main;
+import com.domochevsky.quiverbow.Quiverbow;
 import com.domochevsky.quiverbow.ai.*;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.util.InventoryHelper;
@@ -735,13 +735,13 @@ public class EntityAA extends EntityLiving
 
 		if (this.hasFirstWeapon)
 		{
-			tag.setInteger("firstWeapon", Main.weapons.indexOf(this.firstWeapon));
+			tag.setInteger("firstWeapon", Quiverbow.weapons.indexOf(this.firstWeapon));
 			tag.setInteger("firstAmmo", this.firstWeapon.getDamage(this.getHeldItem(EnumHand.MAIN_HAND)));
 		}
 
 		if (this.hasSecondWeapon)
 		{
-			tag.setInteger("secondWeapon", Main.weapons.indexOf(this.secondWeapon));
+			tag.setInteger("secondWeapon", Quiverbow.weapons.indexOf(this.secondWeapon));
 			tag.setInteger("secondAmmo", this.secondWeapon.getDamage(this.getHeldItem(EnumHand.OFF_HAND)));
 		}
 
@@ -812,8 +812,8 @@ public class EntityAA extends EntityLiving
 		// Restoring the held weapon
 		if (this.hasFirstWeapon)
 		{
-			this.firstWeapon = Main.weapons.get(tag.getInteger("firstWeapon"));
-			AIWeaponHandler.setFirstWeapon(this, new ItemStack(Main.weapons.get(tag.getInteger("firstWeapon"))));
+			this.firstWeapon = Quiverbow.weapons.get(tag.getInteger("firstWeapon"));
+			AIWeaponHandler.setFirstWeapon(this, new ItemStack(Quiverbow.weapons.get(tag.getInteger("firstWeapon"))));
 
 			if (!this.getHeldItem(EnumHand.MAIN_HAND).isEmpty())
 			{
@@ -836,7 +836,7 @@ public class EntityAA extends EntityLiving
 
 		if (this.hasWeaponUpgrade && this.hasSecondWeapon)
 		{
-			AIWeaponHandler.setSecondWeapon(this, new ItemStack(Main.weapons.get(tag.getInteger("secondWeapon"))));
+			AIWeaponHandler.setSecondWeapon(this, new ItemStack(Quiverbow.weapons.get(tag.getInteger("secondWeapon"))));
 
 			if (!this.getHeldItem(EnumHand.OFF_HAND).isEmpty())
 			{

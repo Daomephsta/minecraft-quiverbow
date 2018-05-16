@@ -1,7 +1,7 @@
 package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
+import com.domochevsky.quiverbow.Quiverbow;
 import com.domochevsky.quiverbow.projectiles.PotatoShot;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;

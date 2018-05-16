@@ -2,7 +2,7 @@ package com.domochevsky.quiverbow.renderer;
 
 import org.lwjgl.opengl.GL11;
 
-import com.domochevsky.quiverbow.Main.Constants;
+import com.domochevsky.quiverbow.Quiverbow;
 import com.domochevsky.quiverbow.armsassistant.EntityAA;
 import com.domochevsky.quiverbow.armsassistant.ModelAA;
 
@@ -16,7 +16,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class RenderAA extends RenderLiving<EntityAA>
 {
-	private static ResourceLocation texture = new ResourceLocation(Constants.MODID,
+	private static ResourceLocation texture = new ResourceLocation(Quiverbow.MODID,
 			"textures/entity/ArmsAssistant.png");
 
 	public RenderAA(RenderManager renderManager)

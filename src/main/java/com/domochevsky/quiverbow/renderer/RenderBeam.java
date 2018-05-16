@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
-import com.domochevsky.quiverbow.Main.Constants;
+import com.domochevsky.quiverbow.Quiverbow;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.BeamFiringBehaviour;
 import com.google.common.collect.MapMaker;
@@ -19,7 +19,7 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod.EventBusSubscriber(modid = Constants.MODID)
+@Mod.EventBusSubscriber(modid = Quiverbow.MODID)
 public class RenderBeam
 {
 	private static final Map<EntityPlayer, Beam> beams = new MapMaker().weakKeys().makeMap();

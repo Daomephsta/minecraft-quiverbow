@@ -1,11 +1,11 @@
 package com.domochevsky.quiverbow.items;
 
-import com.domochevsky.quiverbow.Main.Constants;
+import com.domochevsky.quiverbow.Quiverbow;
 
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
-@ObjectHolder(Constants.MODID)
+@ObjectHolder(Quiverbow.MODID)
 public class ItemRegistry
 {
 	// Misc items

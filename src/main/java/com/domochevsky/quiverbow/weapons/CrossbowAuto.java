@@ -1,7 +1,7 @@
 package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main.Constants;
+import com.domochevsky.quiverbow.Quiverbow;
 import com.domochevsky.quiverbow.models.ISpecialRender;
 import com.domochevsky.quiverbow.weapons.base.WeaponCrossbow;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
@@ -63,12 +63,12 @@ public class CrossbowAuto extends WeaponCrossbow implements ISpecialRender
 	public void registerRender()
 	{
 		final ModelResourceLocation empty = new ModelResourceLocation(
-				new ResourceLocation(Constants.MODID, "weapons/" + getRegistryName().getResourcePath() + "_empty"),
+				new ResourceLocation(Quiverbow.MODID, "weapons/" + getRegistryName().getResourcePath() + "_empty"),
 				"inventory");
-		final ModelResourceLocation unchambered = new ModelResourceLocation(new ResourceLocation(Constants.MODID,
+		final ModelResourceLocation unchambered = new ModelResourceLocation(new ResourceLocation(Quiverbow.MODID,
 				"weapons/" + getRegistryName().getResourcePath() + "_unchambered"), "inventory");
 		final ModelResourceLocation chambered = new ModelResourceLocation(
-				new ResourceLocation(Constants.MODID, "weapons/" + getRegistryName().getResourcePath()), "inventory");
+				new ResourceLocation(Quiverbow.MODID, "weapons/" + getRegistryName().getResourcePath()), "inventory");
 		ModelLoader.registerItemVariants(this, empty, unchambered, chambered);
 		ModelLoader.setCustomMeshDefinition(this, new ItemMeshDefinition()
 		{

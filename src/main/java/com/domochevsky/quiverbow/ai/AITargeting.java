@@ -3,7 +3,7 @@ package com.domochevsky.quiverbow.ai;
 import java.util.List;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main;
+import com.domochevsky.quiverbow.Quiverbow;
 import com.domochevsky.quiverbow.armsassistant.EntityAA;
 import com.domochevsky.quiverbow.weapons.*;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
@@ -216,7 +216,7 @@ public class AITargeting
 				{
 					skip = true;
 				}
-				if (!Main.allowTurretPlayerAttacks)
+				if (!Quiverbow.allowTurretPlayerAttacks)
 				{
 					skip = true;
 				} // Not allowed to attack players in general
@@ -557,7 +557,7 @@ public class AITargeting
 		turret.attackDistance = 19 * (turret.firstWeapon.speed * turret.firstWeapon.speed); // safety
 		// margin
 
-		if (Main.restrictTurretRange && turret.attackDistance > 32)
+		if (Quiverbow.restrictTurretRange && turret.attackDistance > 32)
 		{
 			turret.attackDistance = 32;
 		} // Limiter

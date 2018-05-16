@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.Main.Constants;
+import com.domochevsky.quiverbow.Quiverbow;
 import com.domochevsky.quiverbow.miscitems.QuiverBowItem;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.FiringBehaviourBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.IFiringBehaviour;
@@ -80,7 +80,7 @@ public class WeaponBase extends QuiverBowItem
 	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags)
 	{
 		if (Minecraft.getMinecraft().player != null && Minecraft.getMinecraft().player.capabilities.isCreativeMode)
-			list.add(I18n.format(Constants.MODID + ".ammo.infinite"));
+			list.add(I18n.format(Quiverbow.MODID + ".ammo.infinite"));
 		else
 			list.add(I18n.format(getUnlocalizedName() + ".ammostatus",
 					stack.getMaxDamage() - stack.getItemDamage(), stack.getMaxDamage()));

@@ -2,7 +2,6 @@ package com.domochevsky.quiverbow;
 
 import java.util.ArrayList;
 
-import com.domochevsky.quiverbow.Main.Constants;
 import com.domochevsky.quiverbow.ammo.*;
 import com.domochevsky.quiverbow.armsassistant.EntityAA;
 import com.domochevsky.quiverbow.blocks.FenLight;
@@ -39,17 +38,14 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.registries.IForgeRegistry;
 
-@Mod(modid = Constants.MODID, name = Constants.NAME, version = "b102")
-public class Main
+@Mod(modid = Quiverbow.MODID, name = Quiverbow.NAME, version = "b102")
+public class Quiverbow
 {
-	public static class Constants
-	{
-		public static final String MODID = "quiverchevsky";
-		public static final String NAME = "QuiverBow";
-	}
+	public static final String NAME = "QuiverBow";
+	public static final String MODID = "quiverchevsky";
 
-	@Instance(Constants.MODID)
-	public static Main instance;
+	@Instance(Quiverbow.MODID)
+	public static Quiverbow instance;
 
 	@SidedProxy(clientSide = "com.domochevsky.quiverbow.ClientProxy", serverSide = "com.domochevsky.quiverbow.CommonProxy")
 	public static CommonProxy proxy;
@@ -100,7 +96,7 @@ public class Main
 	// Helper.tryBlockBreak() won't send a
 	// BlockBreak event. Used by
 	// protection plugins.
-	public static CreativeTabs QUIVERBOW_TAB = new CreativeTabs(Constants.MODID)
+	public static CreativeTabs QUIVERBOW_TAB = new CreativeTabs(Quiverbow.MODID)
 	{
 		@Override
 		public ItemStack getTabIconItem()
@@ -143,7 +139,7 @@ public class Main
 		// side
 
 		// Registering the Arms Assistant
-		EntityRegistry.registerModEntity(new ResourceLocation(Constants.MODID, "turret"), EntityAA.class, "turret", 0,
+		EntityRegistry.registerModEntity(new ResourceLocation(Quiverbow.MODID, "turret"), EntityAA.class, "turret", 0,
 				this, 80, 1, true);
 		// EntityRegistry.registerModEntity(Entity_BB.class,
 		// "quiverchevsky_flyingBB", 1, this, 80, 1, true);
@@ -221,12 +217,12 @@ public class Main
 
 	private void addProjectile(Class<? extends ProjectileBase> entityClass, String name)
 	{
-		EntityRegistry.registerModEntity(new ResourceLocation(Constants.MODID, name), entityClass,
+		EntityRegistry.registerModEntity(new ResourceLocation(Quiverbow.MODID, name), entityClass,
 				"projectilechevsky_" + name, projectileCount, this, 80, 1, true);
 		projectileCount += 1;
 	}
 
-	@Mod.EventBusSubscriber(modid = Constants.MODID)
+	@Mod.EventBusSubscriber(modid = Quiverbow.MODID)
 	public static class RegistryHandler
 	{
 		@SubscribeEvent
@@ -329,9 +325,9 @@ public class Main
 		// Helper function for taking care of weapon registration
 		private static Item addWeapon(WeaponBase weapon)
 		{
-			Main.weapons.add(weapon);
-			weapon.setRegistryName(Constants.MODID, weapon.getName());
-			weapon.setUnlocalizedName(Constants.MODID + ".weapon." + weapon.getName());
+			Quiverbow.weapons.add(weapon);
+			weapon.setRegistryName(Quiverbow.MODID, weapon.getName());
+			weapon.setUnlocalizedName(Quiverbow.MODID + ".weapon." + weapon.getName());
 			return weapon;
 		}
 
@@ -349,9 +345,9 @@ public class Main
 
 		private static AmmoBase addAmmo(AmmoBase ammoBase, String name)
 		{
-			Main.ammo.add(ammoBase);
-			ammoBase.setUnlocalizedName(Constants.MODID + ".ammo." + name);
-			ammoBase.setRegistryName(Constants.MODID + ":" + name);
+			Quiverbow.ammo.add(ammoBase);
+			ammoBase.setUnlocalizedName(Quiverbow.MODID + ".ammo." + name);
+			ammoBase.setRegistryName(Quiverbow.MODID + ":" + name);
 			return ammoBase;
 		}
 		
@@ -368,7 +364,7 @@ public class Main
 		}
 	}
 
-	@EventBusSubscriber(modid = Constants.MODID, value = Side.CLIENT)
+	@EventBusSubscriber(modid = Quiverbow.MODID, value = Side.CLIENT)
 	private static class ModelHandler
 	{
 		@SubscribeEvent
@@ -381,7 +377,7 @@ public class Main
 					ModelLoader
 							.setCustomModelResourceLocation(ammunition, 0,
 									new ModelResourceLocation(
-											new ResourceLocation(Constants.MODID,
+											new ResourceLocation(Quiverbow.MODID,
 													"ammo/" + ammunition.getRegistryName().getResourcePath()),
 											"inventory"));
 			}
@@ -393,7 +389,7 @@ public class Main
 					ModelLoader
 							.setCustomModelResourceLocation(weapon, 0,
 									new ModelResourceLocation(
-											new ResourceLocation(Constants.MODID,
+											new ResourceLocation(Quiverbow.MODID,
 													"weapons/" + weapon.getRegistryName().getResourcePath()),
 											"inventory"));
 			}
