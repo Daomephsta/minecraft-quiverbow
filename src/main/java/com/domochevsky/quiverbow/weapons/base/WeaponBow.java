@@ -14,15 +14,19 @@ public class WeaponBow extends WeaponBase
 	public WeaponBow(String name, int maxAmmo)
 	{
 		super(name, maxAmmo);
-		// Copied from ItemBow L29-L44
+		// Copied from ItemBow L29-L44 and modified
 		this.addPropertyOverride(new ResourceLocation("pull"), new IItemPropertyGetter()
 		{
 			@SideOnly(Side.CLIENT)
 			public float apply(ItemStack stack, @Nullable World worldIn, @Nullable EntityLivingBase entityIn)
 			{
-				return entityIn == null ? 0.0F
-						: ((entityIn.getActiveItemStack().getItem() instanceof WeaponBow) == false ? 0.0F
-								: (float) (stack.getMaxItemUseDuration() - entityIn.getItemInUseCount()) / 20.0F);
+				if(entityIn == null) return 0.0F;
+				else 
+				{
+					if(entityIn.getActiveItemStack().getItem() instanceof WeaponBow) 
+						return stack.getMaxItemUseDuration() - entityIn.getItemInUseCount() / 20.0F;
+					else return 0.0F;
+				}
 			}
 		});
 		this.addPropertyOverride(new ResourceLocation("pulling"), new IItemPropertyGetter()
