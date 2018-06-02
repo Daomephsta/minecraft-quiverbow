@@ -2,6 +2,7 @@ package com.domochevsky.quiverbow.ai;
 
 import com.domochevsky.quiverbow.ammo.*;
 import com.domochevsky.quiverbow.armsassistant.EntityAA;
+import com.domochevsky.quiverbow.items.ItemRegistry;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.util.InventoryHelper;
 import com.domochevsky.quiverbow.weapons.*;
@@ -331,13 +332,13 @@ public class AIWeaponHandler
 					sendMsg = true;
 				}
 
-				else if (currentWeapon instanceof RPGImp && turret.storage[slot].getItem() instanceof LargeRocket)
+				else if (currentWeapon instanceof RPGImp && turret.storage[slot].getItem() == ItemRegistry.LARGE_ROCKET)
 				{
 					currentStack.setItemDamage(0); // Fill
 					decreaseStackSize(turret, slot, 1);
 				}
 
-				else if (currentWeapon instanceof DragonBox && turret.storage[slot].getItem() instanceof RocketBundle)
+				else if (currentWeapon instanceof DragonBox && turret.storage[slot].getItem() == ItemRegistry.ROCKET_BUNDLE)
 				{
 					currentStack.setItemDamage(currentStack.getItemDamage() - (decreaseStackSize(turret, slot, 1) * 8)); // 8
 					// shots
@@ -346,7 +347,7 @@ public class AIWeaponHandler
 				}
 
 				else if (currentWeapon instanceof DragonBoxQuad
-						&& turret.storage[slot].getItem() instanceof RocketBundle)
+						&& turret.storage[slot].getItem() == ItemRegistry.ROCKET_BUNDLE)
 				{
 					currentStack.setItemDamage(currentStack.getItemDamage() - (decreaseStackSize(turret, slot, 1) * 2)); // 2
 					// shots
@@ -370,7 +371,7 @@ public class AIWeaponHandler
 				}
 
 				else if (currentWeapon instanceof CrossbowAuto
-						&& turret.storage[slot].getItem() instanceof ArrowBundle)
+						&& turret.storage[slot].getItem() == ItemRegistry.ARROW_BUNDLE)
 				{
 					currentStack.setItemDamage(currentStack.getItemDamage() - (decreaseStackSize(turret, slot, 1) * 8)); // 1
 					// bundle
@@ -380,7 +381,7 @@ public class AIWeaponHandler
 				}
 
 				else if (currentWeapon instanceof CrossbowAutoImp
-						&& turret.storage[slot].getItem() instanceof ArrowBundle)
+						&& turret.storage[slot].getItem() == ItemRegistry.ARROW_BUNDLE)
 				{
 					currentStack.setItemDamage(currentStack.getItemDamage() - (decreaseStackSize(turret, slot, 2) * 8)); // 2
 					// bundles
@@ -389,7 +390,7 @@ public class AIWeaponHandler
 					// shots
 				}
 
-				else if (currentWeapon instanceof FrostLancer && turret.storage[slot].getItem() instanceof ColdIronClip)
+				else if (currentWeapon instanceof FrostLancer && turret.storage[slot].getItem() == ItemRegistry.COLD_IRON_CLIP)
 				{
 					currentStack.setItemDamage(currentStack.getItemDamage() - (decreaseStackSize(turret, slot, 1) * 4)); // 1
 					// ammo
@@ -415,7 +416,7 @@ public class AIWeaponHandler
 					currentStack.setItemDamage(currentStack.getItemDamage() - decreaseStackSize(turret, slot, 16));
 				}
 
-				else if (currentWeapon instanceof MortarArrow && turret.storage[slot].getItem() instanceof ArrowBundle)
+				else if (currentWeapon instanceof MortarArrow && turret.storage[slot].getItem() == ItemRegistry.ARROW_BUNDLE)
 				{
 					currentStack.setItemDamage(currentStack.getItemDamage() - decreaseStackSize(turret, slot, 8)); // 1
 					// shot
@@ -428,7 +429,7 @@ public class AIWeaponHandler
 				}
 
 				else if (currentWeapon instanceof MortarDragon
-						&& turret.storage[slot].getItem() instanceof RocketBundle)
+						&& turret.storage[slot].getItem() == ItemRegistry.ARROW_BUNDLE)
 				{
 					currentStack.setItemDamage(currentStack.getItemDamage() - decreaseStackSize(turret, slot, 8)); // 1
 					// shot

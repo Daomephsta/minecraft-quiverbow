@@ -144,7 +144,7 @@ public class RecipeJSONifier
 		// bundles
 		{
 			Map<Object, int[]> components = new HashMap<>();
-			components.put(Helper.getAmmoStack(ArrowBundle.class, 0), new int[]{8, 1, 2});
+			components.put(new ItemStack(ItemRegistry.ARROW_BUNDLE, 1,  0), new int[]{8, 1, 2});
 			addAmmoLoadRecipe(ItemRegistry.AUTO_CROSSBOW_IMP, components);
 		}
 
@@ -158,7 +158,7 @@ public class RecipeJSONifier
 				// auto-crossbow
 				// with one arrow
 				// bundle
-				Helper.getAmmoStack(ArrowBundle.class, 0),
+				new ItemStack(ItemRegistry.ARROW_BUNDLE, 1,  0),
 				Helper.createEmptyWeaponOrAmmoStack(ItemRegistry.AUTO_CROSSBOW, 1));
 
 		// One redstone sprayer (empty)
@@ -188,7 +188,7 @@ public class RecipeJSONifier
 				Helper.getWeaponStackByClass(DragonBox.class, true));
 		{
 			Map<Object, int[]> components = new HashMap<>();
-			components.put(Helper.getAmmoStack(RocketBundle.class, 0), new int[]{8, 1, 8});
+			components.put(new ItemStack(ItemRegistry.ROCKET_BUNDLE, 1,  0), new int[]{8, 1, 8});
 			addAmmoLoadRecipe(ItemRegistry.QUAD_DRAGONBOX, components);
 		}
 
@@ -198,7 +198,7 @@ public class RecipeJSONifier
 				Items.REPEATER, 'f', Items.FLINT_AND_STEEL);
 		{
 			Map<Object, int[]> components = new HashMap<>();
-			components.put(Helper.getAmmoStack(RocketBundle.class, 0), new int[]{1, 1, 8});
+			components.put(new ItemStack(ItemRegistry.ROCKET_BUNDLE, 1,  0), new int[]{1, 1, 8});
 			addAmmoLoadRecipe(ItemRegistry.DRAGON_MORTAR, components);
 		}
 
@@ -252,7 +252,7 @@ public class RecipeJSONifier
 				// to the RPG
 				'y', Items.IRON_INGOT, 'z', Helper.getWeaponStackByClass(RPG.class, true));
 		// Fill the launcher with 1 big rocket
-		addShapelessRecipe(new ItemStack(ItemRegistry.ROCKET_LAUNCHER_IMP), Helper.getAmmoStack(LargeRocket.class, 0),
+		addShapelessRecipe(new ItemStack(ItemRegistry.ROCKET_LAUNCHER_IMP), new ItemStack(ItemRegistry.LARGE_ROCKET, 1,  0),
 				new ItemStack(ItemRegistry.ROCKET_LAUNCHER_IMP, 1, 1));
 
 		// One quiverbow with 256 damage value (empty)
@@ -261,7 +261,7 @@ public class RecipeJSONifier
 		// Ammo
 		{
 			Map<Object, int[]> components = new HashMap<>();
-			components.put(Helper.getAmmoStack(ArrowBundle.class, 0), new int[]{8, 1, 8});
+			components.put(new ItemStack(ItemRegistry.ARROW_BUNDLE, 1,  0), new int[]{8, 1, 8});
 			addAmmoLoadRecipe(ItemRegistry.QUIVERBOW, components);
 		}
 
@@ -295,7 +295,7 @@ public class RecipeJSONifier
 				Items.REPEATER);
 		{
 			Map<Object, int[]> components = new HashMap<>();
-			components.put(Helper.getAmmoStack(ArrowBundle.class, 0), new int[]{1, 1, 8});
+			components.put(new ItemStack(ItemRegistry.ARROW_BUNDLE, 1,  0), new int[]{1, 1, 8});
 		}
 
 		// One Frost Lancer (empty)
@@ -309,7 +309,7 @@ public class RecipeJSONifier
 		// Reloading with one Frost Clip
 		addShapelessRecipe(new ItemStack(ItemRegistry.FROST_LANCER),
 				Helper.createEmptyWeaponOrAmmoStack(ItemRegistry.FROST_LANCER, 1),
-				Helper.getAmmoStack(ColdIronClip.class, 0));
+				new ItemStack(ItemRegistry.COLD_IRON_CLIP, 1,  0));
 
 		// One ender rifle (empty)
 		addRecipe(Helper.createEmptyWeaponOrAmmoStack(ItemRegistry.ENDER_RIFLE, 1), "aza", "bcy", "xzx", 'x',
@@ -330,7 +330,7 @@ public class RecipeJSONifier
 				'y', Items.STRING, 'z', Items.IRON_INGOT, 'a', Items.FLINT_AND_STEEL);
 		{
 			Map<Object, int[]> components = new HashMap<>();
-			components.put(Helper.getAmmoStack(RocketBundle.class, 0), new int[]{8, 1, 8});
+			components.put(new ItemStack(ItemRegistry.ROCKET_BUNDLE, 1,  0), new int[]{8, 1, 8});
 			addAmmoLoadRecipe(ItemRegistry.DRAGONBOX, components);
 		}
 

@@ -5,7 +5,7 @@ import com.domochevsky.quiverbow.miscitems.QuiverBowItem;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 
-public abstract class AmmoBase extends QuiverBowItem
+public class AmmoBase extends QuiverBowItem
 {
 	public AmmoBase()
 	{

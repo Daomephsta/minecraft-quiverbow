@@ -242,8 +242,8 @@ public class QuiverbowMain
 		private static void registerMiscItems(IForgeRegistry<Item> registry)
 		{
 			registry.registerAll(
-					RegistryHelper.registerItem(new PartGatlingBody(), ".misc.", "part_sugar_engine_body"),
-					RegistryHelper.registerItem(new PartGatlingBarrel(), ".misc.", "part_sugar_engine_barrel"),
+					RegistryHelper.registerItem(new QuiverBowItem(), ".misc.", "part_sugar_engine_body"),
+					RegistryHelper.registerItem(new QuiverBowItem(), ".misc.", "part_sugar_engine_barrel"),
 					RegistryHelper.registerItem(new PackedUpAA(), ".misc.", "arms_assistant"));
 		}
 
@@ -282,7 +282,7 @@ public class QuiverbowMain
 					addWeapon(new OWR(obsidianMag)));
 
 			// Frost Lancer and Cold Iron Clip
-			AmmoBase coldIronClip = addAmmo(new ColdIronClip(), "cold_iron_clip");
+			AmmoBase coldIronClip = addAmmo(new AmmoBase(), "cold_iron_clip");
 			registry.registerAll(coldIronClip, addWeapon(new FrostLancer(coldIronClip)));
 
 			// Coin Tossers and Gold Magazine
@@ -338,8 +338,8 @@ public class QuiverbowMain
 																		// be
 																		// reloaded
 		{
-			registry.registerAll(addAmmo(new ArrowBundle(), "arrow_bundle"),
-					addAmmo(new RocketBundle(), "rocket_bundle"), addAmmo(new LargeRocket(), "large_rocket"),
+			registry.registerAll(addAmmo(new AmmoBase(), "arrow_bundle"),
+					addAmmo(new AmmoBase(), "rocket_bundle"), addAmmo(new AmmoBase(), "large_rocket"),
 					addAmmo(new BoxOfFlintDust(), "box_of_flint_dust"));
 		}
 
