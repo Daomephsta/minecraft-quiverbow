@@ -63,7 +63,7 @@ public class SabotArrow extends ProjectileBase
 
 	private void fireArrow(float accHor, float accVert)
 	{
-		EntityArrow arrow = Helper.createArrow(world, null);
+		EntityArrow arrow = Helper.createArrow(world, shootingEntity);
 		arrow.setDamage(this.damage);
 
 		this.world.spawnEntity(arrow);
