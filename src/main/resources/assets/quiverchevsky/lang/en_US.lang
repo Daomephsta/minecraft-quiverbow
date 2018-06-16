@@ -255,10 +255,10 @@ item.quiverchevsky.weapon.auto_crossbow_imp.ammostatus=§9Bolts: %d / %d
 item.quiverchevsky.weapon.auto_crossbow_imp.loadtext=§eCraft with up to 2 Arrow Bundles to reload.
 item.quiverchevsky.weapon.auto_crossbow_imp.description=Features a new and improved bolt feeder.
 
-item.quiverchevsky.weapon.powder_knuckle_mod.name=Modified Powder Knuckles
-item.quiverchevsky.weapon.powder_knuckle_mod.ammostatus=§9Gunpowder: %d / %d
-item.quiverchevsky.weapon.powder_knuckle_mod.loadtext=§eCraft with up to 8 gunpowder to reload.
-item.quiverchevsky.weapon.powder_knuckle_mod.description=Modified for blast mining.
+item.quiverchevsky.weapon.powder_knuckles_mod.name=Modified Powder Knuckles
+item.quiverchevsky.weapon.powder_knuckles_mod.ammostatus=§9Gunpowder: %d / %d
+item.quiverchevsky.weapon.powder_knuckles_mod.loadtext=§eCraft with up to 8 gunpowder to reload.
+item.quiverchevsky.weapon.powder_knuckles_mod.description=Modified for blast mining.
 
 item.quiverchevsky.weapon.rocket_launcher_imp.name=Improved Rocket Launcher
 item.quiverchevsky.weapon.rocket_launcher_imp.ammostatus=§9Rockets: %d / %d
