@@ -1,5 +1,5 @@
 {
-    "parent": "item/generated",
+    "parent": "quiverchevsky:item/weapons/lapis_coil",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/lapis_coil_empty"
     }

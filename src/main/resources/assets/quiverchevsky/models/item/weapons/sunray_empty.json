@@ -1,5 +1,5 @@
 {
-    "parent": "item/generated",
+    "parent": "quiverchevsky:item/weapons/sunray",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/sunray_empty"
     }

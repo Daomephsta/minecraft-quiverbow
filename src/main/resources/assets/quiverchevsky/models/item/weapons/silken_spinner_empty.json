@@ -1,5 +1,5 @@
 {
-    "parent": "item/generated",
+    "parent": "quiverchevsky:item/weapons/silken_spinner",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/silken_spinner_empty"
     }

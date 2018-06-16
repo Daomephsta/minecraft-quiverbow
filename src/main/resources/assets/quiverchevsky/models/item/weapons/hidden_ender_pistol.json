@@ -1,5 +1,5 @@
 {
-    "parent": "item/generated",
+    "parent": "quiverchevsky:item/weapons/weapon_pistol_grip",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/hidden_ender_pistol"
     },

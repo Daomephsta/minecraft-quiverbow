@@ -1,5 +1,5 @@
 {
-    "parent": "item/generated",
+    "parent": "quiverchevsky:item/weapons/rocket_launcher_imp",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/rocket_launcher_imp_empty"
     }

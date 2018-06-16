@@ -1,5 +1,5 @@
 {
-    "parent": "item/generated",
+    "parent": "quiverchevsky:item/weapons/powder_knuckles",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/powder_knuckles_empty"
     }

@@ -1,5 +1,5 @@
 {
-    "parent": "item/generated",
+    "parent": "quiverchevsky:item/weapons/ender_rail_accelerator",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/ender_rail_accelerator_empty"
     }

@@ -1,5 +1,5 @@
 {
-    "parent": "item/generated",
+    "parent": "quiverchevsky:item/weapons/splinter_pistol",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/splinter_pistol_empty"
     }

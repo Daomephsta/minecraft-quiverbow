@@ -1,5 +1,5 @@
 {
-    "parent": "item/generated",
+    "parent": "quiverchevsky:item/weapons/sugar_engine",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/sugar_engine_empty"
     }

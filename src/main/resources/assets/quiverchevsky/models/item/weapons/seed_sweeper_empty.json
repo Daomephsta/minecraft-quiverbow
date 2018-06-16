@@ -1,5 +1,5 @@
 {
-    "parent": "item/generated",
+    "parent": "quiverchevsky:item/weapons/seed_sweeper",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/seed_sweeper_empty"
     }
