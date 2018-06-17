@@ -1,5 +1,5 @@
 {
-    "parent": "quiverchevsky:item/weapons/aqua_accelerator_empty",
+    "parent": "quiverchevsky:item/weapons/aqua_accelerator",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/aqua_accelerator_empty"
     }
