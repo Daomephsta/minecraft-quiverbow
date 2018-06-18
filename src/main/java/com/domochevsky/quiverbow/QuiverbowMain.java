@@ -34,8 +34,8 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.*;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -128,6 +128,22 @@ public class QuiverbowMain
 	{
 		QuiverbowConfig.loadWeaponProperties();
 		//foo.RecipeJSONifier.generateRecipes();
+	}
+	
+	@EventHandler
+	public void recieveIMCMessages(FMLInterModComms.IMCEvent event)
+	{
+		for(IMCMessage message : event.getMessages())
+		{
+			switch (message.key)
+			{
+			case "soul_cairn_blacklist":
+				SoulShot.blacklistEntity(message.getResourceLocationValue());
+				break;
+			default:
+				throw new IllegalArgumentException("Quiverbow: Recieved IMC message with unknown key: " + message.key);
+			}
+		}
 	}
 
 	void registerProjectiles() // Entities that get shot out of weapons as
