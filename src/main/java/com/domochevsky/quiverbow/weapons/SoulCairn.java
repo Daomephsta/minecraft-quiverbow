@@ -1,5 +1,6 @@
 package com.domochevsky.quiverbow.weapons;
 
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.projectiles.SoulShot;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
@@ -12,8 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class SoulCairn extends WeaponBase
 {
@@ -21,9 +20,8 @@ public class SoulCairn extends WeaponBase
 	{
 		super("soul_cairn", 1);
 		this.setCreativeTab(CreativeTabs.TOOLS); // Tool, so on the tool tab
-		this.cooldown = 20;
 		setFiringBehaviour(new SingleShotFiringBehaviour<SoulCairn>(this,
-				(world, weaponStack, entity, data) -> new SoulShot(world, entity, (float) this.speed))
+				(world, weaponStack, entity, data, properties) -> new SoulShot(world, entity, properties.getProjectileSpeed()))
 		{
 			@Override
 			public void fire(ItemStack stack, World world, EntityLivingBase entity, EnumHand hand)
@@ -45,16 +43,8 @@ public class SoulCairn extends WeaponBase
 	}
 
 	@Override
-	public void addProps(FMLPreInitializationEvent event, Configuration config)
+	protected WeaponProperties createDefaultProperties()
 	{
-		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
-		this.speed = config.get(this.name, "How fast are my projectiles? (default 3.0 BPT (Blocks Per Tick))", 3.0)
-				.getDouble();
-		this.kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 4)", 4)
-				.getInt();
-
-		this.isMobUsable = config
-				.get(this.name, "Can I be used by QuiverMobs? (default false. This is easily abusable.)", false)
-				.getBoolean(true);
+		return WeaponProperties.builder().projectileSpeed(3.0F).kickback(4).cooldown(20).build();
 	}
 }

@@ -2,7 +2,9 @@ package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.ammo.AmmoBase;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.projectiles.LapisShot;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
@@ -11,46 +13,30 @@ import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class LapisCoil extends MagazineFedWeapon
 {
-	int weaknessStrength;
-	int weaknessDuration;
-	int nauseaDuration;
-	int hungerStrength;
-	int hungerDuration;
+	private static final String PROP_WEAKNESS_STRENGTH = "weaknessStrength";
+	private static final String PROP_WEAKNESS_DUR = "weaknessDur";
+	private static final String PROP_HUNGER_STRENGTH = "hungerStrength";
+	private static final String PROP_HUNGER_DUR = "hungerDur";
 
 	public LapisCoil(AmmoBase ammo)
 	{
 		super("lapis_coil", ammo, 100);
-		setFiringBehaviour(new SingleShotFiringBehaviour<LapisCoil>(this, (world, weaponStack, entity, data) ->
+		setFiringBehaviour(new SingleShotFiringBehaviour<LapisCoil>(this, (world, weaponStack, entity, data, properties) ->
 		{
-			// Random Damage
-			int dmg_range = this.damageMax - this.damageMin; // If max dmg is 20 and
-														// min
-			// is 10, then the range will
-			// be 10
-			int dmg = world.rand.nextInt(dmg_range + 1); // Range will be
-															// between 0
-			// and 10
-			dmg += this.damageMin; // Adding the min dmg of 10 back on top, giving
-								// us
-			// the proper damage range (10-20)
-
 			// Projectile
-			LapisShot projectile = new LapisShot(world, entity, (float) this.speed,
-					new PotionEffect(MobEffects.NAUSEA, this.nauseaDuration, 1),
-					new PotionEffect(MobEffects.HUNGER, this.hungerDuration, this.hungerStrength),
-					new PotionEffect(MobEffects.WEAKNESS, this.weaknessDuration, this.weaknessStrength));
-			projectile.damage = dmg;
+			LapisShot projectile = new LapisShot(world, entity, properties.getProjectileSpeed(),
+					new PotionEffect(MobEffects.NAUSEA, properties.getInt(CommonProperties.PROP_NAUSEA_DUR), 1),
+					new PotionEffect(MobEffects.HUNGER, properties.getInt(PROP_HUNGER_DUR), properties.getInt(PROP_HUNGER_STRENGTH)),
+					new PotionEffect(MobEffects.WEAKNESS, properties.getInt(PROP_WEAKNESS_DUR), properties.getInt(PROP_WEAKNESS_STRENGTH)));
+			projectile.damage = Helper.randomIntInRange(world.rand, getProperties().getDamageMin(), getProperties().getDamageMax());
 
 			projectile.ticksInGroundMax = 100; // 5 sec before it disappears
 
 			return projectile;
 		}));
-		this.cooldown = 4;
 	}
 
 	@Override
@@ -67,25 +53,14 @@ public class LapisCoil extends MagazineFedWeapon
 	}
 
 	@Override
-	public void addProps(FMLPreInitializationEvent event, Configuration config)
+	protected WeaponProperties createDefaultProperties()
 	{
-		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
-
-		this.damageMin = config.get(this.name, "What damage am I dealing, at least? (default 1)", 1).getInt();
-		this.damageMax = config.get(this.name, "What damage am I dealing, tops? (default 3)", 3).getInt();
-
-		this.speed = config.get(this.name, "How fast are my projectiles? (default 2.5 BPT (Blocks Per Tick))", 2.5)
-				.getDouble();
-
-		this.weaknessStrength = config.get(this.name, "How strong is my Weakness effect? (default 2)", 2).getInt();
-		this.weaknessDuration = config.get(this.name, "How long does my Weakness effect last? (default 40 ticks)", 40)
-				.getInt();
-		this.nauseaDuration = config.get(this.name, "How long does my Nausea effect last? (default 40 ticks)", 40)
-				.getInt();
-		this.hungerStrength = config.get(this.name, "How strong is my Hunger effect? (default 2)", 2).getInt();
-		this.hungerDuration = config.get(this.name, "How long does my Hunger effect last? (default 40 ticks)", 40)
-				.getInt();
-
-		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);
+		return WeaponProperties.builder().minimumDamage(1).maximumDamage(3).projectileSpeed(2.5F).cooldown(4)
+				.mobUsable()
+				.intProperty(PROP_WEAKNESS_STRENGTH, "The strength of the Weakness effect applied", 2)
+				.intProperty(PROP_WEAKNESS_DUR, "The duration in ticks of the Weakness effect applied", 40)
+				.intProperty(CommonProperties.PROP_NAUSEA_DUR, CommonProperties.COMMENT_NAUSEA_DUR, 40)
+				.intProperty(PROP_HUNGER_STRENGTH, "The strength of the Hunger effect applied", 2)
+				.intProperty(PROP_HUNGER_DUR, "The duration in ticks of the Hunger effect applied", 40).build();
 	}
 }

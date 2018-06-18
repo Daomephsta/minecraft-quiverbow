@@ -1,22 +1,19 @@
 package com.domochevsky.quiverbow.weapons;
 
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.projectiles.BigRocket;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class RPG extends WeaponBase
 {
-	public double explosionSize;
-	protected int travelTime; // How many ticks the rocket can travel before
-								// exploding
-	protected boolean dmgTerrain; // Can our projectile damage terrain?
-
+	private static final String PROP_TRAVEL_TIME = "maxFlightTime";
+	
 	public RPG()
 	{
 		this("rocket_launcher", 1);
@@ -25,13 +22,12 @@ public class RPG extends WeaponBase
 	protected RPG(String name, int maxAmmo)
 	{
 		super(name, maxAmmo);
-		this.cooldown = 60;
-		setFiringBehaviour(new SingleShotFiringBehaviour<WeaponBase>(this, (world, weaponStack, entity, data) ->
+		setFiringBehaviour(new SingleShotFiringBehaviour<WeaponBase>(this, (world, weaponStack, entity, data, properties) ->
 		{
-			BigRocket rocket = new BigRocket(world, entity, (float) this.speed);
-			rocket.explosionSize = this.explosionSize;
-			rocket.travelTicksMax = this.travelTime;
-			rocket.dmgTerrain = this.dmgTerrain;
+			BigRocket rocket = new BigRocket(world, entity, properties.getProjectileSpeed());
+			rocket.explosionSize = properties.getFloat(CommonProperties.PROP_EXPLOSION_SIZE);
+			rocket.travelTicksMax = properties.getInt(PROP_TRAVEL_TIME);
+			rocket.dmgTerrain = properties.getBoolean(CommonProperties.PROP_DAMAGE_TERRAIN);
 
 			return rocket;
 		}));
@@ -44,20 +40,12 @@ public class RPG extends WeaponBase
 	}
 
 	@Override
-	public void addProps(FMLPreInitializationEvent event, Configuration config)
+	protected WeaponProperties createDefaultProperties()
 	{
-		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
-		this.speed = config.get(this.name, "How fast are my projectiles? (default 2.0 BPT (Blocks Per Tick))", 2.0)
-				.getDouble();
-		this.kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 3)", 3)
-				.getInt();
-		this.explosionSize = config.get(this.name, "How big are my explosions? (default 4.0 blocks, like TNT)", 4.0)
-				.getDouble();
-		this.travelTime = config
-				.get(this.name, "How many ticks can my rocket fly before exploding? (default 20 ticks)", 20).getInt();
-		this.dmgTerrain = config.get(this.name, "Can I damage terrain, when in player hands? (default true)", true)
-				.getBoolean(true);
-
-		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
+		return WeaponProperties.builder().projectileSpeed(2.0F).kickback(3).cooldown(60).mobUsable()
+				.floatProperty(CommonProperties.PROP_EXPLOSION_SIZE, CommonProperties.COMMENT_EXPLOSION_SIZE, 4.0F)
+				.intProperty(PROP_TRAVEL_TIME, "The maximum flight time of the rocket. It will explode after this.", 20)
+				.booleanProperty(CommonProperties.PROP_DAMAGE_TERRAIN, CommonProperties.COMMENT_DAMAGE_TERRAIN, true)
+				.build();
 	}
 }

@@ -2,7 +2,9 @@ package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.ammo.AmmoBase;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.projectiles.SugarRod;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.BurstFiringBehaviour;
 
@@ -14,8 +16,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class SugarEngine extends MagazineFedWeapon
 {
@@ -23,10 +23,10 @@ public class SugarEngine extends MagazineFedWeapon
 	{
 		public GatlingFiringBehaviour()
 		{
-			super(SugarEngine.this, (world, weaponStack, entity, data) ->
+			super(SugarEngine.this, (world, weaponStack, entity, data, properties) ->
 			{
-				SugarEngine weapon = (SugarEngine) weaponStack.getItem();
-				float spreadHor = world.rand.nextFloat() * weapon.spread - (weapon.spread / 2); // Spread
+				float spread = properties.getFloat(CommonProperties.PROP_SPREAD);
+				float spreadHor = world.rand.nextFloat() * spread - (spread / 2.0F); // Spread
 																								// between
 																								// -4
 																								// and
@@ -39,21 +39,21 @@ public class SugarEngine extends MagazineFedWeapon
 																								// 16
 																								// -
 																								// 8)
-				float spreadVert = world.rand.nextFloat() * weapon.spread - (weapon.spread / 2);
+				float spreadVert = world.rand.nextFloat() * spread - (spread / 2.0F);
 
-				int dmg_range = weapon.damageMax - weapon.damageMin; // If max dmg is
-																// 20 and min is
-																// 10, then the
-																// range will be
-																// 10
+				int dmg_range = properties.getDamageMin() - properties.getDamageMin(); // If max dmg is
+				// 20 and min is
+				// 10, then the
+				// range will be
+				// 10
 				int dmg = world.rand.nextInt(dmg_range + 1); // Range will be
 																// between 0 and
 																// 10
-				dmg += weapon.damageMin; // Adding the min dmg of 10 back on top,
-										// giving us the proper damage range
-										// (10-20)
+				dmg += properties.getDamageMin(); // Adding the min dmg of 10 back on top,
+											// giving us the proper damage range
+											// (10-20)
 
-				SugarRod projectile = new SugarRod(world, entity, (float) weapon.speed, spreadHor, spreadVert);
+				SugarRod projectile = new SugarRod(world, entity, properties.getProjectileSpeed(), spreadHor, spreadVert);
 				projectile.damage = dmg;
 
 				return projectile;
@@ -99,9 +99,9 @@ public class SugarEngine extends MagazineFedWeapon
 
 		protected void doBurstFire(ItemStack weaponStack, World world, EntityLivingBase entity)
 		{
-			Helper.knockUserBack(entity, weapon.kickback); // Kickback
+			Helper.knockUserBack(entity, weapon.getKickback()); // Kickback
 			if (!world.isRemote)
-				world.spawnEntity(projectileFactory.createProjectile(world, weaponStack, entity, null));
+				world.spawnEntity(projectileFactory.createProjectile(world, weaponStack, entity, null, weapon.getProperties()));
 			doFireFX(world, entity);
 		}
 	}
@@ -111,8 +111,6 @@ public class SugarEngine extends MagazineFedWeapon
 		super("sugar_engine", ammo, 200);
 		setFiringBehaviour(new GatlingFiringBehaviour());
 	}
-
-	public float spread;
 
 	int getSpinupTime()
 	{
@@ -221,22 +219,10 @@ public class SugarEngine extends MagazineFedWeapon
 	}
 
 	@Override
-	public void addProps(FMLPreInitializationEvent event, Configuration config)
+	protected WeaponProperties createDefaultProperties()
 	{
-		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
-
-		this.damageMin = config.get(this.name, "What damage am I dealing, at least? (default 1)", 1).getInt();
-		this.damageMax = config.get(this.name, "What damage am I dealing, tops? (default 3)", 3).getInt();
-
-		this.speed = config.get(this.name, "How fast are my projectiles? (default 2.0 BPT (Blocks Per Tick))", 2.0)
-				.getDouble();
-
-		this.kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 1)", 1)
-				.getInt();
-		this.spread = (float) config.get(this.name, "How accurate am I? (default 10 spread)", 10).getDouble();
-
-		this.isMobUsable = config
-				.get(this.name, "Can I be used by QuiverMobs? (default true. They'll probably figure it out.)", true)
-				.getBoolean(true);
+		return WeaponProperties.builder().minimumDamage(1).maximumDamage(3).projectileSpeed(2.0F).kickback(1)
+				.mobUsable().floatProperty(CommonProperties.PROP_SPREAD, CommonProperties.COMMENT_SPREAD, 10.0F)
+				.build();
 	}
 }

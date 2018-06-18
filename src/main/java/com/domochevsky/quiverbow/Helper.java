@@ -1,10 +1,12 @@
 package com.domochevsky.quiverbow;
 
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.Nullable;
 
 import com.domochevsky.quiverbow.ammo.AmmoBase;
+import com.domochevsky.quiverbow.config.QuiverbowConfig;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.ProjectileBase;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
@@ -89,7 +91,7 @@ public class Helper
 	// Needs to be done both on client and server, because the server doesn't
 	// inform clients about small movement changes
 	// This is the server-side part
-	public static void knockUserBack(Entity user, byte strength)
+	public static void knockUserBack(Entity user, int strength)
 	{
 		user.motionZ += -MathHelper.cos((user.rotationYaw) * (float) Math.PI / 180.0F) * (strength * 0.08F);
 		user.motionX += MathHelper.sin((user.rotationYaw) * (float) Math.PI / 180.0F) * (strength * 0.08F);
@@ -156,7 +158,7 @@ public class Helper
 	// stronger weapons can break more block types
 	public static boolean tryBlockBreak(World world, Entity entity, BlockPos pos, int strength)
 	{
-		if (!QuiverbowMain.breakGlass)
+		if (!QuiverbowConfig.breakGlass)
 		{
 			return false;
 		} // Not allowed to break anything in general
@@ -225,7 +227,7 @@ public class Helper
 
 		if (breakThis) // Breaking? Breaking!
 		{
-			if (QuiverbowMain.sendBlockBreak)
+			if (QuiverbowConfig.sendBlockBreak)
 			{
 				if (entity instanceof ProjectileBase)
 				{
@@ -398,5 +400,10 @@ public class Helper
 			RayTraceResult intercept = collisionBB.calculateIntercept(startVec, endVec);
 			if (intercept != null) results.add(new RayTraceResult(entity, intercept.hitVec));
 		}
+	}
+	
+	public static int randomIntInRange(Random random, int min, int max)
+	{
+		return random.nextInt(max - min + 1) + min;
 	}
 }

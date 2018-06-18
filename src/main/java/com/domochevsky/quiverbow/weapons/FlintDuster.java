@@ -1,6 +1,7 @@
 package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.projectiles.FlintDust;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
@@ -11,19 +12,16 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class FlintDuster extends WeaponBase
 {
+	private static final String PROP_MAX_RANGE = "maxRange";
+
 	public FlintDuster()
 	{
 		super("flint_duster", 256);
 		this.setCreativeTab(CreativeTabs.TOOLS); // Tool, so on the tool tab
 	}
-
-	private int damage;
-	private int maxBlocks;
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
@@ -51,11 +49,10 @@ public class FlintDuster extends WeaponBase
 		if (!world.isRemote)
 		{
 			// Ready
-			FlintDust shot = new FlintDust(world, entity, (float) this.speed);
+			FlintDust shot = new FlintDust(world, entity, getProjectileSpeed());
 
 			// Properties
-			shot.damage = this.damage;
-			shot.ticksInAirMax = this.maxBlocks;
+			shot.damage = Helper.randomIntInRange(world.rand, getProperties().getDamageMin(), getProperties().getDamageMax());
 
 			// Go
 			world.spawnEntity(shot);
@@ -66,17 +63,9 @@ public class FlintDuster extends WeaponBase
 	}
 
 	@Override
-	public void addProps(FMLPreInitializationEvent event, Configuration config)
+	protected WeaponProperties createDefaultProperties()
 	{
-		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
-
-		this.speed = 1.5f; // Fixed value
-
-		this.damage = config.get(this.name, "What damage am I dealing? (default 1)", 1).getInt();
-		this.maxBlocks = config.get(this.name, "How much range do I have? (default ~7 blocks)", 7).getInt();
-
-		this.isMobUsable = config
-				.get(this.name, "Can I be used by QuiverMobs? (default false. They have no interest in dirt.)", false)
-				.getBoolean(true);
+		return WeaponProperties.builder().damage(1)
+				.intProperty(PROP_MAX_RANGE, "The maximum range of this weapon in blocks", 7).build();
 	}
 }

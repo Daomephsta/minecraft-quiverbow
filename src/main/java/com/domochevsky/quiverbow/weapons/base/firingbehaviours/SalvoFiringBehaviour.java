@@ -38,14 +38,14 @@ public class SalvoFiringBehaviour<W extends WeaponBase> extends ProjectileFiring
 			return;
 		} // Hasn't cooled down yet
 
-		Helper.knockUserBack(entity, weapon.kickback); // Kickback
+		Helper.knockUserBack(entity, weapon.getKickback()); // Kickback
 
-		weapon.setCooldown(stack, weapon.cooldown); // Cooling down now
+		weapon.resetCooldown(stack); // Cooling down now
 
 		for (int shot = 0; shot < shotQuantity; shot++)
 		{
 			if (!world.isRemote)
-				world.spawnEntity(projectileFactory.createProjectile(world, stack, entity, new SalvoData(shot)));
+				world.spawnEntity(projectileFactory.createProjectile(world, stack, entity, new SalvoData(shot), weapon.getProperties()));
 
 			weapon.doFireFX(world, entity);
 

@@ -6,6 +6,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.QuiverbowMain;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.miscitems.QuiverBowItem;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.FiringBehaviourBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.IFiringBehaviour;
@@ -22,26 +23,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-public class WeaponBase extends QuiverBowItem
+public abstract class WeaponBase extends QuiverBowItem
 {
 	protected String name;
-	public boolean enabled;
-
-	public int damageMin;
-	public int damageMax;
-
-	public double speed;
-	private double firingSpeed;
-
-	public int knockback;
-	public byte kickback;
-
-	public int cooldown;
-
-	protected boolean isMobUsable;
+	private WeaponProperties properties;
 
 	protected IFiringBehaviour firingBehaviour = new FiringBehaviourBase<WeaponBase>(this)
 	{
@@ -65,16 +51,6 @@ public class WeaponBase extends QuiverBowItem
 		// weapon
 		this.name = name;
 	}
-
-	public String getName()
-	{
-		return this.name;
-	}
-
-	public boolean isMobUsable()
-	{
-		return this.isMobUsable;
-	} // Usable by default
 
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags)
@@ -119,6 +95,31 @@ public class WeaponBase extends QuiverBowItem
 		return false; // There's still some left
 	}
 
+	public String getName()
+	{
+		return this.name;
+	}
+
+	public boolean isMobUsable()
+	{
+		return this.getProperties().isMobUsable();
+	}
+
+	public int getKickback()
+	{
+		return this.getProperties().getKickback();
+	}
+	
+	public float getProjectileSpeed()
+	{
+		return this.getProperties().getProjectileSpeed();
+	}
+
+	public void resetCooldown(ItemStack stack)
+	{
+		setCooldown(stack, ((WeaponBase) stack.getItem()).getMaxCooldown());
+	}
+
 	public void setCooldown(ItemStack stack, int cooldown)
 	{
 		if (stack.getTagCompound() == null)
@@ -131,7 +132,7 @@ public class WeaponBase extends QuiverBowItem
 
 	public int getMaxCooldown()
 	{
-		return this.cooldown;
+		return getProperties().getMaxCooldown();
 	}
 
 	public int getCooldown(ItemStack stack)
@@ -256,9 +257,14 @@ public class WeaponBase extends QuiverBowItem
 		subItems.add(new ItemStack(this, 1, 0));
 		subItems.add(Helper.createEmptyWeaponOrAmmoStack(this, 1));
 	}
+	
+	protected abstract WeaponProperties createDefaultProperties();
 
-	public void addProps(FMLPreInitializationEvent event, Configuration config)
-	{}
+	public WeaponProperties getProperties()
+	{
+		if(properties == null) properties = createDefaultProperties();
+		return properties;
+	}
 
 	protected String displayInSec(int tick)
 	{
@@ -281,22 +287,5 @@ public class WeaponBase extends QuiverBowItem
 	public int getMaxItemUseDuration(ItemStack stack)
 	{
 		return 40;
-	}
-
-	public void setFiringSpeed(int speed)
-	{
-		if (speed <= 0)
-		{
-			this.firingSpeed = 0.1d;
-		}
-		else
-		{
-			this.firingSpeed = speed;
-		}
-	}
-
-	public double getFiringSpeed()
-	{
-		return this.firingSpeed;
 	}
 }

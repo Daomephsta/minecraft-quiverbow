@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 public class HelperClient
 {
 	// Only ever called on client side
-	public static void knockUserBackClient(byte strength)
+	public static void knockUserBackClient(int strength)
 	{
 		EntityPlayer user = Minecraft.getMinecraft().player;
 

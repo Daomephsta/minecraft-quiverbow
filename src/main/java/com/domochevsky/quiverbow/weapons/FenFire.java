@@ -1,7 +1,9 @@
 package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.projectiles.FenGoop;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
@@ -9,27 +11,18 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class FenFire extends WeaponBase
 {
-	private int fireDuration;
-	private int lightTick;
-
 	public FenFire()
 	{
 		super("fen_fire", 32);
 		this.setCreativeTab(CreativeTabs.TOOLS); // Tool, so on the tool tab
-		setFiringBehaviour(new SingleShotFiringBehaviour<FenFire>(this, (world, weaponStack, entity, data) ->
+		setFiringBehaviour(new SingleShotFiringBehaviour<FenFire>(this, (world, weaponStack, entity, data, properties) ->
 		{
-			FenGoop projectile = new FenGoop(world, entity, (float) this.speed);
-			projectile.fireDuration = this.fireDuration;
-
-			if (this.lightTick != 0)
-			{
-				projectile.lightTick = this.lightTick;
-			} // Scheduled to turn off again
+			FenGoop projectile = new FenGoop(world, entity, properties.getProjectileSpeed());
+			projectile.fireDuration = properties.getInt(CommonProperties.PROP_FIRE_DUR_ENTITY);
+			projectile.lightTick = properties.getInt(CommonProperties.PROP_DESPAWN_TIME);
 
 			return projectile;
 		}));
@@ -48,20 +41,12 @@ public class FenFire extends WeaponBase
 	}
 
 	@Override
-	public void addProps(FMLPreInitializationEvent event, Configuration config)
+	protected WeaponProperties createDefaultProperties()
 	{
-		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
-
-		this.speed = config.get(this.name, "How fast are my projectiles? (default 1.5 BPT (Blocks Per Tick))", 1.5)
-				.getDouble();
-		this.cooldown = config.get(this.name, "How long until I can fire again? (default 20 ticks)", 20).getInt();
-		this.fireDuration = config.get(this.name, "How long is what I hit on fire? (default 1s)", 1).getInt();
-		this.lightTick = config
-				.get(this.name, "How long do my lights stay lit? (default 0 ticks for infinite. 20 ticks = 1 sec)", 0)
-				.getInt();
-
-		this.isMobUsable = config
-				.get(this.name, "Can I be used by QuiverMobs? (default false. They despise light.)", false)
-				.getBoolean(true);
+		return WeaponProperties.builder().projectileSpeed(1.5F).cooldown(20)
+				.intProperty(CommonProperties.PROP_FIRE_DUR_ENTITY, CommonProperties.COMMENT_FIRE_DUR_ENTITY, 1)
+				.intProperty(CommonProperties.PROP_DESPAWN_TIME,
+						"How long fen lights stay lit in ticks. Set to 0 for infinite time", 0)
+				.build();
 	}
 }

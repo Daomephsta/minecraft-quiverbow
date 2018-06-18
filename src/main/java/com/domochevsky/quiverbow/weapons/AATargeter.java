@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import net.minecraft.client.resources.I18n;
@@ -15,8 +16,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -28,7 +27,7 @@ public class AATargeter extends WeaponBase
 		this.setCreativeTab(CreativeTabs.TOOLS); // This is a tool
 	} // Not consuming ammo
 
-	public double targetingDistance = 64;
+	public static final double TARGETING_DISTANCE = 64;
 
 	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
@@ -77,13 +76,9 @@ public class AATargeter extends WeaponBase
 	}
 
 	@Override
-	public void addProps(FMLPreInitializationEvent event, Configuration config)
+	protected WeaponProperties createDefaultProperties()
 	{
-		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
-
-		this.isMobUsable = config
-				.get(this.name, "Can I be used by QuiverMobs? (default false. They're not friends with AAs.)", false)
-				.getBoolean(true);
+		return WeaponProperties.builder().build();
 	}
 
 	@Override

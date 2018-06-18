@@ -1,8 +1,10 @@
 package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.EnderShot;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
@@ -10,26 +12,21 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class EnderRifle extends WeaponBase
 {
-	public int zoomMax;
-	private double damageIncrease;
+	private static final String PROP_BONUS_DAMAGE = "bonusDamage";
 
 	public EnderRifle()
 	{
 		super("ender_rifle", 8);
-		setFiringBehaviour(new SingleShotFiringBehaviour<EnderRifle>(this, (world, weaponStack, entity, data) ->
+		setFiringBehaviour(new SingleShotFiringBehaviour<EnderRifle>(this, (world, weaponStack, entity, data, properties) ->
 		{
-			EnderShot shot = new EnderShot(world, entity, (float) this.speed);
-			shot.damage = this.damageMin;
-			shot.damageMax = this.damageMax;
-			shot.damageIncrease = this.damageIncrease; // Increases damage each
-														// tick until the max
-														// has been reached
-			shot.knockbackStrength = this.knockback;
+			EnderShot shot = new EnderShot(world, entity, properties.getProjectileSpeed());
+			shot.damage = properties.getDamageMin();
+			shot.damageMax = properties.getDamageMin();
+			shot.damageIncrease = properties.getFloat(PROP_BONUS_DAMAGE); // Increases damage each tick until the max has been reached
+			shot.knockbackStrength = properties.getKnockback();
 			return shot;
 		}));
 	}
@@ -51,29 +48,12 @@ public class EnderRifle extends WeaponBase
 	}
 
 	@Override
-	public void addProps(FMLPreInitializationEvent event, Configuration config)
+	protected WeaponProperties createDefaultProperties()
 	{
-		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
-
-		this.damageMin = config.get(this.name, "What damage am I dealing, at least? (default 4)", 4).getInt();
-		this.damageMax = config.get(this.name, "What damage am I dealing, tops? (default 16)", 16).getInt();
-
-		this.damageIncrease = config.get(this.name,
-				"By what amount does my damage rise? (default 1.0, for +1.0 DMG per tick of flight)", 1.0).getDouble();
-
-		this.speed = config.get(this.name, "How fast are my projectiles? (default 3.0 BPT (Blocks Per Tick))", 3.0)
-				.getDouble();
-
-		this.knockback = config.get(this.name, "How hard do I knock the target back when firing? (default 1)", 1)
-				.getInt();
-		this.kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 3)", 3)
-				.getInt();
-
-		this.cooldown = config.get(this.name, "How long until I can fire again? (default 25 ticks)", 25).getInt();
-
-		this.zoomMax = (config.get(this.name, "How far can I zoom in? (default 30. Less means more zoom)", 30)
-				.getInt());
-
-		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);
+		return WeaponProperties.builder().minimumDamage(4).maximumDamage(16).projectileSpeed(3.0F).knockback(1)
+				.kickback(3).cooldown(25).mobUsable()
+				.floatProperty(PROP_BONUS_DAMAGE,
+						"How much extra damage the projectile does for every tick it's in flight", 1.0F)
+				.intProperty(CommonProperties.PROP_MAX_ZOOM, CommonProperties.COMMENT_MAX_ZOOM, 30).build();
 	}
 }

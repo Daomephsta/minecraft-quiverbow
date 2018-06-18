@@ -1,6 +1,7 @@
 package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.projectiles.HealthBeam;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
@@ -10,8 +11,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class MediGun extends WeaponBase
 {
@@ -44,7 +43,7 @@ public class MediGun extends WeaponBase
 
 		if (!world.isRemote)
 		{
-			HealthBeam beam = new HealthBeam(entity.world, entity, (float) this.speed);
+			HealthBeam beam = new HealthBeam(entity.world, entity, getProjectileSpeed());
 
 			beam.ignoreFrustumCheck = true;
 			beam.ticksInAirMax = 40;
@@ -52,20 +51,13 @@ public class MediGun extends WeaponBase
 			entity.world.spawnEntity(beam); // Firing!
 
 			this.consumeAmmo(stack, entity, 1);
-			this.setCooldown(stack, this.cooldown);
+			this.resetCooldown(stack);
 		}
 	}
 
 	@Override
-	public void addProps(FMLPreInitializationEvent event, Configuration config)
+	protected WeaponProperties createDefaultProperties()
 	{
-		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
-
-		this.speed = config.get(this.name, "How fast are my beams? (default 5.0 BPT (Blocks Per Tick))", 5.0)
-				.getDouble();
-
-		this.isMobUsable = config.get(this.name,
-				"Can I be used by QuiverMobs? (default false. They don't know what friends are.)", false)
-				.getBoolean(true);
+		return WeaponProperties.builder().build();
 	}
 }

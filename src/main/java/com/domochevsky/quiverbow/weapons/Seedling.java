@@ -1,6 +1,7 @@
 package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.projectiles.Seed;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
@@ -13,23 +14,19 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class Seedling extends WeaponBase
 {
-	private int damage;
-
 	public Seedling()
 	{
 		super("seedling", 32);
-		setFiringBehaviour(new SingleShotFiringBehaviour<Seedling>(this, (world, weaponStack, entity, data) ->
+		setFiringBehaviour(new SingleShotFiringBehaviour<Seedling>(this, (world, weaponStack, entity, data, properties) ->
 		{
 			float spreadHor = world.rand.nextFloat() * 10 - 5; // Spread
 			float spreadVert = world.rand.nextFloat() * 10 - 5;
 
-			Seed shot = new Seed(world, entity, (float) this.speed, spreadHor, spreadVert);
-			shot.damage = this.damage;
+			Seed shot = new Seed(world, entity, properties.getProjectileSpeed(), spreadHor, spreadVert);
+			shot.damage = Helper.randomIntInRange(world.rand, properties.getDamageMin(), properties.getDamageMax());
 
 			return shot;
 		})
@@ -74,15 +71,8 @@ public class Seedling extends WeaponBase
 	}
 
 	@Override
-	public void addProps(FMLPreInitializationEvent event, Configuration config)
+	protected WeaponProperties createDefaultProperties()
 	{
-		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
-
-		this.damage = config.get(this.name, "What damage am I dealing per projectile? (default 1)", 1).getInt();
-
-		this.speed = config.get(this.name, "How fast are my projectiles? (default 1.3 BPT (Blocks Per Tick))", 1.3)
-				.getDouble();
-
-		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true)", true).getBoolean(true);
+		return WeaponProperties.builder().minimumDamage(1).maximumDamage(1).projectileSpeed(1.3F).mobUsable().build();
 	}
 }

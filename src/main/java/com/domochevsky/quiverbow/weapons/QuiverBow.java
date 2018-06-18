@@ -1,6 +1,7 @@
 package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.weapons.base.WeaponBow;
 
 import net.minecraft.entity.EntityLivingBase;
@@ -11,10 +12,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class QuiverBow extends WeaponBow
 {
@@ -113,12 +112,8 @@ public class QuiverBow extends WeaponBow
 	}
 
 	@Override
-	public void addProps(FMLPreInitializationEvent event, Configuration config)
+	protected WeaponProperties createDefaultProperties()
 	{
-		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
-
-		this.isMobUsable = config.get(this.name,
-				"Can I be used by QuiverMobs? (default false. They don't know how to span the string.)", false)
-				.getBoolean(true);
+		return WeaponProperties.builder().build();
 	}
 }

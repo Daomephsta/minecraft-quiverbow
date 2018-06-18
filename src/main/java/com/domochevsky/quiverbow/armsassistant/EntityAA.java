@@ -353,7 +353,7 @@ public class EntityAA extends EntityLiving
 				{
 					AATargeter weapon = (AATargeter) targeter.getItem();
 					RayTraceResult movPos = AITargeting.getRayTraceResultFromPlayer(this.world, owner,
-							weapon.targetingDistance);
+							AATargeter.TARGETING_DISTANCE);
 
 					if (movPos != null)
 					{

@@ -3,9 +3,10 @@ package com.domochevsky.quiverbow.ai;
 import java.util.List;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.armsassistant.EntityAA;
+import com.domochevsky.quiverbow.config.QuiverbowConfig;
 import com.domochevsky.quiverbow.weapons.*;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import net.minecraft.entity.*;
@@ -66,7 +67,7 @@ public class AITargeting
 		else
 		{
 			double distance = getDistanceSqToTarget(turret, posX, posY, posZ);
-			double angleMod = (0.045 * distance) / (currentWeapon.speed * currentWeapon.speed); // 0.05
+			double angleMod = (0.045 * distance) / (currentWeapon.getProjectileSpeed() * currentWeapon.getProjectileSpeed()); // 0.05
 
 			if (currentWeapon instanceof FrostLancer)
 			{
@@ -216,7 +217,7 @@ public class AITargeting
 				{
 					skip = true;
 				}
-				if (!QuiverbowMain.allowTurretPlayerAttacks)
+				if (!QuiverbowConfig.allowTurretPlayerAttacks)
 				{
 					skip = true;
 				} // Not allowed to attack players in general
@@ -554,10 +555,10 @@ public class AITargeting
 			return;
 		}
 
-		turret.attackDistance = 19 * (turret.firstWeapon.speed * turret.firstWeapon.speed); // safety
+		turret.attackDistance = 19 * (turret.firstWeapon.getProjectileSpeed() * turret.firstWeapon.getProjectileSpeed()); // safety
 		// margin
 
-		if (QuiverbowMain.restrictTurretRange && turret.attackDistance > 32)
+		if (QuiverbowConfig.restrictTurretRange && turret.attackDistance > 32)
 		{
 			turret.attackDistance = 32;
 		} // Limiter
@@ -613,24 +614,8 @@ public class AITargeting
 
 	private static double getSafetyRange(EntityAA turret, WeaponBase currentWeapon)
 	{
-		if (currentWeapon instanceof RPG)
-		{
-			RPG rpg = (RPG) currentWeapon;
-			return rpg.explosionSize * rpg.explosionSize; // Squared
-		}
-
-		else if (currentWeapon instanceof RPGImp)
-		{
-			RPGImp rpg = (RPGImp) currentWeapon;
-			return rpg.explosionSize * rpg.explosionSize; // Squared
-		}
-
-		else if (currentWeapon instanceof ERA)
-		{
-			ERA era = (ERA) currentWeapon;
-			return era.explosionTarget * era.explosionTarget; // Squared
-		}
-
+		if (currentWeapon.getProperties().has(CommonProperties.PROP_EXPLOSION_SIZE))
+			return Math.pow(currentWeapon.getProperties().getFloat(CommonProperties.PROP_EXPLOSION_SIZE), 2);
 		return -1; // Fallback for "no minimum range limit"
 	}
 }

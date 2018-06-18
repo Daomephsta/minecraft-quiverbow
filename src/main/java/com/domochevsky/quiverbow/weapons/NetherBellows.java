@@ -2,34 +2,31 @@ package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.ammo.AmmoBase;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.projectiles.NetherFire;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SalvoFiringBehaviour;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class NetherBellows extends MagazineFedWeapon
 {
-	private int damage;
-	private int fireDuration;
-
 	public NetherBellows(AmmoBase ammo)
 	{
 		super("nether_bellows", ammo, 200);
-		setFiringBehaviour(new SalvoFiringBehaviour<NetherBellows>(this, 5, (world, weaponStack, entity, data) ->
+		setFiringBehaviour(new SalvoFiringBehaviour<NetherBellows>(this, 5, (world, weaponStack, entity, data, properties) ->
 		{
 			float spreadHor = world.rand.nextFloat() * 20 - 10; // Spread
 																// between
 			// -10 and 10
 			float spreadVert = world.rand.nextFloat() * 20 - 10;
 
-			NetherFire shot = new NetherFire(world, entity, (float) this.speed, spreadHor, spreadVert);
-			shot.damage = this.damage;
-			shot.fireDuration = this.fireDuration;
+			NetherFire shot = new NetherFire(world, entity, properties.getProjectileSpeed(), spreadHor, spreadVert);
+			shot.damage = Helper.randomIntInRange(world.rand, properties.getDamageMin(), properties.getDamageMax());
+			shot.fireDuration = properties.getInt(CommonProperties.PROP_FIRE_DUR_ENTITY);
 
 			return shot;
 		}));
@@ -48,14 +45,10 @@ public class NetherBellows extends MagazineFedWeapon
 	}
 
 	@Override
-	public void addProps(FMLPreInitializationEvent event, Configuration config)
+	protected WeaponProperties createDefaultProperties()
 	{
-		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
-		this.speed = config.get(this.name, "How fast are my projectiles? (default 0.75 BPT (Blocks Per Tick))", 0.75)
-				.getDouble();
-		this.damage = config.get(this.name, "What damage am I dealing per projectile? (default 1)", 1).getInt();
-		this.fireDuration = config.get(this.name, "For how long do I set things on fire? (default 3 sec)", 3).getInt();
-
-		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default true.)", true).getBoolean(true);
+		return WeaponProperties.builder().minimumDamage(1).maximumDamage(1).projectileSpeed(0.75F).mobUsable()
+				.intProperty(CommonProperties.PROP_FIRE_DUR_ENTITY, CommonProperties.COMMENT_FIRE_DUR_ENTITY, 3)
+				.build();
 	}
 }

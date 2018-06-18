@@ -69,7 +69,7 @@ public class AIRandomEquip
 			{
 				weapon = null;
 			} // Cannot be used by mobs, so begone
-			else if (weapon != null && !weapon.enabled)
+			else if (weapon != null && !weapon.getProperties().isEnabled())
 			{
 				weapon = null;
 			} // Is disabled, so begone
@@ -111,7 +111,7 @@ public class AIRandomEquip
 			{
 				weapon = null;
 			} // Cannot be used by mobs, so begone
-			else if (weapon != null && !weapon.enabled)
+			else if (weapon != null && !weapon.getProperties().isEnabled())
 			{
 				weapon = null;
 			} // Is disabled, so begone

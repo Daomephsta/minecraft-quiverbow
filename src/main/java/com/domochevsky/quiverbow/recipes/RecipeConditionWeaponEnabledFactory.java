@@ -21,6 +21,6 @@ public class RecipeConditionWeaponEnabledFactory implements IConditionFactory
 		Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(regName));
 		if(item == null) throw new IllegalArgumentException(regName + " is not a registered item");
 		if((item instanceof WeaponBase) == false)  throw new IllegalArgumentException(regName + " is not an instance of WeaponBase");
-		return () -> ((WeaponBase) item).enabled;
+		return () -> ((WeaponBase) item).getProperties().isEnabled();
 	}
 }

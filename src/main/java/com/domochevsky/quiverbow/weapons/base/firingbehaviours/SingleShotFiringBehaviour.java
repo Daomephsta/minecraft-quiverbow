@@ -34,14 +34,14 @@ public class SingleShotFiringBehaviour<W extends WeaponBase> extends ProjectileF
 		} // Hasn't cooled down yet
 
 		// Good to go (already verified)
-		Helper.knockUserBack(entity, weapon.kickback); // Kickback
+		Helper.knockUserBack(entity, weapon.getKickback()); // Kickback
 
-		if (!world.isRemote) world.spawnEntity(projectileFactory.createProjectile(world, stack, entity, null)); // Firing!
+		if (!world.isRemote) world.spawnEntity(projectileFactory.createProjectile(world, stack, entity, null, weapon.getProperties())); // Firing!
 
 		// SFX
 		weapon.doFireFX(world, entity);
 
-		weapon.setCooldown(stack, weapon.cooldown);
+		weapon.resetCooldown(stack);
 		if (weapon.consumeAmmo(stack, entity, ammoCost) && weapon instanceof MagazineFedWeapon)
 		{
 			((MagazineFedWeapon) weapon).dropMagazine(world, stack, entity);

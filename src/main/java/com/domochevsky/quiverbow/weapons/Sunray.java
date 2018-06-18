@@ -3,7 +3,9 @@ package com.domochevsky.quiverbow.weapons;
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.projectiles.SunLight;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -13,26 +15,22 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class Sunray extends WeaponBase
 {
+	private static final String PROP_MIN_LIGHT = "minLight";
+
 	public Sunray()
 	{
 		super("sunray", 1);
 	}
 
-	private int maxTicks;
-	private int lightMin;
-	private int fireDuration;
-
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack)
 	{
-		double dur = (1d / this.cooldown) * (this.cooldown - this.getCooldown(stack)); // Display
+		double dur = (1D / getMaxCooldown()) * (getMaxCooldown() - this.getCooldown(stack)); // Display
 		// durability
-		return 1d - dur; // Reverse again. Tch
+		return 1D - dur; // Reverse again. Tch
 	}
 
 	@Override
@@ -54,30 +52,29 @@ public class Sunray extends WeaponBase
 			return;
 		} // Hasn't cooled down yet
 
-		Helper.knockUserBack(entity, this.kickback); // Kickback
+		Helper.knockUserBack(entity, getKickback()); // Kickback
 		if (!world.isRemote)
 		{
 			// Firing a beam that goes through walls
-			SunLight shot = new SunLight(world, entity, (float) this.speed);
+			SunLight shot = new SunLight(world, entity, getProjectileSpeed());
 
 			// Random Damage
-			int dmg_range = this.damageMax - this.damageMin; // If max dmg is 20 and
+			int dmg_range = this.getProperties().getDamageMin() - getProperties().getDamageMin(); // If max dmg is 20 and
 														// min
 			// is 10, then the range will
 			// be 10
 			int dmg = world.rand.nextInt(dmg_range + 1); // Range will be
 															// between 0
 			// and 10
-			dmg += this.damageMin; // Adding the min dmg of 10 back on top, giving
+			dmg += getProperties().getDamageMin(); // Adding the min dmg of 10 back on top, giving
 								// us
 			// the proper damage range (10-20)
 
 			// The moving end point
 			shot.damage = dmg;
-			shot.fireDuration = this.fireDuration;
+			shot.fireDuration = getProperties().getInt(CommonProperties.PROP_FIRE_DUR_ENTITY);
 
 			shot.ignoreFrustumCheck = true;
-			shot.ticksInAirMax = this.maxTicks;
 
 			world.spawnEntity(shot); // Firing!
 		}
@@ -86,7 +83,7 @@ public class Sunray extends WeaponBase
 		entity.playSound(SoundEvents.ENTITY_BLAZE_DEATH, 0.7F, 2.0F);
 		entity.playSound(SoundEvents.ENTITY_FIREWORK_BLAST, 2.0F, 0.1F);
 
-		this.setCooldown(stack, this.cooldown);
+		this.resetCooldown(stack);
 	}
 
 	@Override
@@ -95,7 +92,7 @@ public class Sunray extends WeaponBase
 	{
 		int light = world.getLight(entity.getPosition());
 
-		if (light >= this.lightMin)
+		if (light >= getProperties().getInt(PROP_MIN_LIGHT))
 		{
 			if (this.getCooldown(stack) > 0)
 			{
@@ -116,27 +113,11 @@ public class Sunray extends WeaponBase
 	}
 
 	@Override
-	public void addProps(FMLPreInitializationEvent event, Configuration config)
+	protected WeaponProperties createDefaultProperties()
 	{
-		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
-
-		this.damageMin = config.get(this.name, "What damage are my arrows dealing, at least? (default 14)", 14).getInt();
-		this.damageMax = config.get(this.name, "What damage are my arrows dealing, tops? (default 20)", 20).getInt();
-
-		this.speed = 4.0f;
-		this.kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 3)", 3)
-				.getInt();
-
-		this.cooldown = config.get(this.name, "How long until I can fire again? (default 120 ticks)", 120).getInt();
-
-		this.fireDuration = config.get(this.name, "How long is what I hit on fire? (default 10s)", 10).getInt();
-		this.maxTicks = config.get(this.name, "How long does my beam exist, tops? (default 60 ticks)", 60).getInt();
-		this.lightMin = config.get(this.name, "What light level do I need to recharge, at least? (default 12)", 12)
-				.getInt();
-
-		this.isMobUsable = config
-				.get(this.name, "Can I be used by QuiverMobs? (default false. Too damn bright for their taste.)", false)
-				.getBoolean();
+		return WeaponProperties.builder().minimumDamage(14).maximumDamage(20).kickback(3).cooldown(120)
+				.intProperty(CommonProperties.PROP_FIRE_DUR_ENTITY, CommonProperties.COMMENT_FIRE_DUR_ENTITY, 10)
+				.intProperty(PROP_MIN_LIGHT, "The minimum light level needed to recharge", 12).build();
 	}
 
 	@Override

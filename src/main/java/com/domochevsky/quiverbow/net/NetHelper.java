@@ -106,7 +106,7 @@ public class NetHelper
 	}
 
 	// Informing the player that they just got knocked back by their weapon
-	public static void sendKickbackMessage(Entity user, byte strength)
+	public static void sendKickbackMessage(Entity user, int strength)
 	{
 		if (user instanceof EntityPlayerMP)
 		{

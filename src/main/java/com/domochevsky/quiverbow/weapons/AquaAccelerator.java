@@ -2,6 +2,7 @@ package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.ai.AITargeting;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.projectiles.WaterShot;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
@@ -17,9 +18,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class AquaAccelerator extends WeaponBase
 {
@@ -28,8 +27,8 @@ public class AquaAccelerator extends WeaponBase
 		super("aqua_accelerator", 1);
 		this.setCreativeTab(CreativeTabs.TOOLS); // This is a tool
 		setFiringBehaviour(new SingleShotFiringBehaviour<AquaAccelerator>(this,
-				(world, weaponStack, entity, data) -> new WaterShot(world, entity,
-						(float) ((WeaponBase) weaponStack.getItem()).speed)));
+				(world, weaponStack, entity, data, properties) -> new WaterShot(world, entity,
+						properties.getProjectileSpeed())));
 	}
 
 	@Override
@@ -103,12 +102,8 @@ public class AquaAccelerator extends WeaponBase
 	}
 
 	@Override
-	public void addProps(FMLPreInitializationEvent event, Configuration config)
+	protected WeaponProperties createDefaultProperties()
 	{
-		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
-		this.speed = config.get(this.name, "How fast are my projectiles? (default 1.5 BPT (Blocks Per Tick))", 1.5)
-				.getDouble();
-		this.isMobUsable = config.get(this.name, "Can I be used by QuiverMobs? (default false)", false)
-				.getBoolean(true);
+		return WeaponProperties.builder().projectileSpeed(1.5F).build();
 	}
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.domochevsky.quiverbow.ammo.*;
 import com.domochevsky.quiverbow.armsassistant.EntityAA;
 import com.domochevsky.quiverbow.blocks.FenLight;
+import com.domochevsky.quiverbow.config.QuiverbowConfig;
 import com.domochevsky.quiverbow.items.ItemRegistry;
 import com.domochevsky.quiverbow.miscitems.*;
 import com.domochevsky.quiverbow.models.ISpecialRender;
@@ -74,28 +75,6 @@ public class QuiverbowMain
 	private static int projectileCount = 1; // A running number, to register
 	// projectiles by
 
-	// Config
-	public static boolean breakGlass; // If this is false then we're not allowed
-	// to break blocks with projectiles (Don't
-	// care about TNT)
-	public static boolean useModels; // If this is false then we're reverting
-	// back to held icons
-	public static boolean noCreative; // If this is true then disabled weapons
-	// won't show up in the creative menu
-	// either
-	public static boolean allowTurret; // If this is false then the Arms
-	// Assistant will not be available
-	public static boolean allowTurretPlayerAttacks; // If this is false then the
-	// AA is not allowed to
-	// attack players (ignores
-	// them)
-	public static boolean restrictTurretRange; // If this is false then we're
-	// not capping the targeting
-	// range at 32 blocks
-	public static boolean sendBlockBreak; // If this is false then
-	// Helper.tryBlockBreak() won't send a
-	// BlockBreak event. Used by
-	// protection plugins.
 	public static CreativeTabs QUIVERBOW_TAB = new CreativeTabs(QuiverbowMain.MODID)
 	{
 		@Override
@@ -108,41 +87,19 @@ public class QuiverbowMain
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		this.config = new Configuration(event.getSuggestedConfigurationFile()); // Starting
-		// config
-
-		this.config.load(); // And loading it up
-
-		breakGlass = this.config.get("generic",
-				"Can we break glass and other fragile things with our projectiles? (default true)", true).getBoolean();
-		sendBlockBreak = this.config
-				.get("generic",
-						"Do we send a BlockBreak event when breaking things with our projectiles? (default true)", true)
-				.getBoolean();
-		useModels = this.config.get("generic",
-				"Are we using models or icons for held weapons? (default true for models. False for icons)", true)
-				.getBoolean();
-		noCreative = this.config.get("generic",
-				"Are we removing disabled weapons from the creative menu too? (default false. On there, but uncraftable)",
-				false).getBoolean();
-
-		allowTurret = this.config.get("Arms Assistant", "Am I enabled? (default true)", true).getBoolean();
-		restrictTurretRange = this.config.get("Arms Assistant",
-				"Is my firing range limited to a maximum of 32 blocks? (default true. Set false for 'Shoot as far as your weapon can handle'.)",
-				true).getBoolean();
-
+		QuiverbowConfig.load(event.getSuggestedConfigurationFile());
 		this.registerProjectiles();
-		this.config.save(); // Done with config, saving it
 
 		PacketHandler.initPackets(); // Used for sending particle packets, so I
 		// can do my thing purely on the server
 		// side
 
 		// Registering the Arms Assistant
-		EntityRegistry.registerModEntity(new ResourceLocation(QuiverbowMain.MODID, "turret"), EntityAA.class, "turret", 0,
-				this, 80, 1, true);
-		// EntityRegistry.registerModEntity(Entity_BB.class,
-		// "quiverchevsky_flyingBB", 1, this, 80, 1, true);
+		if (QuiverbowConfig.allowTurret)
+		{
+			EntityRegistry.registerModEntity(new ResourceLocation(QuiverbowMain.MODID, "turret"), EntityAA.class,
+					"turret", 0, this, 80, 1, true);
+		}
 		proxy.registerRenderers();
 
 		Listener listener = new Listener();
@@ -162,12 +119,8 @@ public class QuiverbowMain
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
+		QuiverbowConfig.loadWeaponProperties();
 		//foo.RecipeJSONifier.generateRecipes();
-		// Init creative tab now that items are initialised
-		/* QUIVERBOW_TAB = new CreativeTabs(Constants.MODID) {
-		 * 
-		 * @Override public ItemStack getTabIconItem() { return new
-		 * ItemStack(ItemRegistry.QUIVERBOW); } }; */
 	}
 
 	void registerProjectiles() // Entities that get shot out of weapons as

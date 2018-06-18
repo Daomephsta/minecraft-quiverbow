@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 
-public class MagazineFedWeapon extends WeaponBase
+public abstract class MagazineFedWeapon extends WeaponBase
 {
 	protected final Item ammo;
 

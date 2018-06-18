@@ -1,8 +1,10 @@
 package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.EnderAccelerator;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.FiringBehaviourBase;
 
@@ -15,11 +17,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class ERA extends WeaponBase
 {
+	private static final String PROP_SELF_EXPLOSION_SIZE = "selfExplosionSize";
 	private class ERAFiringBehaviour extends FiringBehaviourBase<ERA>
 	{
 		protected ERAFiringBehaviour()
@@ -43,10 +44,6 @@ public class ERA extends WeaponBase
 		public void update(ItemStack stack, World world, Entity entity, int animTick, boolean holdingItem)
 		{}
 	}
-
-	private double explosionSelf;
-	public double explosionTarget;
-	private boolean dmgTerrain; // Can our projectile damage terrain?
 
 	public ERA()
 	{
@@ -78,7 +75,7 @@ public class ERA extends WeaponBase
 			// to
 			// fire
 			{
-				Helper.knockUserBack(entity, this.kickback); // Kickback
+				Helper.knockUserBack(entity, this.getKickback()); // Kickback
 
 				// Upgrade
 				if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("hasEmeraldMuzzle"))
@@ -99,8 +96,8 @@ public class ERA extends WeaponBase
 				// go off in their pockets
 				{
 					entity.hurtResistantTime = 0; // No rest for the wicked
-					world.createExplosion(entity, entity.posX, entity.posY, entity.posZ, (float) this.explosionTarget,
-							this.dmgTerrain); // Big baddaboom
+					world.createExplosion(entity, entity.posX, entity.posY, entity.posZ, getProperties().getFloat(CommonProperties.PROP_EXPLOSION_SIZE),
+							getProperties().getBoolean(CommonProperties.PROP_DAMAGE_TERRAIN)); // Big baddaboom
 
 					// Set weapon to "burnt out" (if the user's a player and not
 					// in creative mode)
@@ -122,7 +119,7 @@ public class ERA extends WeaponBase
 
 				if (entity instanceof EntityPlayer)
 				{
-					damageTerrain = this.dmgTerrain;
+					damageTerrain = getProperties().getBoolean(CommonProperties.PROP_DAMAGE_TERRAIN);
 				} // Players don't care about mob griefing rules, but play by
 					// their own rules
 
@@ -135,7 +132,7 @@ public class ERA extends WeaponBase
 				}
 				else
 				{
-					world.createExplosion(entity, entity.posX, entity.posY, entity.posZ, (float) this.explosionSelf,
+					world.createExplosion(entity, entity.posX, entity.posY, entity.posZ, getProperties().getFloat(PROP_SELF_EXPLOSION_SIZE),
 							damageTerrain); // Hurtin' more
 				}
 
@@ -145,21 +142,21 @@ public class ERA extends WeaponBase
 					EnderAccelerator shot = new EnderAccelerator(world, entity, 5.0f);
 
 					// Random Damage
-					int dmg_range = damageMax - damageMin; // If max dmg is 20 and min
+					int dmg_range = getProperties().getDamageMin() - getProperties().getDamageMin(); // If max dmg is 20 and min
 														// is
 					// 10, then the range will be
 					// 10
 					int dmg = world.rand.nextInt(dmg_range + 1); // Range will
 																	// be
 					// between 0 and 10
-					dmg += damageMin; // Adding the min dmg of 10 back on top,
+					dmg += getProperties().getDamageMin(); // Adding the min dmg of 10 back on top,
 									// giving
 					// us the proper damage range (10-20)
 
 					shot.damage = dmg;
 					shot.ticksInAirMax = 120; // 6 sec?
 					shot.damageTerrain = damageTerrain;
-					shot.explosionSize = (float) this.explosionTarget;
+					shot.explosionSize = getProperties().getFloat(PROP_SELF_EXPLOSION_SIZE);
 
 					world.spawnEntity(shot);
 				}
@@ -212,32 +209,15 @@ public class ERA extends WeaponBase
 	}
 
 	@Override
-	public void addProps(FMLPreInitializationEvent event, Configuration config)
+	protected WeaponProperties createDefaultProperties()
 	{
-		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
-
-		this.damageMin = config.get(this.name, "What damage am I dealing with a direct hit, at least? (default 120)", 120)
-				.getInt();
-		this.damageMax = config.get(this.name, "What damage am I dealing with a direct hit, tops? (default 150)", 150)
-				.getInt();
-
-		this.explosionSelf = config.get(this.name,
-				"How big are my explosions when leaving the barrel? (default 4.0 blocks. TNT is 4.0 blocks)", 4.0)
-				.getDouble();
-		this.explosionTarget = config
-				.get(this.name,
-						"How big are my explosions when hitting a target? (default 8.0 blocks. TNT is 4.0 blocks)", 8.0)
-				.getDouble();
-
-		this.kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 30)", 30)
-				.getInt();
-
-		this.dmgTerrain = config.get(this.name, "Can I damage terrain, when in player hands? (default true)", true)
-				.getBoolean(true);
-
-		this.isMobUsable = config
-				.get(this.name, "Can I be used by QuiverMobs? (default false. Too high-power and suicidal.)", false)
-				.getBoolean();
+		return WeaponProperties.builder().minimumDamage(120).maximumDamage(150).kickback(30)
+				.floatProperty(PROP_SELF_EXPLOSION_SIZE,
+						"How large the explosion at the user location is in blocks. A TNT explosion is 4.0 blocks",
+						4.0F)
+				.floatProperty(CommonProperties.PROP_EXPLOSION_SIZE, CommonProperties.COMMENT_EXPLOSION_SIZE, 8.0F)
+				.booleanProperty(CommonProperties.PROP_DAMAGE_TERRAIN, CommonProperties.COMMENT_DAMAGE_TERRAIN, true)
+				.build();
 	}
 
 	//TODO Convert to JSON

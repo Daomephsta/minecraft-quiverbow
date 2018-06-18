@@ -1,51 +1,12 @@
 package com.domochevsky.quiverbow;
 
-import com.domochevsky.quiverbow.util.InventoryHelper;
-import com.domochevsky.quiverbow.weapons.EnderRifle;
-import com.domochevsky.quiverbow.weapons.FrostLancer;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
-
 public class ListenerClient
 {
-	// TODO: Do translations in json and get rid of this
-	/* @SubscribeEvent(priority = EventPriority.LOW) public void
-	 * renderPlayerRightItemUsage(RenderLivingEvent.Pre event) { if
-	 * (!(event.getRenderer() instanceof RenderPlayer)) { return; }
-	 * if(!(event.getEntity() instanceof EntityPlayer)) { return; }
-	 * 
-	 * //renderPlayerLeftItemUsage(event);
-	 * 
-	 * EntityPlayer entityPlayer = (EntityPlayer) event.getEntity();
-	 * 
-	 * if (entityPlayer.getHeldItem() == null) { return; } // Not holding
-	 * anything
-	 * 
-	 * ItemStack mainHand = entityPlayer.getHeldItem(); if (!(mainHand.getItem()
-	 * instanceof _WeaponBase)) { return; } // Not mine
-	 * 
-	 * _WeaponBase weapon = (_WeaponBase) mainHand.getItem();
-	 * 
-	 * if (weapon.getCooldown(mainHand) <= 0) { return; }
-	 * 
-	 * RenderPlayer renderer = ((RenderPlayer) event.renderer);
-	 * 
-	 * // You are holding something renderer.modelArmorChestplate.heldItemRight
-	 * = 1; renderer.modelArmor.heldItemRight = 1;
-	 * renderer.modelBipedMain.heldItemRight = 1;
-	 * 
-	 * // Hold it straight out renderer.modelArmorChestplate.aimedBow = true;
-	 * renderer.modelArmor.aimedBow = true; renderer.modelBipedMain.aimedBow =
-	 * true; } */
-
-	private float defaultFOV = 70; // net.minecraft.client.Minecraft.getMinecraft().gameSettings.fovSetting;
+	/*private float defaultFOV = 70; // net.minecraft.client.Minecraft.getMinecraft().gameSettings.fovSetting;
 	private boolean wasZoomedLastTick = false;
 	private float fovLastTick = this.defaultFOV;
 
-	// A weapon-independent way to tick zoom for weapons. Maybe that'll squash
+	// TODO: A weapon-independent way to tick zoom for weapons. Maybe that'll squash
 	// this issue once and for all.
 	@SubscribeEvent
 	public void onPlayerTick(PlayerTickEvent event)
@@ -132,5 +93,5 @@ public class ListenerClient
 		// default
 		// FOV
 		this.wasZoomedLastTick = false;
-	}
+	}*/
 }

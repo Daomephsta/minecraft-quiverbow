@@ -2,6 +2,7 @@ package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.QuiverbowMain;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.models.ISpecialRender;
 import com.domochevsky.quiverbow.weapons.base.WeaponCrossbow;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
@@ -18,34 +19,31 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class CrossbowAuto extends WeaponCrossbow implements ISpecialRender
 {
 	public CrossbowAuto()
 	{
 		super("auto_crossbow", 8);
-		setFiringBehaviour(new SingleShotFiringBehaviour<CrossbowAuto>(this, (world, weaponStack, entity, data) ->
+		setFiringBehaviour(new SingleShotFiringBehaviour<CrossbowAuto>(this, (world, weaponStack, entity, data, properties) ->
 		{
-			CrossbowAuto weapon = (CrossbowAuto) weaponStack.getItem();
 			EntityArrow entityarrow = Helper.createArrow(world, entity);
 
 			// Random Damage
-			int dmg_range = weapon.damageMax - weapon.damageMin; // If max dmg is 20
+			int dmg_range = properties.getDamageMin() - properties.getDamageMin(); // If max dmg is 20
 															// and min
 			// is 10, then the range will
 			// be 10
 			int dmg = world.rand.nextInt(dmg_range + 1); // Range will be
 															// between 0
 			// and 10
-			dmg += weapon.damageMin; // Adding the min dmg of 10 back on top,
+			dmg += properties.getDamageMin(); // Adding the min dmg of 10 back on top,
 									// giving us
 			// the proper damage range (10-20)
 
-			entityarrow.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, (float)weapon.speed, 0.5F);
+			entityarrow.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, properties.getProjectileSpeed(), 0.5F);
 			entityarrow.setDamage(dmg);
-			entityarrow.setKnockbackStrength(weapon.knockback);
+			entityarrow.setKnockbackStrength(properties.getKnockback());
 
 			return entityarrow;
 		})
@@ -137,21 +135,9 @@ public class CrossbowAuto extends WeaponCrossbow implements ISpecialRender
 	}
 
 	@Override
-	public void addProps(FMLPreInitializationEvent event, Configuration config)
+	protected WeaponProperties createDefaultProperties()
 	{
-		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
-
-		this.damageMin = config.get(this.name, "What damage am I dealing, at least? (default 10)", 10).getInt();
-		this.damageMax = config.get(this.name, "What damage am I dealing, tops? (default 16)", 16).getInt();
-
-		this.speed = config.get(this.name, "How fast are my projectiles? (default 2.5 BPT (Blocks Per Tick))", 2.5)
-				.getDouble();
-		this.knockback = config.get(this.name, "How hard do I knock the target back when firing? (default 1)", 1)
-				.getInt();
-		this.cooldown = config.get(this.name, "How long until I can fire again? (default 10 ticks)", 10).getInt();
-
-		this.isMobUsable = config.get(this.name,
-				"Can I be used by QuiverMobs? (default false. They don't know how to rechamber me.)", false)
-				.getBoolean(true);
+		return WeaponProperties.builder().minimumDamage(10).maximumDamage(16).projectileSpeed(2.5F).knockback(1)
+				.cooldown(10).build();
 	}
 }

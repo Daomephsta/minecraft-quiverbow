@@ -1,6 +1,8 @@
 package com.domochevsky.quiverbow.weapons;
 
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.FiringBehaviourBase;
 
@@ -11,14 +13,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class PowderKnuckle extends WeaponBase
 {
-	protected double explosionSize;
-	protected boolean dmgTerrain;
-
 	public PowderKnuckle()
 	{
 		super("powder_knuckles", 8);
@@ -51,7 +48,7 @@ public class PowderKnuckle extends WeaponBase
 			this.consumeAmmo(stack, player, 1);
 		}
 
-		world.createExplosion(player, pos.getX(), pos.getY(), pos.getZ(), (float) this.explosionSize, true);
+		world.createExplosion(player, pos.getX(), pos.getY(), pos.getZ(), getProperties().getFloat(CommonProperties.PROP_EXPLOSION_SIZE), true);
 
 		NetHelper.sendParticleMessageToAllPlayers(world, player.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
 				(byte) 4); // smoke
@@ -64,7 +61,7 @@ public class PowderKnuckle extends WeaponBase
 	{
 		if (this.getDamage(stack) >= stack.getMaxDamage())
 		{
-			entity.attackEntityFrom(DamageSource.causePlayerDamage(player), this.damageMin);
+			entity.attackEntityFrom(DamageSource.causePlayerDamage(player), getProperties().getDamageMin());
 			entity.hurtResistantTime = 0; // No invincibility frames
 
 			return false; // We're not loaded, getting out of here with minimal
@@ -80,10 +77,10 @@ public class PowderKnuckle extends WeaponBase
 		// Dmg
 		entity.setFire(2); // Setting fire to them for 2 sec, so pigs can drop
 		// cooked porkchops
-		entity.world.createExplosion(player, entity.posX, entity.posY + 0.5D, entity.posZ, (float) this.explosionSize,
-				this.dmgTerrain); // 4.0F is TNT
+		entity.world.createExplosion(player, entity.posX, entity.posY + 0.5D, entity.posZ,
+				getProperties().getFloat(CommonProperties.PROP_EXPLOSION_SIZE), getProperties().getBoolean(CommonProperties.PROP_DAMAGE_TERRAIN)); // 4.0F is TNT
 
-		entity.attackEntityFrom(DamageSource.causePlayerDamage(player), this.damageMax); // Dealing
+		entity.attackEntityFrom(DamageSource.causePlayerDamage(player), this.getProperties().getDamageMin()); // Dealing
 		// damage
 		// directly.
 		// Screw
@@ -94,20 +91,11 @@ public class PowderKnuckle extends WeaponBase
 	}
 
 	@Override
-	public void addProps(FMLPreInitializationEvent event, Configuration config)
+	protected WeaponProperties createDefaultProperties()
 	{
-		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
-
-		this.damageMin = config.get(this.name, "What's my minimum damage, when I'm empty? (default 1)", 1).getInt();
-		this.damageMax = config.get(this.name, "What's my maximum damage when I explode? (default 18)", 18).getInt();
-
-		this.explosionSize = config
-				.get(this.name, "How big are my explosions? (default 1.5 blocks. TNT is 4.0 blocks)", 1.5).getDouble();
-		this.dmgTerrain = config.get(this.name, "Can I damage terrain, when in player hands? (default true)", true)
-				.getBoolean(true);
-
-		this.isMobUsable = config.get(this.name,
-				"Can I be used by QuiverMobs? (default false. They don't know where the trigger on this thing is.)",
-				false).getBoolean(false);
+		return WeaponProperties.builder().minimumDamage(1).maximumDamage(18)
+				.floatProperty(CommonProperties.PROP_EXPLOSION_SIZE, CommonProperties.COMMENT_EXPLOSION_SIZE, 1.5F)
+				.booleanProperty(CommonProperties.PROP_DAMAGE_TERRAIN, CommonProperties.COMMENT_DAMAGE_TERRAIN, true)
+				.build();
 	}
 }

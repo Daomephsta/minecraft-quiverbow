@@ -2,6 +2,7 @@ package com.domochevsky.quiverbow.weapons.base.firingbehaviours;
 
 import javax.annotation.Nullable;
 
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import net.minecraft.entity.Entity;
@@ -13,7 +14,7 @@ public abstract class ProjectileFiringBehaviour<W extends WeaponBase> extends Fi
 {
 	public static interface IProjectileFactory
 	{
-		public Entity createProjectile(World world, ItemStack weaponStack, EntityLivingBase entity, @Nullable IProjectileData data);
+		public Entity createProjectile(World world, ItemStack weaponStack, EntityLivingBase entity, @Nullable IProjectileData data, WeaponProperties properties);
 	}
 
 	public static interface IProjectileData

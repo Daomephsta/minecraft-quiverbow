@@ -4,9 +4,11 @@ import java.util.List;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.ammo.AmmoBase;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.OWRShot;
 import com.domochevsky.quiverbow.projectiles.ProjectileBase;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 import com.domochevsky.quiverbow.weapons.base.MagazineFedWeapon;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
@@ -19,45 +21,44 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class OWR extends MagazineFedWeapon
 {
+	private static final String PROP_MAX_MAGIC_DAMAGE = "maxDamageMagic", PROP_MIN_MAGIC_DAMAGE = "minDamageMagic";
+
 	public OWR(AmmoBase ammo)
 	{
 		super("wither_rifle", ammo, 16);
-		setFiringBehaviour(new SingleShotFiringBehaviour<OWR>(this, (world, weaponStack, entity, data) ->
+		setFiringBehaviour(new SingleShotFiringBehaviour<OWR>(this, (world, weaponStack, entity, data, properties) ->
 		{
-			OWR weapon = (OWR) weaponStack.getItem();
-			ProjectileBase projectile = new OWRShot(world, entity, (float) weapon.speed,
-					new PotionEffect(MobEffects.WITHER, weapon.witherDuration, weapon.witherStrength));
+			ProjectileBase projectile = new OWRShot(world, entity, properties.getProjectileSpeed(),
+					new PotionEffect(MobEffects.WITHER, properties.getInt(CommonProperties.PROP_WITHER_DUR), properties.getInt(CommonProperties.PROP_WITHER_STRENGTH)));
 
 			// Random Damage
-			int dmg_range = weapon.damageMax - weapon.damageMin; // If max dmg is 20
+			int dmg_range = properties.getDamageMax() - properties.getDamageMin(); // If max dmg is 20
 															// and min
 			// is 10, then the range will
 			// be 10
 			int dmg = world.rand.nextInt(dmg_range + 1); // Range will be
 															// between 0
 			// and 10
-			dmg += weapon.damageMin; // Adding the min dmg of 10 back on top,
+			dmg += properties.getDamageMin(); // Adding the min dmg of 10 back on top,
 									// giving us
 			// the proper damage range (10-20)
 
 			projectile.damage = dmg;
 
 			// Random Magic Damage
-			dmg_range = weapon.damageMagicMax - weapon.damageMagicMin; // If max dmg
+			dmg_range = properties.getInt(PROP_MAX_MAGIC_DAMAGE) - properties.getInt(PROP_MIN_MAGIC_DAMAGE); // If max dmg
 																	// is 20 and
 			// min is 10, then the
 			// range will be 10
 			dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
 														// and
 			// 10
-			dmg += weapon.damageMagicMin; // Adding the min dmg of 10 back on top,
+			dmg += properties.getInt(PROP_MIN_MAGIC_DAMAGE); // Adding the min dmg of 10 back on top,
 										// giving
 			// us the proper damage range (10-20)
 
@@ -65,13 +66,6 @@ public class OWR extends MagazineFedWeapon
 			return projectile;
 		}));
 	}
-
-	public int damageMagicMin;
-	public int damageMagicMax;
-
-	public int witherDuration; // 20 ticks to a second, let's start with 3
-	// seconds
-	public int witherStrength; // 2 dmg per second for 3 seconds = 6 dmg total
 
 	@Override
 	protected void doUnloadFX(World world, Entity entity)
@@ -106,32 +100,13 @@ public class OWR extends MagazineFedWeapon
 	}
 
 	@Override
-	public void addProps(FMLPreInitializationEvent event, Configuration config)
+	protected WeaponProperties createDefaultProperties()
 	{
-		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
-
-		this.damageMin = config.get(this.name, "What damage am I dealing, at least? (default 7)", 7).getInt();
-		this.damageMax = config.get(this.name, "What damage am I dealing, tops? (default 13)", 13).getInt();
-
-		this.damageMagicMin = config.get(this.name, "What magic damage am I dealing, at least? (default 6)", 6).getInt();
-		this.damageMagicMax = config.get(this.name, "What magic damage am I dealing, tops? (default 14)", 14).getInt();
-
-		this.speed = config.get(this.name, "How fast are my projectiles? (default 3.0 BPT (Blocks Per Tick))", 3.0)
-				.getDouble();
-
-		this.knockback = config.get(this.name, "How hard do I knock the target back when firing? (default 2)", 2)
-				.getInt();
-		this.kickback = (byte) config.get(this.name, "How hard do I kick the user back when firing? (default 6)", 6)
-				.getInt();
-
-		this.cooldown = config.get(this.name, "How long until I can fire again? (default 60 ticks)", 60).getInt();
-
-		this.witherStrength = config.get(this.name, "How strong is my Wither effect? (default 3)", 3).getInt();
-		this.witherDuration = config.get(this.name, "How long does my Wither effect last? (default 61 ticks)", 61)
-				.getInt();
-
-		this.isMobUsable = config
-				.get(this.name, "Can I be used by QuiverMobs? (default false. Too high-power for them.)", false)
-				.getBoolean();
+		return WeaponProperties.builder().minimumDamage(7).maximumDamage(13).projectileSpeed(3.0F).knockback(2)
+				.kickback(6).cooldown(60)
+				.intProperty(PROP_MIN_MAGIC_DAMAGE, "The minimum magic damage this weapon does", 6)
+				.intProperty(PROP_MAX_MAGIC_DAMAGE, "The maximum magic damage this weapon does", 14)
+				.intProperty(CommonProperties.PROP_WITHER_STRENGTH, CommonProperties.COMMENT_WITHER_STRENGTH, 3)
+				.intProperty(CommonProperties.PROP_WITHER_DUR, CommonProperties.COMMENT_WITHER_DUR, 61).build();
 	}
 }

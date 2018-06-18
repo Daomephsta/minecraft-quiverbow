@@ -3,7 +3,9 @@ package com.domochevsky.quiverbow.weapons;
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.util.InventoryHelper;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 import com.domochevsky.quiverbow.weapons.base.WeaponBow;
 
 import net.minecraft.client.Minecraft;
@@ -19,10 +21,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class EnderBow extends WeaponBow
 {
@@ -36,23 +36,14 @@ public class EnderBow extends WeaponBow
 	private String playerName = ""; // Holds the name of the firing player, so
 	// only they can see it firing
 	private int Ticks;
-	private int ZoomMax;
 
 	private int defaultFOV;
 
 	@Override
-	public void addProps(FMLPreInitializationEvent event, Configuration config)
+	protected WeaponProperties createDefaultProperties()
 	{
-		this.enabled = config.get(this.name, "Am I enabled? (default true)", true).getBoolean(true);
-		this.Ticks = config.get(this.name,
-				"How often should I display the predictive projectile? (default every 5 ticks. That's 4 per second.)",
-				5).getInt();
-		this.ZoomMax = config.get(this.name, "How far can I zoom in? (default 30. Lower equals more zoom.)", 30)
-				.getInt();
-
-		this.isMobUsable = config.get(this.name,
-				"Can I be used by QuiverMobs? (default false. They don't know how to pull a string anymore.)", false)
-				.getBoolean();
+		return WeaponProperties.builder()
+				.intProperty(CommonProperties.PROP_MAX_ZOOM, CommonProperties.COMMENT_MAX_ZOOM, 30).build();
 	}
 
 	@Override
@@ -99,7 +90,7 @@ public class EnderBow extends WeaponBow
 
 						// We're gonna zoom in each tick. Is it bigger than the
 						// max zoom? Then keep zooming.
-						if (Minecraft.getMinecraft().gameSettings.fovSetting > ZoomMax)
+						if (Minecraft.getMinecraft().gameSettings.fovSetting > getProperties().getInt(CommonProperties.PROP_MAX_ZOOM))
 						{
 							// FOV is now using full numbers. 70 is 70, 120 is
 							// 120. Nice of them.
