@@ -1,9 +1,14 @@
 package com.domochevsky.quiverbow.projectiles;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.net.NetHelper;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -17,6 +22,8 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class SoulShot extends ProjectileBase
 {
+	private static final Set<ResourceLocation> BLACKLIST = new HashSet<>();
+	
 	public SoulShot(World world)
 	{
 		super(world);
@@ -46,7 +53,8 @@ public class SoulShot extends ProjectileBase
 				this.damageShooter();
 				return;
 			}
-			// TODO: Add blacklist. Should be modifiable via config and IMC
+			//Check the blacklist
+			if(BLACKLIST.contains(EntityList.getKey(target.entityHit.getClass()))) return;
 			doCapture(target);
 
 			NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SMOKE_LARGE,
@@ -94,6 +102,12 @@ public class SoulShot extends ProjectileBase
 
 			this.world.spawnEntity(entityitem);
 		}
+	}
+	
+	public static void blacklistEntity(ResourceLocation entityID)
+	{
+		if (EntityList.isRegistered(entityID)) BLACKLIST.add(entityID);
+		else QuiverbowMain.logger.warn("No entity is registered with the id {}", entityID);
 	}
 
 	@Override

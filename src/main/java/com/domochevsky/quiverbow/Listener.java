@@ -1,10 +1,13 @@
 package com.domochevsky.quiverbow;
 
+import com.domochevsky.quiverbow.projectiles.SoulShot;
 import com.domochevsky.quiverbow.weapons.ERA;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
@@ -83,6 +86,22 @@ public class Listener
 			// else, either doesn't exist or not what I'm looking for
 
 			slot += 1;
+		}
+	}
+	
+	@SubscribeEvent
+	public void recieveIMCMessages(FMLInterModComms.IMCEvent event)
+	{
+		for(IMCMessage message : event.getMessages())
+		{
+			switch (message.key)
+			{
+			case "soul_cairn_blacklist":
+				SoulShot.blacklistEntity(message.getResourceLocationValue());
+				break;
+			default:
+				throw new IllegalArgumentException("Quiverbow: Recieved IMC message with unknown key: " + message.key);
+			}
 		}
 	}
 }

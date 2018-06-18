@@ -3,8 +3,10 @@ package com.domochevsky.quiverbow.config;
 import java.io.File;
 
 import com.domochevsky.quiverbow.QuiverbowMain;
+import com.domochevsky.quiverbow.projectiles.SoulShot;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.*;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -50,6 +52,11 @@ public class QuiverbowConfig
 				"If this is true then AA targeting range is limited to 32 blocks");
 		sendBlockBreak = config.getBoolean("sendBlockBreak", "#general", true,
 				"Do we send a BlockBreak event when breaking things with our projectiles?");
+		String[] soulCairnBlacklistStr = config.getStringList("soulCairnBlacklist", "#general", new String[0], "If an entity has its registry name in this list, the soul cairn cannot capture it.");
+		for(String entry : soulCairnBlacklistStr)
+		{
+			SoulShot.blacklistEntity(new ResourceLocation(entry));
+		}
 		config.save();
 	}
 	

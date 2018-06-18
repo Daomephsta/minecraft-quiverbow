@@ -2,12 +2,15 @@ package com.domochevsky.quiverbow;
 
 import java.util.ArrayList;
 
+import org.apache.logging.log4j.Logger;
+
 import com.domochevsky.quiverbow.ammo.*;
 import com.domochevsky.quiverbow.armsassistant.EntityAA;
 import com.domochevsky.quiverbow.blocks.FenLight;
 import com.domochevsky.quiverbow.config.QuiverbowConfig;
 import com.domochevsky.quiverbow.items.ItemRegistry;
-import com.domochevsky.quiverbow.miscitems.*;
+import com.domochevsky.quiverbow.miscitems.PackedUpAA;
+import com.domochevsky.quiverbow.miscitems.QuiverBowItem;
 import com.domochevsky.quiverbow.models.ISpecialRender;
 import com.domochevsky.quiverbow.net.PacketHandler;
 import com.domochevsky.quiverbow.projectiles.*;
@@ -51,6 +54,9 @@ public class QuiverbowMain
 	@SidedProxy(clientSide = "com.domochevsky.quiverbow.ClientProxy", serverSide = "com.domochevsky.quiverbow.CommonProxy")
 	public static CommonProxy proxy;
 
+	public static Logger logger;
+	
+	//TODO Remove
 	protected Configuration config; // Accessible from other files this way
 
 	public static ArrayList<WeaponBase> weapons = new ArrayList<WeaponBase>(); // Holder
@@ -88,6 +94,7 @@ public class QuiverbowMain
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		QuiverbowConfig.load(event.getSuggestedConfigurationFile());
+		logger = event.getModLog();
 		this.registerProjectiles();
 
 		PacketHandler.initPackets(); // Used for sending particle packets, so I
