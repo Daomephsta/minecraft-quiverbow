@@ -2,8 +2,6 @@ package com.domochevsky.quiverbow.ammo;
 
 import java.util.List;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import com.domochevsky.quiverbow.Helper;
 
 import net.minecraft.client.Minecraft;
@@ -82,7 +80,7 @@ public abstract class AmmoMagazine extends AmmoBase
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems)
 	{
-		if(!ArrayUtils.contains(this.getCreativeTabs(), tab)) return;
+		if (!isInCreativeTab(tab)) return;
 		subItems.add(new ItemStack(this, 1, 0));
 		subItems.add(Helper.createEmptyWeaponOrAmmoStack(this, 1));
 	}

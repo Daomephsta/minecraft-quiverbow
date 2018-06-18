@@ -2,8 +2,6 @@ package com.domochevsky.quiverbow.weapons.base;
 
 import java.util.List;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.config.WeaponProperties;
@@ -253,7 +251,7 @@ public abstract class WeaponBase extends QuiverBowItem
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems)
 	{
-		if(!ArrayUtils.contains(this.getCreativeTabs(), tab)) return;
+		if (!isInCreativeTab(tab)) return;
 		subItems.add(new ItemStack(this, 1, 0));
 		subItems.add(Helper.createEmptyWeaponOrAmmoStack(this, 1));
 	}
