@@ -82,9 +82,7 @@ public class BigRocket extends ProjectileBase
 				// projectile
 			}
 		}
-		// TODO: Check which particle this should use
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.EXPLOSION_HUGE,
-				(byte) 8);
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.FIREWORKS_SPARK, (byte) 8);
 	}
 
 	@Override
