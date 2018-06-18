@@ -16,6 +16,7 @@ import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -51,10 +52,19 @@ public class SoulShot extends ProjectileBase
 			else if (!target.entityHit.isNonBoss())
 			{
 				this.damageShooter();
+				if (shootingEntity instanceof EntityPlayer)
+					((EntityPlayer) shootingEntity).sendStatusMessage(
+							new TextComponentTranslation(QuiverbowMain.MODID + ".soul_cairn.boss"), true);
 				return;
 			}
 			//Check the blacklist
-			if(BLACKLIST.contains(EntityList.getKey(target.entityHit.getClass()))) return;
+			if(BLACKLIST.contains(EntityList.getKey(target.entityHit.getClass())))
+			{
+				if (shootingEntity instanceof EntityPlayer)
+					((EntityPlayer) shootingEntity).sendStatusMessage(
+							new TextComponentTranslation(QuiverbowMain.MODID + ".soul_cairn.blacklisted"), true);
+				return;
+			}
 			doCapture(target);
 
 			NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SMOKE_LARGE,
@@ -83,9 +93,7 @@ public class SoulShot extends ProjectileBase
 		ItemStack egg = new ItemStack(Items.SPAWN_EGG);
 		ItemMonsterPlacer.applyEntityIdToItemStack(egg, entityID);
 
-		if (this.shootingEntity == null) // Owner doesn't exist, so this has
-		// likely been used by a mob. Dropping
-		// the egg at target location
+		if (this.shootingEntity == null) // Owner doesn't exist, so this has likely been used by a mob. Dropping the egg at target location
 		{
 			// System.out.println("[DEBUGCHEVSKY] Owner of SOUL SHOT is null.
 			// Now'd that happen?");

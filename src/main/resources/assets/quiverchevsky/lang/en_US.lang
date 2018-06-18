@@ -166,6 +166,8 @@ item.quiverchevsky.weapon.soul_cairn.name=Soul Cairn
 item.quiverchevsky.weapon.soul_cairn.ammostatus=§9Soul Battery: %d / %d
 item.quiverchevsky.weapon.soul_cairn.loadtext=§eCraft with 1 Diamond to reload.
 item.quiverchevsky.weapon.soul_cairn.description=A tool to End (and start) all life.
+quiverchevsky.soul_cairn.blacklisted=This mob has been blacklisted. You cannot capture it.
+quiverchevsky.soul_cairn.boss=Bosses are too strong to be captured.
 
 item.quiverchevsky.weapon.redstone_sprayer.name=Redstone Sprayer
 item.quiverchevsky.weapon.redstone_sprayer.ammostatus=§9Redstone: %d / %d
