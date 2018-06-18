@@ -1,12 +1,9 @@
 package com.domochevsky.quiverbow.weapons;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.util.InventoryHelper;
-import com.domochevsky.quiverbow.weapons.base.CommonProperties;
-import com.domochevsky.quiverbow.weapons.base.WeaponBow;
+import com.domochevsky.quiverbow.weapons.base.*;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
@@ -24,7 +21,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 
-public class EnderBow extends WeaponBow
+public class EnderBow extends WeaponBow implements IScopedWeapon
 {
 	public EnderBow()
 	{
@@ -185,6 +182,12 @@ public class EnderBow extends WeaponBow
 
 		return stack.getTagCompound().getBoolean("isZoomed");
 	}
+	
+	@Override
+	public int getMaxZoom()
+	{
+		return getProperties().getInt(CommonProperties.PROP_MAX_ZOOM);
+	}
 
 	@Override
 	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft)
@@ -314,7 +317,7 @@ public class EnderBow extends WeaponBow
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems)
 	{
-		if(!ArrayUtils.contains(this.getCreativeTabs(), tab)) return;
+		if(!isInCreativeTab(tab)) return;
 		subItems.add(new ItemStack(this, 1, 0));
 	}
 }
