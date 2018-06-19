@@ -70,7 +70,7 @@ public class ProxyThorn extends ProjectileBase
 						|| stuckBlockZ != movPos.getBlockPos().getZ())
 				{
 					this.playSound(SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON, 1.0F, 0.3F);
-					NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(),
+					NetHelper.sendParticleMessageToAllPlayers(this.world, this,
 							EnumParticleTypes.SMOKE_NORMAL, (byte) 4);
 				}
 				stuckBlockX = movPos.getBlockPos().getX();
@@ -112,7 +112,7 @@ public class ProxyThorn extends ProjectileBase
 	@Override
 	public void doFlightSFX()
 	{
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.CRIT, (byte) 2);
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.CRIT, (byte) 2);
 	}
 
 	@Override
@@ -217,7 +217,7 @@ public class ProxyThorn extends ProjectileBase
 
 		// SFX
 		this.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.3F, 2.0F);
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SMOKE_LARGE,
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SMOKE_LARGE,
 				(byte) 8);
 
 		this.setDead(); // We're done here

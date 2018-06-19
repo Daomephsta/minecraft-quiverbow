@@ -44,7 +44,7 @@ public class EnderShot extends ProjectileBase
 			this.damage += (double) this.damageIncrease;
 		} // Increasing damage once per tick until we reach the max
 
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.PORTAL, (byte) 3);
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.PORTAL, (byte) 3);
 	}
 
 	@Override

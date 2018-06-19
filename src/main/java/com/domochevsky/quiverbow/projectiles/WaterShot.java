@@ -31,7 +31,7 @@ public class WaterShot extends ProjectileBase
 	@Override
 	public void doFlightSFX()
 	{
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.WATER_BUBBLE,
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.WATER_BUBBLE,
 				(byte) 4);
 	}
 
@@ -51,7 +51,7 @@ public class WaterShot extends ProjectileBase
 					(double) ((float) this.posZ + 0.5F), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.AMBIENT, 0.5F,
 					2.6F + (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.8F, false);
 
-			NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SMOKE_LARGE,
+			NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SMOKE_LARGE,
 					(byte) 4);
 
 			return; // No water in the nether, yo
@@ -76,7 +76,7 @@ public class WaterShot extends ProjectileBase
 		}
 
 		// SFX
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.WATER_BUBBLE,
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.WATER_BUBBLE,
 				(byte) 4);
 		this.playSound(SoundEvents.ENTITY_GENERIC_SPLASH, 1.0F, 1.0F);
 

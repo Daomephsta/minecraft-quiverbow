@@ -82,7 +82,7 @@ public class CoinShot extends ProjectileBase
 		}
 
 		// SFX
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.CRIT, (byte) 1);
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.CRIT, (byte) 1);
 		this.playSound(SoundEvents.BLOCK_METAL_BREAK, 1.0F, 3.0F);
 
 		this.setDead(); // We've hit something, so begone with the projectile

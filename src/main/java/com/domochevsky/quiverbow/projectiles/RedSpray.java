@@ -26,7 +26,7 @@ public class RedSpray extends ProjectilePotionEffect
 	@Override
 	public void doFlightSFX()
 	{
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.REDSTONE, (byte) 4);
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.REDSTONE, (byte) 4);
 	}
 
 	@Override

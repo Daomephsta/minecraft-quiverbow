@@ -6,7 +6,6 @@ import com.domochevsky.quiverbow.armsassistant.EntityAA;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
@@ -24,115 +23,39 @@ public class HelperClient
 	}
 
 	// We're guaranteed to be on client side
-	public static void displayParticles(int entityID, EnumParticleTypes particleType, byte strength)
+	public static void displayParticles(Entity entity, EnumParticleTypes particleType, byte strength)
 	{
-		// String SFX;
-
 		World world = Minecraft.getMinecraft().world;
+		if (world == null) return;
 
-		if (world == null)
+		for (int count = 0; count < strength; count++)
 		{
-			return;
-		} // World doesn't exist? oO
-
-		Entity entity = world.getEntityByID(entityID);
-
-		if (entity == null)
-		{
-			return;
-		} // Entity doesn't exist
-
-		int count = 0;
-
-		while (count < strength)
-		{
-			world.spawnParticle(particleType, entity.posX + entity.motionX * (double) count / 4.0D,
-					entity.posY + entity.motionY * (double) count / 4.0D,
-					entity.posZ + entity.motionZ * (double) count / 4.0D, 0, 0.2D, 0);
-
-			count += 1;
+			world.spawnParticle(particleType, entity.posX + entity.motionX * (double) count / 4.0D, entity.posY
+				+ entity.motionY * (double) count / 4.0D, entity.posZ + entity.motionZ * (double) count / 4.0D, 0, 0.2D,
+				0);
 		}
-	}
-
-	// We're guaranteed to be on client side. Updating that entity's position
-	// now
-	public static void updateEntityPositionClient(int entityID, double x, double y, double z)
-	{
-		Entity entity = Minecraft.getMinecraft().world.getEntityByID(entityID);
-
-		if (entity == null)
-		{
-			return;
-		} // Doesn't exist? Shame.
-
-		// Entity exists, so setting its position now
-		entity.setPosition(x, y, z);
 	}
 
 	// TODO: Replace with DataParameter
 	// Informing the client about the fact that my (visual) state has changed
-	public static void setTurretState(int entityID, boolean hasArmor, boolean hasWeaponUpgrade, boolean hasRidingUpgrade, boolean hasPlatingUpgrade, boolean hasCommunicationUpgrade)
+	public static void setTurretState(EntityAA turret, boolean hasArmor, boolean hasWeaponUpgrade, boolean hasRidingUpgrade, boolean hasPlatingUpgrade, boolean hasCommunicationUpgrade)
 	{
-		Entity entity = Minecraft.getMinecraft().world.getEntityByID(entityID);
-
-		if (entity == null)
-		{
-			return;
-		} // Doesn't exist? Shame.
-
-		if (entity instanceof EntityAA)
-		{
-			EntityAA turret = (EntityAA) entity;
-
-			// Keeping that updated as well, for the renderer
-			turret.hasArmorUpgrade = hasArmor;
-			turret.hasWeaponUpgrade = hasWeaponUpgrade;
-			turret.hasRidingUpgrade = hasRidingUpgrade;
-			turret.hasHeavyPlatingUpgrade = hasPlatingUpgrade;
-			turret.hasCommunicationUpgrade = hasCommunicationUpgrade;
-		}
+		turret.hasArmorUpgrade = hasArmor;
+		turret.hasWeaponUpgrade = hasWeaponUpgrade;
+		turret.hasRidingUpgrade = hasRidingUpgrade;
+		turret.hasHeavyPlatingUpgrade = hasPlatingUpgrade;
+		turret.hasCommunicationUpgrade = hasCommunicationUpgrade;
 	}
 
 	// Informing the client about the fact that my inventory has changed
-	public static void setTurretInventory(int entityID, int itemID, int itemSlot, int metadata)
+	public static void setTurretInventory(EntityAA turret, ItemStack stack, int itemSlot)
 	{
-		Entity entity = Minecraft.getMinecraft().world.getEntityByID(entityID);
-
-		if (entity == null)
+		// Received a slot that is higher than what we got, so assuming that
+		// this turret has a storage upgrade
+		if (itemSlot >= turret.storage.length)
 		{
-			return;
-		} // Doesn't exist? Shame.
-
-		if (entity instanceof EntityAA)
-		{
-			EntityAA turret = (EntityAA) entity;
-
-			if (itemSlot >= turret.storage.length) // Received a slot that is
-			// higher than what we got,
-			// so assuming that this
-			// turret has a storage
-			// upgrade
-			{
-				AIProperties.applyStorageUpgrade(turret); // Safeguard
-			}
-
-			if (itemID == -1)
-			{
-				turret.storage[itemSlot] = ItemStack.EMPTY; // Empty
-			}
-			else
-			{
-				turret.storage[itemSlot] = new ItemStack(Item.getItemById(itemID), 1, metadata); // There
-				// ya
-				// go.
-				// Now
-				// the
-				// client
-				// knows
-				// about
-				// that
-				// too.
-			}
+			AIProperties.applyStorageUpgrade(turret);
 		}
+		turret.storage[itemSlot] = stack;
 	}
 }

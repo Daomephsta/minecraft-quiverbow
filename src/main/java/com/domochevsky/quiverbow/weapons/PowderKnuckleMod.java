@@ -38,7 +38,7 @@ public class PowderKnuckleMod extends PowderKnuckle
 		if (world.isRemote) return EnumActionResult.SUCCESS;
 
 		// SFX
-		NetHelper.sendParticleMessageToAllPlayers(world, player.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+		NetHelper.sendParticleMessageToAllPlayers(world, player, EnumParticleTypes.SMOKE_NORMAL,
 				(byte) 4); // smoke
 
 		// Dmg

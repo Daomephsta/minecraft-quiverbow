@@ -76,7 +76,7 @@ public class OWR extends MagazineFedWeapon
 	@Override
 	protected void doCooldownSFX(World world, Entity entity)
 	{
-		NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_LARGE, (byte) 4); // large
+		NetHelper.sendParticleMessageToAllPlayers(world, entity, EnumParticleTypes.SMOKE_LARGE, (byte) 4); // large
 		// smoke
 		Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_FIRE_EXTINGUISH, 1.0F, 1.2F);
 	}
@@ -85,7 +85,7 @@ public class OWR extends MagazineFedWeapon
 	public void doFireFX(World world, Entity entity)
 	{
 		Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_GENERIC_EXPLODE, 0.5F, 1.5F);
-		NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SPELL_INSTANT,
+		NetHelper.sendParticleMessageToAllPlayers(world, entity, EnumParticleTypes.SPELL_INSTANT,
 				(byte) 4); // instant
 		// spell
 	}

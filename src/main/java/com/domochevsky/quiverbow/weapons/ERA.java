@@ -127,7 +127,7 @@ public class ERA extends WeaponBase
 				{
 					// Has a muzzle, so no boom
 					Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_GENERIC_EXPLODE, 2.0F, 0.1F);
-					NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(),
+					NetHelper.sendParticleMessageToAllPlayers(world, entity,
 							EnumParticleTypes.SMOKE_LARGE, (byte) 6);
 				}
 				else

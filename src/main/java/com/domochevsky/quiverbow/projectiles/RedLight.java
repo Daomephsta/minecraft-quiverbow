@@ -49,8 +49,8 @@ public class RedLight extends ProjectileBase implements IEntityAdditionalSpawnDa
 			this.setDead();
 		} // There's only so long we can exist
 
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.FLAME, (byte) 1);
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.REDSTONE, (byte) 1);
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.FLAME, (byte) 1);
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.REDSTONE, (byte) 1);
 	}
 
 	@Override
@@ -134,7 +134,7 @@ public class RedLight extends ProjectileBase implements IEntityAdditionalSpawnDa
 		}
 
 		// SFX
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.REDSTONE, (byte) 2);
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.REDSTONE, (byte) 2);
 		this.playSound(SoundEvents.ENTITY_LIGHTNING_THUNDER, 0.7F, 0.5F);
 
 		if (this.targetsHit > this.targetsHitMax)

@@ -32,7 +32,7 @@ public class OWRShot extends ProjectilePotionEffect
 	@Override
 	public void doFlightSFX()
 	{
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.ENCHANTMENT_TABLE,
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.ENCHANTMENT_TABLE,
 				(byte) 4);
 	}
 
@@ -67,7 +67,7 @@ public class OWRShot extends ProjectilePotionEffect
 
 		// SFX
 		this.playSound(SoundEvents.ENTITY_ARROW_HIT, 1.0F, 0.5F);
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SMOKE_NORMAL,
 				(byte) 4);
 	}
 

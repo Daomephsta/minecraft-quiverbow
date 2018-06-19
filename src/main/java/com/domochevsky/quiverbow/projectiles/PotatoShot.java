@@ -68,7 +68,7 @@ public class PotatoShot extends ProjectileBase
 		}
 
 		// SFX
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SMOKE_NORMAL,
 				(byte) 2);
 		this.playSound(SoundEvents.ENTITY_GENERIC_EAT, 0.6F, 0.7F);
 

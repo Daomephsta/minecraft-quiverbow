@@ -47,7 +47,7 @@ public class FrostLancer extends WeaponBase implements IScopedWeapon
 	protected void doCooldownSFX(World world, Entity entity)
 	{
 		Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.7F, 0.2F);
-		NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+		NetHelper.sendParticleMessageToAllPlayers(world, entity, EnumParticleTypes.SMOKE_NORMAL,
 				(byte) 1); // smoke
 	}
 
@@ -55,7 +55,7 @@ public class FrostLancer extends WeaponBase implements IScopedWeapon
 	public void doFireFX(World world, Entity entity)
 	{
 		Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_GENERIC_EXPLODE, 0.8F, 1.5F);
-		NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+		NetHelper.sendParticleMessageToAllPlayers(world, entity, EnumParticleTypes.SMOKE_NORMAL,
 				(byte) 1); // smoke
 	}
 

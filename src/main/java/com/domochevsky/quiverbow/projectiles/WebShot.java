@@ -42,7 +42,7 @@ public class WebShot extends ProjectileBase
 			this.world.setBlockState(pos, Blocks.WEB.getDefaultState(), 3);
 		}
 
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SNOWBALL,
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SNOWBALL,
 				(byte) 4);
 		this.playSound(SoundEvents.ENTITY_GENERIC_SPLASH, 0.4F, 2.0F);
 

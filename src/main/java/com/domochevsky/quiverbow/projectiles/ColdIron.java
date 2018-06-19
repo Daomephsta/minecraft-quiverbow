@@ -35,9 +35,9 @@ public class ColdIron extends ProjectilePotionEffect
 		// Doing our own (reduced) gravity
 		this.motionY -= 0.025; // Default is 0.05
 
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SNOW_SHOVEL,
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SNOW_SHOVEL,
 				(byte) 1);
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SPELL, (byte) 2);
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SPELL, (byte) 2);
 	}
 
 	@Override

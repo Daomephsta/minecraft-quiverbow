@@ -1,12 +1,14 @@
 package com.domochevsky.quiverbow.net;
 
+import com.domochevsky.quiverbow.armsassistant.EntityAA;
+
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class TurretStateMessage implements IMessage
 {
-	int entityID;
-
+	EntityAA turret;
 	boolean hasArmorUpgrade;
 	boolean hasWeaponUpgrade;
 	boolean hasRidingUpgrade;
@@ -18,11 +20,10 @@ public class TurretStateMessage implements IMessage
 		// somewhere in fml through reflection)
 
 	// Sending a message to the client to inform them about turret state changes
-	public TurretStateMessage(int incEntityID, boolean hasArmor, boolean hasWeaponUpgrade, boolean hasRidingUpgrade,
+	public TurretStateMessage(EntityAA turret, boolean hasArmor, boolean hasWeaponUpgrade, boolean hasRidingUpgrade,
 			boolean hasPlatingUpgrade, boolean hasComUpgrade)
 	{
-		this.entityID = incEntityID;
-
+		this.turret = turret;
 		this.hasArmorUpgrade = hasArmor;
 		this.hasWeaponUpgrade = hasWeaponUpgrade;
 		this.hasRidingUpgrade = hasRidingUpgrade;
@@ -33,7 +34,7 @@ public class TurretStateMessage implements IMessage
 	@Override
 	public void fromBytes(ByteBuf buf)
 	{
-		this.entityID = buf.readInt();
+		this.turret = (EntityAA) Minecraft.getMinecraft().world.getEntityByID(buf.readInt());
 		this.hasArmorUpgrade = buf.readBoolean();
 		this.hasWeaponUpgrade = buf.readBoolean();
 		this.hasRidingUpgrade = buf.readBoolean();
@@ -44,7 +45,7 @@ public class TurretStateMessage implements IMessage
 	@Override
 	public void toBytes(ByteBuf buf)
 	{
-		buf.writeInt(this.entityID);
+		buf.writeInt(turret.getEntityId());
 		buf.writeBoolean(this.hasArmorUpgrade);
 		buf.writeBoolean(this.hasWeaponUpgrade);
 		buf.writeBoolean(this.hasRidingUpgrade);

@@ -43,7 +43,7 @@ public class MortarArrow extends WeaponBase
 	public void doFireFX(World world, Entity entity)
 	{
 		Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 2.0F);
-		NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.SMOKE_LARGE, (byte) 1);
+		NetHelper.sendParticleMessageToAllPlayers(world, entity, EnumParticleTypes.SMOKE_LARGE, (byte) 1);
 	}
 
 	@Override

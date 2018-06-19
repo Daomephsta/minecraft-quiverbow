@@ -50,7 +50,7 @@ public class PowderKnuckle extends WeaponBase
 
 		world.createExplosion(player, pos.getX(), pos.getY(), pos.getZ(), getProperties().getFloat(CommonProperties.PROP_EXPLOSION_SIZE), true);
 
-		NetHelper.sendParticleMessageToAllPlayers(world, player.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+		NetHelper.sendParticleMessageToAllPlayers(world, player, EnumParticleTypes.SMOKE_NORMAL,
 				(byte) 4); // smoke
 
 		return EnumActionResult.SUCCESS;
@@ -71,7 +71,7 @@ public class PowderKnuckle extends WeaponBase
 		this.consumeAmmo(stack, entity, 1);
 
 		// SFX
-		NetHelper.sendParticleMessageToAllPlayers(entity.world, player.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+		NetHelper.sendParticleMessageToAllPlayers(entity.world, entity, EnumParticleTypes.SMOKE_NORMAL,
 				(byte) 4); // smoke
 
 		// Dmg

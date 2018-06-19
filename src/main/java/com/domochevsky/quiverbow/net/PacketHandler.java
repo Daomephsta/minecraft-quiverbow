@@ -8,32 +8,21 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class PacketHandler
 {
-	public static SimpleNetworkWrapper net;
+	public static SimpleNetworkWrapper net = NetworkRegistry.INSTANCE.newSimpleChannel(QuiverbowMain.MODID.toUpperCase());
 
 	public static void initPackets()
 	{
-		net = NetworkRegistry.INSTANCE.newSimpleChannel(QuiverbowMain.MODID.toUpperCase());
-
-		registerMessage(ParticlePacket.class, ParticleMessage.class);
-		registerMessage(PositionPacket.class, PositionMessage.class);
-		registerMessage(KickbackPacket.class, KickbackMessage.class);
-		registerMessage(TurretInventoryPacket.class, TurretInventoryMessage.class);
-		registerMessage(TurretStatePacket.class, TurretStateMessage.class);
+		registerMessage(ParticleMessageHandler.class, ParticleMessage.class, Side.CLIENT);
+		registerMessage(PositionMessageHandler.class, PositionMessage.class, Side.CLIENT);
+		registerMessage(KickbackPacket.class, KickbackMessage.class, Side.CLIENT);
+		registerMessage(TurretInventoryMessageHandler.class, TurretInventoryMessage.class, Side.CLIENT);
+		registerMessage(TurretStateMessageHandler.class, TurretStateMessage.class, Side.CLIENT);
 	}
 
 	private static int nextPacketId = 0;
 
-	private static <REQ extends IMessage, REPLY extends IMessage> void registerMessage(Class<? extends IMessageHandler<REQ, REPLY>> packet, Class<REQ> message)
+	private static <REQ extends IMessage, REPLY extends IMessage> void registerMessage(Class<? extends IMessageHandler<REQ, REPLY>> packet, Class<REQ> message, Side side)
 	{
-		net.registerMessage(packet, message, nextPacketId, Side.CLIENT); // Only
-		// care
-		// about
-		// sending
-		// things
-		// to
-		// the
-		// client
-		// net.registerMessage(packet, message, nextPacketId, Side.SERVER);
-		nextPacketId++;
+		net.registerMessage(packet, message, nextPacketId++, side);
 	}
 }

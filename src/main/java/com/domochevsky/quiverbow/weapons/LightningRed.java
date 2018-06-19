@@ -87,7 +87,7 @@ public class LightningRed extends MagazineFedWeapon
 		Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_LIGHTNING_THUNDER, 1.0F, 0.5F);
 		Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_FIREWORK_BLAST, 2.0F, 0.1F);
 
-		NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.REDSTONE, (byte) 4);
+		NetHelper.sendParticleMessageToAllPlayers(world, entity, EnumParticleTypes.REDSTONE, (byte) 4);
 
 		if (!world.isRemote)
 		{

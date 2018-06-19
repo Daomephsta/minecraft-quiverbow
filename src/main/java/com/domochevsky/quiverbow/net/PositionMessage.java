@@ -1,6 +1,8 @@
 package com.domochevsky.quiverbow.net;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class PositionMessage implements IMessage
@@ -9,16 +11,14 @@ public class PositionMessage implements IMessage
 	{} // this constructor is required otherwise you'll get errors (used
 		// somewhere in fml through reflection)
 
-	int entityID;
+	Entity entity;
 	double posX;
 	double posY;
 	double posZ;
 
-	// Sending a message to the client to display particles at a specific
-	// entity's position
-	public PositionMessage(int incEntityID, double x, double y, double z)
+	public PositionMessage(Entity entity, double x, double y, double z)
 	{
-		this.entityID = incEntityID;
+		this.entity = entity;
 		this.posX = x;
 		this.posY = y;
 		this.posZ = z;
@@ -28,7 +28,7 @@ public class PositionMessage implements IMessage
 	public void fromBytes(ByteBuf buf)
 	{
 		// the order is important
-		this.entityID = buf.readInt();
+		this.entity = Minecraft.getMinecraft().world.getEntityByID(buf.readInt());
 		this.posX = buf.readDouble();
 		this.posY = buf.readDouble();
 		this.posZ = buf.readDouble();
@@ -37,7 +37,7 @@ public class PositionMessage implements IMessage
 	@Override
 	public void toBytes(ByteBuf buf)
 	{
-		buf.writeInt(entityID);
+		buf.writeInt(entity.getEntityId());
 		buf.writeDouble(posX);
 		buf.writeDouble(posY);
 		buf.writeDouble(posZ);

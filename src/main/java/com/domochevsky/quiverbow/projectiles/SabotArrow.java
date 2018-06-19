@@ -55,7 +55,7 @@ public class SabotArrow extends ProjectileBase
 
 		// SFX
 		this.playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 3.0F);
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SMOKE_LARGE,
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SMOKE_LARGE,
 				(byte) 4);
 
 		this.setDead(); // We've hit something, so begone with the projectile

@@ -119,15 +119,15 @@ public class BlazeShot extends ProjectileBase
 		// System.out.println("Caller is " + this + "/ worldObj is " +
 		// this.world + " / entity ID is " + this.getEntityId());
 
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SMOKE_NORMAL,
 				(byte) 3);
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.FLAME, (byte) 1);
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.FLAME, (byte) 1);
 	}
 
 	@Override
 	public void doInGroundSFX() // Server side
 	{
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SMOKE_NORMAL,
 				(byte) 1);
 		this.playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.1F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F)); // Sizzling
 		// along...
@@ -148,7 +148,7 @@ public class BlazeShot extends ProjectileBase
 			this.world.setBlockToAir(pos);
 
 			// SFX
-			NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+			NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SMOKE_NORMAL,
 					(byte) 4);
 			this.playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.1F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
 		}

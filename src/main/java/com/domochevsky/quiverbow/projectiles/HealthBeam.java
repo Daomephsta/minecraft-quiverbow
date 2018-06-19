@@ -92,7 +92,7 @@ public class HealthBeam extends ProjectileBase implements IEntityAdditionalSpawn
 			this.setDead();
 		} // There's only so long we can exist
 
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.REDSTONE,
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.REDSTONE,
 				(byte) 10);
 	}
 
@@ -143,7 +143,7 @@ public class HealthBeam extends ProjectileBase implements IEntityAdditionalSpawn
 
 		// SFX
 		this.playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.7F, 1.5F);
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.REDSTONE, (byte) 7);
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.REDSTONE, (byte) 7);
 
 		this.setDead(); // We've hit something, so begone with the projectile
 	}

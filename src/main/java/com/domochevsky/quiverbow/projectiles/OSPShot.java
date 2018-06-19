@@ -30,7 +30,7 @@ public class OSPShot extends ProjectilePotionEffect
 	{
 		// Doing our own (reduced) gravity
 
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SMOKE_NORMAL,
 				(byte) 1);
 	}
 
@@ -57,7 +57,7 @@ public class OSPShot extends ProjectilePotionEffect
 		}
 
 		// SFX
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SPELL_MOB_AMBIENT,
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SPELL_MOB_AMBIENT,
 				(byte) 2);
 		this.playSound(SoundEvents.ENTITY_ARROW_HIT, 0.4F, 0.5F);
 	}

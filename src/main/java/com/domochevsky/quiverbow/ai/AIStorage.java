@@ -40,8 +40,7 @@ public class AIStorage
 				}
 
 				// Informing the client about this change
-				NetHelper.sendTurretInventoryMessageToPlayersInRange(turret.world, turret,
-						Item.getIdFromItem(turret.storage[slot].getItem()), slot, turret.storage[slot].getItemDamage());
+				NetHelper.sendTurretInventoryMessageToPlayersInRange(turret.world, turret, turret.storage[slot], slot);
 
 				return; // We're done here
 			}
@@ -81,9 +80,7 @@ public class AIStorage
 					} // Empty
 
 					// Informing the client about this change
-					NetHelper.sendTurretInventoryMessageToPlayersInRange(turret.world, turret,
-							Item.getIdFromItem(turret.storage[slot].getItem()), slot,
-							turret.storage[slot].getItemDamage());
+					NetHelper.sendTurretInventoryMessageToPlayersInRange(turret.world, turret, turret.storage[slot], slot);
 					return;
 				}
 				// else, not a magazine
@@ -146,7 +143,7 @@ public class AIStorage
 				turret.storage[slot] = ItemStack.EMPTY;
 
 				// Informing the client about this change
-				NetHelper.sendTurretInventoryMessageToPlayersInRange(turret.world, turret, -1, slot, 0);
+				NetHelper.sendTurretInventoryMessageToPlayersInRange(turret.world, turret, ItemStack.EMPTY, slot);
 			}
 
 			slot += 1;

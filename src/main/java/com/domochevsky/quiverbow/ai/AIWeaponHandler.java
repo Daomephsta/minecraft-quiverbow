@@ -456,9 +456,7 @@ public class AIWeaponHandler
 				if (sendMsg) // something changed, so telling all clients about
 				// it
 				{
-					NetHelper.sendTurretInventoryMessageToPlayersInRange(turret.world, turret,
-							Item.getIdFromItem(turret.storage[slot].getItem()), slot,
-							turret.storage[slot].getItemDamage());
+					NetHelper.sendTurretInventoryMessageToPlayersInRange(turret.world, turret, turret.storage[slot], slot);
 				}
 
 				if (currentStack.getItemDamage() < currentStack.getMaxDamage())
@@ -531,9 +529,7 @@ public class AIWeaponHandler
 			turret.storage[slot] = ItemStack.EMPTY;
 
 			// Something changed, so informing the client about that now
-			NetHelper.sendTurretInventoryMessageToPlayersInRange(turret.world, turret, -1, slot, 0);
-
-			// return amountRemoved;
+			NetHelper.sendTurretInventoryMessageToPlayersInRange(turret.world, turret, ItemStack.EMPTY, slot);
 		}
 		else // Has as much as we need
 		{
@@ -543,9 +539,8 @@ public class AIWeaponHandler
 			if (turret.storage[slot].getCount() <= 0) // Nope
 			{
 				turret.storage[slot] = ItemStack.EMPTY; // Remove it
-
 				// Something changed, so informing the client about that now
-				NetHelper.sendTurretInventoryMessageToPlayersInRange(turret.world, turret, -1, slot, 0);
+				NetHelper.sendTurretInventoryMessageToPlayersInRange(turret.world, turret, ItemStack.EMPTY, slot);
 			}
 		}
 

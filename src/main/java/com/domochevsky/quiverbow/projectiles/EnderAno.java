@@ -70,7 +70,7 @@ public class EnderAno extends ProjectileBase
 		}
 
 		// SFX
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.PORTAL, (byte) 8);
+		NetHelper.sendParticleMessageToAllPlayers(this.world, target.entityHit, EnumParticleTypes.PORTAL, (byte) 8);
 		this.playSound(SoundEvents.ENTITY_FIREWORK_LARGE_BLAST, 0.7F, 0.5F);
 
 		this.setDead(); // Hit something, so we're done here

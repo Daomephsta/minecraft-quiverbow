@@ -63,7 +63,7 @@ public class FlintDust extends ProjectileBase implements IEntityAdditionalSpawnD
 			this.setDead();
 		} // Starting 0.5 blocks in front of the player and ends one+ block
 			// after the target. So ending now
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SMOKE_NORMAL,
 				(byte) 1);
 	}
 

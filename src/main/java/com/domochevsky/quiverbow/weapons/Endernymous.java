@@ -44,7 +44,7 @@ public class Endernymous extends MagazineFedWeapon
 	public void doFireFX(World world, Entity entity)
 	{
 		Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_FIREWORK_LARGE_BLAST, 1.4F, 0.5F);
-		NetHelper.sendParticleMessageToAllPlayers(world, entity.getEntityId(), EnumParticleTypes.PORTAL, (byte) 4);
+		NetHelper.sendParticleMessageToAllPlayers(world, entity, EnumParticleTypes.PORTAL, (byte) 4);
 	}
 
 	@Override

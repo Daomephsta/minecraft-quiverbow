@@ -129,7 +129,7 @@ public class SmallRocket extends ProjectileBase
 	@Override
 	public void doFlightSFX()
 	{
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.FIREWORKS_SPARK,
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.FIREWORKS_SPARK,
 				(byte) 4);
 	}
 

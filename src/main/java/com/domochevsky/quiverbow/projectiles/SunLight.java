@@ -50,8 +50,8 @@ public class SunLight extends ProjectileBase implements IEntityAdditionalSpawnDa
 			this.setDead();
 		} // There's only so long we can exist
 
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.FLAME, (byte) 1);
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SPELL, (byte) 1);
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.FLAME, (byte) 1);
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SPELL, (byte) 1);
 	}
 
 	@Override
@@ -126,7 +126,7 @@ public class SunLight extends ProjectileBase implements IEntityAdditionalSpawnDa
 		}
 
 		// SFX
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.FLAME, (byte) 2);
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.FLAME, (byte) 2);
 		this.playSound(SoundEvents.ENTITY_FIREWORK_LARGE_BLAST, 0.7F, 1.5F);
 
 		// Going through terrain until our time runs out, but don't damage

@@ -50,7 +50,7 @@ public class SnowShot extends ProjectilePotionEffect
 		}
 
 		// SFX
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SNOWBALL, (byte) 2);
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SNOWBALL, (byte) 2);
 		this.playSound(SoundEvents.BLOCK_LAVA_POP, 1.0F, 0.5F);
 
 		this.setDead(); // We've hit something, so begone with the projectile

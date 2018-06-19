@@ -28,7 +28,7 @@ public class OSRShot extends ProjectilePotionEffect
 	@Override
 	public void doFlightSFX()
 	{
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SMOKE_NORMAL,
 				(byte) 1);
 	}
 
@@ -55,7 +55,7 @@ public class OSRShot extends ProjectilePotionEffect
 		}
 
 		// SFX
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SMOKE_NORMAL,
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SMOKE_NORMAL,
 				(byte) 1);
 		this.playSound(SoundEvents.ENTITY_ARROW_HIT, 1.0F, 0.5F);
 	}

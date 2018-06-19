@@ -1,44 +1,45 @@
 package com.domochevsky.quiverbow.net;
 
+import com.domochevsky.quiverbow.armsassistant.EntityAA;
+
 import io.netty.buffer.ByteBuf;
+import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class TurretInventoryMessage implements IMessage
 {
-	public TurretInventoryMessage()
-	{} // this constructor is required otherwise you'll get errors (used
-		// somewhere in fml through reflection)
+	// this constructor is required otherwise you'll get errors (used
+	// somewhere in fml through reflection)
+	public TurretInventoryMessage() {} 
 
-	int entityID;
-	int itemID;
+	EntityAA turret;
+	ItemStack stack;
 	int itemSlot;
-	int metadata;
 
 	// Sending a message to the client to inform them about turret state changes
-	public TurretInventoryMessage(int incEntityID, int itemID, int slot, int metadata)
+	public TurretInventoryMessage(EntityAA turret, ItemStack stack, int slot)
 	{
-		this.entityID = incEntityID;
-		this.itemID = itemID;
+		this.turret = turret;
+		this.stack = stack;
 		this.itemSlot = slot;
-		this.metadata = metadata;
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf)
 	{
 		// the order is important
-		this.entityID = buf.readInt();
-		this.itemID = buf.readInt();
+		this.turret = (EntityAA) Minecraft.getMinecraft().world.getEntityByID(buf.readInt());
+		this.stack = ByteBufUtils.readItemStack(buf);
 		this.itemSlot = buf.readInt();
-		this.metadata = buf.readInt();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf)
 	{
-		buf.writeInt(this.entityID);
-		buf.writeInt(this.itemID);
+		buf.writeInt(turret.getEntityId());
+		ByteBufUtils.writeItemStack(buf, stack);
 		buf.writeInt(this.itemSlot);
-		buf.writeInt(this.metadata);
 	}
 }

@@ -48,8 +48,8 @@ public class EnderAccelerator extends ProjectileBase implements IEntityAdditiona
 			this.setDead();
 		}
 
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SPELL, (byte) 4);
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.ENCHANTMENT_TABLE,
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SPELL, (byte) 4);
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.ENCHANTMENT_TABLE,
 				(byte) 4);
 	}
 
@@ -68,7 +68,7 @@ public class EnderAccelerator extends ProjectileBase implements IEntityAdditiona
 		// baddaboom
 
 		// SFX
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SPELL, (byte) 8);
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SPELL, (byte) 8);
 
 		this.setDead(); // No matter what, we're done here
 	}

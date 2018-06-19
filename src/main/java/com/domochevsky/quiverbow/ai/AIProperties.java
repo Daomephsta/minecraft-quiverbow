@@ -6,7 +6,6 @@ import com.domochevsky.quiverbow.net.NetHelper;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
 
@@ -55,22 +54,9 @@ public class AIProperties
 	// Telling them what I'm carrying in my pockets
 	public static void sendInventoryToPlayersInRange(EntityAA turret)
 	{
-		int counter = 0;
-
-		while (counter < turret.storage.length)
+		for (int counter = 0;counter < turret.storage.length; counter++)
 		{
-			if (turret.storage[counter].isEmpty())
-			{
-				NetHelper.sendTurretInventoryMessageToPlayersInRange(turret.world, turret, -1, counter, 0); // Empty
-			}
-			else
-			{
-				NetHelper.sendTurretInventoryMessageToPlayersInRange(turret.world, turret,
-						Item.getIdFromItem(turret.storage[counter].getItem()), counter,
-						turret.storage[counter].getItemDamage());
-			}
-
-			counter += 1;
+			NetHelper.sendTurretInventoryMessageToPlayersInRange(turret.world, turret, turret.storage[counter], counter);
 		}
 	}
 
@@ -159,7 +145,7 @@ public class AIProperties
 
 		// SFX
 
-		NetHelper.sendParticleMessage(player, turret.getEntityId(), EnumParticleTypes.FIREWORKS_SPARK, (byte) 4); // Firework
+		NetHelper.sendParticleMessage(player, turret, EnumParticleTypes.FIREWORKS_SPARK, (byte) 4); // Firework
 		// sparks
 		// particles
 		// (2)

@@ -67,7 +67,7 @@ public class SoulShot extends ProjectileBase
 			}
 			doCapture(target);
 
-			NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.SMOKE_LARGE,
+			NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SMOKE_LARGE,
 					(byte) 4);
 
 			this.setDead(); // We've hit something, so begone with the
@@ -130,7 +130,7 @@ public class SoulShot extends ProjectileBase
 		// Doing our own (reduced) gravity
 		this.motionY -= 0.025; // Default is 0.05
 
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.PORTAL, (byte) 3);
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.PORTAL, (byte) 3);
 	}
 
 	void damageShooter()

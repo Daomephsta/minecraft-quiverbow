@@ -38,7 +38,7 @@ public class SugarRod extends ProjectileBase
 		}
 
 		// SFX
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this.getEntityId(), EnumParticleTypes.CRIT, (byte) 1);
+		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.CRIT, (byte) 1);
 
 		this.setDead(); // We've hit something, so begone with the projectile
 	}
