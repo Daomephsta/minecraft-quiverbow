@@ -84,7 +84,7 @@ public class FrostLancer extends WeaponBase implements IScopedWeapon
 	@Override
 	protected WeaponProperties createDefaultProperties()
 	{
-		return WeaponProperties.builder().minimumDamage(9).minimumDamage(18).projectileSpeed(3.5F).knockback(3)
+		return WeaponProperties.builder().minimumDamage(9).maximumDamage(18).projectileSpeed(3.5F).knockback(3)
 				.kickback(4).cooldown(40).mobUsable()
 				.intProperty(CommonProperties.PROP_SLOWNESS_STRENGTH, CommonProperties.COMMENT_SLOWNESS_STRENGTH, 3)
 				.intProperty(CommonProperties.PROP_SLOWNESS_DUR, CommonProperties.COMMENT_SLOWNESS_DUR, 120)
