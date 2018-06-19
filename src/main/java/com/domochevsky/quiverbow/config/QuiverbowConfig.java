@@ -32,6 +32,9 @@ public class QuiverbowConfig
 	/* If this is false then Helper.tryBlockBreak() won't send a BlockBreak
 	 * event. Used by protection plugins. */
 	public static boolean sendBlockBreak;
+	// How fast scoped weapons zoom in and out. Smaller numbers zoom faster.
+	public static float zoomSpeed;
+	
 	private static Configuration config;
 
 	public static void load(File suggestedFile)
@@ -52,6 +55,7 @@ public class QuiverbowConfig
 				"If this is true then AA targeting range is limited to 32 blocks");
 		sendBlockBreak = config.getBoolean("sendBlockBreak", "#general", true,
 				"Do we send a BlockBreak event when breaking things with our projectiles?");
+		zoomSpeed = config.getFloat("zoomSpeed", "#general", 15.0F, 1.0F, 100.0F, "How fast scoped weapons zoom in and out. Smaller numbers zoom faster.");
 		String[] soulCairnBlacklistStr = config.getStringList("soulCairnBlacklist", "#general", new String[0], "If an entity has its registry name in this list, the soul cairn cannot capture it.");
 		for(String entry : soulCairnBlacklistStr)
 		{

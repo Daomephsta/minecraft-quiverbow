@@ -5,22 +5,20 @@ import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.util.InventoryHelper;
 import com.domochevsky.quiverbow.weapons.base.*;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 
+// TODO: predictive OGL rendering
 public class EnderBow extends WeaponBow implements IScopedWeapon
 {
 	public EnderBow()
@@ -28,165 +26,23 @@ public class EnderBow extends WeaponBow implements IScopedWeapon
 		super("ender_bow", 256);
 	}
 
-	private int shotCounter = 0;
-
-	private String playerName = ""; // Holds the name of the firing player, so
-	// only they can see it firing
-	private int Ticks;
-
-	private int defaultFOV;
-
 	@Override
 	protected WeaponProperties createDefaultProperties()
 	{
 		return WeaponProperties.builder()
 				.intProperty(CommonProperties.PROP_MAX_ZOOM, CommonProperties.COMMENT_MAX_ZOOM, 30).build();
 	}
-
-	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected)
-	{
-		if (stack.getTagCompound() == null)
-		{
-			stack.setTagCompound(new NBTTagCompound());
-
-			stack.getTagCompound().setBoolean("isZoomed", false);
-			stack.getTagCompound().setInteger("defaultFOV", 0); // FOV is now
-			// using full
-			// numbers.
-			// We're
-			// recording the
-			// current
-			// default FOV
-			// here
-		}
-
-		// let's check zoom here
-		if (entity instanceof EntityPlayer) // Step 1, is this a player?
-		{
-			EntityPlayer entityplayer = (EntityPlayer) entity;
-
-			if (isSelected) // Step
-			// 2,
-			// are
-			// they
-			// holding
-			// the
-			// bow?
-			{
-				if (entityplayer.getActiveHand() != null) // step 3, are they
-				// using the
-				// bow?
-				{
-					this.setCurrentZoom(stack, true); // We need to zoom in!
-
-					if (world.isRemote)
-					{
-						// System.out.println("[ENDER BOW] Current FOV: " +
-						// Minecraft.getMinecraft().gameSettings.fovSetting);
-
-						// We're gonna zoom in each tick. Is it bigger than the
-						// max zoom? Then keep zooming.
-						if (Minecraft.getMinecraft().gameSettings.fovSetting > getProperties().getInt(CommonProperties.PROP_MAX_ZOOM))
-						{
-							// FOV is now using full numbers. 70 is 70, 120 is
-							// 120. Nice of them.
-							Minecraft.getMinecraft().gameSettings.fovSetting -= 2; // 2
-							// less,
-							// until
-							// we've
-							// reached
-							// zoomMax
-						}
-					}
-					// else, server side. Has no deal with game settings
-
-				}
-				else // Not using this item currently
-				{
-					if (this.isCurrentlyZoomed(stack)) // Are we currently
-					// zoomed in?
-					{
-						this.setCurrentZoom(stack, false);
-						if (world.isRemote)
-						{
-							this.restoreFOV(stack);
-						} // Begone with that then
-					}
-					// else, not zoomed in currently
-				}
-			}
-			else // Not holding the bow
-			{
-				if (this.isCurrentlyZoomed(stack)) // Are we currently zoomed
-				// in?
-				{
-					this.setCurrentZoom(stack, false);
-					if (world.isRemote)
-					{
-						this.restoreFOV(stack);
-					} // Begone with that then
-
-				}
-			}
-
-			// step 0, recording the current zoom level, if we're not zoomed in.
-			// Need to do this AFTER we reset
-			if (!this.isCurrentlyZoomed(stack)) // Not zoomed in currently
-			{
-				if (world.isRemote)
-				{
-					this.recordCurrentFOV(stack);
-				} // Client side only
-			}
-		}
-		// else, not a player holding this thing
-	}
-
-	// Records the current FOV setting
-	void recordCurrentFOV(ItemStack stack)
-	{
-		this.defaultFOV = (int) Minecraft.getMinecraft().gameSettings.fovSetting;
-	} // Client-side only
-
-	// Sets the FOV setting back to the recorded default
-	void restoreFOV(ItemStack stack)
-	{
-		Minecraft.getMinecraft().gameSettings.fovSetting = this.defaultFOV;
-	} // Client-side only
-
-	void setCurrentZoom(ItemStack stack, boolean zoom)
-	{
-		if (stack.isEmpty())
-		{
-			return;
-		} // Not a valid item
-		if (!stack.hasTagCompound())
-		{
-			return;
-		} // No tag
-
-		stack.getTagCompound().setBoolean("isZoomed", zoom);
-	}
-
-	boolean isCurrentlyZoomed(ItemStack stack)
-	{
-		if (stack.isEmpty())
-		{
-			return false;
-		} // Not a valid item
-		if (!stack.hasTagCompound())
-		{
-			return false;
-		} // No tag
-
-		return stack.getTagCompound().getBoolean("isZoomed");
-	}
 	
 	@Override
 	public int getMaxZoom()
 	{
 		return getProperties().getInt(CommonProperties.PROP_MAX_ZOOM);
+	}
+	
+	@Override
+	public boolean shouldZoom(World world, EntityPlayer player, ItemStack stack)
+	{
+		return player.getHeldItemMainhand().getItem() == this || player.getHeldItemOffhand().getItem() == this;
 	}
 
 	@Override
@@ -257,22 +113,6 @@ public class EnderBow extends WeaponBow implements IScopedWeapon
 	}
 
 	@Override
-	public void onUsingTick(ItemStack stack, EntityLivingBase player, int count)
-	{
-		if (player.world.isRemote)
-		{
-			// The projectile is only allowed to shoot every X ticks, so we're
-			// gonna make this happen here
-			this.shotCounter += 1;
-			if (this.shotCounter >= Ticks)
-			{
-				// TODO: predictive OGL rendering
-				this.shotCounter = 0;
-			}
-		}
-	}
-
-	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
 	{
 		ItemStack stack = player.getHeldItem(hand);
@@ -282,36 +122,9 @@ public class EnderBow extends WeaponBow implements IScopedWeapon
 		{
 			return event.getAction();
 		}
-
-		if (player.capabilities.isCreativeMode || player.inventory.hasItemStack(new ItemStack(Items.ARROW)))
-		{
-			player.setActiveHand(hand);
-			this.playerName = player.getDisplayName().getUnformattedText(); // Recording
-			// the
-			// player
-			// name here, so only
-			// they can see the
-			// projectile
-		}
+		player.setActiveHand(hand);
 
 		return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-	}
-
-	@Override
-	public boolean onDroppedByPlayer(ItemStack stack, EntityPlayer player)
-	{
-		stack.getTagCompound().setBoolean("zoom", false); // Dropped the bow
-		stack.getTagCompound().setFloat("currentzoom", 0);
-
-		if (player.world.isRemote)
-		{
-			Minecraft.getMinecraft().gameSettings.fovSetting = stack.getTagCompound().getFloat("zoomlevel"); // Begone
-			// with
-			// the
-			// zoom
-		}
-
-		return true;
 	}
 
 	@Override

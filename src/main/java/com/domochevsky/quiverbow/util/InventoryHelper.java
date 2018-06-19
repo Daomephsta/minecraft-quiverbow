@@ -64,7 +64,7 @@ public class InventoryHelper
 		else return ItemStack.EMPTY;
 	}
 
-	public static ItemStack findItemInHandsByClass(EntityPlayer player, Class<? extends Item> clazz)
+	public static ItemStack findItemInHandsByClass(EntityPlayer player, Class<?> clazz)
 	{
 		ItemStack mainHand = player.getHeldItemMainhand();
 		ItemStack offHand = player.getHeldItemOffhand();

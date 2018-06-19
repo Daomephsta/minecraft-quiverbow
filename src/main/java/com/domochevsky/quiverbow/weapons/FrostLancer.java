@@ -7,13 +7,13 @@ import com.domochevsky.quiverbow.ammo.AmmoBase;
 import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.ColdIron;
-import com.domochevsky.quiverbow.weapons.base.CommonProperties;
-import com.domochevsky.quiverbow.weapons.base.WeaponBase;
+import com.domochevsky.quiverbow.weapons.base.*;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -23,7 +23,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class FrostLancer extends WeaponBase
+public class FrostLancer extends WeaponBase implements IScopedWeapon
 {
 	private static final String PROP_NAUSEA_STRENGTH = "nauseaStrength";
 
@@ -67,6 +67,18 @@ public class FrostLancer extends WeaponBase
 		if (this.getCooldown(stack) > 0)
 			list.add(I18n.format(getUnlocalizedName() + ".cooldown",
 					this.displayInSec(this.getCooldown(stack))));
+	}
+	
+	@Override
+	public int getMaxZoom()
+	{
+		return getProperties().getInt(CommonProperties.PROP_MAX_ZOOM);
+	}
+
+	@Override
+	public boolean shouldZoom(World world, EntityPlayer player, ItemStack stack)
+	{
+		return player.isSneaking();
 	}
 	
 	@Override
