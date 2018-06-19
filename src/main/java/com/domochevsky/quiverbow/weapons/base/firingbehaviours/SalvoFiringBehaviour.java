@@ -49,7 +49,7 @@ public class SalvoFiringBehaviour<W extends WeaponBase> extends ProjectileFiring
 
 			weapon.doFireFX(world, entity);
 
-			if (weapon instanceof MagazineFedWeapon && weapon.consumeAmmo(stack, entity, 1))
+			if (weapon.consumeAmmo(stack, entity, 1) && weapon instanceof MagazineFedWeapon)
 			{
 				((MagazineFedWeapon) weapon).dropMagazine(world, stack, entity);
 				return;
