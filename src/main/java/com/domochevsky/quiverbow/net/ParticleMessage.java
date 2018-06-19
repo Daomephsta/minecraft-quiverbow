@@ -1,14 +1,13 @@
 package com.domochevsky.quiverbow.net;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class ParticleMessage implements IMessage
 {
-	Entity entity;
+	int entityID;
 	EnumParticleTypes particleType;
 	byte strength;
 
@@ -18,7 +17,7 @@ public class ParticleMessage implements IMessage
 	// Sending a message to the client to display particles at a specific entity's position
 	public ParticleMessage(Entity entity, EnumParticleTypes type, byte strength)
 	{
-		this.entity = entity;
+		this.entityID = entity.getEntityId();
 		this.particleType = type;
 		this.strength = strength;
 	}
@@ -27,7 +26,7 @@ public class ParticleMessage implements IMessage
 	public void fromBytes(ByteBuf buf)
 	{
 		// the order is important
-		this.entity = Minecraft.getMinecraft().world.getEntityByID(buf.readInt());
+		this.entityID = buf.readInt();
 		this.particleType = EnumParticleTypes.values()[buf.readInt()];
 		this.strength = buf.readByte();
 	}
@@ -35,7 +34,7 @@ public class ParticleMessage implements IMessage
 	@Override
 	public void toBytes(ByteBuf buf)
 	{
-		buf.writeInt(entity.getEntityId());
+		buf.writeInt(entityID);
 		buf.writeInt(particleType.ordinal());
 		buf.writeByte(strength);
 	}

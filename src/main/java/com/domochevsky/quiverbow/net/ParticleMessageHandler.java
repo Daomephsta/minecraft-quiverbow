@@ -2,6 +2,7 @@ package com.domochevsky.quiverbow.net;
 
 import com.domochevsky.quiverbow.HelperClient;
 
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
@@ -11,7 +12,8 @@ public class ParticleMessageHandler implements ISidedMessageHandler<ParticleMess
 	@Override
 	public void processMessage(ParticleMessage message, MessageContext ctx)
 	{
-		HelperClient.displayParticles(message.entity, message.particleType, message.strength);
+		HelperClient.displayParticles(Minecraft.getMinecraft().world.getEntityByID(message.entityID),
+			message.particleType, message.strength);
 	}
 	
 	@Override

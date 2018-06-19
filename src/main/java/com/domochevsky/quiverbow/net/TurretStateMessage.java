@@ -3,12 +3,11 @@ package com.domochevsky.quiverbow.net;
 import com.domochevsky.quiverbow.armsassistant.EntityAA;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class TurretStateMessage implements IMessage
 {
-	EntityAA turret;
+	int turretID;
 	boolean hasArmorUpgrade;
 	boolean hasWeaponUpgrade;
 	boolean hasRidingUpgrade;
@@ -23,7 +22,7 @@ public class TurretStateMessage implements IMessage
 	public TurretStateMessage(EntityAA turret, boolean hasArmor, boolean hasWeaponUpgrade, boolean hasRidingUpgrade,
 			boolean hasPlatingUpgrade, boolean hasComUpgrade)
 	{
-		this.turret = turret;
+		this.turretID = turret.getEntityId();
 		this.hasArmorUpgrade = hasArmor;
 		this.hasWeaponUpgrade = hasWeaponUpgrade;
 		this.hasRidingUpgrade = hasRidingUpgrade;
@@ -34,7 +33,7 @@ public class TurretStateMessage implements IMessage
 	@Override
 	public void fromBytes(ByteBuf buf)
 	{
-		this.turret = (EntityAA) Minecraft.getMinecraft().world.getEntityByID(buf.readInt());
+		this.turretID = buf.readInt();
 		this.hasArmorUpgrade = buf.readBoolean();
 		this.hasWeaponUpgrade = buf.readBoolean();
 		this.hasRidingUpgrade = buf.readBoolean();
@@ -45,7 +44,7 @@ public class TurretStateMessage implements IMessage
 	@Override
 	public void toBytes(ByteBuf buf)
 	{
-		buf.writeInt(turret.getEntityId());
+		buf.writeInt(turretID);
 		buf.writeBoolean(this.hasArmorUpgrade);
 		buf.writeBoolean(this.hasWeaponUpgrade);
 		buf.writeBoolean(this.hasRidingUpgrade);
