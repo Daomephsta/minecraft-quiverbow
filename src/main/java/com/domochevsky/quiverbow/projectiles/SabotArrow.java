@@ -44,14 +44,10 @@ public class SabotArrow extends ProjectileBase
 		}
 
 		// Spawning a rose of arrows here
-		this.fireArrow(1.0f, 0.0f);
-		this.fireArrow(180.0f, 0.0f);
-		this.fireArrow(90.0f, 0.0f);
-		this.fireArrow(-90.0f, 0.0f);
-		this.fireArrow(45.0f, -45.0f);
-		this.fireArrow(-45.0f, -45.0f);
-		this.fireArrow(135.0f, -45.0f);
-		this.fireArrow(-135.0f, 45.0f);
+		for(int i = 0; i < 8; i++)
+		{
+			this.fireArrow(-45.0F, i * 45.0F);
+		}
 
 		// SFX
 		this.playSound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 3.0F);
@@ -61,10 +57,12 @@ public class SabotArrow extends ProjectileBase
 		this.setDead(); // We've hit something, so begone with the projectile
 	}
 
-	private void fireArrow(float accHor, float accVert)
+	private void fireArrow(float pitch, float yaw)
 	{
 		EntityArrow arrow = Helper.createArrow(world, shootingEntity);
+		arrow.setPosition(posX, posY + 1.0F, posZ);
 		arrow.setDamage(this.damage);
+		arrow.shoot(this, pitch, yaw, 0.0F, 1.0F, 0.5F);
 
 		this.world.spawnEntity(arrow);
 	}
