@@ -38,7 +38,7 @@ public class ProximityNeedler extends MagazineFedWeapon
 					ProxyThorn shot = new ProxyThorn(world, entity, properties.getProjectileSpeed());
 					shot.damage = dmg;
 					shot.ticksInGroundMax = properties.getInt(CommonProperties.PROP_DESPAWN_TIME);
-					shot.triggerDistance = properties.getInt(PROP_TRIGGER_DISTANCE);
+					shot.triggerDistance = properties.getFloat(PROP_TRIGGER_DISTANCE);
 					shot.proxyDelay = properties.getInt(PROP_PROX_CHECK_INTERVAL);
 					shot.thornAmount = properties.getInt(PROP_THORN_AMOUNT);
 
