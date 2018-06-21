@@ -96,7 +96,7 @@ public class ListenerClient
 		{
 			currentZoomFovModifier = defaultFOVModifier;
 			//Move the camera a tiny bit to get MC/LWJGL to render any chunks culled while zoomed in
-			Minecraft.getMinecraft().player.turn(0.001F, 0.0F);
+			Minecraft.getMinecraft().player.turn(0.1F, 0.0F);
 		}
 	}
 
