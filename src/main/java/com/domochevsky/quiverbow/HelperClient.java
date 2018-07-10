@@ -1,7 +1,8 @@
 package com.domochevsky.quiverbow;
 
-import com.domochevsky.quiverbow.ai.AIProperties;
-import com.domochevsky.quiverbow.armsassistant.EntityAA;
+import java.util.List;
+
+import com.domochevsky.quiverbow.armsassistant.*;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -10,6 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 public class HelperClient
 {
@@ -38,24 +41,22 @@ public class HelperClient
 
 	// TODO: Replace with DataParameter
 	// Informing the client about the fact that my (visual) state has changed
-	public static void setTurretState(EntityAA turret, boolean hasArmor, boolean hasWeaponUpgrade, boolean hasRidingUpgrade, boolean hasPlatingUpgrade, boolean hasCommunicationUpgrade)
+	public static void setTurretState(EntityArmsAssistant turret, List<IArmsAssistantUpgrade> upgrades)
 	{
-		turret.hasArmorUpgrade = hasArmor;
-		turret.hasWeaponUpgrade = hasWeaponUpgrade;
-		turret.hasRidingUpgrade = hasRidingUpgrade;
-		turret.hasHeavyPlatingUpgrade = hasPlatingUpgrade;
-		turret.hasCommunicationUpgrade = hasCommunicationUpgrade;
+		
 	}
 
 	// Informing the client about the fact that my inventory has changed
-	public static void setTurretInventory(EntityAA turret, ItemStack stack, int itemSlot)
+	public static void setTurretInventory(EntityArmsAssistant turret, ItemStack stack, int itemSlot)
 	{
 		// Received a slot that is higher than what we got, so assuming that
 		// this turret has a storage upgrade
-		if (itemSlot >= turret.storage.length)
+		IItemHandler inv = turret.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+		
+		if (itemSlot >= inv.getSlots())
 		{
-			AIProperties.applyStorageUpgrade(turret);
+			turret.applyUpgrade(UpgradeRegistry.STORAGE);
 		}
-		turret.storage[itemSlot] = stack;
+		inv.insertItem(itemSlot, stack, false);
 	}
 }
