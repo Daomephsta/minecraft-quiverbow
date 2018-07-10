@@ -16,7 +16,6 @@ public class PacketHandler
 		registerMessage(PositionMessageHandler.class, PositionMessage.class, Side.CLIENT);
 		registerMessage(KickbackPacket.class, KickbackMessage.class, Side.CLIENT);
 		registerMessage(TurretInventoryMessageHandler.class, TurretInventoryMessage.class, Side.CLIENT);
-		registerMessage(TurretStateMessageHandler.class, TurretStateMessage.class, Side.CLIENT);
 	}
 
 	private static int nextPacketId = 0;
