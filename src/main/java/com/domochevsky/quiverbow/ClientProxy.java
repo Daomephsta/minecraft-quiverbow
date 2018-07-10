@@ -1,6 +1,8 @@
 package com.domochevsky.quiverbow;
 
+import com.domochevsky.quiverbow.armsassistant.EntityArmsAssistant;
 import com.domochevsky.quiverbow.projectiles.*;
+import com.domochevsky.quiverbow.renderer.RenderAA;
 import com.domochevsky.quiverbow.renderer.RenderCross;
 
 import net.minecraft.client.Minecraft;
@@ -42,6 +44,7 @@ public class ClientProxy extends CommonProxy
 		registerSnowballStyleRender(FenGoop.class, Items.GLOWSTONE_DUST);
 		registerSnowballStyleRender(WebShot.class, Items.SNOWBALL);
 		registerInvisibleRender(EnderAno.class);
+		RenderingRegistry.registerEntityRenderingHandler(EntityArmsAssistant.class, RenderAA::new);
 	}
 	
 	private <T extends ProjectileBase> void registerCrossStyleRender(Class<T> entityClass, ResourceLocation texture, int width, int length)
