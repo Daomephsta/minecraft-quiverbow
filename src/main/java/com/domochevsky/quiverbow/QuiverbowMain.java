@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.apache.logging.log4j.Logger;
 
 import com.domochevsky.quiverbow.ammo.*;
-import com.domochevsky.quiverbow.armsassistant.EntityAA;
+import com.domochevsky.quiverbow.armsassistant.EntityArmsAssistant;
 import com.domochevsky.quiverbow.blocks.FenLight;
 import com.domochevsky.quiverbow.config.QuiverbowConfig;
 import com.domochevsky.quiverbow.items.ItemRegistry;
@@ -104,8 +104,8 @@ public class QuiverbowMain
 		// Registering the Arms Assistant
 		if (QuiverbowConfig.allowTurret)
 		{
-			EntityRegistry.registerModEntity(new ResourceLocation(QuiverbowMain.MODID, "turret"), EntityAA.class,
-					"turret", 0, this, 80, 1, true);
+			EntityRegistry.registerModEntity(new ResourceLocation(QuiverbowMain.MODID, "turret"),
+				EntityArmsAssistant.class, "turret", 0, this, 80, 1, true);
 		}
 		proxy.registerRenderers();
 

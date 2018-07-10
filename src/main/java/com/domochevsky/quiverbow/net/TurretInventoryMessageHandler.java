@@ -1,7 +1,7 @@
 package com.domochevsky.quiverbow.net;
 
 import com.domochevsky.quiverbow.HelperClient;
-import com.domochevsky.quiverbow.armsassistant.EntityAA;
+import com.domochevsky.quiverbow.armsassistant.EntityArmsAssistant;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -13,7 +13,7 @@ public class TurretInventoryMessageHandler implements ISidedMessageHandler<Turre
 	@Override
 	public void processMessage(TurretInventoryMessage message, MessageContext ctx)
 	{
-		HelperClient.setTurretInventory((EntityAA) Minecraft.getMinecraft().world.getEntityByID(message.turretID),
+		HelperClient.setTurretInventory((EntityArmsAssistant) Minecraft.getMinecraft().world.getEntityByID(message.turretID),
 			message.stack, message.itemSlot);
 	}
 	

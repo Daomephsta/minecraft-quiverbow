@@ -1,7 +1,10 @@
 package com.domochevsky.quiverbow.net;
 
-import com.domochevsky.quiverbow.armsassistant.EntityAA;
+import java.util.BitSet;
 
+import com.domochevsky.quiverbow.armsassistant.EntityArmsAssistant;
+
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -15,7 +18,7 @@ public class NetHelper
 	public static void sendParticleMessageToAllPlayers(World world, Entity entity, EnumParticleTypes particle, byte strength)
 	{
 		// Server-use only
-		if (world.isRemote) return; 
+		if (world.isRemote) return;
 		PacketHandler.net.sendToDimension(new ParticleMessage(entity, particle, strength), world.provider.getDimension());
 	}
 
@@ -57,17 +60,26 @@ public class NetHelper
 		}
 	}
 
-	public static void sendTurretStateMessageToPlayersInRange(World world, EntityAA turret, boolean hasArmor, boolean hasWeaponUpgrade, boolean hasRidingUpgrade, boolean hasPlatingUpgrade, boolean hasComUpgrade)
+	//TODO: Move to proxy?
+	public static void sendTurretInventoryMessageToPlayersInRange(World world, EntityArmsAssistant turret, ItemStack stack, int slot)
 	{
 		// Server-use only
 		if (world.isRemote) return;
-		PacketHandler.net.sendToAllTracking(new TurretStateMessage(turret, hasArmor, hasWeaponUpgrade, hasRidingUpgrade, hasPlatingUpgrade, hasComUpgrade), turret);
+		PacketHandler.net.sendToAllTracking(new TurretInventoryMessage(turret, stack, slot), turret);
 	}
-
-	public static void sendTurretInventoryMessageToPlayersInRange(World world, EntityAA turret, ItemStack stack, int itemSlot)
+	
+	public static void writeBitSet(ByteBuf to, BitSet bitSet)
 	{
-		// Server-use only
-		if (world.isRemote) return;
-		PacketHandler.net.sendToAllTracking(new TurretInventoryMessage(turret, stack, itemSlot),turret);
+		byte[] bytes = bitSet.toByteArray();
+		to.writeInt(bytes.length);
+		to.writeBytes(bytes);
+	}
+	
+	public static BitSet readBitSet(ByteBuf from)
+	{
+		int byteCount = from.readInt(); 
+		byte[] bytes = new byte[byteCount];
+		from.readBytes(bytes);
+		return BitSet.valueOf(bytes);
 	}
 }

@@ -1,6 +1,6 @@
 package com.domochevsky.quiverbow.net;
 
-import com.domochevsky.quiverbow.armsassistant.EntityAA;
+import com.domochevsky.quiverbow.armsassistant.EntityArmsAssistant;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
@@ -17,8 +17,7 @@ public class TurretInventoryMessage implements IMessage
 	ItemStack stack;
 	int itemSlot;
 
-	// Sending a message to the client to inform them about turret state changes
-	public TurretInventoryMessage(EntityAA turret, ItemStack stack, int slot)
+	public TurretInventoryMessage(EntityArmsAssistant turret, ItemStack stack, int slot)
 	{
 		this.turretID = turret.getEntityId();
 		this.stack = stack;
