@@ -1,0 +1,14 @@
+{
+	"type": "quiverchevsky:arms_assistant_upgrade",
+	"upgrade": "quiverchevsky:communications",
+	"baseRecipe":
+	{
+		"type": "minecraft:crafting_shapeless",
+		"ingredients": 
+		[
+			{"item": "quiverchevsky:arms_assistant"},
+			{"item": "minecraft:jukebox"},
+			{"item": "minecraft:repeater"}
+		]
+	}
+}

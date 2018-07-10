@@ -1,0 +1,22 @@
+{
+	"type": "quiverchevsky:arms_assistant_upgrade",
+	"upgrade": "quiverchevsky:storage",
+	"baseRecipe":
+	{
+		"type": "minecraft:crafting_shaped",
+		"pattern": 
+		[
+			" c ",
+			"pas",
+			" o "
+		],
+		"key": 
+		{
+			"c": {"item": "minecraft:chest"},
+			"p": {"item": "minecraft:sticky_piston"},
+			"a": {"item": "quiverchevsky:arms_assistant"},
+			"s": {"item": "minecraft:slime_ball"},
+			"o": {"item": "minecraft:obsidian"}
+		}
+	}
+}

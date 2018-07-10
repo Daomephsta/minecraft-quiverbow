@@ -1,0 +1,21 @@
+{
+	"type": "quiverchevsky:arms_assistant_upgrade",
+	"upgrade": "quiverchevsky:mobility",
+	"baseRecipe":
+	{
+		"type": "minecraft:crafting_shaped",
+		"pattern": 
+		[
+			" a ",
+			"sis",
+			"b b"
+		],
+		"key": 
+		{
+			"a": {"item": "quiverchevsky:arms_assistant"},
+			"s": {"item": "minecraft:sticky_piston"},
+			"i": {"item": "minecraft:iron_block"},
+			"b": {"item": "minecraft:iron_bars"}
+		}
+	}
+}

@@ -1,0 +1,21 @@
+{
+	"type": "quiverchevsky:arms_assistant_upgrade",
+	"upgrade": "quiverchevsky:extra_weapon",
+	"baseRecipe":
+	{
+		"type": "minecraft:crafting_shaped",
+		"pattern": 
+		[
+			" a ",
+			"ios",
+			"  s"
+		],
+		"key": 
+		{
+			"a": {"item": "quiverchevsky:arms_assistant"},
+			"i": {"item": "minecraft:iron_block"},
+			"o": {"item": "minecraft:obsidian"},
+			"s": {"item": "minecraft:sticky_piston"}
+		}
+	}
+}

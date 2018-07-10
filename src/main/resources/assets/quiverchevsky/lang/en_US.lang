@@ -302,5 +302,14 @@ item.quiverchevsky.misc.part_sugar_engine_body.description=To be outfitted with 
 
 item.quiverchevsky.misc.arms_assistant.name=Packed Up Arms Assistant
 item.quiverchevsky.misc.arms_assistant.description=It's sizing you up
+item.quiverchevsky.misc.arms_assistant.tooltip.health=Health: %d / %d
+item.quiverchevsky.misc.arms_assistant.tooltip.upgrades=Upgrades: %s
+quiverchevsky.aa_upgrade.extra_weapon.locname=2nd Weapon Rail
+quiverchevsky.aa_upgrade.riding.locname=Saddle
+quiverchevsky.aa_upgrade.communications.locname=Communications
+quiverchevsky.aa_upgrade.storage.locname=Storage
+quiverchevsky.aa_upgrade.mobility.locname=Mobility
+quiverchevsky.aa_upgrade.armour.locname=Armour
+quiverchevsky.aa_upgrade.heavy_plating.locname=Heavy Plating
 
 item.quiverchevsky.misc.FlyingAASpawner.name=Packed Up BB (WIP) 

@@ -279,41 +279,41 @@ public class ModelAA extends ModelBase
 		legC3.render(f5);
 		legC4.render(f5);
 
-		EntityAA turret = (EntityAA) entity;
+		EntityArmsAssistant turret = (EntityArmsAssistant) entity;
 
-		if (turret.hasStorageUpgrade)
-		{
-			tank.render(f5);
-		}
+//		if (turret.hasUpgrade(UpgradeRegistry.STORAGE))
+//		{
+//			tank.render(f5);
+//		}
 
-		if (turret.hasArmorUpgrade)
-		{
-			armor1.render(f5);
-			armor2.render(f5);
-		}
+//		if (turret.hasArmorUpgrade)
+//		{
+//			armor1.render(f5);
+//			armor2.render(f5);
+//		}
 
-		if (turret.hasWeaponUpgrade)
+		if (turret.hasUpgrade(UpgradeRegistry.EXTRA_WEAPON))
 		{
 			rail2.render(f5);
 			rail2b.render(f5);
 		}
 
-		if (turret.hasRidingUpgrade)
+		if (turret.hasUpgrade(UpgradeRegistry.RIDING))
 		{
 			seat1.render(f5);
 			seat2.render(f5);
 			seat3.render(f5);
 		}
 
-		if (turret.hasHeavyPlatingUpgrade)
-		{
-			plate1.render(f5);
-			plate2.render(f5);
-			plate3.render(f5);
-			plate4.render(f5);
-		}
+//		if (turret.hasHeavyPlatingUpgrade)
+//		{
+//			plate1.render(f5);
+//			plate2.render(f5);
+//			plate3.render(f5);
+//			plate4.render(f5);
+//		}
 
-		if (turret.hasCommunicationUpgrade)
+		if (turret.hasUpgrade(UpgradeRegistry.COMMUNICATIONS))
 		{
 			antenna1.render(f5);
 			antenna2.render(f5);

@@ -1,7 +1,11 @@
 package com.domochevsky.quiverbow.net;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 import com.domochevsky.quiverbow.HelperClient;
-import com.domochevsky.quiverbow.armsassistant.EntityAA;
+import com.domochevsky.quiverbow.armsassistant.*;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -13,8 +17,9 @@ public class TurretStateMessageHandler implements ISidedMessageHandler<TurretSta
 	@Override
 	public void processMessage(TurretStateMessage message, MessageContext ctx)
 	{
-		HelperClient.setTurretState((EntityAA) Minecraft.getMinecraft().world.getEntityByID(message.turretID), message.hasArmorUpgrade, message.hasWeaponUpgrade,
-			message.hasRidingUpgrade, message.hasPlatingUpgrade, message.hasCommunicationUpgrade);
+		EntityArmsAssistant turret = (EntityArmsAssistant) Minecraft.getMinecraft().world.getEntityByID(message.turretID);
+		List<IArmsAssistantUpgrade> upgrades = IntStream.of(message.upgrades).mapToObj(UpgradeRegistry::getUpgradeInstance).collect(Collectors.toList());
+		HelperClient.setTurretState(turret, upgrades);
 	}
 
 	@Override
