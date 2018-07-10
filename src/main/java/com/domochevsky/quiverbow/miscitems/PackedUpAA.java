@@ -123,7 +123,6 @@ public class PackedUpAA extends QuiverBowItem
 		EntityArmsAssistant turret = new EntityArmsAssistant(world, player);
 
 		turret.setPosition(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5);
-		world.spawnEntity(turret);
 
 		// Custom name
 		if (stack.hasDisplayName()) turret.setCustomNameTag(stack.getDisplayName());
@@ -151,6 +150,7 @@ public class PackedUpAA extends QuiverBowItem
 			if (stackTag.getFloat(TAG_HEALTH) > 0)
 				turret.setHealth(stackTag.getFloat(TAG_HEALTH));
 		}
+		world.spawnEntity(turret);
 
 		 // Not deducting them in creative mode
 		if (player.capabilities.isCreativeMode) return EnumActionResult.SUCCESS;
