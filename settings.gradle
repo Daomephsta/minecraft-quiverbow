@@ -1,8 +1,0 @@
-rootProject.name = 'quiverbow'
-if (System.getenv('UMBRA_PROJECT_LOCATION'))
-{
-    include ':umbra'
-    project(':umbra').projectDir = file(System.getenv('UMBRA_PROJECT_LOCATION'))
-    include 'umbra:umbra-java'
-    include 'umbra:umbra-minecraft'
-}

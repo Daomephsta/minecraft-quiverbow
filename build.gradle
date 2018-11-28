@@ -43,16 +43,8 @@ repositories
 
 dependencies 
 {
-	if (System.getenv('UMBRA_PROJECT_LOCATION'))
-	{
-		compile project('umbra:umbra-java')
-		compile project('umbra:umbra-minecraft')
-	}
-	else
-	{
-		compile "daomephsta.umbra:umbra-java:${project.umbraJavaVersion}"
-		compile "daomephsta.umbra:umbra-minecraft:${project.umbraMCVersion}"
-	}
+    compile "daomephsta.umbra:umbra-java:${project.umbraJavaVersion}"
+	deobfCompile "daomephsta.umbra:umbra-minecraft:${project.umbraMCVersion}"
 	containedDep "daomephsta.umbra:umbra-java:${project.umbraJavaVersion}"
 	containedDep "daomephsta.umbra:umbra-minecraft:${project.umbraMCVersion}"
 	// compile against the JEI API
