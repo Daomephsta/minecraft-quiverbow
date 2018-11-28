@@ -1,9 +1,14 @@
 package com.domochevsky.quiverbow.renderer;
 
-import javax.vecmath.Matrix4f;
+
+import java.nio.FloatBuffer;
+
+import org.lwjgl.BufferUtils;
+import org.lwjgl.util.vector.Matrix4f;
 
 import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.armsassistant.*;
+import com.domochevsky.quiverbow.models.WeaponModel.BakedWeaponModel;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -12,8 +17,8 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
@@ -50,9 +55,8 @@ public class RenderAA extends RenderLiving<EntityArmsAssistant>
 		{
 			GlStateManager.pushMatrix();
 			{
-				GlStateManager.translate(0.24F, 0.6F, 0.5F);
-
-				renderItemOnRail(turret, itemstack);
+				GlStateManager.translate(0.21F, 1.0F, 0.0F);
+				renderItemOnRail(turret, itemstack, EnumHand.MAIN_HAND);
 			}
 			GlStateManager.popMatrix();
 		}
@@ -64,18 +68,8 @@ public class RenderAA extends RenderLiving<EntityArmsAssistant>
 			{
 				GlStateManager.pushMatrix();
 				{
-					GlStateManager.translate(-0.0625F, 0.4375F, 0.0625F);
-
-					float scale = 0.625F;
-
-					GlStateManager.translate(0.6F, 0.5F, -0.25F); // 0.0F, 0.1875F, 0.0F,
-					// left/right, up/down,
-					// forward/backward?
-					GlStateManager.scale(scale, -scale, scale);
-					GlStateManager.rotate(-20.0F, 1.0F, 0.0F, 0.0F); // -100
-					GlStateManager.rotate(45.0F, 0.0F, 1.0F, 0.0F);
-
-					renderItemOnRail(turret, itemstack);
+					GlStateManager.translate(0.52F, 0.74F, -0.11F);
+					renderItemOnRail(turret, itemstack, EnumHand.OFF_HAND);
 				}
 				GlStateManager.popMatrix();
 			}
@@ -84,39 +78,31 @@ public class RenderAA extends RenderLiving<EntityArmsAssistant>
 		this.renderStoredItems(turret);
 	}
 	
-	private void renderItemOnRail(EntityArmsAssistant turret, ItemStack stack)
+	private void renderItemOnRail(EntityArmsAssistant turret, ItemStack stack, EnumHand rail)
 	{
 		int color = Minecraft.getMinecraft().getItemColors().colorMultiplier(stack, 0);
-		float colorR = (float) (color >> 16 & 255) / 255.0F;
-		float colorB = (float) (color >> 8 & 255) / 255.0F;
-		float colorG = (float) (color & 255) / 255.0F;
+		float colorR = (color >> 16 & 255) / 255.0F;
+		float colorB = (color >> 8 & 255) / 255.0F;
+		float colorG = (color & 255) / 255.0F;
 		GlStateManager.color(colorR, colorB, colorG, 1.0F);
 		IBakedModel model = Minecraft.getMinecraft().getRenderItem().getItemModelWithOverrides(stack, turret.world, turret);
-		handleTransform(model);
+		handleTransform(model, rail);
 		Minecraft.getMinecraft().getRenderItem().renderItem(stack, model);
 	}
-
-	/** From {@link ForgeHooksClient#handleCameraTransforms()} START **/
-	private static final Matrix4f flipX;
-	static
-	{
-		flipX = new Matrix4f();
-		flipX.setIdentity();
-		flipX.m00 = -1;
-	}
 	
-	private void handleTransform(IBakedModel model)
+	private static final FloatBuffer multBuffer = BufferUtils.createFloatBuffer(16);
+	private void handleTransform(IBakedModel model, EnumHand rail)
 	{
-		// TODO Track down cause of bug that this line works around 
-		GlStateManager.rotate(-3F, 0.0F, 1.0F, 0.0F);
-		Matrix4f transform = AATransforms.getTransform(model);
-		if (transform == null) return;
-		Matrix4f matrix = new Matrix4f(transform);
-        ForgeHooksClient.multiplyCurrentGlMatrix(matrix);
+		if (model instanceof BakedWeaponModel)
+		{
+			multBuffer.clear();
+			Matrix4f transform = ((BakedWeaponModel) model).getAATransforms().forRail(rail);
+			transform.store(multBuffer);
+			multBuffer.flip();
+			GlStateManager.multMatrix(multBuffer);
+		}
 	}
-    /** From {@link ForgeHooksClient#handleCameraTransforms()} END **/
     
-
 	private void renderStoredItems(EntityArmsAssistant turret)
 	{
 		float modX = 0;
@@ -149,9 +135,9 @@ public class RenderAA extends RenderLiving<EntityArmsAssistant>
 					GlStateManager.rotate(195.0F, 0.0F, 0.0F, 1.0F);
 
 					int color = Minecraft.getMinecraft().getItemColors().colorMultiplier(itemstack, 0);
-					float f4 = (float) (color >> 16 & 255) / 255.0F;
-					float f5 = (float) (color >> 8 & 255) / 255.0F;
-					float f2 = (float) (color & 255) / 255.0F;
+					float f4 = (color >> 16 & 255) / 255.0F;
+					float f5 = (color >> 8 & 255) / 255.0F;
+					float f2 = (color & 255) / 255.0F;
 					GlStateManager.color(f4, f5, f2, 1.0F);
 
 					Minecraft.getMinecraft().getRenderItem().renderItem(itemstack,

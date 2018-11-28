@@ -11,13 +11,13 @@ import com.domochevsky.quiverbow.config.QuiverbowConfig;
 import com.domochevsky.quiverbow.items.ItemRegistry;
 import com.domochevsky.quiverbow.miscitems.PackedUpAA;
 import com.domochevsky.quiverbow.miscitems.QuiverBowItem;
-import com.domochevsky.quiverbow.models.ISpecialRender;
 import com.domochevsky.quiverbow.net.PacketHandler;
 import com.domochevsky.quiverbow.projectiles.*;
 import com.domochevsky.quiverbow.util.RegistryHelper;
 import com.domochevsky.quiverbow.weapons.*;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
+import daomephsta.umbra.resources.ResourceLocationExt;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -107,7 +107,7 @@ public class QuiverbowMain
 			EntityRegistry.registerModEntity(new ResourceLocation(QuiverbowMain.MODID, "turret"),
 				EntityArmsAssistant.class, "turret", 0, this, 80, 1, true);
 		}
-		proxy.registerRenderers();
+		proxy.preInit();
 
 		Listener listener = new Listener();
 
@@ -348,26 +348,15 @@ public class QuiverbowMain
 		{
 			for (AmmoBase ammunition : ammo)
 			{
-				if (ammunition instanceof ISpecialRender) ((ISpecialRender) ammunition).registerRender();
-				else
-					ModelLoader
-							.setCustomModelResourceLocation(ammunition, 0,
-									new ModelResourceLocation(
-											new ResourceLocation(QuiverbowMain.MODID,
-													"ammo/" + ammunition.getRegistryName().getResourcePath()),
-											"inventory"));
+					ModelLoader.setCustomModelResourceLocation(ammunition, 0,
+						new ModelResourceLocation(ResourceLocationExt.prefixPath(ammunition.getRegistryName(), "ammo/"), "inventory"));
 			}
 
 			for (WeaponBase weapon : weapons)
 			{
-				if (weapon instanceof ISpecialRender) ((ISpecialRender) weapon).registerRender();
-				else
-					ModelLoader
-							.setCustomModelResourceLocation(weapon, 0,
-									new ModelResourceLocation(
-											new ResourceLocation(QuiverbowMain.MODID,
-													"weapons/" + weapon.getRegistryName().getResourcePath()),
-											"inventory"));
+				ModelLoader.setCustomModelResourceLocation(weapon, 0, new ModelResourceLocation(
+					ResourceLocationExt.addToPath(weapon.getRegistryName(), "weapons/", "_internal"), "inventory"));
+				ModelLoader.registerItemVariants(weapon, ResourceLocationExt.prefixPath(weapon.getRegistryName(), "weapons/"));
 			}
 			ModelLoader.setCustomModelResourceLocation(ItemRegistry.PART_SUGAR_ENGINE_BODY, 0,
 					new ModelResourceLocation(ItemRegistry.PART_SUGAR_ENGINE_BODY.getRegistryName(), "inventory"));

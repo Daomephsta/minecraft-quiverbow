@@ -1,22 +1,35 @@
 package com.domochevsky.quiverbow;
 
 import com.domochevsky.quiverbow.armsassistant.EntityArmsAssistant;
+import com.domochevsky.quiverbow.models.AATransformsMetadataSerialiser;
+import com.domochevsky.quiverbow.models.WeaponModel;
 import com.domochevsky.quiverbow.projectiles.*;
 import com.domochevsky.quiverbow.renderer.RenderAA;
 import com.domochevsky.quiverbow.renderer.RenderCross;
 
+import daomephsta.umbra.reflection.SRGReflectionHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderSnowball;
+import net.minecraft.client.resources.data.MetadataSerializer;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 public class ClientProxy extends CommonProxy
 {
 	@Override
+	public void preInit()
+	{
+		registerRenderers();
+		ModelLoaderRegistry.registerLoader(WeaponModel.Loader.INSTANCE);
+		((MetadataSerializer) SRGReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), "field_110452_an"))
+		.registerMetadataSectionType(AATransformsMetadataSerialiser.INSTANCE, AATransformsMetadataSerialiser.AATransforms.class);
+	}
+	
 	public void registerRenderers()
 	{
 		registerCrossStyleRender(BlazeShot.class, new ResourceLocation(QuiverbowMain.MODID, "textures/entity/rod.png"), 2, 6);

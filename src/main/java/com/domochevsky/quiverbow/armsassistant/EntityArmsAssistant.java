@@ -8,6 +8,7 @@ import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.*;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.*;
@@ -23,7 +24,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.items.*;
 
-public class EntityArmsAssistant extends EntityLiving implements IEntityAdditionalSpawnData
+public class EntityArmsAssistant extends EntityCreature implements IEntityAdditionalSpawnData
 {
 	private UUID ownerUUID;
 	private IItemHandlerModifiable inventory = new ItemStackHandler(4);
@@ -39,6 +40,12 @@ public class EntityArmsAssistant extends EntityLiving implements IEntityAddition
 	{
 		this(world);
 		this.ownerUUID = player.getPersistentID();
+	}
+	
+	@Override
+	protected void initEntityAI()
+	{
+		tasks.addTask(1, new EntityAINearestAttackableTarget<>(this, EntityLiving.class, true));
 	}
 
 	@Override

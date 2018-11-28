@@ -1,5 +1,5 @@
 {
-    "parent": "quiverchevsky:item/weapons/compact_crossbow",
+    "parent": "quiverchevsky:item/weapons/compact_crossbow_internal",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/compact_crossbow_empty"
     }
