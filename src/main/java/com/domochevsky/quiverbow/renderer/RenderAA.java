@@ -2,6 +2,8 @@ package com.domochevsky.quiverbow.renderer;
 
 
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.util.Arrays;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Matrix4f;
@@ -11,11 +13,13 @@ import com.domochevsky.quiverbow.armsassistant.*;
 import com.domochevsky.quiverbow.models.WeaponModel.BakedWeaponModel;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
@@ -42,13 +46,11 @@ public class RenderAA extends RenderLiving<EntityArmsAssistant>
 	{
 		GlStateManager.translate(x, y, z);
 		renderEquippedItems(entity);
-		renderStoredItems(entity);
+		//renderStoredItems(entity);
 	}
 
 	protected void renderEquippedItems(EntityArmsAssistant turret)
 	{
-		GlStateManager.color(1.0F, 1.0F, 1.0F);
-
 		ItemStack itemstack = turret.getHeldItemMainhand();
 
 		if (!itemstack.isEmpty())
@@ -79,7 +81,10 @@ public class RenderAA extends RenderLiving<EntityArmsAssistant>
 	}
 	
 	private void renderItemOnRail(EntityArmsAssistant turret, ItemStack stack, EnumHand rail)
-	{
+	{	
+		Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        
 		int color = Minecraft.getMinecraft().getItemColors().colorMultiplier(stack, 0);
 		float colorR = (color >> 16 & 255) / 255.0F;
 		float colorB = (color >> 8 & 255) / 255.0F;
