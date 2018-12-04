@@ -7,7 +7,9 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Matrix4f;
 
 import com.domochevsky.quiverbow.QuiverbowMain;
-import com.domochevsky.quiverbow.armsassistant.*;
+import com.domochevsky.quiverbow.armsassistant.EntityArmsAssistant;
+import com.domochevsky.quiverbow.armsassistant.UpgradeRegistry;
+import com.domochevsky.quiverbow.client.render.ModelArmsAssistant;
 import com.domochevsky.quiverbow.models.WeaponModel.BakedWeaponModel;
 
 import net.minecraft.client.Minecraft;
@@ -29,7 +31,7 @@ public class RenderAA extends RenderLiving<EntityArmsAssistant>
 
 	public RenderAA(RenderManager renderManager)
 	{
-		super(renderManager, new ModelAA(), 1.0F);
+		super(renderManager, new ModelArmsAssistant(), 0.6F);
 	}
 
 	@Override
@@ -42,6 +44,8 @@ public class RenderAA extends RenderLiving<EntityArmsAssistant>
 	protected void renderLivingAt(EntityArmsAssistant entity, double x, double y, double z)
 	{
 		super.renderLivingAt(entity, x, y, z);
+		if (!entity.hasUpgrade(UpgradeRegistry.MOBILITY))
+			GlStateManager.translate(0.0D, -1.0D / 16.0D, 0.0D);
 		renderEquippedItems(entity);
 		renderStoredItems(entity);
 	}
@@ -58,7 +62,7 @@ public class RenderAA extends RenderLiving<EntityArmsAssistant>
 			GlStateManager.pushMatrix();
 			{	
 				GlStateManager.rotate(netYaw, 0.0F, 1.0F, 0.0F);
-				GlStateManager.translate(0.21F, 1.0F, 0.0F);
+				GlStateManager.translate(0.315F, 1.375F, 0.125F);
 				renderItemOnRail(turret, itemstack, EnumHand.MAIN_HAND);
 			}
 			GlStateManager.popMatrix();
@@ -72,7 +76,7 @@ public class RenderAA extends RenderLiving<EntityArmsAssistant>
 				GlStateManager.pushMatrix();
 				{	
 					GlStateManager.rotate(netYaw, 0.0F, 1.0F, 0.0F);
-					GlStateManager.translate(0.52F, 0.74F, -0.11F);
+					GlStateManager.translate(-0.315F, 1.375F, 0.125F);
 					renderItemOnRail(turret, itemstack, EnumHand.OFF_HAND);
 				}
 				GlStateManager.popMatrix();
