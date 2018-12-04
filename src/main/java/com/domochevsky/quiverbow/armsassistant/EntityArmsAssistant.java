@@ -6,6 +6,7 @@ import com.domochevsky.quiverbow.miscitems.PackedUpAA;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
+import daomephsta.umbra.streams.UmbraCollectors;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
@@ -33,7 +34,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 	public EntityArmsAssistant(World world)
 	{
 		super(world);
-		this.setSize(1.0F, 1.65F);
+		this.setSize(1.0F, 1.2F);
 	}
 
 	public EntityArmsAssistant(World world, EntityPlayer player)
@@ -286,7 +287,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 	@Override
 	public double getMountedYOffset()
 	{
-		return this.height;
+		return this.height * 0.8;
 	}
 
 	@Override
@@ -315,12 +316,10 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 		super.writeEntityToNBT(compound);
 		if (ownerUUID != null) compound.setTag(TAG_OWNER, NBTUtil.createUUIDTag(ownerUUID));
 		compound.setTag(TAG_INV, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.writeNBT(inventory, null));
-		NBTTagList upgradesTag = new NBTTagList();
-		for (IArmsAssistantUpgrade upgrade : upgrades)
-		{
-			upgradesTag.appendTag(new NBTTagString(UpgradeRegistry.getUpgradeID(upgrade).toString()));
-		}
-		compound.setTag(TAG_UPGRADES, upgradesTag);
+		compound.setTag(TAG_UPGRADES, 
+			upgrades.stream()
+			.map(upgrade -> new NBTTagString(UpgradeRegistry.getUpgradeID(upgrade).toString()))
+			.collect(UmbraCollectors.toNBTList(NBTTagString.class)));
 	}
 
 	@Override
