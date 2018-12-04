@@ -2,8 +2,6 @@ package com.domochevsky.quiverbow.renderer;
 
 
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.util.Arrays;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Matrix4f;
@@ -13,7 +11,6 @@ import com.domochevsky.quiverbow.armsassistant.*;
 import com.domochevsky.quiverbow.models.WeaponModel.BakedWeaponModel;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -44,19 +41,23 @@ public class RenderAA extends RenderLiving<EntityArmsAssistant>
 	@Override
 	protected void renderLivingAt(EntityArmsAssistant entity, double x, double y, double z)
 	{
-		GlStateManager.translate(x, y, z);
+		super.renderLivingAt(entity, x, y, z);
 		renderEquippedItems(entity);
-		//renderStoredItems(entity);
+		renderStoredItems(entity);
 	}
 
 	protected void renderEquippedItems(EntityArmsAssistant turret)
 	{
 		ItemStack itemstack = turret.getHeldItemMainhand();
-
+		float partialTicks = Minecraft.getMinecraft().getRenderPartialTicks();
+		float rotYawInterpHead = interpolateRotation(turret.prevRotationYawHead, turret.rotationYawHead, partialTicks);
+		float netYaw = -rotYawInterpHead;
+		
 		if (!itemstack.isEmpty())
 		{
 			GlStateManager.pushMatrix();
-			{
+			{	
+				GlStateManager.rotate(netYaw, 0.0F, 1.0F, 0.0F);
 				GlStateManager.translate(0.21F, 1.0F, 0.0F);
 				renderItemOnRail(turret, itemstack, EnumHand.MAIN_HAND);
 			}
@@ -69,7 +70,8 @@ public class RenderAA extends RenderLiving<EntityArmsAssistant>
 			if (!itemstack.isEmpty())
 			{
 				GlStateManager.pushMatrix();
-				{
+				{	
+					GlStateManager.rotate(netYaw, 0.0F, 1.0F, 0.0F);
 					GlStateManager.translate(0.52F, 0.74F, -0.11F);
 					renderItemOnRail(turret, itemstack, EnumHand.OFF_HAND);
 				}
