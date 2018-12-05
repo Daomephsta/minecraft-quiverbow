@@ -1,5 +1,5 @@
 {
-    "parent": "quiverchevsky:item/weapons/nether_bellows",
+    "parent": "quiverchevsky:item/weapons/nether_bellows_internal",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/nether_bellows_empty"
     }

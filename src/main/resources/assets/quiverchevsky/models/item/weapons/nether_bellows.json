@@ -8,7 +8,7 @@
             "predicate": {
                 "damage": 1.0
             },
-            "model": "quiverchevsky:item/weapons/nether_bellows_empty"
+            "model": "quiverchevsky:item/weapons/nether_bellows_empty_internal"
         }
     ]
 }

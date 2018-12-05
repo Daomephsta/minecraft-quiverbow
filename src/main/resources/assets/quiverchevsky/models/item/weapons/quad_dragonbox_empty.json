@@ -1,5 +1,5 @@
 {
-    "parent": "quiverchevsky:item/weapons/quad_dragonbox",
+    "parent": "quiverchevsky:item/weapons/quad_dragonbox_internal",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/quad_dragonbox_empty"
     }

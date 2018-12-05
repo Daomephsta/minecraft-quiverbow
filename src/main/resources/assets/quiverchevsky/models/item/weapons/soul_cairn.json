@@ -8,7 +8,7 @@
             "predicate": {
                 "damage": 1.0
             },
-            "model": "quiverchevsky:item/weapons/soul_cairn_empty"
+            "model": "quiverchevsky:item/weapons/soul_cairn_empty_internal"
         }
     ]
 }

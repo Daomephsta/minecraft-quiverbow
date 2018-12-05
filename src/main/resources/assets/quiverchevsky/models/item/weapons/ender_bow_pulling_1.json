@@ -1,5 +1,5 @@
 {
-    "parent": "quiverchevsky:item/weapons/ender_bow",
+    "parent": "quiverchevsky:item/weapons/ender_bow_internal",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/ender_bow_pulling_1"
     }

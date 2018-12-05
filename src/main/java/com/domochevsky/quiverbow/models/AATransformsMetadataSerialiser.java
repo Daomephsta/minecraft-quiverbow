@@ -23,8 +23,8 @@ public enum AATransformsMetadataSerialiser implements IMetadataSectionSerializer
 		TRANSLATION = "translation",
 		ROTATION = "rotation",
 		SCALE = "scale",
-		INNER_RAIL = "inner_rail",
-		OUTER_RAIL = "outer_rail";
+		LEFT_RAIL = "left_rail",
+		RIGHT_RAIL = "right_rail";
 	private static final Vector3f 
 		X = new Vector3f(1, 0, 0),
 		Y = new Vector3f(0, 1, 0),
@@ -35,16 +35,16 @@ public enum AATransformsMetadataSerialiser implements IMetadataSectionSerializer
 	{
 		JsonObject jsonObj = JsonUtils.getJsonObject(json, SECTION_NAME);
 
-		Matrix4f innerRail = jsonObj.has(INNER_RAIL)
-			? deserialiseTransform(JsonUtils.getJsonObject(jsonObj, INNER_RAIL))
-			: Matrix4f.setIdentity(new Matrix4f());
+		Matrix4f leftRail = jsonObj.has(LEFT_RAIL)
+			? deserialiseTransform(JsonUtils.getJsonObject(jsonObj, LEFT_RAIL))
+			: new Matrix4f();
 			
-		//Falls back to inner rail transform matrix, and then to identity matrix
-		Matrix4f outerRail = jsonObj.has(OUTER_RAIL)
-			? deserialiseTransform(JsonUtils.getJsonObject(jsonObj, OUTER_RAIL))
-			: (innerRail != null ? innerRail : Matrix4f.setIdentity(new Matrix4f()));
+		//Falls back to left rail transform matrix, and then to identity matrix
+		Matrix4f rightRail = jsonObj.has(RIGHT_RAIL)
+			? deserialiseTransform(JsonUtils.getJsonObject(jsonObj, RIGHT_RAIL))
+			: (leftRail != null ? leftRail : new Matrix4f());
 			
-		return new AATransforms(innerRail, outerRail);
+		return new AATransforms(leftRail, rightRail);
 	}
 
 	public Matrix4f deserialiseTransform(JsonObject transformJson)
@@ -73,7 +73,7 @@ public enum AATransformsMetadataSerialiser implements IMetadataSectionSerializer
 	
 	public static Matrix4f createTransformMatrix(Vector3f translation, Vector3f rotation, Vector3f scale)
 	{
-		Matrix4f matrix4f = Matrix4f.setIdentity(new Matrix4f());
+		Matrix4f matrix4f = new Matrix4f();
 		matrix4f.translate(translation);
 		matrix4f.rotate(rotation.x * ONE_DEGREE_IN_RADIANS, X);
 		matrix4f.rotate(rotation.y * ONE_DEGREE_IN_RADIANS, Y);
@@ -91,13 +91,13 @@ public enum AATransformsMetadataSerialiser implements IMetadataSectionSerializer
 	public static class AATransforms implements IMetadataSection
 	{
 		public static final AATransforms NONE = new AATransforms(Matrix4f.setIdentity(new Matrix4f()), Matrix4f.setIdentity(new Matrix4f())); 
-		private final Matrix4f innerRailTransform,
-							   outerRailTransform;
+		private final Matrix4f leftRailTransform,
+							   rightRailTransform;
 
-		private AATransforms(Matrix4f innerRailTransform, Matrix4f outerRailTransform)
+		private AATransforms(Matrix4f leftRailTransform, Matrix4f rightRailTransform)
 		{
-			this.innerRailTransform = innerRailTransform;
-			this.outerRailTransform = outerRailTransform;
+			this.leftRailTransform = leftRailTransform;
+			this.rightRailTransform = rightRailTransform;
 		}
 		
 		public Matrix4f forRail(EnumHand rail)
@@ -105,9 +105,9 @@ public enum AATransformsMetadataSerialiser implements IMetadataSectionSerializer
 			switch (rail)
 			{
 			case MAIN_HAND:
-				return innerRailTransform;
+				return leftRailTransform;
 			case OFF_HAND:
-				return outerRailTransform;
+				return rightRailTransform;
 			default:
 				throw new RuntimeException("Unknown rail " + rail);
 			}

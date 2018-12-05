@@ -1,5 +1,5 @@
 {
-    "parent": "quiverchevsky:item/weapons/auto_crossbow",
+    "parent": "quiverchevsky:item/weapons/auto_crossbow_internal",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/auto_crossbow_empty"
     }

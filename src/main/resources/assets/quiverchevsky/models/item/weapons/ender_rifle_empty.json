@@ -1,5 +1,5 @@
 {
-    "parent": "quiverchevsky:item/weapons/ender_rifle",
+    "parent": "quiverchevsky:item/weapons/ender_rifle_internal",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/ender_rifle_empty"
     }

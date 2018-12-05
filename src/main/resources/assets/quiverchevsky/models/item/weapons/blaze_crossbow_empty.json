@@ -1,5 +1,5 @@
 {
-    "parent": "quiverchevsky:item/weapons/blaze_crossbow",
+    "parent": "quiverchevsky:item/weapons/blaze_crossbow_internal",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/blaze_crossbow_empty"
     }

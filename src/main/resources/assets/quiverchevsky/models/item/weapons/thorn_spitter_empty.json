@@ -1,5 +1,5 @@
 {
-    "parent": "quiverchevsky:item/weapons/thorn_spitter",
+    "parent": "quiverchevsky:item/weapons/thorn_spitter_internal",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/thorn_spitter_empty"
     }

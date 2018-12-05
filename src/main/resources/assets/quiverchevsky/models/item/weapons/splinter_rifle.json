@@ -8,7 +8,7 @@
             "predicate": {
                 "damage": 1.0
             },
-            "model": "quiverchevsky:item/weapons/splinter_rifle_empty"
+            "model": "quiverchevsky:item/weapons/splinter_rifle_empty_internal"
         }
     ]
 }

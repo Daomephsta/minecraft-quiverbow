@@ -8,13 +8,13 @@
             "predicate": {
                 "damage": 0.5
             },
-            "model": "quiverchevsky:item/weapons/double_crossbow_half"
+            "model": "quiverchevsky:item/weapons/double_crossbow_half_internal"
         },
         {
             "predicate": {
                 "damage": 1.0
             },
-            "model": "quiverchevsky:item/weapons/double_crossbow_empty"
+            "model": "quiverchevsky:item/weapons/double_crossbow_empty_internal"
         }
     ]
 }

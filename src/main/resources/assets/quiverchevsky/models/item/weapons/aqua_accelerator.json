@@ -8,7 +8,7 @@
             "predicate": {
                 "damage": 1.0
             },
-            "model": "quiverchevsky:item/weapons/aqua_accelerator_empty"
+            "model": "quiverchevsky:item/weapons/aqua_accelerator_empty_internal"
         }
     ]
 }

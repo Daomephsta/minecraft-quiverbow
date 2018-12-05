@@ -8,7 +8,7 @@
             "predicate": {
                 "damage": 1.0
             },
-            "model": "quiverchevsky:item/weapons/ray_of_hope_empty"
+            "model": "quiverchevsky:item/weapons/ray_of_hope_empty_internal"
         }
     ]
 }

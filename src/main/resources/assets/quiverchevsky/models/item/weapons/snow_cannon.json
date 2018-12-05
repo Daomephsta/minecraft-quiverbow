@@ -8,7 +8,7 @@
             "predicate": {
                 "damage": 1.0
             },
-            "model": "quiverchevsky:item/weapons/snow_cannon_empty"
+            "model": "quiverchevsky:item/weapons/snow_cannon_empty_internal"
         }
     ],
     "display": 

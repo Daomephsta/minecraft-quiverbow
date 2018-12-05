@@ -1,5 +1,5 @@
 {
-    "parent": "quiverchevsky:item/weapons/weapon",
+    "parent": "quiverchevsky:item/weapons/weapon_mortar",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/arrow_mortar"
     },
@@ -8,7 +8,7 @@
             "predicate": {
                 "damage": 1.0
             },
-            "model": "quiverchevsky:item/weapons/arrow_mortar_empty"
+            "model": "quiverchevsky:item/weapons/arrow_mortar_empty_internal"
         }
     ]
 }

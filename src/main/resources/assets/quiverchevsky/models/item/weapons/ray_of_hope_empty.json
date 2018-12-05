@@ -1,5 +1,5 @@
 {
-    "parent": "quiverchevsky:item/weapons/ray_of_hope",
+    "parent": "quiverchevsky:item/weapons/ray_of_hope_internal",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/ray_of_hope_empty"
     }

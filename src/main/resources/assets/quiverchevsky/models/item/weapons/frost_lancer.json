@@ -8,7 +8,7 @@
             "predicate": {
                 "damage": 1.0
             },
-            "model": "quiverchevsky:item/weapons/frost_lancer_empty"
+            "model": "quiverchevsky:item/weapons/frost_lancer_empty_internal"
         }
     ]
 }

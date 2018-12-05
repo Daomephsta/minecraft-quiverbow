@@ -1,5 +1,5 @@
 {
-    "parent": "quiverchevsky:item/weapons/proximity_thorn_thrower",
+    "parent": "quiverchevsky:item/weapons/proximity_thorn_thrower_internal",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/proximity_thorn_thrower_empty"
     }

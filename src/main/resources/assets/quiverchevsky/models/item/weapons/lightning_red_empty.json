@@ -1,5 +1,5 @@
 {
-    "parent": "quiverchevsky:item/weapons/lightning_red",
+    "parent": "quiverchevsky:item/weapons/lightning_red_internal",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/lightning_red_empty"
     }

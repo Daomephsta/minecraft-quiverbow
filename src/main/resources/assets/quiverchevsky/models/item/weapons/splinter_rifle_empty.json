@@ -1,5 +1,5 @@
 {
-    "parent": "quiverchevsky:item/weapons/splinter_rifle",
+    "parent": "quiverchevsky:item/weapons/splinter_rifle_internal",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/splinter_rifle_empty"
     }

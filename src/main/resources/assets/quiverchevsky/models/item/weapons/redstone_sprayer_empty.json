@@ -1,5 +1,5 @@
 {
-    "parent": "quiverchevsky:item/weapons/redstone_sprayer",
+    "parent": "quiverchevsky:item/weapons/redstone_sprayer_internal",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/redstone_sprayer_empty"
     }

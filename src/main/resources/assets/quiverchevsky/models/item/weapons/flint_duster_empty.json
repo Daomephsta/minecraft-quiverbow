@@ -1,5 +1,5 @@
 {
-    "parent": "quiverchevsky:item/weapons/flint_duster",
+    "parent": "quiverchevsky:item/weapons/flint_duster_internal",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/flint_duster_empty"
     }

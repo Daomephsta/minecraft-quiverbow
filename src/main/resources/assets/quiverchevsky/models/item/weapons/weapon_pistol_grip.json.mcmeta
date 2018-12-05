@@ -1,10 +1,16 @@
 {
     "quiverchevsky:aa_transforms":
     {
-        "inner_rail":
+        "left_rail":
         {
-			"translation": [2.1, 1, 0],
-            "rotation": [45, 90, 0],
+			"translation": [0.5, -7, 4],
+            "rotation": [45, -90, 0],
+			"scale": [0.85, 0.85, 0.85]
+        },
+        "right_rail":
+        {
+			"translation": [-0.5, -7, 4],
+            "rotation": [45, -90, 0],
 			"scale": [0.85, 0.85, 0.85]
         }
     }

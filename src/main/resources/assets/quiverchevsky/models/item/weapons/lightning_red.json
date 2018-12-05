@@ -8,7 +8,7 @@
             "predicate": {
                 "damage": 1.0
             },
-            "model": "quiverchevsky:item/weapons/lightning_red_empty"
+            "model": "quiverchevsky:item/weapons/lightning_red_empty_internal"
         }
     ]
 }

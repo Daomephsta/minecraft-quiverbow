@@ -1,5 +1,5 @@
 {
-    "parent": "quiverchevsky:item/weapons/dragon_mortar",
+    "parent": "quiverchevsky:item/weapons/dragon_mortar_internal",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/dragon_mortar_empty"
     }

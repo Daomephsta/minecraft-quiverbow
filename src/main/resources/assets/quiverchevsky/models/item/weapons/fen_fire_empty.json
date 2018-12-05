@@ -1,5 +1,5 @@
 {
-    "parent": "quiverchevsky:item/weapons/fen_fire",
+    "parent": "quiverchevsky:item/weapons/fen_fire_internal",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/fen_fire_empty"
     }

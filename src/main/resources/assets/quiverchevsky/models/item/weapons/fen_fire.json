@@ -1,5 +1,5 @@
 {
-    "parent": "quiverchevsky:item/weapons/weapon",
+    "parent": "quiverchevsky:item/weapons/weapon_pistol_grip",
     "textures": {
         "layer0": "quiverchevsky:items/weapons/fen_fire"
     },
@@ -8,7 +8,7 @@
             "predicate": {
                 "damage": 1.0
             },
-            "model": "quiverchevsky:item/weapons/fen_fire_empty"
+            "model": "quiverchevsky:item/weapons/fen_fire_empty_internal"
         }
     ]
 }
