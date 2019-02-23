@@ -27,6 +27,7 @@ import net.minecraftforge.items.IItemHandler;
 
 public class RenderAA extends RenderLiving<EntityArmsAssistant>
 {
+	private static final float PIXEL = 0.0625F;
 	private static final ResourceLocation TEXTURE = new ResourceLocation(QuiverbowMain.MODID, "textures/entity/arms_assistant.png");
 
 	public RenderAA(RenderManager renderManager)
@@ -54,6 +55,7 @@ public class RenderAA extends RenderLiving<EntityArmsAssistant>
 	{
 		ItemStack itemstack = turret.getHeldItemMainhand();
 		float partialTicks = Minecraft.getMinecraft().getRenderPartialTicks();
+		float rotPitchInterp = interpolateRotation(turret.prevRotationPitch, turret.rotationPitch, partialTicks);
 		float rotYawInterpHead = interpolateRotation(turret.prevRotationYawHead, turret.rotationYawHead, partialTicks);
 		float netYaw = -rotYawInterpHead;
 		
@@ -61,8 +63,12 @@ public class RenderAA extends RenderLiving<EntityArmsAssistant>
 		{
 			GlStateManager.pushMatrix();
 			{	
+				//Yaw
 				GlStateManager.rotate(netYaw, 0.0F, 1.0F, 0.0F);
-				GlStateManager.translate(0.315F, 1.375F, 0.125F);
+				//Translate to rail rotation point
+				GlStateManager.translate(6.0F * PIXEL, 15.0F * PIXEL, -5.0F * PIXEL);
+				//Rail pitch
+				GlStateManager.rotate(rotPitchInterp, 1.0F, 0.0F, 0.0F);
 				renderItemOnRail(turret, itemstack, EnumHand.MAIN_HAND);
 			}
 			GlStateManager.popMatrix();
@@ -75,8 +81,12 @@ public class RenderAA extends RenderLiving<EntityArmsAssistant>
 			{
 				GlStateManager.pushMatrix();
 				{	
-					GlStateManager.rotate(netYaw, 0.0F, 1.0F, 0.0F);
-					GlStateManager.translate(-0.315F, 1.375F, 0.125F);
+				    //Yaw
+				    GlStateManager.rotate(netYaw, 0.0F, 1.0F, 0.0F);
+	                //Translate to rail rotation point
+	                GlStateManager.translate(-6.0F * PIXEL, 15.0F * PIXEL, -5.0F * PIXEL);
+	                //Rail pitch
+	                GlStateManager.rotate(rotPitchInterp, 1.0F, 0.0F, 0.0F);
 					renderItemOnRail(turret, itemstack, EnumHand.OFF_HAND);
 				}
 				GlStateManager.popMatrix();
@@ -116,58 +126,6 @@ public class RenderAA extends RenderLiving<EntityArmsAssistant>
     
 	private void renderStoredItems(EntityArmsAssistant turret)
 	{
-		float modX = 0;
-		float modY = 0;
-
-		int iconsPerRow = 4;
-		int iconMulti = 1;
-		int iconsDrawn = 0;
-
-		IItemHandler turretInv = turret.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-		for (int slot = 0; slot < turretInv.getSlots(); slot++)
-		{
-			ItemStack itemstack = turretInv.getStackInSlot(slot);
-
-			// System.out.println("[RENDER] Items.ACK in slot " + slot + " is "
-			// + itemstack);
-
-			if (!itemstack.isEmpty() && itemstack.getItem() != null)
-			{
-				GlStateManager.pushMatrix();
-				{
-					GlStateManager.translate(0.32F, 1.19F + modY, 0.32F - modX);
-
-					modX += 0.15f; // One step back
-
-					float scale = 0.15F; // Smaller, to make that less blatant
-
-					GlStateManager.scale(scale, -scale, scale);
-					GlStateManager.rotate(-90.0F, 0.0F, 1.0F, 0.0F);
-					GlStateManager.rotate(195.0F, 0.0F, 0.0F, 1.0F);
-
-					int color = Minecraft.getMinecraft().getItemColors().colorMultiplier(itemstack, 0);
-					float f4 = (color >> 16 & 255) / 255.0F;
-					float f5 = (color >> 8 & 255) / 255.0F;
-					float f2 = (color & 255) / 255.0F;
-					GlStateManager.color(f4, f5, f2, 1.0F);
-
-					Minecraft.getMinecraft().getRenderItem().renderItem(itemstack,
-							ItemCameraTransforms.TransformType.NONE);
-				}
-				GlStateManager.popMatrix();
-
-				iconsDrawn += 1;
-			}
-
-			if (iconsDrawn == (iconsPerRow * iconMulti)) // This many items are
-			// shown per row
-			{
-				modX = 0; // Reset
-				modY = 0.15f; // One row down
-				iconMulti += 1;
-			}
-
-			slot += 1;
-		}
+		
 	}
 }
