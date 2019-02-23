@@ -73,13 +73,12 @@ public enum AATransformsMetadataSerialiser implements IMetadataSectionSerializer
 	
 	public static Matrix4f createTransformMatrix(Vector3f translation, Vector3f rotation, Vector3f scale)
 	{
-		Matrix4f matrix4f = new Matrix4f();
-		matrix4f.translate(translation);
-		matrix4f.rotate(rotation.x * ONE_DEGREE_IN_RADIANS, X);
-		matrix4f.rotate(rotation.y * ONE_DEGREE_IN_RADIANS, Y);
-		matrix4f.rotate(rotation.z * ONE_DEGREE_IN_RADIANS, Z);
-		matrix4f.scale(scale);
-		return matrix4f;
+		return new Matrix4f()
+				.translate(translation)
+				.rotate(rotation.x * ONE_DEGREE_IN_RADIANS, X)
+				.rotate(rotation.y * ONE_DEGREE_IN_RADIANS, Y)
+				.rotate(rotation.z * ONE_DEGREE_IN_RADIANS, Z)
+				.scale(scale);
 	}
 
 	@Override

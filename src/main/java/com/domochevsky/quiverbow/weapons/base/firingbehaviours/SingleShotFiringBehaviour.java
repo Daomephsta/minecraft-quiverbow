@@ -28,17 +28,12 @@ public class SingleShotFiringBehaviour<W extends WeaponBase> extends ProjectileF
 	@Override
 	public void fire(ItemStack stack, World world, EntityLivingBase entity, EnumHand hand)
 	{
-		if (weapon.getCooldown(stack) > 0)
-		{
-			return;
-		} // Hasn't cooled down yet
+		if (weapon.getCooldown(stack) > 0) return;
+		
+		Helper.knockUserBack(entity, weapon.getKickback());
 
-		// Good to go (already verified)
-		Helper.knockUserBack(entity, weapon.getKickback()); // Kickback
+		if (!world.isRemote) world.spawnEntity(projectileFactory.createProjectile(world, stack, entity, null, weapon.getProperties()));
 
-		if (!world.isRemote) world.spawnEntity(projectileFactory.createProjectile(world, stack, entity, null, weapon.getProperties())); // Firing!
-
-		// SFX
 		weapon.doFireFX(world, entity);
 
 		weapon.resetCooldown(stack);
