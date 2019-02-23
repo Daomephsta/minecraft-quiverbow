@@ -10,6 +10,7 @@ import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -38,19 +39,19 @@ public class Sunray extends WeaponBase
 	{
 		ItemStack stack = player.getHeldItem(hand);
 
-		this.doSingleFire(stack, world, player); // Handing it over to the
+		this.doSingleFire(world, player, stack, hand); // Handing it over to the
 		// neutral firing function
 		return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
 	}
 
 	@Override
-	public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-	// side
+	public boolean doSingleFire(World world, EntityLivingBase entity, ItemStack stack, EnumHand hand)
 	{
+		boolean superResult = super.doSingleFire(world, entity, stack, hand);
 		if (this.getCooldown(stack) > 0)
 		{
-			return;
-		} // Hasn't cooled down yet
+			return false;
+		}
 
 		Helper.knockUserBack(entity, getKickback()); // Kickback
 		if (!world.isRemote)
@@ -84,6 +85,7 @@ public class Sunray extends WeaponBase
 		entity.playSound(SoundEvents.ENTITY_FIREWORK_BLAST, 2.0F, 0.1F);
 
 		this.resetCooldown(stack);
+		return superResult;
 	}
 
 	@Override

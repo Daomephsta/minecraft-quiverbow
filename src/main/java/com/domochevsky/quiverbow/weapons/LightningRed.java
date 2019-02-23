@@ -15,8 +15,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -73,13 +72,12 @@ public class LightningRed extends MagazineFedWeapon
 	}
 
 	@Override
-	public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
+	public boolean doSingleFire(World world, EntityLivingBase entity, ItemStack stack, EnumHand hand) // Server
 	// side
 	{
+		boolean superResult = super.doSingleFire(world, entity, stack, hand);
 		if (this.getCooldown(stack) > 0)
-		{
-			return;
-		} // Hasn't cooled down yet
+			return false;
 
 		Helper.knockUserBack(entity, getKickback()); // Kickback
 
@@ -108,6 +106,7 @@ public class LightningRed extends MagazineFedWeapon
 		{
 			this.dropMagazine(world, stack, entity);
 		}
+		return superResult;
 	}
 
 	@Override

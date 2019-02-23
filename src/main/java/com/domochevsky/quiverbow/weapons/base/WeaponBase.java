@@ -138,13 +138,12 @@ public abstract class WeaponBase extends QuiverBowItem
 		if (stack.isEmpty())
 		{
 			return 0;
-		} // Why are you not holding anything?
+		}
 		if (stack.getTagCompound() == null)
 		{
 			return 0;
-		} // No tag, no cooldown
-
-		return stack.getTagCompound().getInteger("cooldown"); // Here ya go
+		}
+		return stack.getTagCompound().getInteger("cooldown");
 	}
 
 	public void setBurstFire(ItemStack stack, int amount) // Setting our burst
@@ -187,14 +186,17 @@ public abstract class WeaponBase extends QuiverBowItem
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
 	{
 		ItemStack stack = player.getHeldItem(hand);
+		return doSingleFire(world, player, stack, hand)
+			? ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack)
+			: ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
+	}
+
+	public boolean doSingleFire(World world, EntityLivingBase entity, ItemStack stack, EnumHand hand)
+	{
 		if (this.getDamage(stack) >= stack.getMaxDamage())
-		{
-			return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
-		} // Is empty
-
-		firingBehaviour.fire(stack, world, player, hand);
-
-		return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
+			return false;
+		firingBehaviour.fire(stack, world, entity, hand);
+		return true;
 	}
 
 	@Override
@@ -222,12 +224,6 @@ public abstract class WeaponBase extends QuiverBowItem
 	{
 		firingBehaviour.onFiringTick(stack, player, count);
 	}
-
-	// Regular fire, as called by onItemRightClick. To be overridden by each
-	// individual weapon
-	// Can also be called by mobs
-	public void doSingleFire(ItemStack stack, World world, Entity entity)
-	{}
 
 	// Called one tick before cooldown is dealt with
 	protected void doCooldownSFX(World world, Entity entity)

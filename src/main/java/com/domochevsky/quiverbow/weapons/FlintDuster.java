@@ -6,7 +6,7 @@ import com.domochevsky.quiverbow.projectiles.FlintDust;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
@@ -32,16 +32,15 @@ public class FlintDuster extends WeaponBase
 			return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 		} // Is empty
 
-		this.doSingleFire(stack, world, player); // Handing it over to the
+		this.doSingleFire(world, player, stack, hand); // Handing it over to the
 		// neutral firing function
 		return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
 	}
 
 	@Override
-	public void doSingleFire(ItemStack stack, World world, Entity entity) // Server
-	// side
+	public boolean doSingleFire(World world, EntityLivingBase entity, ItemStack stack, EnumHand hand)
 	{
-		// Ignoring cooldown for firing purposes
+		boolean superResult = super.doSingleFire(world, entity, stack, hand);
 
 		// SFX
 		Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_BAT_TAKEOFF, 0.5F, 0.6F);
@@ -60,6 +59,7 @@ public class FlintDuster extends WeaponBase
 
 		this.consumeAmmo(stack, entity, 1);
 		this.setCooldown(stack, 4);
+		return superResult;
 	}
 
 	@Override

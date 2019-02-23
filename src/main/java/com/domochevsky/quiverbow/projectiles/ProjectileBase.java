@@ -67,7 +67,7 @@ public class ProjectileBase extends Entity implements IProjectile
 	public void doSetup(Entity entity, float speed) // Default setup for all
 	// shot projectiles
 	{
-		this.doSetup(entity, speed, 0f, 0f, entity.rotationYaw, entity.rotationPitch);
+		this.doSetup(entity, speed, 0f, 0f, entity.getRotationYawHead(), entity.rotationPitch);
 	}
 
 	public void doSetup(Entity entity, float speed, float accHor, float accVert, float setYaw, float setPitch) // Default
@@ -86,24 +86,25 @@ public class ProjectileBase extends Entity implements IProjectile
 		// pickupability
 
 		this.setSize(0.5F, 0.5F);
-		this.setLocationAndAngles(entity.posX, entity.posY + (double) entity.getEyeHeight(), entity.posZ, setYaw,
+		this.setLocationAndAngles(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ, setYaw,
 				setPitch);
 
-		this.posX -= (double) (MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
+		this.posX -= MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
 		this.posY -= 0.10000000149011612D;
-		this.posZ -= (double) (MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
+		this.posZ -= MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
 
 		this.setPosition(this.posX, this.posY, this.posZ);
 
-		this.motionX = (double) (-MathHelper.sin((this.rotationYaw + accHor) / 180.0F * (float) Math.PI)
-				* MathHelper.cos((this.rotationPitch + accVert) / 180.0F * (float) Math.PI));
-		this.motionZ = (double) (MathHelper.cos((this.rotationYaw + accHor) / 180.0F * (float) Math.PI)
-				* MathHelper.cos((this.rotationPitch + accVert) / 180.0F * (float) Math.PI));
-		this.motionY = (double) (-MathHelper.sin(((this.rotationPitch + accVert)) / 180.0F * (float) Math.PI));
+		this.motionX = -MathHelper.sin((this.rotationYaw + accHor) / 180.0F * (float) Math.PI)
+				* MathHelper.cos((this.rotationPitch + accVert) / 180.0F * (float) Math.PI);
+		this.motionZ = MathHelper.cos((this.rotationYaw + accHor) / 180.0F * (float) Math.PI)
+				* MathHelper.cos((this.rotationPitch + accVert) / 180.0F * (float) Math.PI);
+		this.motionY = (-MathHelper.sin(((this.rotationPitch + accVert)) / 180.0F * (float) Math.PI));
 
 		this.shoot(this.motionX, this.motionY, this.motionZ, speed, 1.0F);
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void setVelocity(double p_70016_1_, double p_70016_3_, double p_70016_5_)
 	{
@@ -115,7 +116,7 @@ public class ProjectileBase extends Entity implements IProjectile
 		{
 			float f = MathHelper.sqrt(p_70016_1_ * p_70016_1_ + p_70016_5_ * p_70016_5_);
 			this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(p_70016_1_, p_70016_5_) * 180.0D / Math.PI);
-			this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(p_70016_3_, (double) f) * 180.0D
+			this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(p_70016_3_, f) * 180.0D
 					/ Math.PI);
 			this.prevRotationPitch = this.rotationPitch;
 			this.prevRotationYaw = this.rotationYaw;
@@ -128,20 +129,20 @@ public class ProjectileBase extends Entity implements IProjectile
 	public void shoot(double motX, double motY, double motZ, float speed, float unknown)
 	{
 		float f2 = MathHelper.sqrt(motX * motX + motY * motY + motZ * motZ);
-		motX /= (double) f2;
-		motY /= (double) f2;
-		motZ /= (double) f2;
+		motX /= f2;
+		motY /= f2;
+		motZ /= f2;
 
-		motX += this.rand.nextGaussian() * (double) (this.rand.nextBoolean() ? -1 : 1) * 0.007499999832361937D
-				* (double) unknown;
-		motY += this.rand.nextGaussian() * (double) (this.rand.nextBoolean() ? -1 : 1) * 0.007499999832361937D
-				* (double) unknown;
-		motZ += this.rand.nextGaussian() * (double) (this.rand.nextBoolean() ? -1 : 1) * 0.007499999832361937D
-				* (double) unknown;
+		motX += this.rand.nextGaussian() * (this.rand.nextBoolean() ? -1 : 1) * 0.007499999832361937D
+				* unknown;
+		motY += this.rand.nextGaussian() * (this.rand.nextBoolean() ? -1 : 1) * 0.007499999832361937D
+				* unknown;
+		motZ += this.rand.nextGaussian() * (this.rand.nextBoolean() ? -1 : 1) * 0.007499999832361937D
+				* unknown;
 
-		motX *= (double) speed;
-		motY *= (double) speed;
-		motZ *= (double) speed;
+		motX *= speed;
+		motY *= speed;
+		motZ *= speed;
 
 		this.motionX = motX;
 		this.motionY = motY;
@@ -150,7 +151,7 @@ public class ProjectileBase extends Entity implements IProjectile
 		float f3 = MathHelper.sqrt(motX * motX + motZ * motZ);
 
 		this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(motX, motZ) * 180.0D / Math.PI);
-		this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(motY, (double) f3) * 180.0D / Math.PI);
+		this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(motY, f3) * 180.0D / Math.PI);
 
 		this.ticksInGround = 0;
 	}
@@ -170,7 +171,7 @@ public class ProjectileBase extends Entity implements IProjectile
 			float f = MathHelper.sqrt(this.motionX * this.motionX + this.motionZ * this.motionZ);
 			this.prevRotationYaw = this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D
 					/ Math.PI);
-			this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(this.motionY, (double) f) * 180.0D
+			this.prevRotationPitch = this.rotationPitch = (float) (Math.atan2(this.motionY, f) * 180.0D
 					/ Math.PI);
 		}
 
@@ -231,9 +232,9 @@ public class ProjectileBase extends Entity implements IProjectile
 			{
 				this.inGround = false;
 
-				this.motionX *= (double) (this.rand.nextFloat() * 0.2F);
-				this.motionY *= (double) (this.rand.nextFloat() * 0.2F);
-				this.motionZ *= (double) (this.rand.nextFloat() * 0.2F);
+				this.motionX *= this.rand.nextFloat() * 0.2F;
+				this.motionY *= this.rand.nextFloat() * 0.2F;
+				this.motionZ *= this.rand.nextFloat() * 0.2F;
 
 				this.ticksInGround = 0;
 				this.ticksInAir = 0;
@@ -274,8 +275,8 @@ public class ProjectileBase extends Entity implements IProjectile
 						&& (potentialEntity != this.shootingEntity || this.ticksInAir >= 5)
 						&& !(potentialEntity instanceof EntityPlayer))
 				{
-					AxisAlignedBB axisalignedbb1 = potentialEntity.getEntityBoundingBox().expand((double) gravity,
-							(double) gravity, (double) gravity);
+					AxisAlignedBB axisalignedbb1 = potentialEntity.getEntityBoundingBox().expand(gravity,
+							gravity, gravity);
 					RayTraceResult potentialMovObj = axisalignedbb1.calculateIntercept(currentVec3d, futureVec3d);
 
 					if (potentialMovObj != null)
@@ -324,7 +325,7 @@ public class ProjectileBase extends Entity implements IProjectile
 			this.rotationYaw = (float) (Math.atan2(this.motionX, this.motionZ) * 180.0D / Math.PI);
 
 			// The fuck is this?
-			for (this.rotationPitch = (float) (Math.atan2(this.motionY, (double) distance) * 180.0D
+			for (this.rotationPitch = (float) (Math.atan2(this.motionY, distance) * 180.0D
 					/ Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
 			{
 				;
@@ -354,8 +355,8 @@ public class ProjectileBase extends Entity implements IProjectile
 			{
 				for (int l = 0; l < 4; ++l)
 				{
-					this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * (double) sfxMod,
-							this.posY - this.motionY * (double) sfxMod, this.posZ - this.motionZ * (double) sfxMod,
+					this.world.spawnParticle(EnumParticleTypes.WATER_BUBBLE, this.posX - this.motionX * sfxMod,
+							this.posY - this.motionY * sfxMod, this.posZ - this.motionZ * sfxMod,
 							this.motionX, this.motionY, this.motionZ);
 				}
 
@@ -375,13 +376,13 @@ public class ProjectileBase extends Entity implements IProjectile
 				this.extinguish();
 			}
 
-			this.motionX *= (double) speedDecrease;
-			this.motionY *= (double) speedDecrease;
-			this.motionZ *= (double) speedDecrease;
+			this.motionX *= speedDecrease;
+			this.motionY *= speedDecrease;
+			this.motionZ *= speedDecrease;
 
 			if (this.doDropOff())
 			{
-				this.motionY -= (double) gravity;
+				this.motionY -= gravity;
 			}
 
 			this.setPosition(this.posX, this.posY, this.posZ); // Position
@@ -458,7 +459,7 @@ public class ProjectileBase extends Entity implements IProjectile
 
 		tag.setByte("inGround", (byte) (this.inGround ? 1 : 0));
 
-		tag.setBoolean("pickup", (boolean) this.canBePickedUp);
+		tag.setBoolean("pickup", this.canBePickedUp);
 
 		tag.setDouble("damage", this.damage);
 	}
