@@ -164,6 +164,13 @@ public class ModelArmsAssistant extends ModelBase
         this.body.render(f5);
     }
     
+    @Override
+    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
+    {
+    	upperTurntable.rotateAngleY = netHeadYaw * (float) (Math.PI / 180.0F);
+    	rightRail.rotateAngleX = leftRail.rotateAngleX = headPitch * (float) (Math.PI / 180.0F);
+    }
+    
     private void setVisibility(boolean visibility, ModelRenderer... modelRenderers)
     {
     	for (ModelRenderer renderer : modelRenderers)
