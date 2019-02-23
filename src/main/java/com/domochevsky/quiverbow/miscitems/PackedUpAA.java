@@ -12,6 +12,7 @@ import com.domochevsky.quiverbow.items.ItemRegistry;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.*;
@@ -63,6 +64,7 @@ public class PackedUpAA extends QuiverBowItem
 		return stack;
 	}
 	
+	@Override
 	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags)
 	{
 		super.addInformation(stack, world, list, flags);
@@ -150,6 +152,7 @@ public class PackedUpAA extends QuiverBowItem
 			if (stackTag.getFloat(TAG_HEALTH) > 0)
 				turret.setHealth(stackTag.getFloat(TAG_HEALTH));
 		}
+		turret.onInitialSpawn(world.getDifficultyForLocation(new BlockPos(turret)), (IEntityLivingData)null);
 		world.spawnEntity(turret);
 
 		 // Not deducting them in creative mode
