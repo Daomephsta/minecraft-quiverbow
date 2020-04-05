@@ -295,13 +295,23 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 	@Override
 	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor)
 	{
-		ItemStack mainWeapon = getHeldItemMainhand();
-		if (!mainWeapon.isEmpty())
-		{
-			((WeaponBase) mainWeapon.getItem()).doSingleFire(world, this, mainWeapon, EnumHand.MAIN_HAND);
-		}
+		if (!tryFireWeapon(getHeldItemMainhand()))
+		    tryFireWeapon(getHeldItemOffhand());
 	}
-
+	
+	private boolean tryFireWeapon(ItemStack weaponStack)
+	{
+	    if (!weaponStack.isEmpty() && weaponStack.getItem() instanceof WeaponBase)
+        {
+            WeaponBase weapon = (WeaponBase) weaponStack.getItem();
+            if (weapon.getCooldown(weaponStack) == 0)
+            {
+                return weapon.doSingleFire(world, this, weaponStack, EnumHand.MAIN_HAND);
+            }
+        }
+        return false;
+	}
+	
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn)
 	{
