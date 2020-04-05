@@ -8,7 +8,9 @@ import com.domochevsky.quiverbow.net.NetHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
@@ -64,18 +66,17 @@ public class ProjectileBase extends Entity implements IProjectile
 		super(world);
 	}
 
-	public void doSetup(Entity entity, float speed) // Default setup for all
-	// shot projectiles
+	public void doSetup(Entity entity, float speed)
 	{
-		this.doSetup(entity, speed, 0f, 0f, entity.getRotationYawHead(), entity.rotationPitch);
+		this.doSetup(entity, speed, 0f, 0f);
 	}
 
-	public void doSetup(Entity entity, float speed, float accHor, float accVert, float setYaw, float setPitch) // Default
-	// setup
-	// for
-	// all
-	// shot
-	// projectiles
+	public void doSetup(Entity entity, float speed, float accHor, float accVert)
+	{
+	    this.doSetup(entity, speed, accHor, accVert, entity.getRotationYawHead(), entity.rotationPitch);
+	}
+
+	public void doSetup(Entity entity, float speed, float accHor, float accVert, float setYaw, float setPitch)
 	{
 		if (entity instanceof EntityLivingBase)
 		{
@@ -328,7 +329,7 @@ public class ProjectileBase extends Entity implements IProjectile
 			for (this.rotationPitch = (float) (Math.atan2(this.motionY, distance) * 180.0D
 					/ Math.PI); this.rotationPitch - this.prevRotationPitch < -180.0F; this.prevRotationPitch -= 360.0F)
 			{
-				;
+
 			}
 
 			while (this.rotationPitch - this.prevRotationPitch >= 180.0F)

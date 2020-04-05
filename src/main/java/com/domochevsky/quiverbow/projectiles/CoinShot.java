@@ -29,10 +29,10 @@ public class CoinShot extends ProjectileBase
 		this.doSetup(entity, speed);
 	}
 
-	public CoinShot(World world, Entity entity, float speed, float accHor, float AccVert)
+	public CoinShot(World world, Entity entity, float speed, float accHor, float accVert)
 	{
 		super(world);
-		this.doSetup(entity, speed, accHor, AccVert, entity.rotationYaw, entity.rotationPitch);
+		this.doSetup(entity, speed, accHor, accVert);
 	}
 
 	public void setDrop(boolean set)
@@ -47,7 +47,7 @@ public class CoinShot extends ProjectileBase
 		{
 			// Firing
 			hitPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
-					(float) this.damage); // Damage gets applied here
+					this.damage); // Damage gets applied here
 
 			hitPos.entityHit.hurtResistantTime = 0;
 		}

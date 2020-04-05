@@ -22,10 +22,10 @@ public class NetherFire extends ProjectileBase
 		super(world);
 	}
 
-	public NetherFire(World world, Entity entity, float speed, float accHor, float AccVert)
+	public NetherFire(World world, Entity entity, float speed, float accHor, float accVert)
 	{
 		super(world);
-		this.doSetup(entity, speed, accHor, AccVert, entity.rotationYaw, entity.rotationPitch);
+		this.doSetup(entity, speed, accHor, accVert);
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class NetherFire extends ProjectileBase
 		{
 			// Damage
 			target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
-					(float) this.damage);
+					this.damage);
 			target.entityHit.hurtResistantTime = 0;
 
 			// Effect

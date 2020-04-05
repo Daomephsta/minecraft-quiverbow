@@ -22,10 +22,10 @@ public class SnowShot extends ProjectilePotionEffect
 		super(world);
 	}
 
-	public SnowShot(World world, Entity entity, float speed, float accHor, float AccVert, PotionEffect... effects)
+	public SnowShot(World world, Entity entity, float speed, float accHor, float accVert, PotionEffect... effects)
 	{
 		super(world, effects);
-		this.doSetup(entity, speed, accHor, AccVert, entity.rotationYaw, entity.rotationPitch);
+		this.doSetup(entity, speed, accHor, accVert);
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public class SnowShot extends ProjectilePotionEffect
 			if (target.entityHit instanceof EntityBlaze)
 			{
 				target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
-						(float) (this.damage * 2));
+						this.damage * 2);
 				target.entityHit.hurtResistantTime = 0;
 			}
 		}

@@ -16,11 +16,11 @@ public class RedSpray extends ProjectilePotionEffect
 		super(world);
 	}
 
-	public RedSpray(World world, Entity entity, float speed, float accHor, float AccVert, PotionEffect... effects)
+	public RedSpray(World world, Entity entity, float speed, float accHor, float accVert, PotionEffect... effects)
 	{
 		super(world, effects);
 		this.damage = 0;
-		this.doSetup(entity, speed, accHor, AccVert, entity.rotationYaw, entity.rotationPitch);
+		this.doSetup(entity, speed, accHor, accVert);
 	}
 
 	@Override

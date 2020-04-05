@@ -26,32 +26,11 @@ public class SugarEngine extends MagazineFedWeapon
 			super(SugarEngine.this, (world, weaponStack, entity, data, properties) ->
 			{
 				float spread = properties.getFloat(CommonProperties.PROP_SPREAD);
-				float spreadHor = world.rand.nextFloat() * spread - (spread / 2.0F); // Spread
-																								// between
-																								// -4
-																								// and
-																								// 4
-																								// at
-																								// ((0.0
-																								// to
-																								// 1.0)
-																								// *
-																								// 16
-																								// -
-																								// 8)
+				float spreadHor = world.rand.nextFloat() * spread - (spread / 2.0F);
 				float spreadVert = world.rand.nextFloat() * spread - (spread / 2.0F);
 
-				int dmg_range = properties.getDamageMin() - properties.getDamageMin(); // If max dmg is
-				// 20 and min is
-				// 10, then the
-				// range will be
-				// 10
-				int dmg = world.rand.nextInt(dmg_range + 1); // Range will be
-																// between 0 and
-																// 10
-				dmg += properties.getDamageMin(); // Adding the min dmg of 10 back on top,
-											// giving us the proper damage range
-											// (10-20)
+				int dmgRange = properties.getDamageMin() - properties.getDamageMin();
+				int dmg = properties.getDamageMin() + world.rand.nextInt(dmgRange + 1);
 
 				SugarRod projectile = new SugarRod(world, entity, properties.getProjectileSpeed(), spreadHor, spreadVert);
 				projectile.damage = dmg;
@@ -97,7 +76,8 @@ public class SugarEngine extends MagazineFedWeapon
 			// spinning)
 		}
 
-		protected void doBurstFire(ItemStack weaponStack, World world, EntityLivingBase entity)
+		@Override
+        protected void doBurstFire(ItemStack weaponStack, World world, EntityLivingBase entity)
 		{
 			Helper.knockUserBack(entity, weapon.getKickback()); // Kickback
 			if (!world.isRemote)

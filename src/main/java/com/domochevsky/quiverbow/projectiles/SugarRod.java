@@ -16,10 +16,10 @@ public class SugarRod extends ProjectileBase
 		super(world);
 	}
 
-	public SugarRod(World world, Entity entity, float speed, float accHor, float AccVert)
+	public SugarRod(World world, Entity entity, float speed, float accHor, float accVert)
 	{
 		super(world);
-		this.doSetup(entity, speed, accHor, AccVert, entity.rotationYaw, entity.rotationPitch);
+		this.doSetup(entity, speed, accHor, accVert);
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class SugarRod extends ProjectileBase
 		if (target.entityHit != null)
 		{
 			target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
-					(float) this.damage);
+					this.damage);
 			target.entityHit.hurtResistantTime = 0;
 		}
 		else // Hit the terrain

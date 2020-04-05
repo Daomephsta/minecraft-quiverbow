@@ -27,7 +27,7 @@ public class HealthBeam extends ProjectileBase implements IEntityAdditionalSpawn
 	public HealthBeam(World world, Entity entity, float speed)
 	{
 		super(world);
-		this.doSetup(entity, speed, 0, 0, entity.rotationYaw, entity.rotationPitch);
+		this.doSetup(entity, speed);
 
 		this.ownerX = entity.posX;
 		this.ownerY = entity.posY + entity.getEyeHeight() - 0.2;
@@ -60,20 +60,20 @@ public class HealthBeam extends ProjectileBase implements IEntityAdditionalSpawn
 		// pickupability
 
 		this.setSize(0.5F, 0.5F);
-		this.setLocationAndAngles(target.posX, target.posY + (double) target.getEyeHeight(), target.posZ, setYaw,
+		this.setLocationAndAngles(target.posX, target.posY + target.getEyeHeight(), target.posZ, setYaw,
 				setPitch);
 
-		this.posX -= (double) (MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
+		this.posX -= MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
 		this.posY -= 0.10000000149011612D;
-		this.posZ -= (double) (MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F);
+		this.posZ -= MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI) * 0.16F;
 
 		this.setPosition(this.posX, this.posY, this.posZ);
 
-		this.motionX = (double) (-MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI)
-				* MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI));
-		this.motionZ = (double) (MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI)
-				* MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI));
-		this.motionY = (double) (-MathHelper.sin((this.rotationPitch) / 180.0F * (float) Math.PI));
+		this.motionX = -MathHelper.sin(this.rotationYaw / 180.0F * (float) Math.PI)
+				* MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
+		this.motionZ = MathHelper.cos(this.rotationYaw / 180.0F * (float) Math.PI)
+				* MathHelper.cos(this.rotationPitch / 180.0F * (float) Math.PI);
+		this.motionY = (-MathHelper.sin((this.rotationPitch) / 180.0F * (float) Math.PI));
 
 		this.shoot(this.motionX, this.motionY, this.motionZ, 0, 1.0F);
 	}

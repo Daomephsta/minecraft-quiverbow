@@ -31,10 +31,10 @@ public class SmallRocket extends ProjectileBase
 		this.doSetup(entity, speed);
 	}
 
-	public SmallRocket(World world, Entity entity, float speed, float accHor, float AccVert)
+	public SmallRocket(World world, Entity entity, float speed, float accHor, float accVert)
 	{
 		super(world);
-		this.doSetup(entity, speed, accHor, AccVert, entity.rotationYaw, entity.rotationPitch);
+		this.doSetup(entity, speed, accHor, accVert);
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class SmallRocket extends ProjectileBase
 		{
 			// Damage
 			target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
-					(float) this.damage);
+					this.damage);
 			target.entityHit.hurtResistantTime = 0; // No immunity frames
 
 			// Knockback
@@ -52,8 +52,8 @@ public class SmallRocket extends ProjectileBase
 			if (f3 > 0.0F)
 			{
 				target.entityHit.addVelocity(
-						this.motionX * (double) this.knockbackStrength * 0.6000000238418579D / (double) f3, 0.1D,
-						this.motionZ * (double) this.knockbackStrength * 0.6000000238418579D / (double) f3);
+						this.motionX * this.knockbackStrength * 0.6000000238418579D / f3, 0.1D,
+						this.motionZ * this.knockbackStrength * 0.6000000238418579D / f3);
 			}
 
 			// Effect
@@ -86,9 +86,9 @@ public class SmallRocket extends ProjectileBase
 				this.world.setBlockToAir(target.getBlockPos()); // setBlockToAir
 
 				EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(this.world,
-						(double) ((float) target.getBlockPos().getX() + 0.5F),
-						(double) ((float) target.getBlockPos().getY() + 0.5F),
-						(double) ((float) target.getBlockPos().getZ() + 0.5F), this.shootingEntity);
+						target.getBlockPos().getX() + 0.5F,
+						target.getBlockPos().getY() + 0.5F,
+						target.getBlockPos().getZ() + 0.5F, this.shootingEntity);
 
 				this.world.spawnEntity(entitytntprimed); // This is TNT, so
 				// begone with that
