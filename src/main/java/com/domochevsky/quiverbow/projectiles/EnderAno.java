@@ -51,26 +51,24 @@ public class EnderAno extends ProjectileBase
 			if (target.entityHit instanceof EntityEnderman && this.shootingEntity instanceof EntityPlayer)
 			{
 				target.entityHit.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) this.shootingEntity),
-						(float) this.damage); // Capable of hurting endermen
+						this.damage); // Capable of hurting endermen
 			}
 			else
 			{
 				target.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this),
-						(float) this.damage); // Anonymous
+						this.damage); // Anonymous
 			}
 
 			target.entityHit.hurtResistantTime = 0; // No immunity frames
+			NetHelper.sendParticleMessageToAllPlayers(this.world, target.entityHit, EnumParticleTypes.PORTAL, (byte) 8);
 		}
 		else
 		{
 			// Glass breaking
-			Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 1); // Medium
-			// strength
-
+			Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 1); // Medium strength
 		}
 
 		// SFX
-		NetHelper.sendParticleMessageToAllPlayers(this.world, target.entityHit, EnumParticleTypes.PORTAL, (byte) 8);
 		this.playSound(SoundEvents.ENTITY_FIREWORK_LARGE_BLAST, 0.7F, 0.5F);
 
 		this.setDead(); // Hit something, so we're done here
