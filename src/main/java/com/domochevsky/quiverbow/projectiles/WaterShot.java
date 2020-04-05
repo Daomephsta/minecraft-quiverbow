@@ -47,8 +47,8 @@ public class WaterShot extends ProjectileBase
 		// Nether Check
 		if (this.world.provider.doesWaterVaporize())
 		{
-			this.world.playSound((double) ((float) this.posX + 0.5F), (double) ((float) this.posY + 0.5F),
-					(double) ((float) this.posZ + 0.5F), SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.AMBIENT, 0.5F,
+			this.world.playSound((float) this.posX + 0.5F, (float) this.posY + 0.5F,
+					(float) this.posZ + 0.5F, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.AMBIENT, 0.5F,
 					2.6F + (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.8F, false);
 
 			NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SMOKE_LARGE,
@@ -81,17 +81,5 @@ public class WaterShot extends ProjectileBase
 		this.playSound(SoundEvents.ENTITY_GENERIC_SPLASH, 1.0F, 1.0F);
 
 		this.setDead(); // We've hit something, so begone with the projectile
-	}
-
-	@Override
-	public byte[] getRenderType()
-	{
-		byte[] type = new byte[3];
-
-		type[0] = 3; // Type 3, icon
-		type[1] = 6; // Length, water bucket
-		type[2] = 2; // Width
-
-		return type; // Fallback, 0 0 0
 	}
 }

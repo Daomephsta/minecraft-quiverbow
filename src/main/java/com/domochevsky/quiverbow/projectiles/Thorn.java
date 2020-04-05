@@ -34,7 +34,7 @@ public class Thorn extends ProjectileBase
 		if (movPos.entityHit != null)
 		{
 			movPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
-					(float) this.damage);
+					this.damage);
 			movPos.entityHit.hurtResistantTime = 0; // No rest for the wicked
 		}
 		else // Hit the terrain
@@ -47,22 +47,4 @@ public class Thorn extends ProjectileBase
 
 		this.setDead(); // We've hit something, so begone with the projectile
 	}
-
-	@Override
-	public byte[] getRenderType()
-	{
-		byte[] type = new byte[3];
-
-		type[0] = 2; // Type 2, generic projectile
-		type[1] = 2; // Length
-		type[2] = 2; // Width
-
-		return type; // Fallback, 0 0 0
-	}
-
-	@Override
-	public String getEntityTexturePath()
-	{
-		return "textures/entity/thorn.png";
-	} // Our projectile texture
 }

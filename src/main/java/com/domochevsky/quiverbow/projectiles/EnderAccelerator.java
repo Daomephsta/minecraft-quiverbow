@@ -60,7 +60,7 @@ public class EnderAccelerator extends ProjectileBase implements IEntityAdditiona
 		{
 			// Damage
 			target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
-					(float) this.damage);
+					this.damage);
 			target.entityHit.hurtResistantTime = 0; // No immunity frames
 		}
 
@@ -72,24 +72,6 @@ public class EnderAccelerator extends ProjectileBase implements IEntityAdditiona
 
 		this.setDead(); // No matter what, we're done here
 	}
-
-	@Override
-	public byte[] getRenderType()
-	{
-		byte[] type = new byte[3];
-
-		type[0] = 6; // Type 6, beam weapon (lightning red)
-		type[1] = 2; // Length
-		type[2] = 2; // Width
-
-		return type;
-	}
-
-	@Override
-	public String getEntityTexturePath()
-	{
-		return "textures/entity/rod.png";
-	} // Our projectile texture
 
 	@Override
 	public void writeSpawnData(ByteBuf buffer) // save extra data on the server

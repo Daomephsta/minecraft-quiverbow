@@ -33,7 +33,7 @@ public class SabotRocket extends ProjectileBase
 	{
 		if (target.entityHit != null) // Hit a entity
 		{
-			target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity), (float) 3);
+			target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity), 3);
 			target.entityHit.hurtResistantTime = 0; // No immunity frames
 		}
 		else // Hit the terrain
@@ -76,7 +76,7 @@ public class SabotRocket extends ProjectileBase
 
 	//Big rockets can be swatted out of the way with a bit of expertise
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float par2) 
+	public boolean attackEntityFrom(DamageSource source, float par2)
 	{
 		if (this.isEntityInvulnerable(source))
 		{
@@ -110,24 +110,5 @@ public class SabotRocket extends ProjectileBase
 		}
 
 		return false;
-	}
-
-	@Override
-	public byte[] getRenderType() // Called by the renderer. Expects a 3 item
-	// byte array
-	{
-		byte[] type = new byte[3];
-
-		type[0] = 2; // Type 2, projectile
-		type[1] = 10; // Length
-		type[2] = 3; // Width
-
-		return type; // Fallback, 0 0 0
-	}
-
-	@Override
-	public String getEntityTexturePath()
-	{
-		return "textures/entity/rocketsabot.png";
 	}
 }

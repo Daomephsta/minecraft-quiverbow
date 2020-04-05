@@ -41,7 +41,7 @@ public class EnderShot extends ProjectileBase
 
 		if (this.damage < this.damageMax)
 		{
-			this.damage += (double) this.damageIncrease;
+			this.damage += this.damageIncrease;
 		} // Increasing damage once per tick until we reach the max
 
 		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.PORTAL, (byte) 3);
@@ -53,7 +53,7 @@ public class EnderShot extends ProjectileBase
 		if (target.entityHit != null) // We hit a living thing!
 		{
 			target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
-					(float) this.damage); // Damage gets applied here
+					this.damage); // Damage gets applied here
 			target.entityHit.hurtResistantTime = 0; // No immunity frames
 
 			if (this.knockbackStrength > 0)
@@ -62,8 +62,8 @@ public class EnderShot extends ProjectileBase
 				if (f3 > 0.0F)
 				{
 					target.entityHit.addVelocity(
-							this.motionX * (double) this.knockbackStrength * 0.6000000238418579D / (double) f3, 0.1D,
-							this.motionZ * (double) this.knockbackStrength * 0.6000000238418579D / (double) f3);
+							this.motionX * this.knockbackStrength * 0.6000000238418579D / f3, 0.1D,
+							this.motionZ * this.knockbackStrength * 0.6000000238418579D / f3);
 				}
 			}
 
@@ -82,22 +82,4 @@ public class EnderShot extends ProjectileBase
 			} // Going straight through glass
 		}
 	}
-
-	@Override
-	public byte[] getRenderType()
-	{
-		byte[] type = new byte[3];
-
-		type[0] = 2; // Type 2, generic projectile
-		type[1] = 4; // Length
-		type[2] = 2; // Width
-
-		return type;
-	}
-
-	@Override
-	public String getEntityTexturePath()
-	{
-		return "textures/entity/ender.png";
-	} // Our projectile texture. Don't have one, since we're using an icon
 }

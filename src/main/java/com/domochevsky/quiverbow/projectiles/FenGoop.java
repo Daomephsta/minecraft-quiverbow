@@ -34,7 +34,7 @@ public class FenGoop extends ProjectileBase
 	{
 		if (target.entityHit != null) // hit a entity
 		{
-			target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity), (float) 0); // No
+			target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity), 0); // No
 			// dmg,
 			// but
 			// knockback
@@ -84,17 +84,5 @@ public class FenGoop extends ProjectileBase
 		this.playSound(SoundType.GLASS.getBreakSound(), 1.0F, 1.0F);
 
 		this.setDead(); // We've hit something, so begone with the projectile
-	}
-
-	@Override
-	public byte[] getRenderType()
-	{
-		byte[] type = new byte[3];
-
-		type[0] = 3; // Type 3, item
-		type[1] = 5; // Length, misused as item type. glowstone dust
-		type[2] = 2; // Width
-
-		return type;
 	}
 }

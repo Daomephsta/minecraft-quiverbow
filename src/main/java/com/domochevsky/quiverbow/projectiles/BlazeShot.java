@@ -12,7 +12,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class BlazeShot extends ProjectileBase
@@ -49,8 +51,8 @@ public class BlazeShot extends ProjectileBase
 
 			if (f3 > 0.0F)
 			{
-				hitPos.entityHit.addVelocity(this.motionX * (double) this.knockbackStrength * 0.6D / (double) f3, 0.1D,
-						this.motionZ * (double) this.knockbackStrength * 0.6D / (double) f3);
+				hitPos.entityHit.addVelocity(this.motionX * this.knockbackStrength * 0.6D / f3, 0.1D,
+						this.motionZ * this.knockbackStrength * 0.6D / f3);
 			}
 
 			if (!(hitPos.entityHit instanceof EntityEnderman))
@@ -90,16 +92,16 @@ public class BlazeShot extends ProjectileBase
 				IBlockState stuckState = this.world.getBlockState(stuckPos);
 				this.stuckBlock = stuckState.getBlock();
 
-				this.motionX = (double) ((float) (hitPos.hitVec.x - this.posX));
-				this.motionY = (double) ((float) (hitPos.hitVec.y - this.posY));
-				this.motionZ = (double) ((float) (hitPos.hitVec.z - this.posZ));
+				this.motionX = ((float) (hitPos.hitVec.x - this.posX));
+				this.motionY = ((float) (hitPos.hitVec.y - this.posY));
+				this.motionZ = ((float) (hitPos.hitVec.z - this.posZ));
 
 				float distance = MathHelper
 						.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
 
-				this.posX -= this.motionX / (double) distance * 0.05000000074505806D;
-				this.posY -= this.motionY / (double) distance * 0.05000000074505806D;
-				this.posZ -= this.motionZ / (double) distance * 0.05000000074505806D;
+				this.posX -= this.motionX / distance * 0.05000000074505806D;
+				this.posY -= this.motionY / distance * 0.05000000074505806D;
+				this.posZ -= this.motionZ / distance * 0.05000000074505806D;
 
 				this.inGround = true;
 
@@ -174,24 +176,5 @@ public class BlazeShot extends ProjectileBase
 		// Ready to hurt someone!
 		player.setFire(this.fireDuration / 2); // Half burn time. Let's be
 		// lenient here
-	}
-
-	@Override
-	public byte[] getRenderType() // Called by the renderer. Expects a 3 item
-	// byte array
-	{
-		byte[] type = new byte[3];
-
-		type[0] = 2; // Generic projectile
-		type[1] = 6; // Length and width
-		type[2] = 2;
-
-		return type; // Fallback, 0 0 0
-	}
-
-	@Override
-	public String getEntityTexturePath()
-	{
-		return "textures/entity/rod.png";
 	}
 }

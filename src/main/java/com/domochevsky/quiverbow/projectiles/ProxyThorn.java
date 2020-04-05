@@ -11,8 +11,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.util.*;
-import net.minecraft.util.math.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 public class ProxyThorn extends ProjectileBase
@@ -42,7 +46,7 @@ public class ProxyThorn extends ProjectileBase
 		if (movPos.entityHit != null) // We hit a living thing!
 		{
 			movPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
-					(float) this.damage); // Damage gets applied here
+					this.damage); // Damage gets applied here
 			movPos.entityHit.hurtResistantTime = 0; // No immunity frames
 
 			this.goBoom();
@@ -87,9 +91,9 @@ public class ProxyThorn extends ProjectileBase
 				float distance = MathHelper
 						.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
 
-				this.posX -= this.motionX / (double) distance * 0.05000000074505806D;
-				this.posY -= this.motionY / (double) distance * 0.05000000074505806D;
-				this.posZ -= this.motionZ / (double) distance * 0.05000000074505806D;
+				this.posX -= this.motionX / distance * 0.05000000074505806D;
+				this.posY -= this.motionY / distance * 0.05000000074505806D;
+				this.posZ -= this.motionZ / distance * 0.05000000074505806D;
 
 				this.inGround = true;
 
@@ -239,7 +243,7 @@ public class ProxyThorn extends ProjectileBase
 		// 2
 
 		// Firing
-		Thorn projectile = new Thorn(this.world, this, (float) this.thornSpeed, (float) thornYaw, (float) thornPitch);
+		Thorn projectile = new Thorn(this.world, this, (float) this.thornSpeed, thornYaw, thornPitch);
 		projectile.damage = dmg;
 
 		projectile.shootingEntity = this.shootingEntity; // Keeping that chain
@@ -254,22 +258,4 @@ public class ProxyThorn extends ProjectileBase
 		this.goBoom();
 		return false;
 	}
-
-	@Override
-	public byte[] getRenderType()
-	{
-		byte[] type = new byte[3];
-
-		type[0] = 2; // Type 2, generic projectile
-		type[1] = 8; // Length
-		type[2] = 4; // Width
-
-		return type; // Fallback, 0 0 0
-	}
-
-	@Override
-	public String getEntityTexturePath()
-	{
-		return "textures/entity/thorn.png";
-	} // Our projectile texture
 }

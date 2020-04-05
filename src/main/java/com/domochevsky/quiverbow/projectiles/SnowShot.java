@@ -70,16 +70,4 @@ public class SnowShot extends ProjectilePotionEffect
 			this.world.setBlockState(pos, Blocks.ICE.getDefaultState(), 3);
 		}
 	}
-
-	@Override
-	public byte[] getRenderType()
-	{
-		byte[] type = new byte[3];
-
-		type[0] = 3; // Type 3, item
-		type[1] = 7; // Length, misused as item type. snowball
-		type[2] = 2; // Width
-
-		return type;
-	}
 }

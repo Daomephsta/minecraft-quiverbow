@@ -14,7 +14,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -24,7 +26,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 public class SoulShot extends ProjectileBase
 {
 	private static final Set<ResourceLocation> BLACKLIST = new HashSet<>();
-	
+
 	public SoulShot(World world)
 	{
 		super(world);
@@ -45,7 +47,7 @@ public class SoulShot extends ProjectileBase
 			if (target.entityHit instanceof EntityPlayer)
 			{
 				target.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.shootingEntity),
-						(float) 10);
+						10);
 				this.damageShooter();
 				return;
 			}
@@ -111,7 +113,7 @@ public class SoulShot extends ProjectileBase
 			this.world.spawnEntity(entityitem);
 		}
 	}
-	
+
 	public static void blacklistEntity(ResourceLocation entityID)
 	{
 		if (EntityList.isRegistered(entityID)) BLACKLIST.add(entityID);
@@ -141,24 +143,6 @@ public class SoulShot extends ProjectileBase
 		} // Owner doesn't exist
 
 		this.shootingEntity.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.shootingEntity),
-				(float) 10);
+				10);
 	}
-
-	@Override
-	public byte[] getRenderType()
-	{
-		byte[] type = new byte[3];
-
-		type[0] = 2; // Type 2, generic projectile
-		type[1] = 10; // Length
-		type[2] = 2; // Width
-
-		return type;
-	}
-
-	@Override
-	public String getEntityTexturePath()
-	{
-		return "textures/entity/soulshot.png";
-	} // Our projectile texture
 }

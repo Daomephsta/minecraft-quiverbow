@@ -465,19 +465,6 @@ public class ProjectileBase extends Entity implements IProjectile
 		tag.setDouble("damage", this.damage);
 	}
 
-	public byte[] getRenderType() // Called by the renderer. Expects a 3 item
-	// byte array
-	{
-		byte[] type = new byte[3];
-
-		return type; // Fallback, 0 0 0
-	}
-
-	public String getEntityTexturePath()
-	{
-		return null;
-	} // Returns the texture path for this entity. Gets created by the renderer
-
 	public Entity getShooter()
 	{
 		return this.shootingEntity;

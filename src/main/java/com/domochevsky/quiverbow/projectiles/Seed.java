@@ -55,16 +55,4 @@ public class Seed extends ProjectileBase
 		this.playSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.2F, 3.0F);
 		this.setDead(); // We've hit something, so begone with the projectile
 	}
-
-	@Override
-	public byte[] getRenderType()
-	{
-		byte[] type = new byte[3];
-
-		type[0] = 3; // Type 3, item icon
-		type[1] = 4; // Length, misused as item type. melon seeds
-		type[2] = 2; // Width
-
-		return type;
-	}
 }

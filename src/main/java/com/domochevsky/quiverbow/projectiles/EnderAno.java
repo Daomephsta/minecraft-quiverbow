@@ -73,16 +73,4 @@ public class EnderAno extends ProjectileBase
 
 		this.setDead(); // Hit something, so we're done here
 	}
-
-	@Override
-	public byte[] getRenderType()
-	{
-		byte[] type = new byte[3];
-
-		type[0] = 0; // Type 0, nothing
-		type[1] = 2; // Length
-		type[2] = 2; // Width
-
-		return type;
-	}
 }

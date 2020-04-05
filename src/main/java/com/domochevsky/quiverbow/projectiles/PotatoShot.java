@@ -40,7 +40,7 @@ public class PotatoShot extends ProjectileBase
 		{
 			// Damage
 			target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
-					(float) this.damage);
+					this.damage);
 		}
 		else
 		{
@@ -73,17 +73,5 @@ public class PotatoShot extends ProjectileBase
 		this.playSound(SoundEvents.ENTITY_GENERIC_EAT, 0.6F, 0.7F);
 
 		this.setDead(); // We've hit something, so begone with the projectile
-	}
-
-	@Override
-	public byte[] getRenderType()
-	{
-		byte[] type = new byte[3];
-
-		type[0] = 3; // Type 3, icon
-		type[1] = 3; // Length, misused for icon type. 3 = cooked potato
-		type[2] = 2; // Width, not used
-
-		return type;
 	}
 }

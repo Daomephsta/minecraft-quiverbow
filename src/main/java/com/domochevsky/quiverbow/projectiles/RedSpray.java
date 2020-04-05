@@ -44,22 +44,4 @@ public class RedSpray extends ProjectilePotionEffect
 
 		this.setDead(); // We've hit something, so begone with the projectile
 	}
-
-	@Override
-	public byte[] getRenderType()
-	{
-		byte[] type = new byte[3];
-
-		type[0] = 2; // Type 2, generic projectile
-		type[1] = 2; // Length
-		type[2] = 2; // Width
-
-		return type; // Fallback, 0 0 0
-	}
-
-	@Override
-	public String getEntityTexturePath()
-	{
-		return "textures/entity/redspray.png";
-	} // Our projectile texture
 }

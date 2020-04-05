@@ -48,16 +48,4 @@ public class WebShot extends ProjectileBase
 
 		this.setDead(); // We've hit something, so begone with the projectile
 	}
-
-	@Override
-	public byte[] getRenderType()
-	{
-		byte[] type = new byte[3];
-
-		type[0] = 3; // Type 3, icon
-		type[1] = 7; // Length, snowball (misused as web ball)
-		type[2] = 2; // Width
-
-		return type; // Fallback, 0 0 0
-	}
 }

@@ -53,9 +53,9 @@ public class ColdIron extends ProjectilePotionEffect
 				if (velocity > 0.0F)
 				{
 					target.entityHit.addVelocity(
-							this.motionX * (double) this.knockbackStrength * 0.6000000238418579D / (double) velocity,
+							this.motionX * this.knockbackStrength * 0.6000000238418579D / velocity,
 							0.1D,
-							this.motionZ * (double) this.knockbackStrength * 0.6000000238418579D / (double) velocity);
+							this.motionZ * this.knockbackStrength * 0.6000000238418579D / velocity);
 				}
 				// else, no velocity so no knockback
 			}
@@ -76,22 +76,4 @@ public class ColdIron extends ProjectilePotionEffect
 			} // Going straight through glass, up to twice
 		}
 	}
-
-	@Override
-	public byte[] getRenderType()
-	{
-		byte[] type = new byte[3];
-
-		type[0] = 2; // Type 2, generic projectile
-		type[1] = 8; // Length
-		type[2] = 2; // Width
-
-		return type;
-	}
-
-	@Override
-	public String getEntityTexturePath()
-	{
-		return "textures/entity/coldiron.png";
-	} // Our projectile texture
 }

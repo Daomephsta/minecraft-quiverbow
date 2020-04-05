@@ -149,24 +149,6 @@ public class HealthBeam extends ProjectileBase implements IEntityAdditionalSpawn
 	}
 
 	@Override
-	public byte[] getRenderType()
-	{
-		byte[] type = new byte[3];
-
-		type[0] = 8; // Type 7, beam weapon (sunray)
-		type[1] = 2; // Length
-		type[2] = 2; // Width
-
-		return type; // Fallback, 0 0 0
-	}
-
-	@Override
-	public String getEntityTexturePath()
-	{
-		return "textures/entity/healthbeam.png";
-	} // Our projectile texture
-
-	@Override
 	public void writeSpawnData(ByteBuf buffer) // save extra data on the server
 	{
 		buffer.writeDouble(this.ownerX);

@@ -87,23 +87,4 @@ public class CoinShot extends ProjectileBase
 
 		this.setDead(); // We've hit something, so begone with the projectile
 	}
-
-	@Override
-	public byte[] getRenderType() // Called by the renderer. Expects a 3 item
-	// byte array
-	{
-		byte[] type = new byte[3];
-
-		type[0] = 3; // Type 3, icon
-		type[1] = 1; // Length, (mis)used as indicator for the icon. Gold nugget
-		type[2] = 0; // Width
-
-		return type; // Fallback, 0 0 0
-	}
-
-	@Override
-	public String getEntityTexturePath()
-	{
-		return null;
-	}
 }

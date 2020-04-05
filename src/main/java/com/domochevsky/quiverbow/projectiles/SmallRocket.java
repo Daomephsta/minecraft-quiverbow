@@ -132,23 +132,4 @@ public class SmallRocket extends ProjectileBase
 		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.FIREWORKS_SPARK,
 				(byte) 4);
 	}
-
-	@Override
-	public byte[] getRenderType() // Called by the renderer. Expects a 3 item
-	// byte array
-	{
-		byte[] type = new byte[3];
-
-		type[0] = 2; // Type 2, projectile
-		type[1] = 8; // Length
-		type[2] = 2; // Width
-
-		return type; // Fallback, 0 0 0
-	}
-
-	@Override
-	public String getEntityTexturePath()
-	{
-		return "textures/entity/rocket.png";
-	}
 }

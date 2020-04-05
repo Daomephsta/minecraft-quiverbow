@@ -59,22 +59,4 @@ public class OSRShot extends ProjectilePotionEffect
 				(byte) 1);
 		this.playSound(SoundEvents.ENTITY_ARROW_HIT, 1.0F, 0.5F);
 	}
-
-	@Override
-	public byte[] getRenderType()
-	{
-		byte[] type = new byte[3];
-
-		type[0] = 2; // Type 2, generic projectile
-		type[1] = 16; // Length
-		type[2] = 2; // Width
-
-		return type;
-	}
-
-	@Override
-	public String getEntityTexturePath()
-	{
-		return "textures/entity/obsidian.png";
-	} // Our projectile texture
 }

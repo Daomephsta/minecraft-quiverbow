@@ -74,7 +74,7 @@ public class FlintDust extends ProjectileBase implements IEntityAdditionalSpawnD
 		{
 			// Damage
 			target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
-					(float) this.damage);
+					this.damage);
 		}
 		else // Hit the terrain
 		{
@@ -165,24 +165,6 @@ public class FlintDust extends ProjectileBase implements IEntityAdditionalSpawnD
 
 		this.setDead(); // Hit something, so begone.
 	}
-
-	@Override
-	public byte[] getRenderType()
-	{
-		byte[] type = new byte[3];
-
-		type[0] = 5; // Type 5, beam weapon (Flint dust)
-		type[1] = 2; // Length
-		type[2] = 2; // Width
-
-		return type;
-	}
-
-	@Override
-	public String getEntityTexturePath()
-	{
-		return "textures/entity/flint.png";
-	} // Our projectile texture
 
 	@Override
 	public void writeSpawnData(ByteBuf buffer) // save extra data on the server

@@ -42,7 +42,7 @@ public class OWRShot extends ProjectilePotionEffect
 		if (target.entityHit != null) // We hit a living thing!
 		{
 			target.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.shootingEntity),
-					(float) this.damageMagic);
+					this.damageMagic);
 			target.entityHit.hurtResistantTime = 0; // No immunity frames
 
 			super.onImpact(target);
@@ -70,22 +70,4 @@ public class OWRShot extends ProjectilePotionEffect
 		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SMOKE_NORMAL,
 				(byte) 4);
 	}
-
-	@Override
-	public byte[] getRenderType()
-	{
-		byte[] type = new byte[3];
-
-		type[0] = 2; // Type 2, generic projectile
-		type[1] = 16; // Length
-		type[2] = 2; // Width
-
-		return type;
-	}
-
-	@Override
-	public String getEntityTexturePath()
-	{
-		return "textures/entity/obsidian.png";
-	} // Our projectile texture
 }

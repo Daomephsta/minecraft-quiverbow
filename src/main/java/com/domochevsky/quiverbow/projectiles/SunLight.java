@@ -61,7 +61,7 @@ public class SunLight extends ProjectileBase implements IEntityAdditionalSpawnDa
 		{
 			// Damage
 			target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
-					(float) this.damage);
+					this.damage);
 			target.entityHit.hurtResistantTime = 0; // No immunity frames
 
 			// Fire
@@ -132,24 +132,6 @@ public class SunLight extends ProjectileBase implements IEntityAdditionalSpawnDa
 		// Going through terrain until our time runs out, but don't damage
 		// anything
 	}
-
-	@Override
-	public byte[] getRenderType()
-	{
-		byte[] type = new byte[3];
-
-		type[0] = 7; // Type 7, beam weapon (Sunray)
-		type[1] = 2; // Length
-		type[2] = 2; // Width
-
-		return type;
-	}
-
-	@Override
-	public String getEntityTexturePath()
-	{
-		return "textures/entity/rod.png";
-	} // Our projectile texture
 
 	@Override
 	public void writeSpawnData(ByteBuf buffer) // save extra data on the server

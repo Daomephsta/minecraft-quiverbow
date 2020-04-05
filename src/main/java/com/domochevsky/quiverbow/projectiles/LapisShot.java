@@ -56,16 +56,16 @@ public class LapisShot extends ProjectilePotionEffect
 				IBlockState stuckState = world.getBlockState(movPos.getBlockPos());
 				this.stuckBlock = stuckState.getBlock();
 
-				this.motionX = (double) ((float) (movPos.hitVec.x - this.posX));
-				this.motionY = (double) ((float) (movPos.hitVec.y - this.posY));
-				this.motionZ = (double) ((float) (movPos.hitVec.z - this.posZ));
+				this.motionX = ((float) (movPos.hitVec.x - this.posX));
+				this.motionY = ((float) (movPos.hitVec.y - this.posY));
+				this.motionZ = ((float) (movPos.hitVec.z - this.posZ));
 
 				float distance = MathHelper
 						.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
 
-				this.posX -= this.motionX / (double) distance * 0.05000000074505806D;
-				this.posY -= this.motionY / (double) distance * 0.05000000074505806D;
-				this.posZ -= this.motionZ / (double) distance * 0.05000000074505806D;
+				this.posX -= this.motionX / distance * 0.05000000074505806D;
+				this.posY -= this.motionY / distance * 0.05000000074505806D;
+				this.posZ -= this.motionZ / distance * 0.05000000074505806D;
 
 				this.inGround = true;
 
@@ -89,22 +89,4 @@ public class LapisShot extends ProjectilePotionEffect
 	{
 		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SPELL, (byte) 2);
 	}
-
-	@Override
-	public byte[] getRenderType()
-	{
-		byte[] type = new byte[3];
-
-		type[0] = 2; // Type 2, generic projectile
-		type[1] = 8; // Length
-		type[2] = 2; // Width
-
-		return type; // Fallback, 0 0 0
-	}
-
-	@Override
-	public String getEntityTexturePath()
-	{
-		return "textures/entity/lapis.png";
-	} // Our projectile texture
 }
