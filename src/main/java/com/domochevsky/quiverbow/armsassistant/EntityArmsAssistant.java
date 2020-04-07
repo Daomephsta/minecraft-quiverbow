@@ -1,6 +1,9 @@
 package com.domochevsky.quiverbow.armsassistant;
 
-import java.util.*;
+import java.util.BitSet;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.UUID;
 
 import com.domochevsky.quiverbow.miscitems.PackedUpAA;
 import com.domochevsky.quiverbow.net.NetHelper;
@@ -9,13 +12,20 @@ import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import daomephsta.umbra.streams.NBTCollectors;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.*;
-import net.minecraft.entity.ai.*;
+import net.minecraft.entity.ai.EntityAIAttackRanged;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.DifficultyInstance;
@@ -24,13 +34,16 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
-import net.minecraftforge.items.*;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.ItemStackHandler;
 
 public class EntityArmsAssistant extends EntityCreature implements IEntityAdditionalSpawnData, IEntityOwnable, IRangedAttackMob
 {
 	private UUID ownerUUID;
 	private IItemHandlerModifiable inventory = new ItemStackHandler(4);
 	private Collection<IArmsAssistantUpgrade> upgrades = new HashSet<>();
+	private ArmsAssistantDirectives directives = ArmsAssistantDirectives.DEFAULT;
 
 	public EntityArmsAssistant(World world)
 	{
@@ -43,7 +56,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 		this(world);
 		this.ownerUUID = player.getPersistentID();
 	}
-	
+
 	@Override
 	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata)
 	{
@@ -51,12 +64,13 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
         tasks.addTask(1, new EntityAIAttackRanged(this, hasUpgrade(UpgradeRegistry.MOBILITY) ? 0.5D : 0.0D, 20, 16.0F));
 		return livingDataSuper;
 	}
-	
+
 	@Override
 	protected void initEntityAI()
 	{
         targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
-		targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityLiving.class, true));
+		targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityLiving.class, 10, true, false,
+		    entity -> directives.isValidTarget(this, entity)));
 	}
 
 	@Override
@@ -65,7 +79,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
 	}
-	
+
 	@Override
 	public void onUpdate()
 	{
@@ -76,7 +90,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 			stack.updateAnimation(world, this, slot++, true);
 		}
 	}
-	
+
 	@Override
 	protected boolean processInteract(EntityPlayer player, EnumHand hand)
 	{
@@ -142,6 +156,22 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 				if (stack.isEmpty())
 				{
 					resultStack = stack;
+					if ((playerHandStack.getItem() == Items.WRITTEN_BOOK || playerHandStack.getItem() == Items.WRITABLE_BOOK)
+					    && !hasCustomDirectives())
+			        {
+			            try
+			            {
+			                directives = ArmsAssistantDirectives.from(playerHandStack, error ->
+			                {
+			                    if (!world.isRemote && getOwner() != null)
+			                        getOwner().sendMessage(error);
+			                });
+			            }
+			            catch (Exception e)
+			            {
+			                e.printStackTrace();
+			            }
+			        }
 					NetHelper.sendTurretInventoryMessageToPlayersInRange(world, this, stack, slot);
 					break;
 				}
@@ -188,6 +218,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 				entityDropItem(stack, 0.0F);
 			}
 		}
+		directives = ArmsAssistantDirectives.DEFAULT;
 	}
 
 	private void replaceWeapon(EnumHand hand, ItemStack replacement)
@@ -200,6 +231,11 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 			droppedWeapon.setDefaultPickupDelay();
 			world.spawnEntity(droppedWeapon);
 		}
+	}
+
+	public boolean hasCustomDirectives()
+	{
+	    return directives != ArmsAssistantDirectives.DEFAULT;
 	}
 
 	@Override
@@ -255,7 +291,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 	{
 		return upgrades.contains(upgrade);
 	}
-	
+
 	public boolean applyUpgrade(IArmsAssistantUpgrade upgrade)
 	{
 		return upgrades.add(upgrade);
@@ -266,7 +302,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 	{
 		return ownerUUID;
 	}
-	
+
 	@Override
 	public Entity getOwner()
 	{
@@ -291,14 +327,14 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 		}
 		return result;
 	}
-	
+
 	@Override
 	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor)
 	{
 		if (!tryFireWeapon(getHeldItemMainhand()))
 		    tryFireWeapon(getHeldItemOffhand());
 	}
-	
+
 	private boolean tryFireWeapon(ItemStack weaponStack)
 	{
 	    if (!weaponStack.isEmpty() && weaponStack.getItem() instanceof WeaponBase)
@@ -311,7 +347,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
         }
         return false;
 	}
-	
+
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn)
 	{
@@ -327,7 +363,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 		}
 		return "ARMS ASSISTANT " + getEntityId();
 	}
-	
+
 
 	@Override
 	protected EntityBodyHelper createBodyHelper()
@@ -338,7 +374,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 			public void updateRenderAngles() {}
 		};
 	}
-	
+
 	@Override
 	public boolean canBeSteered()
 	{
@@ -368,7 +404,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 	{
 		return true;
 	}
-	
+
 	@Override
 	public void setSwingingArms(boolean swingingArms) {}
 
@@ -380,7 +416,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 		super.writeEntityToNBT(compound);
 		if (ownerUUID != null) compound.setTag(TAG_OWNER, NBTUtil.createUUIDTag(ownerUUID));
 		compound.setTag(TAG_INV, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.writeNBT(inventory, null));
-		compound.setTag(TAG_UPGRADES, 
+		compound.setTag(TAG_UPGRADES,
 			upgrades.stream()
 			.map(upgrade -> new NBTTagString(UpgradeRegistry.getUpgradeID(upgrade).toString()))
 			.collect(NBTCollectors.toNBTList(NBTTagString.class)));
