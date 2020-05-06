@@ -1,13 +1,19 @@
 package com.domochevsky.quiverbow.armsassistant;
 
+import java.util.function.BiConsumer;
+
 import com.domochevsky.quiverbow.QuiverbowMain;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
+import daomephsta.umbra.entity.attributes.AttributeHelper;
+import daomephsta.umbra.entity.attributes.AttributeHelper.AttributeModifierOperation;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.util.ResourceLocation;
 
 public class UpgradeRegistry
@@ -16,7 +22,7 @@ public class UpgradeRegistry
 	private static final Int2ObjectMap<IArmsAssistantUpgrade> INT_ID_INSTANCE_MAP = new Int2ObjectOpenHashMap<>();
 	private static final Object2IntMap<IArmsAssistantUpgrade> INSTANCE_INT_ID_MAP = new Object2IntOpenHashMap<>();
 	private static int nextID = 0;
-	
+
 	public static final IArmsAssistantUpgrade EXTRA_WEAPON = register(
 			new ResourceLocation(QuiverbowMain.MODID, "extra_weapon"), new BasicUpgrade());
 	public static final IArmsAssistantUpgrade RIDING = register(new ResourceLocation(QuiverbowMain.MODID, "riding"),
@@ -25,12 +31,35 @@ public class UpgradeRegistry
 			new ResourceLocation(QuiverbowMain.MODID, "communications"), new BasicUpgrade());
 	public static final IArmsAssistantUpgrade STORAGE = register(
 		new ResourceLocation(QuiverbowMain.MODID, "storage"), new BasicUpgrade());
-	public static final IArmsAssistantUpgrade MOBILITY = register(
-		new ResourceLocation(QuiverbowMain.MODID, "mobility"), new BasicUpgrade());
-	public static final IArmsAssistantUpgrade ARMOUR = register(
-		new ResourceLocation(QuiverbowMain.MODID, "armour"), new BasicUpgrade());
-	public static final IArmsAssistantUpgrade HEAVY_PLATING = register(
-		new ResourceLocation(QuiverbowMain.MODID, "heavy_plating"), new BasicUpgrade());
+	public static final IArmsAssistantUpgrade MOBILITY = register(new ResourceLocation(QuiverbowMain.MODID, "mobility"), new BasicUpgrade()
+	    {
+	        @Override
+	        public void submitAttributeModifiers(BiConsumer<String, AttributeModifier> out)
+	        {
+	            out.accept(SharedMonsterAttributes.MOVEMENT_SPEED.getName(),
+	                AttributeHelper.createModifier("Mobility upgrade", 0.5D, AttributeModifierOperation.ADDITIVE));
+	        }
+	    });
+	public static final IArmsAssistantUpgrade ARMOUR = register(new ResourceLocation(QuiverbowMain.MODID, "armour"), new BasicUpgrade()
+	    {
+	        @Override
+            public void submitAttributeModifiers(BiConsumer<String,AttributeModifier> out)
+	        {
+	            out.accept(SharedMonsterAttributes.MAX_HEALTH.getName(),
+	                AttributeHelper.createModifier("Health upgrade", 20.0D, AttributeModifierOperation.ADDITIVE));
+	        };
+	    });
+	public static final IArmsAssistantUpgrade HEAVY_PLATING = register(new ResourceLocation(QuiverbowMain.MODID, "heavy_plating"), new BasicUpgrade()
+        {
+            @Override
+            public void submitAttributeModifiers(BiConsumer<String,AttributeModifier> out)
+            {
+                out.accept(SharedMonsterAttributes.ARMOR.getName(),
+                    AttributeHelper.createModifier("Armour upgrade", 3.0D, AttributeModifierOperation.ADDITIVE));
+                out.accept(SharedMonsterAttributes.KNOCKBACK_RESISTANCE.getName(),
+                    AttributeHelper.createModifier("Armour upgrade", 0.5D, AttributeModifierOperation.ADDITIVE));
+            };
+        });
 
 	public static IArmsAssistantUpgrade register(ResourceLocation id, IArmsAssistantUpgrade upgradeInstance)
 	{
@@ -44,7 +73,7 @@ public class UpgradeRegistry
 	{
 		return ID_INSTANCE_MAP.get(id);
 	}
-	
+
 	public static IArmsAssistantUpgrade getUpgradeInstance(int id)
 	{
 		return INT_ID_INSTANCE_MAP.get(id);
@@ -54,7 +83,7 @@ public class UpgradeRegistry
 	{
 		return ID_INSTANCE_MAP.inverse().get(upgrade);
 	}
-	
+
 	public static int getUpgradeIntegerID(IArmsAssistantUpgrade upgrade)
 	{
 		return INSTANCE_INT_ID_MAP.get(upgrade);

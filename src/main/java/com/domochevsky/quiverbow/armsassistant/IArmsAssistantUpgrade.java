@@ -1,10 +1,10 @@
 package com.domochevsky.quiverbow.armsassistant;
 
-import com.google.common.collect.Multimap;
+import java.util.function.BiConsumer;
 
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 
 public interface IArmsAssistantUpgrade
 {
-	public Multimap<String, AttributeModifier> getAttributeModifiers();
+    public void submitAttributeModifiers(BiConsumer<String, AttributeModifier> out);
 }

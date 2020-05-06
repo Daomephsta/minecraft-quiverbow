@@ -1,12 +1,11 @@
 package com.domochevsky.quiverbow.miscitems;
 
-import java.util.Collection;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import com.domochevsky.quiverbow.QuiverbowMain;
-import com.domochevsky.quiverbow.armsassistant.*;
+import com.domochevsky.quiverbow.armsassistant.EntityArmsAssistant;
+import com.domochevsky.quiverbow.armsassistant.IArmsAssistantUpgrade;
+import com.domochevsky.quiverbow.armsassistant.UpgradeRegistry;
 import com.domochevsky.quiverbow.items.ItemRegistry;
 
 import net.minecraft.client.gui.GuiScreen;
@@ -15,40 +14,45 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.*;
-import net.minecraft.util.*;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 
 public class PackedUpAA extends QuiverBowItem
 {
-	public static final String TAG_UPGRADES = "upgrades", TAG_HEALTH = "currentHealth";
+	public static final String TAG_UPGRADES = "upgrades", TAG_HEALTH = "currentHealth", TAG_MAX_HEALTH = "maxHealth";
 
 	public static ItemStack withUpgrade(ItemStack stack, IArmsAssistantUpgrade upgrade)
 	{
 		if (!stack.hasTagCompound()) stack.setTagCompound(new NBTTagCompound());
 		NBTTagCompound stackTag = stack.getTagCompound();
-		
+
 		if(!stackTag.hasKey(TAG_UPGRADES)) stackTag.setTag(TAG_UPGRADES, new NBTTagList());
 		NBTTagList upgradeList = stackTag.getTagList(TAG_UPGRADES, NBT.TAG_STRING);
 		upgradeList.appendTag(new NBTTagString(UpgradeRegistry.getUpgradeID(upgrade).toString()));
 
 		return stack;
 	}
-	
-	public static ItemStack createPackedArmsAssistant(Collection<IArmsAssistantUpgrade> upgrades, float health, @Nullable String customName)
+
+	public static ItemStack createPackedArmsAssistant(EntityArmsAssistant armsAssistant)
 	{
 		ItemStack stack = new ItemStack(ItemRegistry.ARMS_ASSISTANT);
 		stack.setTagCompound(new NBTTagCompound());
 		NBTTagCompound stackTag = stack.getTagCompound();
-		
-		if (!customName.isEmpty()) stack.setStackDisplayName(customName);
-		
-		if (!upgrades.isEmpty())
+
+		if (armsAssistant.hasCustomName()) stack.setStackDisplayName(armsAssistant.getCustomNameTag());
+
+		if (!armsAssistant.getUpgrades().isEmpty())
 		{
 			NBTTagList upgradeList = stackTag.getTagList(TAG_UPGRADES, NBT.TAG_STRING);
-			for (IArmsAssistantUpgrade upgrade : upgrades)
+			for (IArmsAssistantUpgrade upgrade : armsAssistant.getUpgrades())
 			{
 				ResourceLocation upgradeID = UpgradeRegistry.getUpgradeID(upgrade);
 				if (upgradeID == null)
@@ -59,11 +63,12 @@ public class PackedUpAA extends QuiverBowItem
 			stackTag.setTag(TAG_UPGRADES, upgradeList);
 		}
 
-		stackTag.setFloat(TAG_HEALTH, health);
-		
+		stackTag.setFloat(TAG_MAX_HEALTH, armsAssistant.getMaxHealth());
+		stackTag.setFloat(TAG_HEALTH, armsAssistant.getHealth());
+
 		return stack;
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags)
 	{
@@ -71,10 +76,9 @@ public class PackedUpAA extends QuiverBowItem
 		if (stack.hasTagCompound())
 		{
 			NBTTagCompound stackTag = stack.getTagCompound();
-			int maxHealth = hasUpgrade(stack, UpgradeRegistry.ARMOUR) ? 40 : 20;
+			list.add(I18n.format(getUnlocalizedName(stack) + ".tooltip.health", stack.getTagCompound().getInteger("currentHealth"),
+			    stackTag.getFloat(TAG_MAX_HEALTH)));
 
-			list.add(I18n.format(getUnlocalizedName(stack) + ".tooltip.health", stack.getTagCompound().getInteger("currentHealth"), maxHealth));
-			
 			boolean hasMore = stackTag.hasKey(TAG_UPGRADES);
 			if (hasMore)
 			{
@@ -95,7 +99,7 @@ public class PackedUpAA extends QuiverBowItem
 			}
 		}
 	}
-	
+
 	public static boolean hasUpgrade(ItemStack stack, IArmsAssistantUpgrade upgrade)
 	{
 		if (stack.hasTagCompound())
@@ -119,7 +123,7 @@ public class PackedUpAA extends QuiverBowItem
 	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
 		if(world.isRemote) return EnumActionResult.SUCCESS;
-		
+
 		ItemStack stack = player.getHeldItem(hand);
 
 		EntityArmsAssistant turret = new EntityArmsAssistant(world, player);

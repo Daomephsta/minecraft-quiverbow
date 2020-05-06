@@ -8,12 +8,15 @@ import java.util.UUID;
 import com.domochevsky.quiverbow.miscitems.PackedUpAA;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.MultimapBuilder;
 
 import daomephsta.umbra.streams.NBTCollectors;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIAttackRanged;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -63,9 +66,14 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata)
 	{
         IEntityLivingData livingDataSuper = super.onInitialSpawn(difficulty, livingdata);
+        //Apply upgrade attribute modifiers
+        Multimap<String, AttributeModifier> modifiers = MultimapBuilder.hashKeys().arrayListValues().build();
+        for (IArmsAssistantUpgrade upgrade : upgrades)
+            upgrade.submitAttributeModifiers(modifiers::put);
+        getAttributeMap().applyAttributeModifiers(modifiers);
         //Set home pos for use by STAY AI, home distance is ignored and thus arbitrary
         setHomePosAndDistance(getPosition(), 8);
-        double moveSpeed = hasUpgrade(UpgradeRegistry.MOBILITY) ? 0.5D : 0.0D;
+        double moveSpeed = getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue();
         tasks.addTask(2, new EntityAIAttackRanged(this, moveSpeed, 20, 16.0F));
 		return livingDataSuper;
 	}
@@ -80,7 +88,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 	protected void applyEntityAttributes()
 	{
 		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
+		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.0D);
 	}
 
 	@Override
@@ -191,7 +199,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 	{
 		if (world.isRemote) return;
 		dropEquipment();
-		ItemStack selfStack = PackedUpAA.createPackedArmsAssistant(upgrades, getHealth(), getCustomNameTag());
+		ItemStack selfStack = PackedUpAA.createPackedArmsAssistant(this);
 		EntityItem self = new EntityItem(world, posX, posY, posZ, selfStack);
 		world.spawnEntity(self);
 	}
@@ -296,6 +304,11 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
 		return super.getCapability(capability, facing);
 	}
+
+    public Collection<IArmsAssistantUpgrade> getUpgrades()
+    {
+        return upgrades;
+    }
 
 	public boolean hasUpgrade(IArmsAssistantUpgrade upgrade)
 	{
