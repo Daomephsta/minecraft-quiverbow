@@ -24,6 +24,7 @@ import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityBat;
@@ -190,11 +191,6 @@ public class ArmsAssistantDirectives
         }
     }
 
-    public boolean isValidTarget(EntityArmsAssistant directedEntity, EntityLiving candidate)
-    {
-        return targetSelector.test(directedEntity, candidate) && !targetBlacklist.test(directedEntity, candidate);
-    }
-
     public void revertAI()
     {
         for (EntityAIBase task : aiTasks)
@@ -207,6 +203,8 @@ public class ArmsAssistantDirectives
 
     public void applyAI()
     {
+        applyTask(armsAssistant.targetTasks, 2, new EntityAINearestAttackableTarget<>(armsAssistant,
+            EntityLiving.class, 10, true, false, this::isValidTarget));
         switch (movementAI)
         {
         case STAY:
@@ -227,6 +225,11 @@ public class ArmsAssistantDirectives
         tasks.addTask(priority, task);
         aiTasks.add(task);
         return task;
+    }
+
+    private boolean isValidTarget(EntityLiving candidate)
+    {
+        return targetSelector.test(armsAssistant, candidate) && !targetBlacklist.test(armsAssistant, candidate);
     }
 
     public boolean areCustom()

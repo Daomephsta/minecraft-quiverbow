@@ -14,7 +14,6 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIAttackRanged;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
-import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -64,6 +63,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata)
 	{
         IEntityLivingData livingDataSuper = super.onInitialSpawn(difficulty, livingdata);
+        //Set home pos for use by STAY AI, home distance is ignored and thus arbitrary
         setHomePosAndDistance(getPosition(), 8);
         double moveSpeed = hasUpgrade(UpgradeRegistry.MOBILITY) ? 0.5D : 0.0D;
         tasks.addTask(2, new EntityAIAttackRanged(this, moveSpeed, 20, 16.0F));
@@ -73,9 +73,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 	@Override
 	protected void initEntityAI()
 	{
-        targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
-		targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, EntityLiving.class, 10, true, false,
-		    entity -> directives.isValidTarget(this, entity)));
+        targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
 	}
 
 	@Override
