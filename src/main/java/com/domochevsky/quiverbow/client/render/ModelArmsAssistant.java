@@ -11,7 +11,7 @@ import net.minecraft.entity.Entity;
  * Arms Assistant - Daomephsta
  * Created using Tabula 7.0.0
  */
-public class ModelArmsAssistant extends ModelBase 
+public class ModelArmsAssistant extends ModelBase
 {
 	public ModelRenderer body,
 						 sprocketsL,
@@ -40,7 +40,7 @@ public class ModelArmsAssistant extends ModelBase
 						 bookCoverB,
 						 ammoFeed2L;
 
-    public ModelArmsAssistant() 
+    public ModelArmsAssistant()
     {
         this.textureWidth = 64;
         this.textureHeight = 64;
@@ -152,10 +152,10 @@ public class ModelArmsAssistant extends ModelBase
     }
 
     @Override
-    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) 
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
     {
     	EntityArmsAssistant armsAssistant = (EntityArmsAssistant) entity;
-    	setVisibility(false, bookSpine);
+    	setVisibility(armsAssistant.hasCustomDirectives(), bookSpine);
     	setVisibility(armsAssistant.hasUpgrade(UpgradeRegistry.EXTRA_WEAPON), rightRail, ammoFeed1R);
     	setVisibility(armsAssistant.hasUpgrade(UpgradeRegistry.MOBILITY), sprocketsL, sprocketsR);
     	setVisibility(armsAssistant.hasUpgrade(UpgradeRegistry.COMMUNICATIONS), aerial);
@@ -163,14 +163,14 @@ public class ModelArmsAssistant extends ModelBase
     	setVisibility(armsAssistant.hasUpgrade(UpgradeRegistry.RIDING), seat);
         this.body.render(f5);
     }
-    
+
     @Override
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
     {
     	upperTurntable.rotateAngleY = netHeadYaw * (float) (Math.PI / 180.0F);
     	rightRail.rotateAngleX = leftRail.rotateAngleX = headPitch * (float) (Math.PI / 180.0F);
     }
-    
+
     private void setVisibility(boolean visibility, ModelRenderer... modelRenderers)
     {
     	for (ModelRenderer renderer : modelRenderers)
@@ -182,7 +182,7 @@ public class ModelArmsAssistant extends ModelBase
     /**
      * This is a helper function from Tabula to set the rotation of model parts
      */
-    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) 
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z)
     {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
