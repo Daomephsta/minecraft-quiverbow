@@ -249,7 +249,7 @@ public class ArmsAssistantDirectives
         private final EntityArmsAssistant armsAssistant;
         Collection<BiPredicate<EntityArmsAssistant, EntityLiving>> targetSelectors = new ArrayList<>(),
                                                                    targetBlacklist = new ArrayList<>();
-        MovementAI movementAI;
+        MovementAI movementAI = MovementAI.NONE;
 
         Builder(EntityArmsAssistant armsAssistant)
         {
