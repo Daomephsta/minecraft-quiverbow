@@ -1,0 +1,16 @@
+[
+{
+  "modid": "quiverbow_restrung",
+  "name": "QuiverBow: Restrung",
+  "description": "Ranged weaponry, as thought up by Steve.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "https://github.com/Daomephsta/minecraft-quiverbow",
+  "updateUrl": "",
+  "authorList": ["Daomephsta"],
+  "credits": "Domochevsky, for creating the original QuiverBow, which this mod is based on",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

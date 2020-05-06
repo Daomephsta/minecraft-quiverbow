@@ -1,0 +1,315 @@
+#PARSE_ESCAPES
+entity.quiverbow_restrung_turret.name=Arms Assistant
+entity.quiverbow_restrung.quiverbow_restrung_turret.name=Arms Assistant
+entity.quiverbow_restrung.projectilechevsky_Ano.name=the End
+
+//Creative tab
+itemGroup.quiverbow_restrung=Quiverbow
+
+//Ammo
+quiverbow_restrung.ammo.nocreative=Does not work in creative mode.
+quiverbow_restrung.ammo.infinite=§9Infinite Ammo
+quiverbow_restrung.ammo.missingitems=You do not have the necessary items
+quiverbow_restrung.misc.sneakformore=Press [%s] for more
+
+item.quiverbow_restrung.ammo.sugar_magazine.name=Clip of Sugar Rods
+item.quiverbow_restrung.ammo.sugar_magazine.clipstatus=§9Sugar Rods: %d / %d
+item.quiverbow_restrung.ammo.sugar_magazine.filltext=§eUse magazine to fill it with Sugar Cane and Sticks.
+item.quiverbow_restrung.ammo.sugar_magazine.description=A loading helper, full of sugar cane-wrapped sticks.
+
+item.quiverbow_restrung.ammo.seed_jar.name=Seed Jar
+item.quiverbow_restrung.ammo.seed_jar.clipstatus=§9Seeds: %d / %d
+item.quiverbow_restrung.ammo.seed_jar.filltext=§eUse jar to fill it with Seeds.
+item.quiverbow_restrung.ammo.seed_jar.description=You could preserve apples with this, too.
+
+item.quiverbow_restrung.ammo.obsidian_magazine.name=Obsidian Magazine
+item.quiverbow_restrung.ammo.obsidian_magazine.clipstatus=§9Splints: %d / %d
+item.quiverbow_restrung.ammo.obsidian_magazine.filltext=§eUse magazine to fill it with Gunpowder and Obsidian.
+item.quiverbow_restrung.ammo.obsidian_magazine.description=A loading helper, full of obsidian splints.
+
+item.quiverbow_restrung.ammo.gold_magazine.name=Gold Magazine
+item.quiverbow_restrung.ammo.gold_magazine.clipstatus=§9Gold Nuggets: %d / %d
+item.quiverbow_restrung.ammo.gold_magazine.filltext=§eUse magazine to fill it with Gold Nuggets. §eCrouch-use to fill it with 8 Gold Nuggets.
+item.quiverbow_restrung.ammo.gold_magazine.description=A loading helper, full of gold nuggets.
+
+item.quiverbow_restrung.ammo.lapis_magazine.name=Lapis Magazine
+item.quiverbow_restrung.ammo.lapis_magazine.clipstatus=§9Lapis: %d / %d
+item.quiverbow_restrung.ammo.lapis_magazine.filltext=§eUse magazine to fill it with Lapis Blocks.
+item.quiverbow_restrung.ammo.lapis_magazine.description=A loading helper, full of toxic blue stuff.
+
+item.quiverbow_restrung.ammo.thorn_magazine.name=Thorn Magazine
+item.quiverbow_restrung.ammo.thorn_magazine.clipstatus=§9Thorns: %d / %d
+item.quiverbow_restrung.ammo.thorn_magazine.filltext=§eUse magazine to fill it with Cacti. §eCrouch-use magazine to fill it with 8 Cacti.
+item.quiverbow_restrung.ammo.thorn_magazine.description=A loading helper, full of cactus thorns.
+
+item.quiverbow_restrung.ammo.redstone_magazine.name=Redstone Magazine
+item.quiverbow_restrung.ammo.redstone_magazine.clipstatus=§9Redstone: %d / %d
+item.quiverbow_restrung.ammo.redstone_magazine.filltext=§eUse magazine to fill it with Redstone. §eCrouch-use to fill it with 8 Redstone.
+item.quiverbow_restrung.ammo.redstone_magazine.description=A loading helper, full of red dust.
+
+item.quiverbow_restrung.ammo.large_netherrack_magazine.name=Large Netherrack Magazine
+item.quiverbow_restrung.ammo.large_netherrack_magazine.clipstatus=§9Netherrack: %d / %d
+item.quiverbow_restrung.ammo.large_netherrack_magazine.filltext=§eUse magazine to fill it with Netherrack. §eCrouch-use to fill it with 8 Netherrack.
+item.quiverbow_restrung.ammo.large_netherrack_magazine.description=A loading helper, full of Netherrack.
+
+item.quiverbow_restrung.ammo.large_redstone_magazine.name=Large Redstone Magazine
+item.quiverbow_restrung.ammo.large_redstone_magazine.clipstatus=§9Redstone: %d / %d
+item.quiverbow_restrung.ammo.large_redstone_magazine.filltext=Use magazine to fill it with Redstone. §eCrouch-use to fill it with 8 Redstone.
+item.quiverbow_restrung.ammo.large_redstone_magazine.description=A loading helper, full of red dust.
+
+item.quiverbow_restrung.ammo.ender_quartz_magazine.name=Ender Quartz Clip
+item.quiverbow_restrung.ammo.ender_quartz_magazine.clipstatus=§9Ender Quartz: %d / %d
+item.quiverbow_restrung.ammo.ender_quartz_magazine.filltext=§eUse magazine to fill it with Ender Pearls and Quartz.
+item.quiverbow_restrung.ammo.ender_quartz_magazine.description=A loading helper, full of quartz-encased ender pearls.
+
+item.quiverbow_restrung.ammo.arrow_bundle.name=Arrow Bundle
+item.quiverbow_restrung.ammo.arrow_bundle.description=Holds 8 arrows, tightly packed.
+item.quiverbow_restrung.ammo.rocket_bundle.name=Rocket Bundle
+item.quiverbow_restrung.ammo.rocket_bundle.description=Holds 8 rockets. Highly volatile.
+item.quiverbow_restrung.ammo.large_rocket.name=Big Rocket
+item.quiverbow_restrung.ammo.large_rocket.description=A big rocket. Very dangerous.
+item.quiverbow_restrung.ammo.cold_iron_clip.name=Cold Iron Clip
+item.quiverbow_restrung.ammo.cold_iron_clip.description=Holds 4 ice-laced iron ingots. Cool to the touch.
+item.quiverbow_restrung.ammo.box_of_flint_dust.name=Box of Flint Dust
+item.quiverbow_restrung.ammo.box_of_flint_dust.description=All boxed up.
+
+//Weapons
+item.quiverbow_restrung.weapon.aa_target_assist.name=AA Target Designator
+item.quiverbow_restrung.weapon.aa_target_assist.description=§9Used to set AA targets, and fire weapons of ridden AAs Over there!
+
+item.quiverbow_restrung.weapon.coin_tosser_mod.name=Modified Coin Tosser
+item.quiverbow_restrung.weapon.coin_tosser_mod.ammostatus=§9Gold Nuggets: %d / %d
+item.quiverbow_restrung.weapon.coin_tosser_mod.loadtext=§eCraft with a Gold Magazine to reload.
+item.quiverbow_restrung.weapon.coin_tosser_mod.description=Retrofitted with double-piston tech. More efficient, but just as heavy.
+
+item.quiverbow_restrung.weapon.seed_sweeper.name=Seed Sweeper
+item.quiverbow_restrung.weapon.seed_sweeper.ammostatus=§9Seeds: %d / %d
+item.quiverbow_restrung.weapon.seed_sweeper.loadtext=§eCraft with 1 Seed Jar to reload.
+item.quiverbow_restrung.weapon.seed_sweeper.description=Git off my farm!
+
+item.quiverbow_restrung.weapon.ray_of_hope.name=Ray Of Hope
+item.quiverbow_restrung.weapon.ray_of_hope.ammostatus=§9Potion: %dmb/ %dmb
+item.quiverbow_restrung.weapon.ray_of_hope.loadtext=§eCraft with up to 8 Regeneration Potions (I or II) to reload.
+item.quiverbow_restrung.weapon.ray_of_hope.description=The beacon shimmers encouragingly.
+
+item.quiverbow_restrung.weapon.quad_dragonbox.name=Four-headed Dragonbox
+item.quiverbow_restrung.weapon.quad_dragonbox.ammostatus=§9Rocket Sets: %d / %d
+item.quiverbow_restrung.weapon.quad_dragonbox.loadtext=§eCraft with up to 8 Rocket Bundles to reload.
+item.quiverbow_restrung.weapon.quad_dragonbox.description=Four Dragonboxes strapped together. §cWhat could go wrong?
+
+item.quiverbow_restrung.weapon.compact_crossbow.name=Compact Crossbow
+item.quiverbow_restrung.weapon.compact_crossbow.ammostatus=§9Bolts: %d / %d
+item.quiverbow_restrung.weapon.compact_crossbow.loadtext=§eCraft with 1 Arrow to reload.
+item.quiverbow_restrung.weapon.compact_crossbow.description=A simple yet effective design.
+
+item.quiverbow_restrung.weapon.potatosser.name=Potatosser
+item.quiverbow_restrung.weapon.potatosser.ammostatus=§9Potatoes: %d / %d
+item.quiverbow_restrung.weapon.potatosser.loadtext=§eCraft with up to 7 potatoes and 1 Coal/Charcoal to reload.
+item.quiverbow_restrung.weapon.potatosser.description=It smells kinda appetizing.
+
+item.quiverbow_restrung.weapon.coin_tosser.name=Coin Tosser
+item.quiverbow_restrung.weapon.coin_tosser.ammostatus=§9Gold Nuggets: %d / %d
+item.quiverbow_restrung.weapon.coin_tosser.loadtext=§eCraft with a Gold Magazine to reload.
+item.quiverbow_restrung.weapon.coin_tosser.description=Spring-loaded. It's pretty heavy.
+
+item.quiverbow_restrung.weapon.dragon_mortar.name=Dragon Mortar
+item.quiverbow_restrung.weapon.dragon_mortar.ammostatus=§9Rocket Bundles: %d / %d
+item.quiverbow_restrung.weapon.dragon_mortar.loadtext=§eCraft with up to 8 Rocket Bundles to reload.
+item.quiverbow_restrung.weapon.dragon_mortar.description=Filled with rockets, strapped to more rockets.
+
+item.quiverbow_restrung.weapon.quiverbow.name=Bow With Quiver
+item.quiverbow_restrung.weapon.quiverbow.ammostatus=§9Quiver: %d / %d Arrows
+item.quiverbow_restrung.weapon.quiverbow.loadtext=§eCraft with up to 8 Arrow Bundles to reload.
+item.quiverbow_restrung.weapon.quiverbow.description=A quiver has been sewn to this bow.
+
+item.quiverbow_restrung.weapon.flint_duster.name=Flint Duster
+item.quiverbow_restrung.weapon.flint_duster.ammostatus=§9Flint Dust: %d / %d
+item.quiverbow_restrung.weapon.flint_duster.loadtext=§eCraft with up to 8 Boxes of Flint Dust to reload.
+item.quiverbow_restrung.weapon.flint_duster.description=The quartz is barely visible beneath the dust coating.
+
+item.quiverbow_restrung.weapon.dragonbox.name=Dragonbox
+item.quiverbow_restrung.weapon.dragonbox.ammostatus=§9Rockets: %d / %d
+item.quiverbow_restrung.weapon.dragonbox.loadtext=§eCraft with up to 8 Rocket Bundles to reload.
+item.quiverbow_restrung.weapon.dragonbox.description=Crank-powered. The metal is bent.
+
+item.quiverbow_restrung.weapon.seedling.name=Seedling
+item.quiverbow_restrung.weapon.seedling.ammostatus=§9Melon Seeds: %d / %d
+item.quiverbow_restrung.weapon.seedling.loadtext=§cCannot be reloaded.
+item.quiverbow_restrung.weapon.seedling.description=A small weapon made out of sugar cane. §a80%% biologically degradable.
+
+item.quiverbow_restrung.weapon.snow_cannon.name=Snow Cannon
+item.quiverbow_restrung.weapon.snow_cannon.ammostatus=§9Snow: %d / %d
+item.quiverbow_restrung.weapon.snow_cannon.loadtext=§eCraft with up to 8 Snow Blocks to reload.
+item.quiverbow_restrung.weapon.snow_cannon.description=Hoarfrost is forming around the trigger.
+
+item.quiverbow_restrung.weapon.ender_rifle.name=Ender Rifle
+item.quiverbow_restrung.weapon.ender_rifle.ammostatus=§9Iron: %d / %d
+item.quiverbow_restrung.weapon.ender_rifle.loadtext=§eCraft with up to 8 Iron Ingots to reload.
+item.quiverbow_restrung.weapon.ender_rifle.description=§eCrouch to zoom. An ender-eye scope is attached. It's staring at you.
+
+item.quiverbow_restrung.weapon.sugar_engine.name=Sugar Engine
+item.quiverbow_restrung.weapon.sugar_engine.ammostatus=§9Sugar Rods: %d / %d
+item.quiverbow_restrung.weapon.sugar_engine.loadtext=§eCraft with a Sugar Magazine to reload.
+item.quiverbow_restrung.weapon.sugar_engine.description=So many barrels. Why so many barrels?
+
+item.quiverbow_restrung.weapon.splinter_pistol.name=Obsidian Splinter Pistol
+item.quiverbow_restrung.weapon.splinter_pistol.ammostatus=§9Small Splints: %d / %d
+item.quiverbow_restrung.weapon.splinter_pistol.loadtext=§eCraft with an Obsidian Magazine to reload.
+item.quiverbow_restrung.weapon.splinter_pistol.description=The barrel's inside is blackened.
+
+item.quiverbow_restrung.weapon.silken_spinner.name=Silken Spinner
+item.quiverbow_restrung.weapon.silken_spinner.ammostatus=§9Webs: %d / %d
+item.quiverbow_restrung.weapon.silken_spinner.loadtext=§eCraft with up to 8 Cobwebs to reload.
+item.quiverbow_restrung.weapon.silken_spinner.description=Feels vaguely sticky.
+
+item.quiverbow_restrung.weapon.soul_cairn.name=Soul Cairn
+item.quiverbow_restrung.weapon.soul_cairn.ammostatus=§9Soul Battery: %d / %d
+item.quiverbow_restrung.weapon.soul_cairn.loadtext=§eCraft with 1 Diamond to reload.
+item.quiverbow_restrung.weapon.soul_cairn.description=A tool to End (and start) all life.
+quiverbow_restrung.soul_cairn.blacklisted=This mob has been blacklisted. You cannot capture it.
+quiverbow_restrung.soul_cairn.boss=Bosses are too strong to be captured.
+
+item.quiverbow_restrung.weapon.redstone_sprayer.name=Redstone Sprayer
+item.quiverbow_restrung.weapon.redstone_sprayer.ammostatus=§9Redstone: %d / %d
+item.quiverbow_restrung.weapon.redstone_sprayer.loadtext=§eCraft with 1 a Large Redstone Magazine to reload.
+item.quiverbow_restrung.weapon.redstone_sprayer.description=The muzzle is slightly corroded.
+
+item.quiverbow_restrung.weapon.thorn_spitter.name=Thorn Spitter
+item.quiverbow_restrung.weapon.thorn_spitter.ammostatus=§9Thorns: %d / %d
+item.quiverbow_restrung.weapon.thorn_spitter.loadtext=§eCraft with a Thorn Magazine to reload.
+item.quiverbow_restrung.weapon.thorn_spitter.description=Built with experimental quad-piston tech.
+
+item.quiverbow_restrung.weapon.arrow_mortar.name=Arrow Mortar
+item.quiverbow_restrung.weapon.arrow_mortar.ammostatus=§9Arrow Bundles: %d / %d
+item.quiverbow_restrung.weapon.arrow_mortar.loadtext=§eCraft with up to 8 Arrow Bundles to reload.
+item.quiverbow_restrung.weapon.arrow_mortar.description=Arrow tips are poking out of the barrel.
+
+item.quiverbow_restrung.weapon.wither_rifle.name=Obsidian Wither Rifle
+item.quiverbow_restrung.weapon.wither_rifle.ammostatus=§9Splints: %d / %d
+item.quiverbow_restrung.weapon.wither_rifle.loadtext=§eCraft with an Obsidian Magazine to reload.
+item.quiverbow_restrung.weapon.wither_rifle.description=Disturbingly evil to the touch.
+item.quiverbow_restrung.weapon.wither_rifle.cooldown=§cEXORCISING (%s secs)
+
+item.quiverbow_restrung.weapon.rocket_launcher.name=Rocket Launcher
+item.quiverbow_restrung.weapon.rocket_launcher.ammostatus=§9Rockets: %d / %d
+item.quiverbow_restrung.weapon.rocket_launcher.loadtext=§cCannot be reloaded.
+item.quiverbow_restrung.weapon.rocket_launcher.description=The fuse is way too short.
+
+item.quiverbow_restrung.weapon.hidden_ender_pistol.name=Hidden Ender Pistol
+item.quiverbow_restrung.weapon.hidden_ender_pistol.ammostatus=§9Ender Quartz: %d / %d
+item.quiverbow_restrung.weapon.hidden_ender_pistol.loadtext=§eCraft with an Ender Quartz Magazine to reload.
+item.quiverbow_restrung.weapon.hidden_ender_pistol.description=A weapon for those desiring to stay unknown.
+
+item.quiverbow_restrung.weapon.lapis_coil.name=Lapis Coil
+item.quiverbow_restrung.weapon.lapis_coil.ammostatus=§9Lapis: %d / %d
+item.quiverbow_restrung.weapon.lapis_coil.loadtext=§eCraft with a Lapis Magazine to reload.
+item.quiverbow_restrung.weapon.lapis_coil.description=Redstone-powered and highly toxic. It's covered in blue dust.
+
+item.quiverbow_restrung.weapon.nether_bellows.name=Nether Bellows
+item.quiverbow_restrung.weapon.nether_bellows.ammostatus=§9Netherrack: %d / %d
+item.quiverbow_restrung.weapon.nether_bellows.loadtext=§eCraft with a Large Netherrack Magazine to reload.
+item.quiverbow_restrung.weapon.nether_bellows.description=Vague whispers of torment can be heard.
+
+item.quiverbow_restrung.weapon.splinter_rifle.name=Obsidian Splinter Rifle
+item.quiverbow_restrung.weapon.splinter_rifle.ammostatus=§9Splints: %d / %d
+item.quiverbow_restrung.weapon.splinter_rifle.loadtext=§eCraft with an Obsidian Magazine to reload.
+item.quiverbow_restrung.weapon.splinter_rifle.description=Deceptively cold to the touch.
+item.quiverbow_restrung.weapon.splinter_rifle.cooldown=§cCOOLING DOWN (%s secs)
+
+item.quiverbow_restrung.weapon.proximity_thorn_thrower.name=Proximity Thorn Thrower
+item.quiverbow_restrung.weapon.proximity_thorn_thrower.ammostatus=§9Thorns: %d / %d
+item.quiverbow_restrung.weapon.proximity_thorn_thrower.loadtext=§eCraft with a Thorn Magazine to reload
+item.quiverbow_restrung.weapon.proximity_thorn_thrower.description=Uses 8 thorns per shot. A bundle of pain, lying in wait.
+
+item.quiverbow_restrung.weapon.sunray.name=Sunray
+item.quiverbow_restrung.weapon.sunray.ammostatus=§9Charge: %d%
+item.quiverbow_restrung.weapon.sunray.loadtext=§eRequires strong light to charge.
+item.quiverbow_restrung.weapon.sunray.description=The refurbished beacon emits a low hum.
+
+item.quiverbow_restrung.weapon.auto_crossbow.name=Auto-crossbow
+item.quiverbow_restrung.weapon.auto_crossbow.ammostatus=§9Bolts: %d / %d
+item.quiverbow_restrung.weapon.auto_crossbow.loadtext=§eCraft with an Arrow Bundle to reload.
+item.quiverbow_restrung.weapon.auto_crossbow.description=Pistons power the bolt feeder.
+
+item.quiverbow_restrung.weapon.frost_lancer.name=Frost Lancer
+item.quiverbow_restrung.weapon.frost_lancer.ammostatus=§9Cold Iron: %d / %d
+item.quiverbow_restrung.weapon.frost_lancer.loadtext=§eCraft with a Cold Iron Clip to reload.
+item.quiverbow_restrung.weapon.frost_lancer.description=A quartz ender-eye scope is attached. It's staring past you with aloof disdain.
+item.quiverbow_restrung.weapon.frost_lancer.cooldown=§cCOOLING DOWN (%s secs)
+
+item.quiverbow_restrung.weapon.blaze_crossbow.name=Blaze Crossbow
+item.quiverbow_restrung.weapon.blaze_crossbow.ammostatus=§9Blaze Rods: %d / %d
+item.quiverbow_restrung.weapon.blaze_crossbow.loadtext=§eCraft with 1 Blaze Rod to reload.
+item.quiverbow_restrung.weapon.blaze_crossbow.description=Black smoke is slowly curling up from it.
+
+item.quiverbow_restrung.weapon.fen_fire.name=Fen Fire
+item.quiverbow_restrung.weapon.fen_fire.ammostatus=§9Lights: %d / %d
+item.quiverbow_restrung.weapon.fen_fire.loadtext=§eCraft with up to 8 Glowstone Blocks to reload.
+item.quiverbow_restrung.weapon.fen_fire.description=It's emanating a warm light.
+
+item.quiverbow_restrung.weapon.ender_rail_accelerator.name=Ender Rail Accelerator
+item.quiverbow_restrung.weapon.ender_rail_accelerator.ammostatus=§cBurns out after one shot.
+item.quiverbow_restrung.weapon.ender_rail_accelerator.loadtext=§cCannot be reloaded.
+item.quiverbow_restrung.weapon.ender_rail_accelerator.description=27 blocks worth of powered rail running through a single ender chest. So not safe for use.
+
+item.quiverbow_restrung.weapon.auto_crossbow_imp.name=Improved Auto-crossbow
+item.quiverbow_restrung.weapon.auto_crossbow_imp.ammostatus=§9Bolts: %d / %d
+item.quiverbow_restrung.weapon.auto_crossbow_imp.loadtext=§eCraft with up to 2 Arrow Bundles to reload.
+item.quiverbow_restrung.weapon.auto_crossbow_imp.description=Features a new and improved bolt feeder.
+
+item.quiverbow_restrung.weapon.powder_knuckles_mod.name=Modified Powder Knuckles
+item.quiverbow_restrung.weapon.powder_knuckles_mod.ammostatus=§9Gunpowder: %d / %d
+item.quiverbow_restrung.weapon.powder_knuckles_mod.loadtext=§eCraft with up to 8 gunpowder to reload.
+item.quiverbow_restrung.weapon.powder_knuckles_mod.description=Modified for blast mining.
+
+item.quiverbow_restrung.weapon.rocket_launcher_imp.name=Improved Rocket Launcher
+item.quiverbow_restrung.weapon.rocket_launcher_imp.ammostatus=§9Rockets: %d / %d
+item.quiverbow_restrung.weapon.rocket_launcher_imp.loadtext=§eCraft with a Big Rocket to reload.
+item.quiverbow_restrung.weapon.rocket_launcher_imp.description=Detonates on impact. This seems fairly safe.
+
+item.quiverbow_restrung.weapon.double_crossbow.name=Double Crossbow
+item.quiverbow_restrung.weapon.double_crossbow.ammostatus=§9Bolts: %d / %d
+item.quiverbow_restrung.weapon.double_crossbow.loadtext=§eCraft with 1 or 2 Arrows to reload.
+item.quiverbow_restrung.weapon.double_crossbow.description=A sticky piston powers the reloading mechanism.
+item.quiverbow_restrung.weapon.double_crossbow.cooldown=§cDRAWING (%s secs)
+
+item.quiverbow_restrung.weapon.lightning_red.name=Lightning Red
+item.quiverbow_restrung.weapon.lightning_red.ammostatus=§9Redstone: %d / %d
+item.quiverbow_restrung.weapon.lightning_red.loadtext=§eCraft with a Redstone Magazine to reload.
+item.quiverbow_restrung.weapon.lightning_red.description=The twin prongs are crackling.
+
+item.quiverbow_restrung.weapon.aqua_accelerator.name=Aqua Accelerator
+item.quiverbow_restrung.weapon.aqua_accelerator.ammostatus=§9Buckets: %d / %d
+item.quiverbow_restrung.weapon.aqua_accelerator.loadtext=§eCraft with 1 Water Bucket to reload.
+item.quiverbow_restrung.weapon.aqua_accelerator.description=Kinda slippery.
+
+item.quiverbow_restrung.weapon.ender_bow.name=Ender Bow
+item.quiverbow_restrung.weapon.ender_bow.ammostatus=§9Durability: %d / %d
+item.quiverbow_restrung.weapon.ender_bow.loadtext=§eCraft with  to reload.
+item.quiverbow_restrung.weapon.ender_bow.description=§aZoom on use. An ender-eye scope is attached. It's staring at you.
+
+item.quiverbow_restrung.weapon.powder_knuckles.name=Powder Knuckles
+item.quiverbow_restrung.weapon.powder_knuckles.ammostatus=§9Gunpowder: %d / %d
+item.quiverbow_restrung.weapon.powder_knuckles.loadtext=§eCraft with up to 8 gunpowder to reload.
+item.quiverbow_restrung.weapon.powder_knuckles.description=§ePunch to attack mobs.Use to attack terrain. Not safe for use.
+
+//Misc
+item.quiverbow_restrung.misc.part_sugar_engine_barrel.name=Sugar Engine Barrel
+item.quiverbow_restrung.misc.part_sugar_engine_barrel.description=A barrel, waiting for 3 companions and a main body.
+
+item.quiverbow_restrung.misc.part_sugar_engine_body.name=Sugar Engine Main Body
+item.quiverbow_restrung.misc.part_sugar_engine_body.description=To be outfitted with 4 barrels.
+
+item.quiverbow_restrung.misc.arms_assistant.name=Packed Up Arms Assistant
+item.quiverbow_restrung.misc.arms_assistant.description=It's sizing you up
+item.quiverbow_restrung.misc.arms_assistant.tooltip.health=Health: %d / %d
+item.quiverbow_restrung.misc.arms_assistant.tooltip.upgrades=Upgrades: %s
+quiverbow_restrung.aa_upgrade.extra_weapon.locname=2nd Weapon Rail
+quiverbow_restrung.aa_upgrade.riding.locname=Saddle
+quiverbow_restrung.aa_upgrade.communications.locname=Communications
+quiverbow_restrung.aa_upgrade.storage.locname=Storage
+quiverbow_restrung.aa_upgrade.mobility.locname=Mobility
+quiverbow_restrung.aa_upgrade.armour.locname=Armour
+quiverbow_restrung.aa_upgrade.heavy_plating.locname=Heavy Plating
+
+item.quiverbow_restrung.misc.FlyingAASpawner.name=Packed Up BB (WIP) 

@@ -1,0 +1,14 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/ammo/gold_magazine"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "damage": 1.0
+            },
+            "model": "quiverbow_restrung:item/ammo/gold_magazine_empty"
+        }
+    ]
+}

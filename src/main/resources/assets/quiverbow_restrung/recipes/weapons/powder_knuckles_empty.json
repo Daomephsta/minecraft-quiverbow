@@ -1,0 +1,29 @@
+{
+  "conditions": [
+    {
+      "type": "quiverbow_restrung:weapon_enabled",
+      "id": "quiverbow_restrung:powder_knuckles"
+    }
+  ],
+  "pattern": [
+    "yyy",
+    "xzx",
+    "x x"
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:leather"
+    },
+    "y": {
+      "item": "minecraft:iron_ingot"
+    },
+    "z": {
+      "item": "minecraft:stick"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:powder_knuckles",
+    "data": 8
+  }
+}

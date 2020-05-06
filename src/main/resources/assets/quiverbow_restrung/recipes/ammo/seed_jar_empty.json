@@ -1,0 +1,23 @@
+{
+  "pattern": [
+    "gwg",
+    "g g",
+    "gig"
+  ],
+  "key": {
+    "g": {
+      "item": "minecraft:glass_pane"
+    },
+    "w": {
+      "item": "minecraft:wooden_button"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:seed_jar",
+    "data": 512
+  }
+}

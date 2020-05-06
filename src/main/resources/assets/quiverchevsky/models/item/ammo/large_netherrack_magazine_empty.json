@@ -1,6 +1,0 @@
-{
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "quiverchevsky:items/ammo/large_netherrack_magazine_empty"
-    }
-}

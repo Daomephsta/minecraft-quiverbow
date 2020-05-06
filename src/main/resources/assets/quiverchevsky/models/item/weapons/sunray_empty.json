@@ -1,6 +1,0 @@
-{
-    "parent": "quiverchevsky:item/weapons/sunray_internal",
-    "textures": {
-        "layer0": "quiverchevsky:items/weapons/sunray_empty"
-    }
-}

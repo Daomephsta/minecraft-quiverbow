@@ -1,0 +1,16 @@
+{
+  "type": "quiverbow_restrung:load_ammo",
+  "weapon": "quiverbow_restrung:fen_fire",
+  "components": [
+    {
+      "ing": {
+        "item": "minecraft:glowstone"
+      },
+      "data": {
+        "ammoValue": 4,
+        "min": 1,
+        "max": 8
+      }
+    }
+  ]
+}

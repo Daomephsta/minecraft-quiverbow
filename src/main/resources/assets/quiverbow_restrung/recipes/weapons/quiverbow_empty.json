@@ -1,0 +1,29 @@
+{
+  "conditions": [
+    {
+      "type": "quiverbow_restrung:weapon_enabled",
+      "id": "quiverbow_restrung:quiverbow"
+    }
+  ],
+  "pattern": [
+    "zxy",
+    "xzy",
+    "zxy"
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:stick"
+    },
+    "y": {
+      "item": "minecraft:string"
+    },
+    "z": {
+      "item": "minecraft:leather"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:quiverbow",
+    "data": 256
+  }
+}

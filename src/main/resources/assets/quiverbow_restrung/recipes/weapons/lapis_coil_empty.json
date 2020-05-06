@@ -1,0 +1,32 @@
+{
+  "conditions": [
+    {
+      "type": "quiverbow_restrung:weapon_enabled",
+      "id": "quiverbow_restrung:lapis_coil"
+    }
+  ],
+  "pattern": [
+    "z z",
+    "axa",
+    " y "
+  ],
+  "key": {
+    "a": {
+      "item": "minecraft:repeater"
+    },
+    "x": {
+      "item": "minecraft:piston"
+    },
+    "y": {
+      "item": "minecraft:lever"
+    },
+    "z": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:lapis_coil",
+    "data": 100
+  }
+}

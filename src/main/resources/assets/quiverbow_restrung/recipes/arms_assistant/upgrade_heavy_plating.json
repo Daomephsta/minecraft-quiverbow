@@ -1,0 +1,14 @@
+{
+	"type": "quiverbow_restrung:arms_assistant_upgrade",
+	"upgrade": "quiverbow_restrung:heavy_plating",
+	"baseRecipe":
+	{
+		"type": "minecraft:crafting_shapeless",
+		"ingredients": 
+		[
+			{"item": "quiverbow_restrung:arms_assistant"},
+			{"item": "minecraft:emerald_block"},
+			{"item": "minecraft:iron_block"}
+		]
+	}
+}

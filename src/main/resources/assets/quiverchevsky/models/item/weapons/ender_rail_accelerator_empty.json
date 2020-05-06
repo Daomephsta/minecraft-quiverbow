@@ -1,6 +1,0 @@
-{
-    "parent": "quiverchevsky:item/weapons/ender_rail_accelerator_internal",
-    "textures": {
-        "layer0": "quiverchevsky:items/weapons/ender_rail_accelerator_empty"
-    }
-}

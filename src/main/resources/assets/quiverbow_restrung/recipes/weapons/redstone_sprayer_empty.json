@@ -1,0 +1,35 @@
+{
+  "conditions": [
+    {
+      "type": "quiverbow_restrung:weapon_enabled",
+      "id": "quiverbow_restrung:redstone_sprayer"
+    }
+  ],
+  "pattern": [
+    "zxz",
+    "aba",
+    "zyz"
+  ],
+  "key": {
+    "a": {
+      "item": "minecraft:repeater"
+    },
+    "b": {
+      "item": "minecraft:sticky_piston"
+    },
+    "x": {
+      "item": "minecraft:piston"
+    },
+    "y": {
+      "item": "minecraft:tripwire_hook"
+    },
+    "z": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:redstone_sprayer",
+    "data": 200
+  }
+}

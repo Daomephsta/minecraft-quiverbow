@@ -21,12 +21,12 @@ public class RecipeArmsAssistantUpgrade extends IForgeRegistryEntry.Impl<IRecipe
 {
 	private final IRecipe baseRecipe;
 	private final IArmsAssistantUpgrade upgrade;
-	
+
 	private RecipeArmsAssistantUpgrade(IRecipe baseRecipe, IArmsAssistantUpgrade upgrade)
 	{
 		this.baseRecipe = baseRecipe;
 		this.upgrade = upgrade;
-	}	
+	}
 
 	@Override
 	public boolean matches(InventoryCrafting inv, World world)
@@ -72,19 +72,19 @@ public class RecipeArmsAssistantUpgrade extends IForgeRegistryEntry.Impl<IRecipe
 	{
 		return PackedUpAA.withUpgrade(new ItemStack(ItemRegistry.ARMS_ASSISTANT), upgrade);
 	}
-	
+
 	@Override
 	public NonNullList<Ingredient> getIngredients()
 	{
 		return baseRecipe.getIngredients();
 	}
-	
+
 	@Override
 	public String getGroup()
 	{
 		return QuiverbowMain.MODID + ":arms_assistant_upgrades";
 	}
-	
+
 	public static class Factory implements IRecipeFactory
 	{
 		@Override
@@ -92,14 +92,14 @@ public class RecipeArmsAssistantUpgrade extends IForgeRegistryEntry.Impl<IRecipe
 		{
 			JsonObject baseRecipeJSON = JsonUtils.getJsonObject(json, "baseRecipe");
 			JsonObject dummyResult = new JsonObject();
-			dummyResult.addProperty("item", "quiverchevsky:arms_assistant");
+			dummyResult.addProperty("item", QuiverbowMain.MODID + ":arms_assistant");
 			dummyResult.addProperty("data", 0);
 			baseRecipeJSON.add("result", dummyResult);
-			
+
 			ResourceLocation upgradeID = new ResourceLocation(JsonUtils.getString(json, "upgrade"));
 			IArmsAssistantUpgrade upgrade = UpgradeRegistry.getUpgradeInstance(upgradeID);
 			if(upgrade == null) throw new JsonSyntaxException("Unknown upgrade ID: " + upgrade);
-			
+
 			return new RecipeArmsAssistantUpgrade(CraftingHelper.getRecipe(baseRecipeJSON, context), upgrade);
 		}
 	}

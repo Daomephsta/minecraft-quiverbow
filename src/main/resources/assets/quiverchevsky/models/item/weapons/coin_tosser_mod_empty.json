@@ -1,6 +1,0 @@
-{
-    "parent": "quiverchevsky:item/weapons/coin_tosser_mod_internal",
-    "textures": {
-        "layer0": "quiverchevsky:items/weapons/coin_tosser_mod_empty"
-    }
-}

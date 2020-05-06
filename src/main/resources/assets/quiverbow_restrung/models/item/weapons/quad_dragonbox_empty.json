@@ -1,0 +1,6 @@
+{
+    "parent": "quiverbow_restrung:item/weapons/quad_dragonbox_internal",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/weapons/quad_dragonbox_empty"
+    }
+}

@@ -1,6 +1,0 @@
-{
-    "parent": "quiverchevsky:item/weapons/weapon",
-    "textures": {
-        "layer0": "quiverchevsky:items/weapons/aa_target_assistant"
-    }
-}

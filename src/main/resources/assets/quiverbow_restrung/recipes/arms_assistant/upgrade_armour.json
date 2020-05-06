@@ -1,0 +1,13 @@
+{
+	"type": "quiverbow_restrung:arms_assistant_upgrade",
+	"upgrade": "quiverbow_restrung:armour",
+	"baseRecipe":
+	{
+		"type": "minecraft:crafting_shapeless",
+		"ingredients": 
+		[
+			{"item": "quiverbow_restrung:arms_assistant"},
+			{"item": "minecraft:diamond_block"}
+		]
+	}
+}

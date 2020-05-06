@@ -1,0 +1,14 @@
+{
+	"type": "quiverbow_restrung:arms_assistant_upgrade",
+	"upgrade": "quiverbow_restrung:riding",
+	"baseRecipe":
+	{
+		"type": "minecraft:crafting_shapeless",
+		"ingredients": 
+		[
+			{"item": "quiverbow_restrung:arms_assistant"},
+			{"item": "minecraft:saddle"},
+			{"item": "minecraft:iron_ingot"}
+		]
+	}
+}

@@ -1,0 +1,6 @@
+{
+    "parent": "quiverbow_restrung:item/weapons/double_crossbow_internal",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/weapons/double_crossbow_empty"
+    }
+}

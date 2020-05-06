@@ -1,0 +1,11 @@
+{
+  "type": "quiverbow_restrung:load_magazine",
+  "ammo": "quiverbow_restrung:gold_magazine",
+  "weapon": "quiverbow_restrung:coin_tosser_mod",
+  "conditions": [
+    {
+      "type": "quiverbow_restrung:weapon_enabled",
+      "id": "quiverbow_restrung:coin_tosser_mod"
+    }
+  ]
+}

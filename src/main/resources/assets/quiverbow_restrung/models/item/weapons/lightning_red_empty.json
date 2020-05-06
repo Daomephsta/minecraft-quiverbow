@@ -1,0 +1,6 @@
+{
+    "parent": "quiverbow_restrung:item/weapons/lightning_red_internal",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/weapons/lightning_red_empty"
+    }
+}

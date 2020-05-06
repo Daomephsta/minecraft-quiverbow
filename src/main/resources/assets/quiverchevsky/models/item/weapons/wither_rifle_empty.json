@@ -1,6 +1,0 @@
-{
-    "parent": "quiverchevsky:item/weapons/wither_rifle_internal",
-    "textures": {
-        "layer0": "quiverchevsky:items/weapons/wither_rifle_empty"
-    }
-}

@@ -28,7 +28,7 @@ public class RecipeJSONifier
 	 * you want, as long as that work follows the Mojang EULA. The original
 	 * source is viewable at
 	 * https://gist.github.com/williewillus/a1a899ce5b0f0ba099078d46ae3dae6e
-	 * 
+	 *
 	 * This is a janky JSON generator, for porting from below 1.12 to 1.12.
 	 * Simply replace calls to GameRegistry.addShapeless/ShapedRecipe with these
 	 * methods, which will dump it to a json in RECIPE_DIR Also works with OD,
@@ -97,7 +97,7 @@ public class RecipeJSONifier
 				Blocks.PISTON, 'y', Blocks.TRIPWIRE_HOOK, 'z', Items.IRON_INGOT, 'a', Items.REPEATER, 'b',
 				Blocks.STICKY_PISTON);
 		addMagazineLoadRecipe(LargeRedstoneMagazine.class, ItemRegistry.REDSTONE_SPRAYER);
-		
+
 		addRecipe(Helper.createEmptyWeaponOrAmmoStack(ItemRegistry.LARGE_REDSTONE_MAGAZINE, 1), "x x", "x x", "xgx",
 				'x', Items.IRON_INGOT, 'g', Blocks.REDSTONE_BLOCK);
 
@@ -381,13 +381,13 @@ public class RecipeJSONifier
 		addShapelessRecipe(new ItemStack(ItemRegistry.COLD_IRON_CLIP), Items.IRON_INGOT, Items.IRON_INGOT,
 				Items.IRON_INGOT, Items.IRON_INGOT, Blocks.ICE, Blocks.ICE, Blocks.ICE, Blocks.ICE, Items.SLIME_BALL);
 
-		
+
 
 		// One arrow bundle, holding 8 arrows
 		addRecipe(new ItemStack(ItemRegistry.ARROW_BUNDLE), "xxx", "xyx", "xxx", 'x', Items.ARROW, 'y', Items.STRING);
 		// Bundle of arrows back to 8 arrows
 		addShapelessRecipe(new ItemStack(Items.ARROW, 8), new ItemStack(ItemRegistry.ARROW_BUNDLE));
-		
+
 		addShapelessRecipe(Helper.createEmptyWeaponOrAmmoStack(ItemRegistry.DOUBLE_CROSSBOW, 1), Blocks.STICKY_PISTON,
 				Items.REPEATER, Helper.getWeaponStackByClass(CrossbowCompact.class, true));
 		addShapelessRecipe(new ItemStack(ItemRegistry.DOUBLE_CROSSBOW), // Fill the empty
@@ -413,7 +413,7 @@ public class RecipeJSONifier
 		addRecipe(new ItemStack(ItemRegistry.AA_TARGET_ASSISTANT), "bi ", "iri", " it", 'b', Blocks.NOTEBLOCK, 'r',
 				Items.REPEATER, 't', Blocks.TRIPWIRE_HOOK, 'i', Items.IRON_INGOT);
 		*/
-		
+
 		/*TODO: Reimplement Beam weapons
 		// Use a beacon for this (+ obsidian, tripwire hook... what else)
 				addRecipe(Helper.createEmptyWeaponOrAmmoStack(ItemRegistry.RAY_OF_HOPE, 1), "bi ", "ico", " ot", 'b',
@@ -460,8 +460,9 @@ public class RecipeJSONifier
 	{
 		if (RECIPE_DIR == null)
 		{
+
 			RECIPE_DIR = new File(
-					"C:\\Users\\David\\Documents\\Minecraft\\Modding Workspace\\=Contributions=\\minecraft-quiverbow\\src\\main\\resources\\assets\\quiverchevsky\\recipes");
+					"C:\\Users\\David\\Documents\\Minecraft\\Modding Workspace\\=Contributions=\\minecraft-quiverbow\\src\\main\\resources\\assets\\quiverbow_restrung\\recipes");
 		}
 
 		if (!RECIPE_DIR.exists())
@@ -488,7 +489,7 @@ public class RecipeJSONifier
 		File subDir = new File(RECIPE_DIR + "\\ammoloading");
 		subDir.mkdirs();
 		File f = new File(subDir, weapon.getRegistryName().getResourcePath() + "_load.json");
-		
+
 		try (FileWriter w = new FileWriter(f))
 		{
 			GSON.toJson(json, w);
@@ -530,7 +531,7 @@ public class RecipeJSONifier
 		enabledCondition.put("id", weapon.getRegistryName().toString());
 		List<Map<String, String>> conditions = Lists.newArrayList(enabledCondition);
 		json.put("conditions", conditions);
-		
+
 		File subDir = new File(RECIPE_DIR + "\\ammoloading");
 		subDir.mkdirs();
 		File f = new File(subDir, weapon.getRegistryName().getResourcePath() + "_load.json");
@@ -665,7 +666,7 @@ public class RecipeJSONifier
 			if (result.getItemDamage() == result.getMaxDamage()) suffix = "_empty";
 			else if (result.getItemDamage() == 0) suffix = "_loaded";
 		}
-		
+
 		File subDir = new File(RECIPE_DIR + subfolder);
 		subDir.mkdirs();
 		File f = new File(subDir, result.getItem().getRegistryName().getResourcePath() + suffix + ".json");

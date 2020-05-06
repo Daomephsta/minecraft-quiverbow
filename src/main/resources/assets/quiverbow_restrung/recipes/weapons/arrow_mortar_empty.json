@@ -1,0 +1,35 @@
+{
+  "conditions": [
+    {
+      "type": "quiverbow_restrung:weapon_enabled",
+      "id": "quiverbow_restrung:arrow_mortar"
+    }
+  ],
+  "pattern": [
+    "ipi",
+    "isr",
+    "tsr"
+  ],
+  "key": {
+    "p": {
+      "item": "minecraft:piston"
+    },
+    "r": {
+      "item": "minecraft:repeater"
+    },
+    "s": {
+      "item": "minecraft:sticky_piston"
+    },
+    "t": {
+      "item": "minecraft:tripwire_hook"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:arrow_mortar",
+    "data": 8
+  }
+}

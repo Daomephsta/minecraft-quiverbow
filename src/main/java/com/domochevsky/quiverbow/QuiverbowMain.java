@@ -20,6 +20,7 @@ import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import daomephsta.umbra.resources.ResourceLocationExt;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -45,8 +46,8 @@ import net.minecraftforge.registries.IForgeRegistry;
 @Mod(modid = QuiverbowMain.MODID, name = QuiverbowMain.NAME, version = "b102")
 public class QuiverbowMain
 {
-	public static final String NAME = "QuiverBow";
-	public static final String MODID = "quiverchevsky";
+	public static final String NAME = "QuiverBow: Restrung";
+	public static final String MODID = "quiverbow_restrung";
 
 	@Instance(QuiverbowMain.MODID)
 	public static QuiverbowMain instance;
@@ -55,7 +56,7 @@ public class QuiverbowMain
 	public static CommonProxy proxy;
 
 	public static Logger logger;
-	
+
 	//TODO Remove
 	protected Configuration config; // Accessible from other files this way
 
@@ -129,7 +130,7 @@ public class QuiverbowMain
 		QuiverbowConfig.loadWeaponProperties();
 		//foo.RecipeJSONifier.generateRecipes();
 	}
-	
+
 	@EventHandler
 	public void recieveIMCMessages(FMLInterModComms.IMCEvent event)
 	{
@@ -159,34 +160,34 @@ public class QuiverbowMain
 		this.addProjectile(BigRocket.class, "rocket_big");
 		this.addProjectile(SabotArrow.class, "sabot_arrow");
 		this.addProjectile(SabotRocket.class, "sabot_rocket");
-                                                               
+
 		this.addProjectile(Seed.class, "seed");
 		this.addProjectile(PotatoShot.class, "potato");
 		this.addProjectile(SnowShot.class, "snow");
-                                                               
+
 		this.addProjectile(EnderShot.class, "ender");
 		this.addProjectile(ColdIron.class, "cold_iron");
-                                                     
+
 		this.addProjectile(OSPShot.class, "osp_shot");
 		this.addProjectile(OSRShot.class, "osr_shot");
 		this.addProjectile(OWRShot.class, "owr_shot");
-                                                     
+
 		this.addProjectile(FenGoop.class, "fen_light");
 		this.addProjectile(FlintDust.class, "flint_dust");
-                                                          
+
 		this.addProjectile(RedLight.class, "red_light");
 		this.addProjectile(SunLight.class, "sunlight");
-                                                          
+
 		this.addProjectile(NetherFire.class, "nether_fire");
 		this.addProjectile(RedSpray.class, "red_spray");
-                                                          
+
 		this.addProjectile(SoulShot.class, "soul");
-                                                          
+
 		this.addProjectile(WaterShot.class, "water");
 		this.addProjectile(WebShot.class, "web");
-                                                          
+
 		this.addProjectile(HealthBeam.class, "health");
-                                                               
+
 		this.addProjectile(EnderAccelerator.class, "era_shot");
 		this.addProjectile(EnderAno.class, "ano");
 	}
@@ -326,7 +327,7 @@ public class QuiverbowMain
 			ammoBase.setRegistryName(QuiverbowMain.MODID + ":" + name);
 			return ammoBase;
 		}
-		
+
 		@SubscribeEvent
 		public static void registerRecipes(RegistryEvent.Register<IRecipe> e)
 		{
@@ -356,7 +357,7 @@ public class QuiverbowMain
 			{
 				ModelLoader.setCustomModelResourceLocation(weapon, 0, new ModelResourceLocation(
 					ResourceLocationExt.addToPath(weapon.getRegistryName(), "weapons/", "_internal"), "inventory"));
-				ModelLoader.registerItemVariants(weapon, ResourceLocationExt.prefixPath(weapon.getRegistryName(), "weapons/"));
+				ModelBakery.registerItemVariants(weapon, ResourceLocationExt.prefixPath(weapon.getRegistryName(), "weapons/"));
 			}
 			ModelLoader.setCustomModelResourceLocation(ItemRegistry.PART_SUGAR_ENGINE_BODY, 0,
 					new ModelResourceLocation(ItemRegistry.PART_SUGAR_ENGINE_BODY.getRegistryName(), "inventory"));

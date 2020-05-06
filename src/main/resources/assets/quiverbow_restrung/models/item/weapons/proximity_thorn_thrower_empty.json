@@ -1,0 +1,6 @@
+{
+    "parent": "quiverbow_restrung:item/weapons/proximity_thorn_thrower_internal",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/weapons/proximity_thorn_thrower_empty"
+    }
+}

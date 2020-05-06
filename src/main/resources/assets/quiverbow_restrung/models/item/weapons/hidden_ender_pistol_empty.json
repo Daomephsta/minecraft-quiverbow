@@ -1,0 +1,6 @@
+{
+    "parent": "quiverbow_restrung:item/weapons/hidden_ender_pistol_internal",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/weapons/hidden_ender_pistol_empty"
+    }
+}

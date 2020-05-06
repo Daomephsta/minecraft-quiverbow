@@ -13,7 +13,7 @@ package com.domochevsky.quiverbow.renderer;
  * 
  * 
  * void setTexture(ItemStack stack) { tex = new
- * ResourceLocation("quiverchevsky:textures/items/models/" +
+ * ResourceLocation("quiverbow_restrung:textures/items/models/" +
  * Main.weapons.get(weaponID).getModelTexPath(stack) + ".png"); }
  * 
  * 

@@ -1,6 +1,7 @@
 package com.domochevsky.quiverbow.ammo;
 
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.util.InventoryHelper;
 
 import net.minecraft.client.Minecraft;
@@ -40,7 +41,7 @@ public class LapisMagazine extends AmmoMagazine
 		if (player.capabilities.isCreativeMode)
 		{
 			if (world.isRemote)
-				Minecraft.getMinecraft().ingameGUI.setOverlayMessage(I18n.format("quiverchevsky.ammo.nocreative"),
+				Minecraft.getMinecraft().ingameGUI.setOverlayMessage(I18n.format(QuiverbowMain.MODID + ".ammo.nocreative"),
 						false);
 			return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 		}

@@ -1,0 +1,6 @@
+{
+    "parent": "quiverbow_restrung:item/weapons/seed_sweeper_internal",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/weapons/seed_sweeper_empty"
+    }
+}

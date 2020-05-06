@@ -1,0 +1,31 @@
+{
+  "conditions": [
+    {
+      "type": "quiverbow_restrung:weapon_enabled",
+      "id": "quiverbow_restrung:coin_tosser"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "quiverbow_restrung:coin_tosser",
+      "data": 72
+    },
+    {
+      "item": "minecraft:sticky_piston"
+    },
+    {
+      "item": "minecraft:tripwire_hook"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "quiverbow_restrung:coin_tosser",
+    "data": 72
+  }
+}

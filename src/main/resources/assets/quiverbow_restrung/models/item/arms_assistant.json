@@ -1,0 +1,6 @@
+{
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/misc/arms_assistant"
+    }
+}

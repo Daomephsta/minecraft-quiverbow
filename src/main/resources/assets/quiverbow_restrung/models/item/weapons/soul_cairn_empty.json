@@ -1,0 +1,6 @@
+{
+    "parent": "quiverbow_restrung:item/weapons/soul_cairn_internal",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/weapons/soul_cairn_empty"
+    }
+}

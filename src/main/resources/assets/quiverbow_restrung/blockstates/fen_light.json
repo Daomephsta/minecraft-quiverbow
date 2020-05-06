@@ -1,0 +1,21 @@
+
+{
+	"forge_marker": 1,
+	"defaults":
+	{
+		"model": "quiverbow_restrung:fen_light"
+	},
+	"variants": 
+ 	{
+ 		"inventory": {"model": "quiverbow_restrung:fen_light"},
+		"facing":
+ 		{	
+ 			"north": {"x":90},
+			"south": {"x":90, "y":180},
+			"east": {"x":90, "y":90},
+			"west": {"x":90, "y":270},
+			"up": {"y": 180},
+			"down": {"x": 180}
+ 		}
+  	}
+}

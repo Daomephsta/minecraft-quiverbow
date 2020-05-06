@@ -1,6 +1,0 @@
-{
-    "parent": "quiverchevsky:item/weapons/seedling_internal",
-    "textures": {
-        "layer0": "quiverchevsky:items/weapons/seedling_empty"
-    }
-}

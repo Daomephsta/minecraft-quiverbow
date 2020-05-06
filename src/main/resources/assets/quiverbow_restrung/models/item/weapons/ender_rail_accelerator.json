@@ -1,0 +1,14 @@
+{
+    "parent": "quiverbow_restrung:item/weapons/weapon",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/weapons/ender_rail_accelerator"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "damage": 1.0
+            },
+            "model": "quiverbow_restrung:item/weapons/ender_rail_accelerator_empty_internal"
+        }
+    ]
+}

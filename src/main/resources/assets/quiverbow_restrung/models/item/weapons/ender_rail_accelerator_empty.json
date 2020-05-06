@@ -1,0 +1,6 @@
+{
+    "parent": "quiverbow_restrung:item/weapons/ender_rail_accelerator_internal",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/weapons/ender_rail_accelerator_empty"
+    }
+}

@@ -1,0 +1,6 @@
+{
+    "parent": "quiverbow_restrung:item/weapons/thorn_spitter_internal",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/weapons/thorn_spitter_empty"
+    }
+}

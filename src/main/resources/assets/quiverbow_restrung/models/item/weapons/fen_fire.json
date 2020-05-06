@@ -1,0 +1,14 @@
+{
+    "parent": "quiverbow_restrung:item/weapons/weapon_pistol_grip",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/weapons/fen_fire"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "damage": 1.0
+            },
+            "model": "quiverbow_restrung:item/weapons/fen_fire_empty_internal"
+        }
+    ]
+}

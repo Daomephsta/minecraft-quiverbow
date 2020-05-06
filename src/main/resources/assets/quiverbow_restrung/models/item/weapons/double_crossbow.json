@@ -1,0 +1,20 @@
+{
+    "parent": "quiverbow_restrung:item/weapons/weapon_crossbow",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/weapons/double_crossbow"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "damage": 0.5
+            },
+            "model": "quiverbow_restrung:item/weapons/double_crossbow_half_internal"
+        },
+        {
+            "predicate": {
+                "damage": 1.0
+            },
+            "model": "quiverbow_restrung:item/weapons/double_crossbow_empty_internal"
+        }
+    ]
+}

@@ -1,0 +1,30 @@
+{
+  "conditions": [
+    {
+      "type": "quiverbow_restrung:weapon_enabled",
+      "id": "quiverbow_restrung:rocket_launcher_imp"
+    }
+  ],
+  "pattern": [
+    "xxx",
+    "yzy",
+    "xxx"
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:obsidian"
+    },
+    "y": {
+      "item": "minecraft:iron_ingot"
+    },
+    "z": {
+      "item": "quiverbow_restrung:rocket_launcher",
+      "data": 1
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:rocket_launcher_imp",
+    "data": 1
+  }
+}

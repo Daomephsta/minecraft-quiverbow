@@ -1,0 +1,30 @@
+{
+  "conditions": [
+    {
+      "type": "quiverbow_restrung:weapon_enabled",
+      "id": "quiverbow_restrung:rocket_launcher"
+    }
+  ],
+  "pattern": [
+    "x  ",
+    "yx ",
+    "zyx"
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:planks",
+      "data": 0
+    },
+    "y": {
+      "item": "minecraft:iron_ingot"
+    },
+    "z": {
+      "item": "minecraft:flint_and_steel"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:rocket_launcher",
+    "data": 1
+  }
+}

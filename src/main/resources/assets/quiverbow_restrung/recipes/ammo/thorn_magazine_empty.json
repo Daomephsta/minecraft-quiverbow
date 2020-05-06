@@ -1,0 +1,20 @@
+{
+  "pattern": [
+    "x x",
+    "x x",
+    "xix"
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:leather"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:thorn_magazine",
+    "data": 64
+  }
+}

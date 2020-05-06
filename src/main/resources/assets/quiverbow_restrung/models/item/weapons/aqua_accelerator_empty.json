@@ -1,0 +1,6 @@
+{
+    "parent": "quiverbow_restrung:item/weapons/aqua_accelerator_internal",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/weapons/aqua_accelerator_empty"
+    }
+}

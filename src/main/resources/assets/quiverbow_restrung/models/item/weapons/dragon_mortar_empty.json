@@ -1,0 +1,6 @@
+{
+    "parent": "quiverbow_restrung:item/weapons/dragon_mortar_internal",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/weapons/dragon_mortar_empty"
+    }
+}

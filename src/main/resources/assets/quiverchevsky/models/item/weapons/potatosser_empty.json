@@ -1,6 +1,0 @@
-{
-    "parent": "quiverchevsky:item/weapons/potatosser_internal",
-    "textures": {
-        "layer0": "quiverchevsky:items/weapons/potatosser_empty"
-    }
-}

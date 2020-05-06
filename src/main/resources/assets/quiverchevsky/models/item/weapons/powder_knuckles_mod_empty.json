@@ -1,6 +1,0 @@
-{
-    "parent": "quiverchevsky:item/weapons/powder_knuckles_mod",
-    "textures": {
-        "layer0": "quiverchevsky:items/weapons/powder_knuckles_mod_empty"
-    }
-}

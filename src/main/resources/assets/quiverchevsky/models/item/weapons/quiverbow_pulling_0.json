@@ -1,6 +1,0 @@
-{
-    "parent": "quiverchevsky:item/weapons/quiverbow_internal",
-    "textures": {
-        "layer0": "quiverchevsky:items/weapons/quiverbow_pulling_0"
-    }
-}

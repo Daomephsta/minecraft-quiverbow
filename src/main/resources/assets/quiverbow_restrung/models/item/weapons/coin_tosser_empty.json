@@ -1,0 +1,6 @@
+{
+    "parent": "quiverbow_restrung:item/weapons/coin_tosser_internal",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/weapons/coin_tosser_empty"
+    }
+}

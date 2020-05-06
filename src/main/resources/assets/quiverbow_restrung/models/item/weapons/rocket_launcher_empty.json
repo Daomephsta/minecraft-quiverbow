@@ -1,0 +1,6 @@
+{
+    "parent": "quiverbow_restrung:item/weapons/rocket_launcher_internal",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/weapons/rocket_launcher_empty"
+    }
+}

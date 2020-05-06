@@ -1,0 +1,20 @@
+{
+  "pattern": [
+    "x x",
+    "x x",
+    "xgx"
+  ],
+  "key": {
+    "g": {
+      "item": "minecraft:iron_ingot"
+    },
+    "x": {
+      "item": "minecraft:nether_brick"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:large_netherrack_magazine",
+    "data": 200
+  }
+}

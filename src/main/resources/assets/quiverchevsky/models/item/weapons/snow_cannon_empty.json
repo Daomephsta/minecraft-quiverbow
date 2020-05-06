@@ -1,6 +1,0 @@
-{
-    "parent": "quiverchevsky:item/weapons/snow_cannon_internal",
-    "textures": {
-        "layer0": "quiverchevsky:items/weapons/snow_cannon_empty"
-    }
-}

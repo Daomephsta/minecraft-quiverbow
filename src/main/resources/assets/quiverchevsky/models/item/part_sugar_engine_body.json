@@ -1,6 +1,0 @@
-{
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "quiverchevsky:items/misc/part_sugar_engine_body"
-    }
-}

@@ -1,0 +1,32 @@
+{
+  "pattern": [
+    "rir",
+    "ror",
+    "tpb"
+  ],
+  "key": {
+    "p": {
+      "item": "minecraft:planks",
+      "data": 0
+    },
+    "r": {
+      "item": "minecraft:repeater"
+    },
+    "b": {
+      "item": "minecraft:piston"
+    },
+    "t": {
+      "item": "minecraft:tripwire_hook"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "o": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:part_sugar_engine_body"
+  }
+}

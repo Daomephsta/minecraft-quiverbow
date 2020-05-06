@@ -1,0 +1,6 @@
+{
+    "parent": "quiverbow_restrung:item/weapons/powder_knuckles",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/weapons/powder_knuckles_empty"
+    }
+}

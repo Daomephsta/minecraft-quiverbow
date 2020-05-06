@@ -1,0 +1,21 @@
+{
+	"type": "quiverbow_restrung:arms_assistant_upgrade",
+	"upgrade": "quiverbow_restrung:extra_weapon",
+	"baseRecipe":
+	{
+		"type": "minecraft:crafting_shaped",
+		"pattern": 
+		[
+			" a ",
+			"ios",
+			"  s"
+		],
+		"key": 
+		{
+			"a": {"item": "quiverbow_restrung:arms_assistant"},
+			"i": {"item": "minecraft:iron_block"},
+			"o": {"item": "minecraft:obsidian"},
+			"s": {"item": "minecraft:sticky_piston"}
+		}
+	}
+}

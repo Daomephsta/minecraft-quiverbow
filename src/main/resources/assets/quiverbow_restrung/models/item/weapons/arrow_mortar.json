@@ -1,0 +1,14 @@
+{
+    "parent": "quiverbow_restrung:item/weapons/weapon_mortar",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/weapons/arrow_mortar"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "damage": 1.0
+            },
+            "model": "quiverbow_restrung:item/weapons/arrow_mortar_empty_internal"
+        }
+    ]
+}

@@ -1,0 +1,19 @@
+{
+  "pattern": [
+    "xxx",
+    "xyx",
+    "xxx"
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:arrow"
+    },
+    "y": {
+      "item": "minecraft:string"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:arrow_bundle"
+  }
+}

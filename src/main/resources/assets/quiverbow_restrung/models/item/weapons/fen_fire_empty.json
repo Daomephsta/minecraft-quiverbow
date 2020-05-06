@@ -1,0 +1,6 @@
+{
+    "parent": "quiverbow_restrung:item/weapons/fen_fire_internal",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/weapons/fen_fire_empty"
+    }
+}

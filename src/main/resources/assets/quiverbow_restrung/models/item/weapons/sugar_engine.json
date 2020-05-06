@@ -1,0 +1,14 @@
+{
+    "parent": "quiverbow_restrung:item/weapons/weapon",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/weapons/sugar_engine"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "damage": 1.0
+            },
+            "model": "quiverbow_restrung:item/weapons/sugar_engine_empty_internal"
+        }
+    ]
+}

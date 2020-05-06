@@ -1,0 +1,22 @@
+{
+  "conditions": [
+    {
+      "type": "quiverbow_restrung:weapon_enabled",
+      "id": "quiverbow_restrung:auto_crossbow"
+    }
+  ],
+  "ingredients": [
+    {
+      "item": "quiverbow_restrung:arrow_bundle"
+    },
+    {
+      "item": "quiverbow_restrung:auto_crossbow",
+      "data": 8
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "quiverbow_restrung:auto_crossbow",
+    "data": 0
+  }
+}

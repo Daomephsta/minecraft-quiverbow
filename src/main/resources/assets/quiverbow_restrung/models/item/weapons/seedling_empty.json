@@ -1,0 +1,6 @@
+{
+    "parent": "quiverbow_restrung:item/weapons/seedling_internal",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/weapons/seedling_empty"
+    }
+}

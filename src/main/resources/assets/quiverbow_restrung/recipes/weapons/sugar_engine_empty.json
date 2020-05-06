@@ -1,0 +1,26 @@
+{
+  "conditions": [
+    {
+      "type": "quiverbow_restrung:weapon_enabled",
+      "id": "quiverbow_restrung:sugar_engine"
+    }
+  ],
+  "pattern": [
+    "b b",
+    "b b",
+    " m "
+  ],
+  "key": {
+    "b": {
+      "item": "quiverbow_restrung:part_sugar_engine_barrel"
+    },
+    "m": {
+      "item": "quiverbow_restrung:part_sugar_engine_body"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:sugar_engine",
+    "data": 200
+  }
+}

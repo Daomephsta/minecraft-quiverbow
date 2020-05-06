@@ -3,6 +3,7 @@ package com.domochevsky.quiverbow.ammo;
 import java.util.List;
 
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.QuiverbowMain;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -45,7 +46,7 @@ public abstract class AmmoMagazine extends AmmoBase
 		if (player.capabilities.isCreativeMode)
 		{
 			if (world.isRemote)
-				Minecraft.getMinecraft().ingameGUI.setOverlayMessage(I18n.format("quiverchevsky.ammo.nocreative"),
+				Minecraft.getMinecraft().ingameGUI.setOverlayMessage(I18n.format(QuiverbowMain.MODID + ".ammo.nocreative"),
 						false);
 			return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 		}
@@ -61,13 +62,13 @@ public abstract class AmmoMagazine extends AmmoBase
 		if (!hasComponentItems(player, amount))
 		{
 			if (world.isRemote)
-				Minecraft.getMinecraft().ingameGUI.setOverlayMessage(I18n.format("quiverchevsky.ammo.missingitems"),
+				Minecraft.getMinecraft().ingameGUI.setOverlayMessage(I18n.format(QuiverbowMain.MODID + ".ammo.missingitems"),
 						false);
 			return;
 		}
 		if (consumeComponentItems(player, amount)) stack.setItemDamage(stack.getItemDamage() - amount);
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags)
 	{
@@ -76,7 +77,7 @@ public abstract class AmmoMagazine extends AmmoBase
 		list.add(I18n.format(getUnlocalizedName() + ".filltext"));
 		list.add(I18n.format(getUnlocalizedName() + ".description"));
 	}
-	
+
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems)
 	{

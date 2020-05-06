@@ -1,6 +1,0 @@
-{
-    "parent": "quiverchevsky:item/weapons/double_crossbow_internal",
-    "textures": {
-        "layer0": "quiverchevsky:items/weapons/double_crossbow_half"
-    }
-}

@@ -1,0 +1,38 @@
+{
+  "conditions": [
+    {
+      "type": "quiverbow_restrung:weapon_enabled",
+      "id": "quiverbow_restrung:nether_bellows"
+    }
+  ],
+  "pattern": [
+    "zxz",
+    "zbz",
+    "cya"
+  ],
+  "key": {
+    "a": {
+      "item": "minecraft:repeater"
+    },
+    "b": {
+      "item": "minecraft:sticky_piston"
+    },
+    "c": {
+      "item": "minecraft:flint_and_steel"
+    },
+    "x": {
+      "item": "minecraft:piston"
+    },
+    "y": {
+      "item": "minecraft:tripwire_hook"
+    },
+    "z": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:nether_bellows",
+    "data": 200
+  }
+}

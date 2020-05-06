@@ -1,0 +1,35 @@
+{
+  "conditions": [
+    {
+      "type": "quiverbow_restrung:weapon_enabled",
+      "id": "quiverbow_restrung:splinter_pistol"
+    }
+  ],
+  "pattern": [
+    " io",
+    "ipi",
+    "oft"
+  ],
+  "key": {
+    "p": {
+      "item": "minecraft:piston"
+    },
+    "t": {
+      "item": "minecraft:tripwire_hook"
+    },
+    "f": {
+      "item": "minecraft:flint_and_steel"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "o": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:splinter_pistol",
+    "data": 16
+  }
+}

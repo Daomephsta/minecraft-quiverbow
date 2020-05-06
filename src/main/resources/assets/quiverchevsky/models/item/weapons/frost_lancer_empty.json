@@ -1,6 +1,0 @@
-{
-    "parent": "quiverchevsky:item/weapons/frost_lancer_internal",
-    "textures": {
-        "layer0": "quiverchevsky:items/weapons/frost_lancer_empty"
-    }
-}

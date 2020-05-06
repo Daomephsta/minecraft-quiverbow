@@ -1,0 +1,11 @@
+{
+  "type": "quiverbow_restrung:load_magazine",
+  "ammo": "quiverbow_restrung:obsidian_magazine",
+  "weapon": "quiverbow_restrung:splinter_pistol",
+  "conditions": [
+    {
+      "type": "quiverbow_restrung:weapon_enabled",
+      "id": "quiverbow_restrung:splinter_pistol"
+    }
+  ]
+}

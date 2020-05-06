@@ -1,0 +1,30 @@
+{
+  "conditions": [
+    {
+      "type": "quiverbow_restrung:weapon_enabled",
+      "id": "quiverbow_restrung:blaze_crossbow"
+    }
+  ],
+  "pattern": [
+    "bib",
+    "ici",
+    "bib"
+  ],
+  "key": {
+    "b": {
+      "item": "minecraft:blaze_powder"
+    },
+    "c": {
+      "item": "quiverbow_restrung:compact_crossbow",
+      "data": 1
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:blaze_crossbow",
+    "data": 1
+  }
+}

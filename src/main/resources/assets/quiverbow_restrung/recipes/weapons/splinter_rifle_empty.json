@@ -1,0 +1,32 @@
+{
+  "conditions": [
+    {
+      "type": "quiverbow_restrung:weapon_enabled",
+      "id": "quiverbow_restrung:splinter_rifle"
+    }
+  ],
+  "pattern": [
+    "x x",
+    "zbz",
+    "xyx"
+  ],
+  "key": {
+    "b": {
+      "item": "minecraft:piston"
+    },
+    "x": {
+      "item": "minecraft:obsidian"
+    },
+    "y": {
+      "item": "minecraft:lever"
+    },
+    "z": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:splinter_rifle",
+    "data": 16
+  }
+}

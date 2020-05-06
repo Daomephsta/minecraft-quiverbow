@@ -1,0 +1,33 @@
+{
+  "conditions": [
+    {
+      "type": "quiverbow_restrung:weapon_enabled",
+      "id": "quiverbow_restrung:wither_rifle"
+    }
+  ],
+  "pattern": [
+    "odo",
+    "owo",
+    "oso"
+  ],
+  "key": {
+    "s": {
+      "item": "minecraft:nether_star"
+    },
+    "d": {
+      "item": "minecraft:diamond"
+    },
+    "w": {
+      "item": "quiverbow_restrung:splinter_rifle",
+      "data": 16
+    },
+    "o": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:wither_rifle",
+    "data": 16
+  }
+}

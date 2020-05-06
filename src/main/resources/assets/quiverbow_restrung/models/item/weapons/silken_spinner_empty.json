@@ -1,0 +1,6 @@
+{
+    "parent": "quiverbow_restrung:item/weapons/silken_spinner_internal",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/weapons/silken_spinner_empty"
+    }
+}

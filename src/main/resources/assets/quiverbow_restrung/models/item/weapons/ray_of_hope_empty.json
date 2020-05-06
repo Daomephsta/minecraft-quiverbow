@@ -1,0 +1,6 @@
+{
+    "parent": "quiverbow_restrung:item/weapons/ray_of_hope_internal",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/weapons/ray_of_hope_empty"
+    }
+}

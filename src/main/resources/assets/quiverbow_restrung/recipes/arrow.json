@@ -1,0 +1,12 @@
+{
+  "ingredients": [
+    {
+      "item": "quiverbow_restrung:arrow_bundle"
+    }
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "minecraft:arrow",
+    "count": 8
+  }
+}

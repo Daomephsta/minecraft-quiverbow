@@ -1,0 +1,28 @@
+{
+    "parent": "quiverbow_restrung:item/weapons/weapon_bow",
+    "textures": {
+        "layer0": "quiverbow_restrung:items/weapons/ender_bow_idle"
+    },
+    "overrides": [
+        {
+            "predicate": {
+                "pulling": 1
+            },
+            "model": "quiverbow_restrung:item/weapons/ender_bow_pulling_0_internal"
+        },
+        {
+            "predicate": {
+                "pulling": 1,
+                "pull": 0.65
+            },
+            "model": "quiverbow_restrung:item/weapons/ender_bow_pulling_1_internal"
+        },
+        {
+            "predicate": {
+                "pulling": 1,
+                "pull": 0.9
+            },
+            "model": "quiverbow_restrung:item/weapons/ender_bow_pulling_2_internal"
+        }
+    ]
+}

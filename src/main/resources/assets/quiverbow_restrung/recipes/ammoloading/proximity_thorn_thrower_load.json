@@ -1,0 +1,11 @@
+{
+  "type": "quiverbow_restrung:load_magazine",
+  "ammo": "quiverbow_restrung:thorn_magazine",
+  "weapon": "quiverbow_restrung:proximity_thorn_thrower",
+  "conditions": [
+    {
+      "type": "quiverbow_restrung:weapon_enabled",
+      "id": "quiverbow_restrung:proximity_thorn_thrower"
+    }
+  ]
+}

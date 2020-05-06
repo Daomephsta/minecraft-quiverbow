@@ -1,6 +1,0 @@
-{
-    "parent": "quiverchevsky:item/weapons/arrow_mortar_internal",
-    "textures": {
-        "layer0": "quiverchevsky:items/weapons/arrow_mortar_empty"
-    }
-}
