@@ -1,22 +1,30 @@
 package com.domochevsky.quiverbow.armsassistant;
 
+import static java.util.stream.Collectors.joining;
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import com.domochevsky.quiverbow.QuiverbowMain;
+import com.domochevsky.quiverbow.armsassistant.ai.EntityAIFollowOwner;
+import com.domochevsky.quiverbow.armsassistant.ai.EntityAIMaintainPosition;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.PeekingIterator;
+import com.google.common.collect.Streams;
 import com.google.gson.JsonParseException;
 
 import daomephsta.umbra.streams.NBTPrimitiveStreams;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.init.Items;
@@ -29,38 +37,56 @@ import net.minecraftforge.common.util.Constants.NBT;
 
 public class ArmsAssistantDirectives
 {
-    public static final ArmsAssistantDirectives DEFAULT = new ArmsAssistantDirectives();
     private static final Splitter ON_NEWLINE = Splitter.onPattern("\\n").omitEmptyStrings().trimResults(),
                                   ON_WHITEPSACE = Splitter.onPattern("\\s").omitEmptyStrings().trimResults();
 
+    private EntityArmsAssistant armsAssistant;
     private final BiPredicate<EntityArmsAssistant, EntityLiving> targetSelector,
                                                                  targetBlacklist;
+    private final MovementAI movementAI;
+    private final Collection<EntityAIBase> aiTasks = new ArrayList<>();
 
-    private ArmsAssistantDirectives()
+    private ArmsAssistantDirectives(EntityArmsAssistant armsAssistant)
     {
+        this.armsAssistant = armsAssistant;
         this.targetSelector = (directedEntity, target) -> IMob.MOB_SELECTOR.apply(target);
         this.targetBlacklist = (directedEntity, target) -> false;
+        this.movementAI = MovementAI.NONE;
     }
 
     private ArmsAssistantDirectives(Builder builder)
     {
+        this.armsAssistant = builder.armsAssistant;
         this.targetSelector = builder.targetSelectors.stream().reduce(BiPredicate::or).orElse((directedEntity, target) -> false);
         this.targetBlacklist = builder.targetBlacklist.stream().reduce(BiPredicate::or).orElse((directedEntity, target) -> false);
+        this.movementAI = builder.movementAI;
     }
 
-    public static ArmsAssistantDirectives from(ItemStack book, Consumer<ITextComponent> errorHandler)
+    public static ArmsAssistantDirectives defaultDirectives(EntityArmsAssistant armsAssistant)
+    {
+        return new ArmsAssistantDirectives(armsAssistant)
+        {
+            @Override
+            public boolean areCustom()
+            {
+                return false;
+            }
+        };
+    }
+
+    public static ArmsAssistantDirectives from(EntityArmsAssistant armsAssistant, ItemStack book, Consumer<ITextComponent> errorHandler)
     {
         if (book.getItem() != Items.WRITTEN_BOOK && book.getItem() != Items.WRITABLE_BOOK)
             throw new IllegalArgumentException("Directives can only be parsed from Writable or Written Books");
         if (!book.hasTagCompound())
-            return new ArmsAssistantDirectives();
+            return new ArmsAssistantDirectives(armsAssistant);
         NBTTagList pages = book.getTagCompound().getTagList("pages", NBT.TAG_STRING);
         if (book.getItem() == Items.WRITABLE_BOOK)
         {
             List<String> lines = NBTPrimitiveStreams.toStringStream(pages)
                 .flatMap(pageText -> ON_NEWLINE.splitToList(pageText).stream())
                 .collect(Collectors.toList());
-            return fromLines(lines, errorHandler);
+            return fromLines(armsAssistant, lines, errorHandler);
         }
         else if (book.getItem() == Items.WRITTEN_BOOK)
         {
@@ -78,14 +104,14 @@ public class ArmsAssistantDirectives
                     e.printStackTrace();
                 }
             }
-            return fromLines(lines, errorHandler);
+            return fromLines(armsAssistant, lines, errorHandler);
         }
         throw new RuntimeException("Unreachable");
     }
 
-    private static ArmsAssistantDirectives fromLines(Iterable<String> lines, Consumer<ITextComponent> errorHandler)
+    private static ArmsAssistantDirectives fromLines(EntityArmsAssistant armsAssistant, Iterable<String> lines, Consumer<ITextComponent> errorHandler)
     {
-        Builder builder = new Builder();
+        Builder builder = new Builder(armsAssistant);
         for (String line : lines)
         {
             PeekingIterator<String> tokens = Iterators.peekingIterator(ON_WHITEPSACE.split(line).iterator());
@@ -96,6 +122,14 @@ public class ArmsAssistantDirectives
                     break;
                 case "IGNORE":
                     parseTargetingDirective(tokens, builder.targetBlacklist::add, errorHandler);
+                    break;
+                case "STAY":
+                    builder.movementAI = MovementAI.STAY;
+                    expectEOL(tokens, errorHandler);
+                    break;
+                case "FOLLOW":
+                    builder.movementAI = MovementAI.FOLLOW_OWNER;
+                    expectEOL(tokens, errorHandler);
                     break;
                 default:
                     //TODO error
@@ -147,14 +181,76 @@ public class ArmsAssistantDirectives
         }
     }
 
+    private static void expectEOL(Iterator<String> tokens, Consumer<ITextComponent> errorHandler)
+    {
+        if (tokens.hasNext())
+        {
+            errorHandler.accept(new TextComponentTranslation(
+                QuiverbowMain.MODID + ".arms_assistant.directives.extraTokens", Streams.stream(tokens).collect(joining(" "))));
+        }
+    }
+
     public boolean isValidTarget(EntityArmsAssistant directedEntity, EntityLiving candidate)
     {
         return targetSelector.test(directedEntity, candidate) && !targetBlacklist.test(directedEntity, candidate);
     }
 
+    public void revertAI()
+    {
+        for (EntityAIBase task : aiTasks)
+        {
+            armsAssistant.tasks.removeTask(task);
+            armsAssistant.targetTasks.removeTask(task);
+        }
+        aiTasks.clear();
+    }
+
+    public void applyAI()
+    {
+        switch (movementAI)
+        {
+        case STAY:
+            applyTask(armsAssistant.tasks, 1, new EntityAIMaintainPosition(armsAssistant, armsAssistant.getPosition(), 1, 0.5D));
+            break;
+
+        case FOLLOW_OWNER:
+            applyTask(armsAssistant.tasks, 1, new EntityAIFollowOwner<>(armsAssistant, 8, 0.5D));
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    private <T extends EntityAIBase> T applyTask(EntityAITasks tasks, int priority, T task)
+    {
+        tasks.addTask(priority, task);
+        aiTasks.add(task);
+        return task;
+    }
+
+    public boolean areCustom()
+    {
+        return true;
+    }
+
+    private static enum MovementAI
+    {
+        STAY,
+        FOLLOW_OWNER,
+        NONE;
+    }
+
     private static class Builder
     {
+        private final EntityArmsAssistant armsAssistant;
         Collection<BiPredicate<EntityArmsAssistant, EntityLiving>> targetSelectors = new ArrayList<>(),
                                                                    targetBlacklist = new ArrayList<>();
+        MovementAI movementAI;
+
+        Builder(EntityArmsAssistant armsAssistant)
+        {
+            this.armsAssistant = armsAssistant;
+        }
     }
 }

@@ -43,25 +43,30 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 	private UUID ownerUUID;
 	private IItemHandlerModifiable inventory = new ItemStackHandler(4);
 	private Collection<IArmsAssistantUpgrade> upgrades = new HashSet<>();
-	private ArmsAssistantDirectives directives = ArmsAssistantDirectives.DEFAULT;
+	private ArmsAssistantDirectives directives;
 
 	public EntityArmsAssistant(World world)
 	{
 		super(world);
 		this.setSize(1.0F, 1.2F);
+		//TODO read from NBT
+		this.directives = ArmsAssistantDirectives.defaultDirectives(this);
 	}
 
 	public EntityArmsAssistant(World world, EntityPlayer player)
 	{
 		this(world);
 		this.ownerUUID = player.getPersistentID();
+		this.directives = ArmsAssistantDirectives.defaultDirectives(this);
 	}
 
 	@Override
 	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata)
 	{
         IEntityLivingData livingDataSuper = super.onInitialSpawn(difficulty, livingdata);
-        tasks.addTask(1, new EntityAIAttackRanged(this, hasUpgrade(UpgradeRegistry.MOBILITY) ? 0.5D : 0.0D, 20, 16.0F));
+        setHomePosAndDistance(getPosition(), 8);
+        double moveSpeed = hasUpgrade(UpgradeRegistry.MOBILITY) ? 0.5D : 0.0D;
+        tasks.addTask(2, new EntityAIAttackRanged(this, moveSpeed, 20, 16.0F));
 		return livingDataSuper;
 	}
 
@@ -161,11 +166,11 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 			        {
 			            try
 			            {
-			                directives = ArmsAssistantDirectives.from(playerHandStack, error ->
+			                updateDirectives(ArmsAssistantDirectives.from(this, playerHandStack, error ->
 			                {
 			                    if (!world.isRemote && getOwner() != null)
 			                        getOwner().sendMessage(error);
-			                });
+			                }));
 			            }
 			            catch (Exception e)
 			            {
@@ -218,7 +223,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 				entityDropItem(stack, 0.0F);
 			}
 		}
-		directives = ArmsAssistantDirectives.DEFAULT;
+		updateDirectives(ArmsAssistantDirectives.defaultDirectives(this));
 	}
 
 	private void replaceWeapon(EnumHand hand, ItemStack replacement)
@@ -233,9 +238,16 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 		}
 	}
 
+	private void updateDirectives(ArmsAssistantDirectives newDirectives)
+	{
+	    this.directives.revertAI();
+	    newDirectives.applyAI();
+	    this.directives = newDirectives;
+	}
+
 	public boolean hasCustomDirectives()
 	{
-	    return directives != ArmsAssistantDirectives.DEFAULT;
+	    return directives.areCustom();
 	}
 
 	@Override
