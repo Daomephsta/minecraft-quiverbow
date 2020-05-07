@@ -311,5 +311,9 @@ quiverbow_restrung.aa_upgrade.storage.locname=Storage
 quiverbow_restrung.aa_upgrade.mobility.locname=Mobility
 quiverbow_restrung.aa_upgrade.armour.locname=Armour
 quiverbow_restrung.aa_upgrade.heavy_plating.locname=Heavy Plating
+quiverbow_restrung.arms_assistant.directives.missingIdOrClass=Expected entity ID or target class
+quiverbow_restrung.arms_assistant.directives.unknownEntity=Unknown entity ID '%s'
+quiverbow_restrung.arms_assistant.directives.expectedEOL=Expected end of line
+quiverbow_restrung.arms_assistant.directives.unknownDirective=Unknown directive '%s'
 
 item.quiverbow_restrung.misc.FlyingAASpawner.name=Packed Up BB (WIP) 

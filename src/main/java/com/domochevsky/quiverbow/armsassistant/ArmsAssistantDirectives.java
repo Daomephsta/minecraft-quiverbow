@@ -33,6 +33,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.util.Constants.NBT;
 
@@ -113,31 +114,52 @@ public class ArmsAssistantDirectives
     private static ArmsAssistantDirectives fromLines(EntityArmsAssistant armsAssistant, Iterable<String> lines, Consumer<ITextComponent> errorHandler)
     {
         Builder builder = new Builder(armsAssistant);
+        LineErrorHandler lineErrorHandler = new LineErrorHandler(errorHandler);
         for (String line : lines)
         {
             PeekingIterator<String> tokens = Iterators.peekingIterator(ON_WHITEPSACE.split(line).iterator());
-            switch (tokens.next())
+            String token = tokens.next();
+            switch (token)
             {
                 case "TARGET":
-                    parseTargetingDirective(tokens, builder.targetSelectors::add, errorHandler);
+                    parseTargetingDirective(tokens, builder.targetSelectors::add, lineErrorHandler);
                     break;
                 case "IGNORE":
-                    parseTargetingDirective(tokens, builder.targetBlacklist::add, errorHandler);
+                    parseTargetingDirective(tokens, builder.targetBlacklist::add, lineErrorHandler);
                     break;
                 case "STAY":
                     builder.movementAI = MovementAI.STAY;
-                    expectEOL(tokens, errorHandler);
+                    expectEOL(tokens, lineErrorHandler);
                     break;
                 case "FOLLOW":
                     builder.movementAI = MovementAI.FOLLOW_OWNER;
-                    expectEOL(tokens, errorHandler);
+                    expectEOL(tokens, lineErrorHandler);
                     break;
                 default:
-                    //TODO error
+                    lineErrorHandler.accept(new TextComponentTranslation(
+                        QuiverbowMain.MODID + ".arms_assistant.directives.unknownDirective", token));
                     break;
             }
+            lineErrorHandler.lineNumber += 1;
         }
         return new ArmsAssistantDirectives(builder);
+    }
+
+    private static class LineErrorHandler implements Consumer<ITextComponent>
+    {
+        private final Consumer<ITextComponent> errorHandler;
+        int lineNumber = 1;
+
+        public LineErrorHandler(Consumer<ITextComponent> errorHandler)
+        {
+            this.errorHandler = errorHandler;
+        }
+
+        @Override
+        public void accept(ITextComponent error)
+        {
+            errorHandler.accept(new TextComponentString(lineNumber + ": ").appendSibling(error));
+        }
     }
 
     private static void parseTargetingDirective(PeekingIterator<String> tokens, Consumer<BiPredicate<EntityArmsAssistant, EntityLiving>> out, Consumer<ITextComponent> errorHandler)
@@ -153,7 +175,12 @@ public class ArmsAssistantDirectives
         {
             BiPredicate<EntityArmsAssistant, EntityLiving> subPredicate = parseIdOrClass(tokens.next(), errorHandler);
             if (subPredicate != null)
-                targetingDirective = targetingDirective.and(subPredicate);
+            {
+                if (targetingDirective != null)
+                    targetingDirective = targetingDirective.and(subPredicate);
+                else
+                    targetingDirective = subPredicate;
+            }
         }
         if (targetingDirective != null)
             out.accept(targetingDirective);
@@ -187,7 +214,7 @@ public class ArmsAssistantDirectives
         if (tokens.hasNext())
         {
             errorHandler.accept(new TextComponentTranslation(
-                QuiverbowMain.MODID + ".arms_assistant.directives.extraTokens", Streams.stream(tokens).collect(joining(" "))));
+                QuiverbowMain.MODID + ".arms_assistant.directives.expectedEOL", Streams.stream(tokens).collect(joining(" "))));
         }
     }
 
