@@ -76,7 +76,7 @@ public class PackedUpAA extends QuiverBowItem
 		if (stack.hasTagCompound())
 		{
 			NBTTagCompound stackTag = stack.getTagCompound();
-			list.add(I18n.format(getUnlocalizedName(stack) + ".tooltip.health", stack.getTagCompound().getInteger("currentHealth"),
+			list.add(I18n.format(getUnlocalizedName(stack) + ".tooltip.health", stack.getTagCompound().getFloat(TAG_HEALTH),
 			    stackTag.getFloat(TAG_MAX_HEALTH)));
 
 			boolean hasMore = stackTag.hasKey(TAG_UPGRADES);
