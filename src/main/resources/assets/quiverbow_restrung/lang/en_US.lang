@@ -4,7 +4,7 @@ entity.quiverbow_restrung.quiverbow_restrung_turret.name=Arms Assistant
 entity.quiverbow_restrung.projectilechevsky_Ano.name=the End
 
 //Creative tab
-itemGroup.quiverbow_restrung=Quiverbow
+itemGroup.quiverbow_restrung=Quiverbow: Restrung
 
 //Ammo
 quiverbow_restrung.ammo.nocreative=Does not work in creative mode.
@@ -302,7 +302,7 @@ item.quiverbow_restrung.misc.part_sugar_engine_body.description=To be outfitted 
 
 item.quiverbow_restrung.misc.arms_assistant.name=Packed Up Arms Assistant
 item.quiverbow_restrung.misc.arms_assistant.description=It's sizing you up
-item.quiverbow_restrung.misc.arms_assistant.tooltip.health=Health: %.0f / %.0f
+item.quiverbow_restrung.misc.arms_assistant.tooltip.health=Health: %.1f / %.1f
 item.quiverbow_restrung.misc.arms_assistant.tooltip.upgrades=Upgrades: %s
 quiverbow_restrung.aa_upgrade.extra_weapon.locname=2nd Weapon Rail
 quiverbow_restrung.aa_upgrade.riding.locname=Saddle
