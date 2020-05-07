@@ -14,8 +14,6 @@ import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.armsassistant.ai.EntityAIFollowOwner;
 import com.domochevsky.quiverbow.armsassistant.ai.EntityAIMaintainPosition;
 import com.google.common.base.Splitter;
-import com.google.common.collect.Iterators;
-import com.google.common.collect.PeekingIterator;
 import com.google.common.collect.Streams;
 import com.google.gson.JsonParseException;
 
@@ -117,7 +115,7 @@ public class ArmsAssistantDirectives
         LineErrorHandler lineErrorHandler = new LineErrorHandler(errorHandler);
         for (String line : lines)
         {
-            PeekingIterator<String> tokens = Iterators.peekingIterator(ON_WHITEPSACE.split(line).iterator());
+            Iterator<String> tokens = ON_WHITEPSACE.split(line).iterator();
             String token = tokens.next();
             switch (token)
             {
@@ -162,7 +160,7 @@ public class ArmsAssistantDirectives
         }
     }
 
-    private static void parseTargetingDirective(PeekingIterator<String> tokens, Consumer<BiPredicate<EntityArmsAssistant, EntityLiving>> out, Consumer<ITextComponent> errorHandler)
+    private static void parseTargetingDirective(Iterator<String> tokens, Consumer<BiPredicate<EntityArmsAssistant, EntityLiving>> out, Consumer<ITextComponent> errorHandler)
     {
         if (!tokens.hasNext())
         {
