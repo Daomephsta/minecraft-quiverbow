@@ -1,14 +1,10 @@
 package com.domochevsky.quiverbow.weapons;
 
 import com.domochevsky.quiverbow.Helper;
-import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.config.WeaponProperties;
-import com.domochevsky.quiverbow.models.ISpecialRender;
 import com.domochevsky.quiverbow.weapons.base.WeaponCrossbow;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.SingleShotFiringBehaviour;
 
-import net.minecraft.client.renderer.ItemMeshDefinition;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,9 +14,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
-import net.minecraftforge.client.model.ModelLoader;
 
-public class CrossbowAuto extends WeaponCrossbow implements ISpecialRender
+public class CrossbowAuto extends WeaponCrossbow
 {
 	public CrossbowAuto()
 	{
@@ -58,29 +53,6 @@ public class CrossbowAuto extends WeaponCrossbow implements ISpecialRender
 	}
 
 	@Override
-	public void registerRender()
-	{
-		final ModelResourceLocation empty = new ModelResourceLocation(
-				new ResourceLocation(QuiverbowMain.MODID, "weapons/" + getRegistryName().getResourcePath() + "_empty"),
-				"inventory");
-		final ModelResourceLocation unchambered = new ModelResourceLocation(new ResourceLocation(QuiverbowMain.MODID,
-				"weapons/" + getRegistryName().getResourcePath() + "_unchambered"), "inventory");
-		final ModelResourceLocation chambered = new ModelResourceLocation(
-				new ResourceLocation(QuiverbowMain.MODID, "weapons/" + getRegistryName().getResourcePath()), "inventory");
-		ModelLoader.registerItemVariants(this, empty, unchambered, chambered);
-		ModelLoader.setCustomMeshDefinition(this, new ItemMeshDefinition()
-		{
-			@Override
-			public ModelResourceLocation getModelLocation(ItemStack stack)
-			{
-				if (stack.getItemDamage() >= stack.getMaxDamage()) return empty;
-				if (!CrossbowAuto.getChambered(stack)) return unchambered;
-				return chambered;
-			}
-		});
-	}
-
-	@Override
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
 	{
 		ItemStack stack = player.getHeldItem(hand);
@@ -89,7 +61,7 @@ public class CrossbowAuto extends WeaponCrossbow implements ISpecialRender
 			return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 		} // Is empty
 
-		if (!CrossbowAuto.getChambered(stack)) // No arrow on the rail
+		if (!CrossbowAuto.isChambered(stack)) // No arrow on the rail
 		{
 			if (player.isSneaking())
 			{
@@ -109,7 +81,7 @@ public class CrossbowAuto extends WeaponCrossbow implements ISpecialRender
 		return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
 	}
 
-	private static boolean getChambered(ItemStack stack)
+	public static boolean isChambered(ItemStack stack)
 	{
 		if (stack.getTagCompound() == null)
 		{

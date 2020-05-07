@@ -355,6 +355,11 @@ public class QuiverbowMain
 
 			for (WeaponBase weapon : weapons)
 			{
+			    if (weapon == ItemRegistry.AUTO_CROSSBOW)
+			    {
+			        registerCrossbowModel(weapon);
+			        continue;
+			    }
 				ModelLoader.setCustomModelResourceLocation(weapon, 0, new ModelResourceLocation(
 					ResourceLocationExt.addToPath(weapon.getRegistryName(), "weapons/", "_internal"), "inventory"));
 				ModelBakery.registerItemVariants(weapon, ResourceLocationExt.prefixPath(weapon.getRegistryName(), "weapons/"));
@@ -366,5 +371,24 @@ public class QuiverbowMain
 			ModelLoader.setCustomModelResourceLocation(ItemRegistry.ARMS_ASSISTANT, 0,
 					new ModelResourceLocation(ItemRegistry.ARMS_ASSISTANT.getRegistryName(), "inventory"));
 		}
+
+	    private static void registerCrossbowModel(Item crossbow)
+	    {
+	       String path = crossbow.getRegistryName().getResourcePath();
+	       final ModelResourceLocation empty = new ModelResourceLocation(
+	               new ResourceLocation(QuiverbowMain.MODID, "weapons/" + path + "_empty"),
+	               "inventory");
+	       final ModelResourceLocation unchambered = new ModelResourceLocation(new ResourceLocation(QuiverbowMain.MODID,
+	               "weapons/" + path + "_unchambered"), "inventory");
+	       final ModelResourceLocation chambered = new ModelResourceLocation(
+	               new ResourceLocation(QuiverbowMain.MODID, "weapons/" + path), "inventory");
+	       ModelBakery.registerItemVariants(crossbow, empty, unchambered, chambered);
+	       ModelLoader.setCustomMeshDefinition(crossbow, stack ->
+	       {
+	           if (stack.getItemDamage() >= stack.getMaxDamage()) return empty;
+	           if (!CrossbowAuto.isChambered(stack)) return unchambered;
+	           return chambered;
+	       });
+	    }
 	}
 }
