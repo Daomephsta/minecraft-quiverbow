@@ -1,11 +1,13 @@
 package com.domochevsky.quiverbow.armsassistant;
 
-import static java.util.stream.Collectors.joining;
+import static com.domochevsky.quiverbow.util.brigadier.ListArgumentType.getList;
+import static com.domochevsky.quiverbow.util.brigadier.ListArgumentType.list;
+import static com.domochevsky.quiverbow.util.brigadier.ResourceLocationArgumentType.getResourceLocation;
+import static com.domochevsky.quiverbow.util.brigadier.ResourceLocationArgumentType.resourceLocation;
+import static com.mojang.brigadier.arguments.StringArgumentType.string;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -14,8 +16,16 @@ import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.armsassistant.ai.EntityAIFollowOwner;
 import com.domochevsky.quiverbow.armsassistant.ai.EntityAIMaintainPosition;
 import com.google.common.base.Splitter;
-import com.google.common.collect.Streams;
 import com.google.gson.JsonParseException;
+import com.mojang.brigadier.Command;
+import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.brigadier.LiteralMessage;
+import com.mojang.brigadier.ParseResults;
+import com.mojang.brigadier.arguments.ArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.builder.RequiredArgumentBuilder;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 
 import daomephsta.umbra.streams.NBTPrimitiveStreams;
 import net.minecraft.entity.EntityFlying;
@@ -31,14 +41,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.util.Constants.NBT;
 
 public class ArmsAssistantDirectives
 {
-    private static final Splitter ON_NEWLINE = Splitter.onPattern("\\n").omitEmptyStrings().trimResults(),
-                                  ON_WHITEPSACE = Splitter.onPattern("\\s").omitEmptyStrings().trimResults();
+    private static final Splitter ON_NEWLINE = Splitter.onPattern("\\n").omitEmptyStrings().trimResults();
 
     private EntityArmsAssistant armsAssistant;
     private final BiPredicate<EntityArmsAssistant, EntityLiving> targetSelector,
@@ -111,109 +119,115 @@ public class ArmsAssistantDirectives
 
     private static ArmsAssistantDirectives fromLines(EntityArmsAssistant armsAssistant, Iterable<String> lines, Consumer<ITextComponent> errorHandler)
     {
+        CommandDispatcher<Builder> dispatcher = new CommandDispatcher<>();
+        dispatcher.register(targetingDirective("TARGET", (builder, selector) -> builder.targetSelectors.add(selector)));
+        dispatcher.register(targetingDirective("IGNORE", (builder, selector) -> builder.targetBlacklist.add(selector)));
+        dispatcher.register(literal("STAY").executes(ctx ->
+        {
+            ctx.getSource().movementAI = MovementAI.STAY;
+            return Command.SINGLE_SUCCESS;
+        }));
+        dispatcher.register(literal("FOLLOW").executes(ctx ->
+        {
+            ctx.getSource().movementAI = MovementAI.FOLLOW_OWNER;
+            return Command.SINGLE_SUCCESS;
+        }));
+
         Builder builder = new Builder(armsAssistant);
-        LineErrorHandler lineErrorHandler = new LineErrorHandler(errorHandler);
+        int lineNumber = 1;
         for (String line : lines)
         {
-            Iterator<String> tokens = ON_WHITEPSACE.split(line).iterator();
-            String token = tokens.next();
-            switch (token)
+            try
             {
-                case "TARGET":
-                    parseTargetingDirective(tokens, builder.targetSelectors::add, lineErrorHandler);
-                    break;
-                case "IGNORE":
-                    parseTargetingDirective(tokens, builder.targetBlacklist::add, lineErrorHandler);
-                    break;
-                case "STAY":
-                    builder.movementAI = MovementAI.STAY;
-                    expectEOL(tokens, lineErrorHandler);
-                    break;
-                case "FOLLOW":
-                    builder.movementAI = MovementAI.FOLLOW_OWNER;
-                    expectEOL(tokens, lineErrorHandler);
-                    break;
-                default:
-                    lineErrorHandler.accept(new TextComponentTranslation(
-                        QuiverbowMain.MODID + ".arms_assistant.directives.unknownDirective", token));
-                    break;
+                ParseResults<Builder> parse = dispatcher.parse(line, builder);
+                dispatcher.execute(parse);
             }
-            lineErrorHandler.lineNumber += 1;
+            catch (CommandSyntaxException e)
+            {
+                errorHandler.accept(new TextComponentTranslation(
+                    QuiverbowMain.MODID + ".arms_assistant.directives.errorPrefix", lineNumber).appendText(e.getMessage()));
+            }
+            lineNumber += 1;
         }
         return new ArmsAssistantDirectives(builder);
     }
 
-    private static class LineErrorHandler implements Consumer<ITextComponent>
+    private static final DynamicCommandExceptionType UNKNOWN_ENTITY
+        = new DynamicCommandExceptionType(entityId -> new LiteralMessage("Unknown entity ID '" + entityId + "'"));
+    private static LiteralArgumentBuilder<Builder> targetingDirective(String rootName, BiConsumer<Builder, BiPredicate<EntityArmsAssistant, EntityLiving>> out)
     {
-        private final Consumer<ITextComponent> errorHandler;
-        int lineNumber = 1;
+        return literal(rootName)
+            .then
+            (
+                argument("entity_id", resourceLocation()).then
+                (
+                    argument("conditions", list(string())).executes(ctx ->
+                    {
+                        List<String> conditions = getList(ctx, "conditions");
+                        ResourceLocation entityId = getResourceLocation(ctx, "entity_id");
+                        if (!EntityList.isRegistered(entityId))
+                            throw UNKNOWN_ENTITY.create(entityId);
 
-        public LineErrorHandler(Consumer<ITextComponent> errorHandler)
-        {
-            this.errorHandler = errorHandler;
-        }
-
-        @Override
-        public void accept(ITextComponent error)
-        {
-            errorHandler.accept(new TextComponentString(lineNumber + ": ").appendSibling(error));
-        }
+                        BiPredicate<EntityArmsAssistant, EntityLiving> targetingDirective = (directedEntity, target) -> EntityList.isMatchingName(target, entityId);
+                        for (String condition : conditions)
+                            targetingDirective = targetingDirective.and(parseEntityCondition(condition));
+                        if (targetingDirective != null)
+                            out.accept(ctx.getSource(), targetingDirective);
+                        return Command.SINGLE_SUCCESS;
+                    })
+                ).executes(ctx ->
+                {
+                    ResourceLocation entityId = getResourceLocation(ctx, "entity_id");
+                    if (!EntityList.isRegistered(entityId))
+                        throw UNKNOWN_ENTITY.create(entityId);
+                    out.accept(ctx.getSource(), (directedEntity, target) ->
+                        EntityList.isMatchingName(target, entityId));
+                    return Command.SINGLE_SUCCESS;
+                })
+            )
+            .then
+            (
+                argument("conditions", list(string())).executes(ctx ->
+                {
+                    List<String> conditions = getList(ctx, "conditions");
+                    BiPredicate<EntityArmsAssistant, EntityLiving> targetingDirective = null;
+                    for (String condition : conditions)
+                    {
+                        targetingDirective = targetingDirective != null
+                            ? targetingDirective.and(parseEntityCondition(condition))
+                            : parseEntityCondition(condition);
+                    }
+                    if (targetingDirective != null)
+                        out.accept(ctx.getSource(), targetingDirective);
+                    return Command.SINGLE_SUCCESS;
+                })
+            );
     }
 
-    private static void parseTargetingDirective(Iterator<String> tokens, Consumer<BiPredicate<EntityArmsAssistant, EntityLiving>> out, Consumer<ITextComponent> errorHandler)
+    private static final DynamicCommandExceptionType UNKNOWN_ENTITY_CONDITION
+        = new DynamicCommandExceptionType(condition -> new LiteralMessage("Unknown entity condition '" + condition + "'"));
+    private static BiPredicate<EntityArmsAssistant, EntityLiving> parseEntityCondition(String condition) throws CommandSyntaxException
     {
-        if (!tokens.hasNext())
-        {
-            errorHandler.accept(new TextComponentTranslation(
-                QuiverbowMain.MODID + ".arms_assistant.directives.missingIdOrClass"));
-            return;
-        }
-        BiPredicate<EntityArmsAssistant, EntityLiving> targetingDirective = null;
-        while (tokens.hasNext())
-        {
-            BiPredicate<EntityArmsAssistant, EntityLiving> subPredicate = parseIdOrClass(tokens.next(), errorHandler);
-            if (subPredicate != null)
-            {
-                if (targetingDirective != null)
-                    targetingDirective = targetingDirective.and(subPredicate);
-                else
-                    targetingDirective = subPredicate;
-            }
-        }
-        if (targetingDirective != null)
-            out.accept(targetingDirective);
-    }
-
-    private static BiPredicate<EntityArmsAssistant, EntityLiving> parseIdOrClass(String targetString, Consumer<ITextComponent> errorHandler)
-    {
-        if (targetString.equals("hostile"))
+        if (condition.equals("hostile"))
             return (directedEntity, target) -> IMob.MOB_SELECTOR.apply(target);
-        else if (targetString.equals("friendly"))
+        else if (condition.equals("friendly"))
             return (directedEntity, target) -> directedEntity.isOnSameTeam(target);
-        else if (targetString.equals("injured"))
+        else if (condition.equals("injured"))
             return (directedEntity, target) -> target.getHealth() < target.getMaxHealth();
-        else if (targetString.equals("flying"))
+        else if (condition.equals("flying"))
             return (directedEntity, target) -> target instanceof EntityFlying || target instanceof EntityBat;
         else
-        {
-            ResourceLocation id = new ResourceLocation(targetString);
-            if (!EntityList.isRegistered(id))
-            {
-                errorHandler.accept(new TextComponentTranslation(
-                    QuiverbowMain.MODID + ".arms_assistant.directives.unknownEntity", id));
-                return null;
-            }
-            return (directedEntity, target) -> EntityList.isMatchingName(target, id);
-        }
+            throw UNKNOWN_ENTITY_CONDITION.create(condition);
     }
 
-    private static void expectEOL(Iterator<String> tokens, Consumer<ITextComponent> errorHandler)
+    private static LiteralArgumentBuilder<Builder> literal(String name)
     {
-        if (tokens.hasNext())
-        {
-            errorHandler.accept(new TextComponentTranslation(
-                QuiverbowMain.MODID + ".arms_assistant.directives.expectedEOL", Streams.stream(tokens).collect(joining(" "))));
-        }
+        return LiteralArgumentBuilder.literal(name);
+    }
+
+    private static <T> RequiredArgumentBuilder<Builder, T> argument(String name, ArgumentType<T> type)
+    {
+        return RequiredArgumentBuilder.argument(name, type);
     }
 
     public void revertAI()
