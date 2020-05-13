@@ -39,6 +39,7 @@ import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -52,6 +53,7 @@ public class ArmsAssistantDirectives
     private final BiPredicate<EntityArmsAssistant, EntityLiving> targetSelector,
                                                                  targetBlacklist;
     private final MovementAI movementAI;
+    private final Set<Notification> notifications;
     private final Collection<EntityAIBase> aiTasks = new ArrayList<>();
 
     private ArmsAssistantDirectives(EntityArmsAssistant armsAssistant)
@@ -60,6 +62,7 @@ public class ArmsAssistantDirectives
         this.targetSelector = (directedEntity, target) -> IMob.MOB_SELECTOR.apply(target);
         this.targetBlacklist = (directedEntity, target) -> false;
         this.movementAI = MovementAI.NONE;
+        this.notifications = EnumSet.noneOf(Notification.class);
     }
 
     private ArmsAssistantDirectives(Builder builder)
@@ -68,6 +71,7 @@ public class ArmsAssistantDirectives
         this.targetSelector = builder.targetSelectors.stream().reduce(BiPredicate::or).orElse((directedEntity, target) -> false);
         this.targetBlacklist = builder.targetBlacklist.stream().reduce(BiPredicate::or).orElse((directedEntity, target) -> false);
         this.movementAI = builder.movementAI;
+        this.notifications = builder.notifications;
     }
 
     public static ArmsAssistantDirectives defaultDirectives(EntityArmsAssistant armsAssistant)
@@ -132,7 +136,7 @@ public class ArmsAssistantDirectives
             ctx.getSource().movementAI = MovementAI.FOLLOW_OWNER;
             return Command.SINGLE_SUCCESS;
         }));
-
+        dispatcher.register(tellDirective());
         Builder builder = new Builder(armsAssistant);
         int lineNumber = 1;
         for (String line : lines)
@@ -147,6 +151,7 @@ public class ArmsAssistantDirectives
                 errorHandler.accept(new TextComponentTranslation(
                     QuiverbowMain.MODID + ".arms_assistant.directives.errorPrefix", lineNumber).appendText(e.getMessage()));
             }
+            //TODO Revisit line counting, it doesn't handle empty lines well
             lineNumber += 1;
         }
         return new ArmsAssistantDirectives(builder);
@@ -220,6 +225,37 @@ public class ArmsAssistantDirectives
             throw UNKNOWN_ENTITY_CONDITION.create(condition);
     }
 
+    private static LiteralArgumentBuilder<Builder> tellDirective()
+    {
+        return literal("TELL")
+            .then
+            (
+                literal("HEALTH").then(literal("LOW").executes(ctx ->
+                {
+                    ctx.getSource().notifications.add(Notification.LOW_HEALTH);
+                    return Command.SINGLE_SUCCESS;
+                }))
+            )
+            .then
+            (
+                literal("DEATH").executes(ctx ->
+                {
+                    ctx.getSource().notifications.add(Notification.DEATH);
+                    return Command.SINGLE_SUCCESS;
+                })
+            );
+            /*.then
+            (
+                literal("AMMO").executes(ctx ->
+                {
+                    //TODO Implement no ammo notifications
+                    ctx.getSource().notifications.add(Notification.NO_AMMO);
+                    return Command.SINGLE_SUCCESS;
+                })
+            );*/
+    }
+
+
     private static LiteralArgumentBuilder<Builder> literal(String name)
     {
         return LiteralArgumentBuilder.literal(name);
@@ -271,6 +307,25 @@ public class ArmsAssistantDirectives
         return targetSelector.test(armsAssistant, candidate) && !targetBlacklist.test(armsAssistant, candidate);
     }
 
+    public void onDamage(DamageSource source, float amount)
+    {
+        if (notifications.contains(Notification.LOW_HEALTH) && armsAssistant.getOwner() != null
+            && armsAssistant.getHealth() < armsAssistant.getMaxHealth() / 3.0F)
+        {
+            armsAssistant.getOwner().sendMessage(
+                new TextComponentTranslation(QuiverbowMain.MODID + ".arms_assistant.messages.low_health", armsAssistant.getName()));
+        }
+    }
+
+    public void onDeath(DamageSource source)
+    {
+        if (notifications.contains(Notification.DEATH) && armsAssistant.getOwner() != null)
+        {
+            armsAssistant.getOwner().sendMessage(
+                new TextComponentTranslation(QuiverbowMain.MODID + ".arms_assistant.messages.death", armsAssistant.getName()));
+        }
+    }
+
     public boolean areCustom()
     {
         return true;
@@ -283,16 +338,25 @@ public class ArmsAssistantDirectives
         NONE;
     }
 
+    private static enum Notification
+    {
+        LOW_HEALTH,
+        NO_AMMO,
+        DEATH
+    }
+
     private static class Builder
     {
         private final EntityArmsAssistant armsAssistant;
         Collection<BiPredicate<EntityArmsAssistant, EntityLiving>> targetSelectors = new ArrayList<>(),
                                                                    targetBlacklist = new ArrayList<>();
         MovementAI movementAI = MovementAI.NONE;
+        Set<Notification> notifications;
 
         Builder(EntityArmsAssistant armsAssistant)
         {
             this.armsAssistant = armsAssistant;
+            this.notifications = EnumSet.noneOf(Notification.class);
         }
     }
 }

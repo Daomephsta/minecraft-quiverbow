@@ -286,7 +286,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 			}
 			//TODO Drop parts
 
-			//TODO Inform owner of AA death on death
+			directives.onDeath(source);
 		}
 	}
 
@@ -341,14 +341,10 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource source, float amount)
+	protected void damageEntity(DamageSource source, float amount)
 	{
-		boolean result = super.attackEntityFrom(source, amount);
-		if (!this.world.isRemote && this.getHealth() < this.getMaxHealth() / 3)
-		{
-			//TODO Inform owner of low AA health
-		}
-		return result;
+	    super.damageEntity(source, amount);
+	    directives.onDamage(source, amount);
 	}
 
 	@Override
