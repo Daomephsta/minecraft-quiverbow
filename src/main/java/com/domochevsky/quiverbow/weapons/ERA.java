@@ -227,6 +227,7 @@ public class ERA extends WeaponBase
 	@Override
 	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems)
 	{
+	    if (!isInCreativeTab(tab)) return;
 	    super.getSubItems(tab, subItems);
 
 	    ItemStack loaded = new ItemStack(this, 1, 0);
