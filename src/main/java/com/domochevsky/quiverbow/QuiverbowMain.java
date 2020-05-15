@@ -9,6 +9,7 @@ import com.domochevsky.quiverbow.armsassistant.EntityArmsAssistant;
 import com.domochevsky.quiverbow.blocks.FenLight;
 import com.domochevsky.quiverbow.config.QuiverbowConfig;
 import com.domochevsky.quiverbow.items.ItemRegistry;
+import com.domochevsky.quiverbow.miscitems.IncompleteEnderRailAccelerator;
 import com.domochevsky.quiverbow.miscitems.PackedUpAA;
 import com.domochevsky.quiverbow.miscitems.QuiverBowItem;
 import com.domochevsky.quiverbow.net.PacketHandler;
@@ -221,6 +222,7 @@ public class QuiverbowMain
 			registry.registerAll(
 					RegistryHelper.registerItem(new QuiverBowItem(), ".misc.", "part_sugar_engine_body"),
 					RegistryHelper.registerItem(new QuiverBowItem(), ".misc.", "part_sugar_engine_barrel"),
+					RegistryHelper.registerItem(new IncompleteEnderRailAccelerator(), ".misc.", "incomplete_ender_rail_accelerator"),
 					RegistryHelper.registerItem(new PackedUpAA(), ".misc.", "arms_assistant"));
 		}
 
@@ -238,9 +240,10 @@ public class QuiverbowMain
 					// TODO: Reimplement addWeapon(new FlintDuster()),
 					// TODO: Reimplement addWeapon(new Sunray()),
 					addWeapon(new PowderKnuckle()), addWeapon(new PowderKnuckleMod()), addWeapon(new SoulCairn()),
-					addWeapon(new AquaAccelerator()), addWeapon(new SilkenSpinner())//,
+					addWeapon(new AquaAccelerator()), addWeapon(new SilkenSpinner()),
 					// TODO: Reimplement addWeapon(new MediGun()),
-					// TODO: Reimplement addWeapon(new ERA()), addWeapon(new AATargeter())
+					addWeapon(new ERA())
+	                // TODO: Reimplement addWeapon(new AATargeter())
 					);
 			registerWeaponsWithAmmo(registry);
 		}
@@ -364,13 +367,16 @@ public class QuiverbowMain
 					ResourceLocationExt.addToPath(weapon.getRegistryName(), "weapons/", "_internal"), "inventory"));
 				ModelBakery.registerItemVariants(weapon, ResourceLocationExt.prefixPath(weapon.getRegistryName(), "weapons/"));
 			}
-			ModelLoader.setCustomModelResourceLocation(ItemRegistry.PART_SUGAR_ENGINE_BODY, 0,
-					new ModelResourceLocation(ItemRegistry.PART_SUGAR_ENGINE_BODY.getRegistryName(), "inventory"));
-			ModelLoader.setCustomModelResourceLocation(ItemRegistry.PART_SUGAR_ENGINE_BARREL, 0,
-					new ModelResourceLocation(ItemRegistry.PART_SUGAR_ENGINE_BARREL.getRegistryName(), "inventory"));
-			ModelLoader.setCustomModelResourceLocation(ItemRegistry.ARMS_ASSISTANT, 0,
-					new ModelResourceLocation(ItemRegistry.ARMS_ASSISTANT.getRegistryName(), "inventory"));
+			setStandardModelLocation(ItemRegistry.PART_SUGAR_ENGINE_BODY);
+			setStandardModelLocation(ItemRegistry.PART_SUGAR_ENGINE_BARREL);
+			setStandardModelLocation(ItemRegistry.ARMS_ASSISTANT);
+			setStandardModelLocation(ItemRegistry.INCOMPLETE_ENDER_RAIL_ACCELERATOR);
 		}
+
+        private static void setStandardModelLocation(Item item)
+        {
+            ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName(), "inventory"));
+        }
 
 	    private static void registerCrossbowModel(Item crossbow)
 	    {

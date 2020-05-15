@@ -11,6 +11,7 @@ public class ItemRegistry
 	// Misc items
 	public static final Item PART_SUGAR_ENGINE_BODY = null;
 	public static final Item PART_SUGAR_ENGINE_BARREL = null;
+	public static final Item INCOMPLETE_ENDER_RAIL_ACCELERATOR = null;
 	public static final Item ARMS_ASSISTANT = null;
 	// public static final Item FLYING_ARMS_ASSISTANT = null;
 

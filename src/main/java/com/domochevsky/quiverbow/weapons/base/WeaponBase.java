@@ -42,6 +42,7 @@ public abstract class WeaponBase extends QuiverBowItem
 		this.setMaxDamage(maxAmmo); // Default is 0
 		this.setHasSubtypes(true); // Got a subtype, since we're using damage
 		// values
+		//TODO: Remove. Only used by witch renderer
 		this.setFull3D(); // Not as thin as paper when held. Probably not
 		// relevant when using models
 		this.setCreativeTab(CreativeTabs.COMBAT);// On the combat tab by
@@ -107,7 +108,7 @@ public abstract class WeaponBase extends QuiverBowItem
 	{
 		return this.getProperties().getKickback();
 	}
-	
+
 	public float getProjectileSpeed()
 	{
 		return this.getProperties().getProjectileSpeed();
@@ -251,7 +252,7 @@ public abstract class WeaponBase extends QuiverBowItem
 		subItems.add(new ItemStack(this, 1, 0));
 		subItems.add(Helper.createEmptyWeaponOrAmmoStack(this, 1));
 	}
-	
+
 	protected abstract WeaponProperties createDefaultProperties();
 
 	public WeaponProperties getProperties()

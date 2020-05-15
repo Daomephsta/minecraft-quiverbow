@@ -1,0 +1,33 @@
+{
+  "conditions": [
+    {
+      "type": "quiverbow_restrung:weapon_enabled",
+      "id": "quiverbow_restrung:ender_rail_accelerator"
+    }
+  ],
+  "pattern": [
+    " g ",
+    "geg",
+    "rir"
+  ],
+  "key": {
+    "g": {
+      "item": "minecraft:golden_rail"
+    },
+    "e": {
+      "item": "quiverbow_restrung:ender_rail_accelerator",
+      "data": 1
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "r": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:ender_rail_accelerator",
+    "data": 0
+  }
+}

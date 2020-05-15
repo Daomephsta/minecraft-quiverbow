@@ -251,6 +251,7 @@ item.quiverbow_restrung.weapon.ender_rail_accelerator.name=Ender Rail Accelerato
 item.quiverbow_restrung.weapon.ender_rail_accelerator.ammostatus=§cBurns out after one shot.
 item.quiverbow_restrung.weapon.ender_rail_accelerator.loadtext=§cCannot be reloaded.
 item.quiverbow_restrung.weapon.ender_rail_accelerator.description=27 blocks worth of powered rail running through a single ender chest. So not safe for use.
+item.quiverbow_restrung.weapon.ender_rail_accelerator.reinforced_muzzle=Reinforced Muzzle
 
 item.quiverbow_restrung.weapon.auto_crossbow_imp.name=Improved Auto-crossbow
 item.quiverbow_restrung.weapon.auto_crossbow_imp.ammostatus=§9Bolts: %d / %d
@@ -299,6 +300,10 @@ item.quiverbow_restrung.misc.part_sugar_engine_barrel.description=A barrel, wait
 
 item.quiverbow_restrung.misc.part_sugar_engine_body.name=Sugar Engine Main Body
 item.quiverbow_restrung.misc.part_sugar_engine_body.description=To be outfitted with 4 barrels.
+
+item.quiverbow_restrung.misc.incomplete_ender_rail_accelerator.name=Ender Rail Accelerator (Incomplete)
+item.quiverbow_restrung.misc.incomplete_ender_rail_accelerator.description=Use with 27 Powered Rails in other hand to complete
+item.quiverbow_restrung.misc.incomplete_ender_rail_accelerator.completeFail=27 Powered Rails required in other hand to complete
 
 item.quiverbow_restrung.misc.arms_assistant.name=Packed Up Arms Assistant
 item.quiverbow_restrung.misc.arms_assistant.description=It's sizing you up

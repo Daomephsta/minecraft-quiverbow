@@ -1,5 +1,7 @@
 package com.domochevsky.quiverbow.weapons;
 
+import java.util.List;
+
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
@@ -8,19 +10,25 @@ import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.firingbehaviours.FiringBehaviourBase;
 
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.*;
-import net.minecraft.item.Item;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
-
+//TODO: JEI integration to direct players to craft the incomplete ERA
 public class ERA extends WeaponBase
 {
-	private static final String PROP_SELF_EXPLOSION_SIZE = "selfExplosionSize";
+    private static final String PROP_SELF_EXPLOSION_SIZE = "selfExplosionSize";
+    private static final String REINFORCED_MUZZLE = "hasEmeraldMuzzle";
 	private class ERAFiringBehaviour extends FiringBehaviourBase<ERA>
 	{
 		protected ERAFiringBehaviour()
@@ -78,7 +86,7 @@ public class ERA extends WeaponBase
 				Helper.knockUserBack(entity, this.getKickback()); // Kickback
 
 				// Upgrade
-				if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("hasEmeraldMuzzle"))
+				if (stack.hasTagCompound() && stack.getTagCompound().getBoolean(REINFORCED_MUZZLE))
 				{
 					entity.attackEntityFrom(DamageSource.causeThrownDamage(entity, entity), 15.0f); // Hurtin'
 					// (but
@@ -123,7 +131,7 @@ public class ERA extends WeaponBase
 				} // Players don't care about mob griefing rules, but play by
 					// their own rules
 
-				if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("hasEmeraldMuzzle"))
+				if (stack.hasTagCompound() && stack.getTagCompound().getBoolean(REINFORCED_MUZZLE))
 				{
 					// Has a muzzle, so no boom
 					Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_GENERIC_EXPLODE, 2.0F, 0.1F);
@@ -181,6 +189,14 @@ public class ERA extends WeaponBase
 		// else, all's chill
 	}
 
+	@Override
+	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags)
+	{
+	    super.addInformation(stack, world, list, flags);
+	    if (stack.hasTagCompound() && stack.getTagCompound().getBoolean(REINFORCED_MUZZLE))
+	        list.add(I18n.format(getUnlocalizedName() + ".reinforced_muzzle"));
+	}
+
 	private static void startAccelerating(ItemStack stack)
 	{
 		if (stack.getTagCompound() == null)
@@ -209,6 +225,24 @@ public class ERA extends WeaponBase
 	}
 
 	@Override
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems)
+	{
+	    super.getSubItems(tab, subItems);
+
+	    ItemStack loaded = new ItemStack(this, 1, 0);
+	    NBTTagCompound loadedNbt = new NBTTagCompound();
+	    loadedNbt.setBoolean(REINFORCED_MUZZLE, true);
+	    loaded.setTagCompound(loadedNbt);
+        subItems.add(loaded);
+
+        ItemStack empty = Helper.createEmptyWeaponOrAmmoStack(this, 1);
+        NBTTagCompound emptyNbt = new NBTTagCompound();
+        emptyNbt.setBoolean(REINFORCED_MUZZLE, true);
+        empty.setTagCompound(emptyNbt);
+        subItems.add(empty);
+	}
+
+	@Override
 	protected WeaponProperties createDefaultProperties()
 	{
 		return WeaponProperties.builder().minimumDamage(120).maximumDamage(150).kickback(30)
@@ -218,95 +252,5 @@ public class ERA extends WeaponBase
 				.floatProperty(CommonProperties.PROP_EXPLOSION_SIZE, CommonProperties.COMMENT_EXPLOSION_SIZE, 8.0F)
 				.booleanProperty(CommonProperties.PROP_DAMAGE_TERRAIN, CommonProperties.COMMENT_DAMAGE_TERRAIN, true)
 				.build();
-	}
-
-	//TODO Convert to JSON
-/*	public void addRecipes()
-	{
-		if (enabled)
-		{
-			this.registerRecipe();
-		}
-		else if (Main.noCreative)
-		{
-			this.setCreativeTab(null);
-		} // Not enabled and not allowed to be in the creative menu
-
-		// Reloading? More "repairing" the burnt out one
-
-		this.registerRepair();
-		this.registerUpgrade();
-	}*/
-	
-	//TODO Convert to JSON
-	private void registerRecipe()
-	{
-		// Fully loaded
-		// Alternate item registering method
-		ItemStack[] input = new ItemStack[9];
-
-		// Top row
-		input[0] = new ItemStack(Item.getItemFromBlock(Blocks.OBSIDIAN));
-		input[1] = new ItemStack(Blocks.GOLDEN_RAIL, 27); // 27 rails
-		input[2] = new ItemStack(Item.getItemFromBlock(Blocks.OBSIDIAN));
-
-		// Middle row
-		input[3] = new ItemStack(Item.getItemFromBlock(Blocks.OBSIDIAN));
-		input[4] = new ItemStack(Item.getItemFromBlock(Blocks.ENDER_CHEST));
-		input[5] = new ItemStack(Item.getItemFromBlock(Blocks.OBSIDIAN));
-
-		// Bottom row
-		input[6] = new ItemStack(Item.getItemFromBlock(Blocks.TRIPWIRE_HOOK));
-		input[7] = new ItemStack(Items.IRON_INGOT);
-		input[8] = new ItemStack(Item.getItemFromBlock(Blocks.OBSIDIAN));
-
-//		GameRegistry.addRecipe(new RecipeERA(input, new ItemStack(this)));
-	}
-	
-	//TODO Convert to JSON
-	private void registerRepair()
-	{
-		ItemStack[] repair = new ItemStack[9];
-
-		// Top row
-		// repair[0] = new ItemStack(Item.getItemFromBlock(Blocks.OBSIDIAN));
-		repair[1] = new ItemStack(Blocks.GOLDEN_RAIL);
-		// repair[2] = new ItemStack(Item.getItemFromBlock(Blocks.OBSIDIAN));
-
-		// Middle row
-		repair[3] = new ItemStack(Blocks.GOLDEN_RAIL);
-		repair[4] = Helper.createEmptyWeaponOrAmmoStack(this, 1);
-		repair[5] = new ItemStack(Blocks.GOLDEN_RAIL);
-
-		// Bottom row
-		repair[6] = new ItemStack(Items.REDSTONE);
-		repair[7] = new ItemStack(Items.IRON_INGOT);
-		repair[8] = new ItemStack(Items.REDSTONE);
-
-//		GameRegistry.addRecipe(new RecipeERA(repair, new ItemStack(this)));
-	}
-
-	//TODO Convert to JSON
-	private void registerUpgrade()
-	{
-		ItemStack[] recipe = new ItemStack[9];
-
-		// Top row
-		recipe[0] = new ItemStack(Blocks.QUARTZ_BLOCK); // 0 1 2
-		recipe[1] = new ItemStack(Items.EMERALD); // - - -
-		// recipe[2] = null; // - - -
-
-		// Middle row
-		recipe[3] = new ItemStack(Blocks.EMERALD_BLOCK); // - - -
-		// recipe[4] = null; // 3 4 5
-		recipe[5] = new ItemStack(Items.EMERALD); // - - -
-
-		// Bottom row
-		recipe[6] = new ItemStack(this); // - - -
-		recipe[7] = new ItemStack(Blocks.EMERALD_BLOCK); // - - -
-		recipe[8] = new ItemStack(Blocks.QUARTZ_BLOCK); // 6 7 8
-
-//		GameRegistry.addRecipe(new RecipeWeapon(recipe, new ItemStack(this), 1)); // Emerald
-		// Muzzle
 	}
 }
