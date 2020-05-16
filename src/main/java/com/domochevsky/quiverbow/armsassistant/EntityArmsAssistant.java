@@ -30,6 +30,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.nbt.NBTUtil;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.DifficultyInstance;
@@ -45,17 +48,20 @@ import net.minecraftforge.items.ItemStackHandler;
 public class EntityArmsAssistant extends EntityCreature implements IEntityAdditionalSpawnData, IEntityOwnable, IRangedAttackMob
 {
     public static final ResourceLocation LOOT_TABLE_ID = new ResourceLocation(QuiverbowMain.MODID, "entities/arms_assistant");
+    private static final DataParameter<Boolean> HAS_CUSTOM_DIRECTIVES = EntityDataManager.createKey(EntityArmsAssistant.class, DataSerializers.BOOLEAN);
 	private UUID ownerUUID;
 	private IItemHandlerModifiable inventory = new ItemStackHandler(4);
 	private Collection<IArmsAssistantUpgrade> upgrades = new HashSet<>();
 	private ArmsAssistantDirectives directives;
+	@SuppressWarnings("unused") //Will be useful later
+    private ItemStack directivesBook;
 
 	public EntityArmsAssistant(World world)
 	{
 		super(world);
 		this.setSize(1.0F, 1.2F);
-		//TODO read from NBT
 		this.directives = ArmsAssistantDirectives.defaultDirectives(this);
+		this.directivesBook = ItemStack.EMPTY;
 	}
 
 	public EntityArmsAssistant(World world, EntityPlayer player)
@@ -63,6 +69,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 		this(world);
 		this.ownerUUID = player.getPersistentID();
 		this.directives = ArmsAssistantDirectives.defaultDirectives(this);
+		this.directivesBook = ItemStack.EMPTY;
 	}
 
 	@Override
@@ -76,15 +83,15 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
         getAttributeMap().applyAttributeModifiers(modifiers);
         //Set home pos for use by STAY AI, home distance is ignored and thus arbitrary
         setHomePosAndDistance(getPosition(), 8);
-        double moveSpeed = getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue();
-        tasks.addTask(2, new EntityAIAttackRanged(this, moveSpeed, 20, 16.0F));
 		return livingDataSuper;
 	}
 
 	@Override
 	protected void initEntityAI()
 	{
-        targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+	    targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+	    double moveSpeed = getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue();
+	    tasks.addTask(2, new EntityAIAttackRanged(this, moveSpeed, 20, 16.0F));
 	}
 
 	@Override
@@ -92,6 +99,13 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 	{
 		super.applyEntityAttributes();
 		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.0D);
+	}
+
+	@Override
+	protected void entityInit()
+	{
+	    super.entityInit();
+	    this.dataManager.register(HAS_CUSTOM_DIRECTIVES, false);
 	}
 
 	@Override
@@ -166,27 +180,16 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 			ItemStack resultStack = playerHandStack;
 			for (int slot = 0; slot < inventory.getSlots(); slot++)
 			{
-				ItemStack stack = inventory.insertItem(slot, playerHandStack, false);
-				if (stack.isEmpty())
+				ItemStack insertionRemainder = inventory.insertItem(slot, playerHandStack, false);
+				if (insertionRemainder.isEmpty())
 				{
-					resultStack = stack;
+					resultStack = insertionRemainder;
 					if ((playerHandStack.getItem() == Items.WRITTEN_BOOK || playerHandStack.getItem() == Items.WRITABLE_BOOK)
 					    && !hasCustomDirectives())
 			        {
-			            try
-			            {
-			                updateDirectives(ArmsAssistantDirectives.from(this, playerHandStack, error ->
-			                {
-			                    if (!world.isRemote && getOwner() != null)
-			                        getOwner().sendMessage(error);
-			                }));
-			            }
-			            catch (Exception e)
-			            {
-			                e.printStackTrace();
-			            }
+					    updateDirectives(playerHandStack);
 			        }
-					NetHelper.sendTurretInventoryMessageToPlayersInRange(world, this, stack, slot);
+					NetHelper.sendTurretInventoryMessageToPlayersInRange(world, this, insertionRemainder, slot);
 					break;
 				}
 			}
@@ -232,7 +235,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 				entityDropItem(stack, 0.0F);
 			}
 		}
-		updateDirectives(ArmsAssistantDirectives.defaultDirectives(this));
+		updateDirectives(ItemStack.EMPTY);
 	}
 
 	private void replaceWeapon(EnumHand hand, ItemStack replacement)
@@ -247,16 +250,27 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 		}
 	}
 
-	private void updateDirectives(ArmsAssistantDirectives newDirectives)
+	private void updateDirectives(ItemStack directivesBook)
 	{
+	    if (world.isRemote)
+	        return;
+	    this.directivesBook = directivesBook;
 	    this.directives.revertAI();
+	    ArmsAssistantDirectives newDirectives = directivesBook.isEmpty()
+	    ? ArmsAssistantDirectives.defaultDirectives(this)
+	    : ArmsAssistantDirectives.from(this, directivesBook, error ->
+        {
+            if (!world.isRemote && getOwner() != null)
+                getOwner().sendMessage(error);
+        });
 	    newDirectives.applyAI();
 	    this.directives = newDirectives;
+	    getDataManager().set(HAS_CUSTOM_DIRECTIVES, directives.areCustom());
 	}
 
 	public boolean hasCustomDirectives()
 	{
-	    return directives.areCustom();
+	    return getDataManager().get(HAS_CUSTOM_DIRECTIVES);
 	}
 
 	@Override
@@ -454,6 +468,16 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 		super.readEntityFromNBT(compound);
 		if (compound.hasKey(TAG_OWNER)) ownerUUID = NBTUtil.getUUIDFromTag(compound.getCompoundTag(TAG_OWNER));
 		CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.readNBT(inventory, null, compound.getTag(TAG_INV));
+		//Find directives book
+		for (int s = 0; s < inventory.getSlots(); s++)
+		{
+		    ItemStack stack = inventory.getStackInSlot(s);
+		    if (stack.getItem() == Items.WRITTEN_BOOK || stack.getItem() == Items.WRITABLE_BOOK)
+		    {
+		        updateDirectives(stack);
+		        break;
+		    }
+		}
 		NBTTagList upgradesTag = compound.getTagList(TAG_UPGRADES, NBT.TAG_STRING);
 		for (int t = 0; t < upgradesTag.tagCount(); t++)
 		{
