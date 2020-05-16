@@ -1,0 +1,53 @@
+{
+    "pools":
+    [
+        {
+            "name": "iron_ingot",
+            "rolls": 1,
+            "entries": 
+            [
+                {
+                    "type": "item",
+                    "name": "minecraft:iron_ingot"
+                },
+                {"type": "empty", "weight": 1}
+            ]
+        },
+        {
+            "name": "sticky_piston",
+            "rolls": 1,
+            "entries": 
+            [
+                {
+                    "type": "item",
+                    "name": "minecraft:sticky_piston",
+                    "functions":
+                    [
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {"min": 1, "max": 2}
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "iron_bars",
+            "rolls": 1,
+            "entries": 
+            [
+                {
+                    "type": "item",
+                    "name": "minecraft:iron_bars",
+                    "functions":
+                    [
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {"min": 1, "max": 2}
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

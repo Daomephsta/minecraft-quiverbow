@@ -1,0 +1,41 @@
+{
+    "pools":
+    [
+        {
+            "name": "emerald",
+            "rolls": 1,
+            "entries": 
+            [
+                {
+                    "type": "item",
+                    "name": "minecraft:emerald",
+                    "functions":
+                    [
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {"min": 5, "max": 9}
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "iron_ingot",
+            "rolls": 1,
+            "entries": 
+            [
+                {
+                    "type": "item",
+                    "name": "minecraft:iron_ingot",
+                    "functions":
+                    [
+                        {
+                            "function": "minecraft:set_count",
+                            "count": {"min": 5, "max": 9}
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

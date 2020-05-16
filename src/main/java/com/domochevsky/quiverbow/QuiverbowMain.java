@@ -9,6 +9,7 @@ import com.domochevsky.quiverbow.armsassistant.EntityArmsAssistant;
 import com.domochevsky.quiverbow.blocks.FenLight;
 import com.domochevsky.quiverbow.config.QuiverbowConfig;
 import com.domochevsky.quiverbow.items.ItemRegistry;
+import com.domochevsky.quiverbow.loot.LootHandler;
 import com.domochevsky.quiverbow.miscitems.IncompleteEnderRailAccelerator;
 import com.domochevsky.quiverbow.miscitems.PackedUpAA;
 import com.domochevsky.quiverbow.miscitems.QuiverBowItem;
@@ -34,10 +35,14 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.*;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -110,6 +115,7 @@ public class QuiverbowMain
 				EntityArmsAssistant.class, "turret", 0, this, 80, 1, true);
 		}
 		proxy.preInit();
+		LootHandler.initialise();
 
 		Listener listener = new Listener();
 

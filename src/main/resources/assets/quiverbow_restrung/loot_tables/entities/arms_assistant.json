@@ -1,0 +1,142 @@
+{
+    "pools": 
+    [
+        {
+            "name": "base",
+            "rolls": 1,
+            "entries": 
+            [
+                {
+                    "type": "loot_table",
+                    "name": "quiverbow_restrung:entities/arms_assistant/base"
+                }
+            ]
+        },
+        {
+            "name": "upgrade_armour",
+            "rolls": 1,
+            "entries": 
+            [
+                {
+                    "type": "loot_table",
+                    "name": "quiverbow_restrung:entities/arms_assistant/upgrade_armour"
+                }
+            ],
+            "conditions": 
+            [
+                {
+                    "condition": "quiverbow_restrung:arms_assistant_upgrade",
+                    "upgrade": "quiverbow_restrung:armour"
+                }
+            ]
+        },
+        {
+            "name": "upgrade_extra_weapon",
+            "rolls": 1,
+            "entries": 
+            [
+                {
+                    "type": "loot_table",
+                    "name": "quiverbow_restrung:entities/arms_assistant/upgrade_extra_weapon"
+                }
+            ],
+            "conditions": 
+            [
+                {
+                    "condition": "quiverbow_restrung:arms_assistant_upgrade",
+                    "upgrade": "quiverbow_restrung:extra_weapon"
+                }
+            ]
+        },
+        {
+            "name": "upgrade_mobility",
+            "rolls": 1,
+            "entries": 
+            [
+                {
+                    "type": "loot_table",
+                    "name": "quiverbow_restrung:entities/arms_assistant/upgrade_mobility"
+                }
+            ],
+            "conditions": 
+            [
+                {
+                    "condition": "quiverbow_restrung:arms_assistant_upgrade",
+                    "upgrade": "quiverbow_restrung:mobility"
+                }
+            ]
+        },
+        {
+            "name": "upgrade_storage",
+            "rolls": 1,
+            "entries": 
+            [
+                {
+                    "type": "loot_table",
+                    "name": "quiverbow_restrung:entities/arms_assistant/upgrade_storage"
+                }
+            ],
+            "conditions": 
+            [
+                {
+                    "condition": "quiverbow_restrung:arms_assistant_upgrade",
+                    "upgrade": "quiverbow_restrung:storage"
+                }
+            ]
+        },
+        {
+            "name": "upgrade_communications",
+            "rolls": 1,
+            "entries": 
+            [
+                {
+                    "type": "loot_table",
+                    "name": "quiverbow_restrung:entities/arms_assistant/upgrade_communications"
+                }
+            ],
+            "conditions": 
+            [
+                {
+                    "condition": "quiverbow_restrung:arms_assistant_upgrade",
+                    "upgrade": "quiverbow_restrung:communications"
+                }
+            ]
+        },
+        {
+            "name": "upgrade_heavy_plating",
+            "rolls": 1,
+            "entries": 
+            [
+                {
+                    "type": "loot_table",
+                    "name": "quiverbow_restrung:entities/arms_assistant/upgrade_heavy_plating"
+                }
+            ],
+            "conditions": 
+            [
+                {
+                    "condition": "quiverbow_restrung:arms_assistant_upgrade",
+                    "upgrade": "quiverbow_restrung:heavy_plating"
+                }
+            ]
+        },
+        {
+            "name": "upgrade_riding",
+            "rolls": 1,
+            "entries": 
+            [
+                {
+                    "type": "loot_table",
+                    "name": "quiverbow_restrung:entities/arms_assistant/upgrade_riding"
+                }
+            ],
+            "conditions": 
+            [
+                {
+                    "condition": "quiverbow_restrung:arms_assistant_upgrade",
+                    "upgrade": "quiverbow_restrung:riding"
+                }
+            ]
+        }
+    ]
+}

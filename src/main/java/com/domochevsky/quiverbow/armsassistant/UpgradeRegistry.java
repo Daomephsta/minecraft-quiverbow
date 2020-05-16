@@ -23,15 +23,11 @@ public class UpgradeRegistry
 	private static final Object2IntMap<IArmsAssistantUpgrade> INSTANCE_INT_ID_MAP = new Object2IntOpenHashMap<>();
 	private static int nextID = 0;
 
-	public static final IArmsAssistantUpgrade EXTRA_WEAPON = register(
-			new ResourceLocation(QuiverbowMain.MODID, "extra_weapon"), new BasicUpgrade());
-	public static final IArmsAssistantUpgrade RIDING = register(new ResourceLocation(QuiverbowMain.MODID, "riding"),
-			new BasicUpgrade());
-	public static final IArmsAssistantUpgrade COMMUNICATIONS = register(
-			new ResourceLocation(QuiverbowMain.MODID, "communications"), new BasicUpgrade());
-	public static final IArmsAssistantUpgrade STORAGE = register(
-		new ResourceLocation(QuiverbowMain.MODID, "storage"), new BasicUpgrade());
-	public static final IArmsAssistantUpgrade MOBILITY = register(new ResourceLocation(QuiverbowMain.MODID, "mobility"), new BasicUpgrade()
+	public static final IArmsAssistantUpgrade EXTRA_WEAPON = register(new BasicUpgrade(new ResourceLocation(QuiverbowMain.MODID, "extra_weapon")));
+	public static final IArmsAssistantUpgrade RIDING = register(new BasicUpgrade(new ResourceLocation(QuiverbowMain.MODID, "riding")));
+	public static final IArmsAssistantUpgrade COMMUNICATIONS = register(new BasicUpgrade(new ResourceLocation(QuiverbowMain.MODID, "communications")));
+	public static final IArmsAssistantUpgrade STORAGE = register(new BasicUpgrade(new ResourceLocation(QuiverbowMain.MODID, "storage")));
+	public static final IArmsAssistantUpgrade MOBILITY = register(new BasicUpgrade(new ResourceLocation(QuiverbowMain.MODID, "mobility"))
 	    {
 	        @Override
 	        public void submitAttributeModifiers(BiConsumer<String, AttributeModifier> out)
@@ -40,7 +36,7 @@ public class UpgradeRegistry
 	                AttributeHelper.createModifier("Mobility upgrade", 0.5D, AttributeModifierOperation.ADDITIVE));
 	        }
 	    });
-	public static final IArmsAssistantUpgrade ARMOUR = register(new ResourceLocation(QuiverbowMain.MODID, "armour"), new BasicUpgrade()
+	public static final IArmsAssistantUpgrade ARMOUR = register(new BasicUpgrade(new ResourceLocation(QuiverbowMain.MODID, "armour"))
 	    {
 	        @Override
             public void submitAttributeModifiers(BiConsumer<String,AttributeModifier> out)
@@ -49,7 +45,7 @@ public class UpgradeRegistry
 	                AttributeHelper.createModifier("Health upgrade", 20.0D, AttributeModifierOperation.ADDITIVE));
 	        };
 	    });
-	public static final IArmsAssistantUpgrade HEAVY_PLATING = register(new ResourceLocation(QuiverbowMain.MODID, "heavy_plating"), new BasicUpgrade()
+	public static final IArmsAssistantUpgrade HEAVY_PLATING = register(new BasicUpgrade(new ResourceLocation(QuiverbowMain.MODID, "heavy_plating"))
         {
             @Override
             public void submitAttributeModifiers(BiConsumer<String,AttributeModifier> out)
@@ -61,9 +57,9 @@ public class UpgradeRegistry
             };
         });
 
-	public static IArmsAssistantUpgrade register(ResourceLocation id, IArmsAssistantUpgrade upgradeInstance)
+	public static IArmsAssistantUpgrade register(IArmsAssistantUpgrade upgradeInstance)
 	{
-		ID_INSTANCE_MAP.put(id, upgradeInstance);
+		ID_INSTANCE_MAP.put(upgradeInstance.getRegistryId(), upgradeInstance);
 		INT_ID_INSTANCE_MAP.put(nextID, upgradeInstance);
 		INSTANCE_INT_ID_MAP.put(upgradeInstance, nextID++);
 		return upgradeInstance;
@@ -87,5 +83,10 @@ public class UpgradeRegistry
 	public static int getUpgradeIntegerID(IArmsAssistantUpgrade upgrade)
 	{
 		return INSTANCE_INT_ID_MAP.get(upgrade);
+	}
+
+	public static Iterable<IArmsAssistantUpgrade> getUpgrades()
+	{
+	    return ID_INSTANCE_MAP.values();
 	}
 }

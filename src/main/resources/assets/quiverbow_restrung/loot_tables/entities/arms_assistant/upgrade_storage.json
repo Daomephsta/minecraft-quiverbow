@@ -1,0 +1,51 @@
+{
+    "pools":
+    [
+        {
+            "name": "chest",
+            "rolls": 1,
+            "entries": 
+            [
+                {
+                    "type": "item",
+                    "name": "minecraft:chest"
+                },
+                {"type": "empty", "weight": 1}
+            ]
+        },
+        {
+            "name": "sticky_piston",
+            "rolls": 1,
+            "entries": 
+            [
+                {
+                    "type": "item",
+                    "name": "minecraft:sticky_piston"
+                },
+                {"type": "empty", "weight": 1}
+            ]
+        },
+        {
+            "name": "obsidian",
+            "rolls": 1,
+            "entries": 
+            [
+                {
+                    "type": "item",
+                    "name": "minecraft:obsidian"
+                }
+            ]
+        },
+        {
+            "name": "slime_ball",
+            "rolls": 1,
+            "entries": 
+            [
+                {
+                    "type": "item",
+                    "name": "minecraft:slime_ball"
+                }
+            ]
+        }
+    ]
+}

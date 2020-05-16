@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.UUID;
 
+import com.domochevsky.quiverbow.QuiverbowMain;
+import com.domochevsky.quiverbow.loot.LootHandler;
 import com.domochevsky.quiverbow.miscitems.PackedUpAA;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
@@ -42,6 +44,7 @@ import net.minecraftforge.items.ItemStackHandler;
 
 public class EntityArmsAssistant extends EntityCreature implements IEntityAdditionalSpawnData, IEntityOwnable, IRangedAttackMob
 {
+    public static final ResourceLocation LOOT_TABLE_ID = new ResourceLocation(QuiverbowMain.MODID, "entities/arms_assistant");
 	private UUID ownerUUID;
 	private IItemHandlerModifiable inventory = new ItemStackHandler(4);
 	private Collection<IArmsAssistantUpgrade> upgrades = new HashSet<>();
@@ -284,10 +287,14 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 					entityDropItem(stack, 0.0F);
 				}
 			}
-			//TODO Drop parts
-
 			directives.onDeath(source);
 		}
+	}
+
+	@Override
+	protected ResourceLocation getLootTable()
+	{
+	    return LootHandler.ARMS_ASSISTANT_TABLE;
 	}
 
 	@Override
