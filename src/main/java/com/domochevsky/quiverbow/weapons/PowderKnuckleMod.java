@@ -42,9 +42,7 @@ public class PowderKnuckleMod extends PowderKnuckle
 				(byte) 4); // smoke
 
 		// Dmg
-		world.createExplosion(player, pos.getX(), pos.getY(), pos.getZ(), getProperties().getFloat(CommonProperties.PROP_EXPLOSION_SIZE), true); // 4.0F
-		// is
-		// TNT
+		world.createExplosion(player, pos.getX(), pos.getY(), pos.getZ(), getProperties().getFloat(CommonProperties.PROP_EXPLOSION_SIZE), true);
 
 		// Mining
 		for (int xAxis = -1; xAxis <= 1; xAxis++) // Along the x axis

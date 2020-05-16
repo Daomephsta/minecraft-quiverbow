@@ -18,17 +18,8 @@ public class Potatosser extends WeaponBase
 		super("potatosser", 14);
 		setFiringBehaviour(new SingleShotFiringBehaviour<Potatosser>(this, (world, weaponStack, entity, data, properties) ->
 		{
-			// Random Damage
-			int dmg_range = properties.getDamageMax() - properties.getDamageMin(); // If max dmg is 20 and
-														// min
-			// is 10, then the range will
-			// be 10
-			int dmg = world.rand.nextInt(dmg_range + 1); // Range will be
-															// between 0
-			// and 10
-			dmg += properties.getDamageMin(); // Adding the min dmg of 10 back on top, giving
-								// us
-			// the proper damage range (10-20)
+			int dmg_range = properties.getDamageMax() - properties.getDamageMin();
+			int dmg = properties.getDamageMin() + world.rand.nextInt(dmg_range + 1);
 
 			// Firing
 			PotatoShot shot = new PotatoShot(world, entity, properties.getProjectileSpeed());

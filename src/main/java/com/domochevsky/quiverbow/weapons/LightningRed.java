@@ -36,8 +36,7 @@ public class LightningRed extends MagazineFedWeapon
 				{
 					// Damage
 					target.entityHit.attackEntityFrom(DamageSource.MAGIC, 9.0F);
-					target.entityHit.hurtResistantTime = 0; // No immunity
-															// frames
+					target.entityHit.hurtResistantTime = 0; // No immunity frames
 
 					// Bonus
 					/* EntityLightningBolt bolt = new EntityLightningBolt(world,
@@ -61,19 +60,16 @@ public class LightningRed extends MagazineFedWeapon
 					breakThis = false;
 				}
 
-				if (breakThis) // Sorted out all blocks we don't want to break.
-								// Check defaults
+				if (breakThis) // Sorted out all blocks we don't want to break. Check defaults
 				{
-					Helper.tryBlockBreak(world, shooter, pos, 3); // Very
-					// Strong
+					Helper.tryBlockBreak(world, shooter, pos, 3); // Very Strong
 				}
 			}
 		}, 0xFFFFFF, 8.0F).setPierceCount(5));
 	}
 
 	@Override
-	public boolean doSingleFire(World world, EntityLivingBase entity, ItemStack stack, EnumHand hand) // Server
-	// side
+	public boolean doSingleFire(World world, EntityLivingBase entity, ItemStack stack, EnumHand hand)
 	{
 		boolean superResult = super.doSingleFire(world, entity, stack, hand);
 		if (this.getCooldown(stack) > 0)
@@ -91,11 +87,8 @@ public class LightningRed extends MagazineFedWeapon
 		{
 			// Firing
 			RedLight shot = new RedLight(world, entity, getProjectileSpeed());
-			// The moving end point
 			shot.damage = Helper.randomIntInRange(world.rand, getProperties().getDamageMin(), getProperties().getDamageMax());
-			shot.targetsHitMax = getProperties().getInt(PROP_PIERCING); // The maximum number of
-			// entities to punch through
-			// before ending
+			shot.targetsHitMax = getProperties().getInt(PROP_PIERCING);
 			shot.ignoreFrustumCheck = true;
 
 			world.spawnEntity(shot); // Firing!
@@ -110,9 +103,7 @@ public class LightningRed extends MagazineFedWeapon
 	}
 
 	@Override
-	protected void doCooldownSFX(World world, Entity entity) // Server side.
-																// Only done
-	// when held
+	protected void doCooldownSFX(World world, Entity entity)
 	{
 		Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, 0.7F, 0.2F);
 	}

@@ -68,30 +68,18 @@ public class ERA extends WeaponBase
 
 		if (ERA.isAccelerating(stack))
 		{
-			stack.getTagCompound().setInteger("acceleration", stack.getTagCompound().getInteger("acceleration") - 1); // Ticking
-			// down
-			stack.getTagCompound().setFloat("accSFX", stack.getTagCompound().getFloat("accSFX") + 0.02f); // And
-			// pitching
-			// up
+			stack.getTagCompound().setInteger("acceleration", stack.getTagCompound().getInteger("acceleration") - 1); // Ticking down
+			stack.getTagCompound().setFloat("accSFX", stack.getTagCompound().getFloat("accSFX") + 0.02f); // And pitching up
 
 			Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ENDERMEN_TELEPORT,
 					stack.getTagCompound().getFloat("accSFX"), stack.getTagCompound().getFloat("accSFX"));
-			// mob.endermen.portal
-			// mob.enderdragon.wings
 
-			if (stack.getTagCompound().getInteger("acceleration") <= 0) // Ready
-			// to
-			// fire
+			if (stack.getTagCompound().getInteger("acceleration") <= 0) // Ready to fire
 			{
-				Helper.knockUserBack(entity, this.getKickback()); // Kickback
-
-				// Upgrade
+				Helper.knockUserBack(entity, this.getKickback()); // Kickback Upgrade
 				if (stack.hasTagCompound() && stack.getTagCompound().getBoolean(REINFORCED_MUZZLE))
 				{
-					entity.attackEntityFrom(DamageSource.causeThrownDamage(entity, entity), 15.0f); // Hurtin'
-					// (but
-					// less
-					// so)
+					entity.attackEntityFrom(DamageSource.causeThrownDamage(entity, entity), 15.0f); // Hurtin' (but less so)
 				}
 				else
 				{
@@ -100,15 +88,13 @@ public class ERA extends WeaponBase
 
 				boolean damageTerrain = world.getGameRules().getBoolean("mobGriefing");
 
-				if (!holdingItem) // Isn't holding the weapon, so this is gonna
-				// go off in their pockets
+				if (!holdingItem) // Isn't holding the weapon, so this is gonna go off in their pockets
 				{
 					entity.hurtResistantTime = 0; // No rest for the wicked
 					world.createExplosion(entity, entity.posX, entity.posY, entity.posZ, getProperties().getFloat(CommonProperties.PROP_EXPLOSION_SIZE),
 							getProperties().getBoolean(CommonProperties.PROP_DAMAGE_TERRAIN)); // Big baddaboom
 
-					// Set weapon to "burnt out" (if the user's a player and not
-					// in creative mode)
+					// Set weapon to "burnt out" (if the user's a player and not in creative mode)
 					if (entity instanceof EntityPlayer)
 					{
 						EntityPlayer player = (EntityPlayer) entity;
@@ -128,8 +114,7 @@ public class ERA extends WeaponBase
 				if (entity instanceof EntityPlayer)
 				{
 					damageTerrain = getProperties().getBoolean(CommonProperties.PROP_DAMAGE_TERRAIN);
-				} // Players don't care about mob griefing rules, but play by
-					// their own rules
+				} // Players don't care about mob griefing rules, but play by their own rules
 
 				if (stack.hasTagCompound() && stack.getTagCompound().getBoolean(REINFORCED_MUZZLE))
 				{
@@ -149,17 +134,8 @@ public class ERA extends WeaponBase
 					// Spawn projectile and go
 					EnderAccelerator shot = new EnderAccelerator(world, entity, 5.0f);
 
-					// Random Damage
-					int dmg_range = getProperties().getDamageMin() - getProperties().getDamageMin(); // If max dmg is 20 and min
-														// is
-					// 10, then the range will be
-					// 10
-					int dmg = world.rand.nextInt(dmg_range + 1); // Range will
-																	// be
-					// between 0 and 10
-					dmg += getProperties().getDamageMin(); // Adding the min dmg of 10 back on top,
-									// giving
-					// us the proper damage range (10-20)
+					int dmg_range = getProperties().getDamageMax() - getProperties().getDamageMin();
+					int dmg = getProperties().getDamageMin() + world.rand.nextInt(dmg_range + 1);
 
 					shot.damage = dmg;
 					shot.ticksInAirMax = 120; // 6 sec?
@@ -169,8 +145,7 @@ public class ERA extends WeaponBase
 					world.spawnEntity(shot);
 				}
 
-				// Set weapon to "burnt out" (if the user's a player and not in
-				// creative mode)
+				// Set weapon to "burnt out" (if the user's a player and not in creative mode)
 				if (entity instanceof EntityPlayer)
 				{
 					EntityPlayer player = (EntityPlayer) entity;
@@ -218,8 +193,7 @@ public class ERA extends WeaponBase
 		if (stack.getTagCompound().getInteger("acceleration") <= 0)
 		{
 			return false;
-		} // If this is higher than 0 then it's currently counting down to the
-			// moment it fires
+		} // If this is higher than 0 then it's currently counting down to the moment it fires
 
 		return true; // Seems to check out
 	}

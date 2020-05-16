@@ -50,14 +50,8 @@ public class DragonBoxQuad extends WeaponBase
 	{
 		SmallRocket rocket = new SmallRocket(world, entity, getProjectileSpeed(), spreadHor, spreadVert);
 
-		// Random Damage
-		int dmg_range = this.getProperties().getDamageMin() - getProperties().getDamageMin(); // If max dmg is 20 and min
-		// is 10, then the range will
-		// be 10
-		int dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
-		// and 10
-		dmg += getProperties().getDamageMin(); // Adding the min dmg of 10 back on top, giving us
-		// the proper damage range (10-20)
+		int dmg_range = this.getProperties().getDamageMin() - getProperties().getDamageMin();
+		int dmg = getProperties().getDamageMin() + world.rand.nextInt(dmg_range + 1);
 
 		// Properties
 		rocket.damage = dmg;

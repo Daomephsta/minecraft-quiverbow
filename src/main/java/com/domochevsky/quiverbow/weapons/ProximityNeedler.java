@@ -23,17 +23,8 @@ public class ProximityNeedler extends MagazineFedWeapon
 		setFiringBehaviour(
 				new SingleShotFiringBehaviour<ProximityNeedler>(this, 8, (world, weaponStack, entity, data, properties) ->
 				{
-					int dmg_range = properties.getDamageMax() - properties.getDamageMin(); // If max dmg is
-					// 20 and min is
-					// 10, then the
-					// range will be
-					// 10
-					int dmg = world.rand.nextInt(dmg_range + 1); // Range will be
-					// between 0 and
-					// 10
-					dmg += properties.getDamageMin(); // Adding the min dmg of 10 back on top,
-					// giving us the proper damage range
-					// (10-20)
+					int dmg_range = properties.getDamageMax() - properties.getDamageMin();
+					int dmg = properties.getDamageMin() + world.rand.nextInt(dmg_range + 1);
 
 					ProxyThorn shot = new ProxyThorn(world, entity, properties.getProjectileSpeed());
 					shot.damage = dmg;

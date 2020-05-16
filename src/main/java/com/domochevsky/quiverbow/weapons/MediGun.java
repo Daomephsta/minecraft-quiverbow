@@ -28,8 +28,7 @@ public class MediGun extends WeaponBase
 			return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 		} // Is empty
 
-		this.doSingleFire(world, player, stack, hand); // Handing it over to the
-		// neutral firing function
+		this.doSingleFire(world, player, stack, hand);
 		return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
 	}
 

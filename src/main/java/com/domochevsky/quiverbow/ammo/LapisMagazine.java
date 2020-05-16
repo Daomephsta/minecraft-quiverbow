@@ -47,7 +47,6 @@ public class LapisMagazine extends AmmoMagazine
 		}
 		if (hasComponentItems(player, 1))
 		{
-			// this.consumeItemStack(player.inventory, this.lapisStack); //
 			// We're just grabbing what we need from the inventory
 
 			int dmg = stack.getItemDamage() - 25;

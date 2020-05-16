@@ -5,14 +5,13 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class KickbackMessage implements IMessage
 {
+    // this constructor is required otherwise you'll get errors (used somewhere in fml through reflection)
 	public KickbackMessage()
-	{} // this constructor is required otherwise you'll get errors (used
-		// somewhere in fml through reflection)
+	{}
 
 	int strength;
 
-	// Sending a message to the client to display particles at a specific
-	// entity's position
+	// Sending a message to the client to display particles at a specific entity's position
 	public KickbackMessage(int strength)
 	{
 		this.strength = strength;

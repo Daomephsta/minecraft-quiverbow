@@ -38,7 +38,7 @@ public class Helper
 
 	public static void registerAAUpgradeRecipe(ItemStack result, ItemStack[] input, String upgradeType)
 	{
-		
+
 	}
 
 	public static Item getAmmoByClass(Class<? extends AmmoBase> targetClass)
@@ -87,21 +87,20 @@ public class Helper
 		return ItemStack.EMPTY; // No idea what you want
 	}
 
-	// Kicks the passed in entity backwards, relative to the passed in strength
-	// Needs to be done both on client and server, because the server doesn't
-	// inform clients about small movement changes
-	// This is the server-side part
+	/** Kicks the passed in entity backwards, relative to the passed in strength
+	  * Needs to be done both on client and server, because the server doesn't
+	  * inform clients about small movement changes
+	  * This is the server-side part **/
 	public static void knockUserBack(Entity user, int strength)
 	{
 		user.motionZ += -MathHelper.cos((user.rotationYaw) * (float) Math.PI / 180.0F) * (strength * 0.08F);
 		user.motionX += MathHelper.sin((user.rotationYaw) * (float) Math.PI / 180.0F) * (strength * 0.08F);
 
-		NetHelper.sendKickbackMessage(user, strength); // Informing the client
-		// about this
+		NetHelper.sendKickbackMessage(user, strength);
 	}
 
-	// Sets the projectile to be pickupable depending on player creative mode
-	// Used for throwable entities
+	/** Sets the projectile to be pickupable depending on player creative mode
+	*   Used for throwable entities **/
 	public static void setThrownPickup(EntityLivingBase entity, ProjectileBase shot)
 	{
 		if (entity instanceof EntityPlayer) // Is a player
@@ -154,8 +153,8 @@ public class Helper
 	}
 
 	// Time to make a mess!
-	// Checking if the block hit can be broken
-	// stronger weapons can break more block types
+	/** Checking if the block hit can be broken
+	*   stronger weapons can break more block types **/
 	public static boolean tryBlockBreak(World world, Entity entity, BlockPos pos, int strength)
 	{
 		if (!QuiverbowConfig.breakGlass)
@@ -182,7 +181,7 @@ public class Helper
 		{
 			return false;
 		} // Didn't hit a valid block? Do we continue? Stop?
-			// No breaking bedrock
+		// Unbreakable block
 		if (state.getBlockHardness(world, pos) == -1) return false;
 
 		boolean breakThis = false;
@@ -197,9 +196,8 @@ public class Helper
 
 		if (strength >= 1) // Medium stuff
 		{
-			if (state.getMaterial() == Material.GLASS || state.getMaterial() == Material.WEB || state == Blocks.TORCH
-					|| state == Blocks.FLOWER_POT) // Hit something made of
-			// glass. Breaking it!
+			if (state.getMaterial() == Material.GLASS || state.getMaterial() == Material.WEB
+			    || state == Blocks.TORCH || state == Blocks.FLOWER_POT)
 			{
 				breakThis = true;
 			}
@@ -212,8 +210,7 @@ public class Helper
 
 		if (strength >= 3) // Super strong stuff
 		{
-			breakThis = true; // Default breakage, then negating what doesn't
-			// work
+			breakThis = true; // Default breakage, then negating what doesn't work
 
 			if (state instanceof BlockLiquid || state.getMaterial() == Material.PORTAL || state == Blocks.MOB_SPAWNER
 					|| state == Blocks.BEDROCK || state == Blocks.OBSIDIAN)
@@ -233,8 +230,7 @@ public class Helper
 				{
 					ProjectileBase projectile = (ProjectileBase) entity;
 
-					// If you were shot by a player, are they allowed to break
-					// this block?
+					// If you were shot by a player, are they allowed to break this block?
 					Entity shooter = projectile.getShooter();
 
 					if (shooter instanceof EntityPlayerMP)
@@ -282,14 +278,7 @@ public class Helper
 		{
 			ItemStack stack = craftMatrix.getStackInSlot(slot);
 
-			if (!stack.isEmpty() && stack.getItem() instanceof WeaponBase) // Found
-			// it.
-			// Does
-			// it
-			// have
-			// a
-			// name
-			// tag?
+			if (!stack.isEmpty() && stack.getItem() instanceof WeaponBase) // Found it. Does it have a name tag?
 			{
 				if (stack.hasDisplayName() && !newItem.hasDisplayName())
 				{
@@ -304,10 +293,8 @@ public class Helper
 					if (!newItem.hasTagCompound())
 					{
 						newItem.setTagCompound(new NBTTagCompound());
-					} // Init
+					}
 					newItem.getTagCompound().setBoolean("hasEmeraldMuzzle", true); // Keeping
-					// the
-					// upgrade
 				}
 
 				return; // Either way, we're done here
@@ -321,8 +308,8 @@ public class Helper
 	public static boolean canEntityBeSeen(World world, Entity observer, Entity entity)
 	{
 		return world.rayTraceBlocks(
-				new Vec3d(observer.posX, observer.posY + (double) observer.getEyeHeight(), observer.posZ),
-				new Vec3d(entity.posX, entity.posY + (double) entity.getEyeHeight(), entity.posZ)) == null;
+				new Vec3d(observer.posX, observer.posY + observer.getEyeHeight(), observer.posZ),
+				new Vec3d(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ)) == null;
 	}
 
 	public static ItemStack createEmptyWeaponOrAmmoStack(Item item, int count)
@@ -346,22 +333,18 @@ public class Helper
 	public static RayTraceResult raytraceClosestObject(World world, @Nullable Entity exclude, Vec3d startVec, Vec3d endVec)
 	{
 		RayTraceResult result = world.rayTraceBlocks(startVec, endVec);
-		double blockHitDistance = 0.0D; // The distance to the block that was
-										// hit
+		double blockHitDistance = 0.0D; // The distance to the block that was hit
 		if (result != null) blockHitDistance = result.hitVec.distanceTo(startVec);
 
-		// Encloses the entire area where entities that could collide with this
-		// ray exist
+		// Encloses the entire area where entities that could collide with this ray exist
 		AxisAlignedBB entitySearchArea = new AxisAlignedBB(startVec.x, startVec.y, startVec.z,
 				endVec.x, endVec.y, endVec.z);
 		Entity hitEntity = null; // The closest entity that was hit
-		double entityHitDistance = 0.0D; // The squared distance to the closest
-											// entity that was hit
+		double entityHitDistance = 0.0D; // The squared distance to the closest entity that was hit
 		for (Entity entity : world.getEntitiesInAABBexcluding(exclude, entitySearchArea,
 				EntitySelectors.NOT_SPECTATING))
 		{
-			// The collision AABB of the entity expanded by the collision border
-			// size
+			// The collision AABB of the entity expanded by the collision border size
 			AxisAlignedBB collisionBB = entity.getEntityBoundingBox().grow(entity.getCollisionBorderSize());
 			RayTraceResult intercept = collisionBB.calculateIntercept(startVec, endVec);
 			if (intercept != null)
@@ -387,21 +370,19 @@ public class Helper
 		RayTraceResult blockRaytrace = world.rayTraceBlocks(startVec, endVec);
 		if (blockRaytrace != null) results.add(blockRaytrace);
 
-		// Encloses the entire area where entities that could collide with this
-		// ray exist
+		// Encloses the entire area where entities that could collide with this ray exist
 		AxisAlignedBB entitySearchArea = new AxisAlignedBB(startVec.x, startVec.y, startVec.z,
 				endVec.x, endVec.y, endVec.z);
 		for (Entity entity : world.getEntitiesInAABBexcluding(exclude, entitySearchArea,
 				EntitySelectors.NOT_SPECTATING))
 		{
-			// The collision AABB of the entity expanded by the collision border
-			// size
+			// The collision AABB of the entity expanded by the collision border size
 			AxisAlignedBB collisionBB = entity.getEntityBoundingBox().grow(entity.getCollisionBorderSize());
 			RayTraceResult intercept = collisionBB.calculateIntercept(startVec, endVec);
 			if (intercept != null) results.add(new RayTraceResult(entity, intercept.hitVec));
 		}
 	}
-	
+
 	public static int randomIntInRange(Random random, int min, int max)
 	{
 		return random.nextInt(max - min + 1) + min;

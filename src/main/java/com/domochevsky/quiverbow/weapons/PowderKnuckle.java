@@ -64,8 +64,7 @@ public class PowderKnuckle extends WeaponBase
 			entity.attackEntityFrom(DamageSource.causePlayerDamage(player), getProperties().getDamageMin());
 			entity.hurtResistantTime = 0; // No invincibility frames
 
-			return false; // We're not loaded, getting out of here with minimal
-			// damage
+			return false; // We're not loaded, getting out of here with minimal damage
 		}
 
 		this.consumeAmmo(stack, entity, 1);
@@ -75,17 +74,12 @@ public class PowderKnuckle extends WeaponBase
 				(byte) 4); // smoke
 
 		// Dmg
-		entity.setFire(2); // Setting fire to them for 2 sec, so pigs can drop
-		// cooked porkchops
+		entity.setFire(2); // Setting fire to them for 2 sec, so pigs can drop cooked porkchops
 		entity.world.createExplosion(player, entity.posX, entity.posY + 0.5D, entity.posZ,
 				getProperties().getFloat(CommonProperties.PROP_EXPLOSION_SIZE), getProperties().getBoolean(CommonProperties.PROP_DAMAGE_TERRAIN)); // 4.0F is TNT
 
-		entity.attackEntityFrom(DamageSource.causePlayerDamage(player), this.getProperties().getDamageMin()); // Dealing
-		// damage
-		// directly.
-		// Screw
-		// weapon
-		// attributes
+		// Dealing damage directly. Screw weapon attributes
+		entity.attackEntityFrom(DamageSource.causePlayerDamage(player), this.getProperties().getDamageMin());
 
 		return false;
 	}

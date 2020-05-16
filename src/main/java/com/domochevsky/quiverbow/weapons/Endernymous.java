@@ -21,17 +21,8 @@ public class Endernymous extends MagazineFedWeapon
 		super("hidden_ender_pistol", ammo, 8);
 		setFiringBehaviour(new SingleShotFiringBehaviour<Endernymous>(this, (world, weaponStack, entity, data, properties) ->
 		{
-			// Random Damage
-			int dmg_range = properties.getDamageMin() - properties.getDamageMin(); // If max dmg is 20 and
-														// min
-			// is 10, then the range will
-			// be 10
-			int dmg = world.rand.nextInt(dmg_range + 1); // Range will be
-															// between 1
-			// and 10 (inclusive both)
-			dmg += properties.getDamageMin(); // Adding the min dmg of 10 back on top, giving
-								// us
-			// the proper damage range (10-20)
+			int dmg_range = properties.getDamageMax() - properties.getDamageMin();
+			int dmg = properties.getDamageMin() + world.rand.nextInt(dmg_range + 1);
 
 			EnderAno shot = new EnderAno(world, entity, properties.getProjectileSpeed());
 			shot.damage = dmg;

@@ -19,22 +19,19 @@ public class Frames
 	{
 		if (getTime() - lastFPS > tickCounter)
 		{
-			tickCounter += 33; // 30 ms more on the stack
+			tickCounter += 33;
 
 			return true;
 		}
 		else
 		{
-			if (getTime() - lastFPS > 1000) // A second has passed. Time to
-			// update
+			if (getTime() - lastFPS > 1000) // A second has passed. Time to update
 			{
-				tickCounter = 0; // Reset the time counter, to determine when to
-				// do a game tick
+				tickCounter = 0; // Reset the time counter, to determine when to do a game tick
 
 				lastFPS += 1000; // Add one second
 			}
-			// else, current time counter is less than 1000, meaning a second
-			// has not passed yet. Not updating
+			// else, current time counter is less than 1000, meaning a second has not passed yet. Not updating
 
 			return false; // Not ready yet
 		}

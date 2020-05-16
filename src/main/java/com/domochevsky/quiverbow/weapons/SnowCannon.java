@@ -25,16 +25,8 @@ public class SnowCannon extends WeaponBase
 			SnowShot snow = new SnowShot(world, entity, properties.getProjectileSpeed(), spreadHor, spreadVert,
 					new PotionEffect(MobEffects.SLOWNESS, properties.getInt(CommonProperties.PROP_SLOWNESS_DUR), properties.getInt(CommonProperties.PROP_SLOWNESS_STRENGTH)));
 
-			int dmg_range = properties.getDamageMax() - properties.getDamageMin(); // If max dmg is
-			// 20 and min is
-			// 10, then the
-			// range will be
-			// 10
-			int dmg = world.rand.nextInt(dmg_range + 1); // Range will be
-			// between 0 and
-			// 10
-			dmg += properties.getDamageMin(); // Adding the min dmg of 10 back on top, giving us the proper damage range (10-20)
-			// the proper damage range (10-20)
+			int dmg_range = properties.getDamageMax() - properties.getDamageMin();
+			int dmg = properties.getDamageMin() + world.rand.nextInt(dmg_range + 1);
 			snow.damage = dmg;
 
 			return snow;

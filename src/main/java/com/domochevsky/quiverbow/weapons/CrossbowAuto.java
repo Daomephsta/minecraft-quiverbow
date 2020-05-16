@@ -24,17 +24,8 @@ public class CrossbowAuto extends WeaponCrossbow
 		{
 			EntityArrow entityarrow = Helper.createArrow(world, entity);
 
-			// Random Damage
-			int dmg_range = properties.getDamageMin() - properties.getDamageMin(); // If max dmg is 20
-															// and min
-			// is 10, then the range will
-			// be 10
-			int dmg = world.rand.nextInt(dmg_range + 1); // Range will be
-															// between 0
-			// and 10
-			dmg += properties.getDamageMin(); // Adding the min dmg of 10 back on top,
-									// giving us
-			// the proper damage range (10-20)
+			int dmg_range = properties.getDamageMax() - properties.getDamageMin();
+			int dmg = properties.getDamageMin() + world.rand.nextInt(dmg_range + 1);
 
 			entityarrow.shoot(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, properties.getProjectileSpeed(), 0.5F);
 			entityarrow.setDamage(dmg);
@@ -74,8 +65,7 @@ public class CrossbowAuto extends WeaponCrossbow
 		if (player.isSneaking())
 		{
 			return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
-		} // Still sneaking, even though you have an arrow on the rail? Not
-			// having it
+		} // Still sneaking, even though you have an arrow on the rail? Not having it
 
 		firingBehaviour.fire(stack, world, player, hand);
 		return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
@@ -96,11 +86,9 @@ public class CrossbowAuto extends WeaponCrossbow
 		if (stack.getTagCompound() == null)
 		{
 			stack.setTagCompound(new NBTTagCompound());
-		} // Init
+		}
 
-		stack.getTagCompound().setBoolean("isChambered", toggle); // Done, we're
-		// good to go
-		// again
+		stack.getTagCompound().setBoolean("isChambered", toggle); // Done, we're good to go again
 
 		// SFX
 		Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.8F, 0.5F);

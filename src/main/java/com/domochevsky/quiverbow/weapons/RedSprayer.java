@@ -24,9 +24,7 @@ public class RedSprayer extends MagazineFedWeapon
 		setFiringBehaviour(new SalvoFiringBehaviour<RedSprayer>(this, 5, (world, waeponStack, entity, data, properties) ->
 		{
 			// Spread
-			float spreadHor = world.rand.nextFloat() * 20 - 10; // Spread
-																// between
-			// -10 and 10
+			float spreadHor = world.rand.nextFloat() * 20 - 10; // Spread between -10 and 10
 			float spreadVert = world.rand.nextFloat() * 20 - 10;
 
 			RedSpray shot = new RedSpray(entity.world, entity, properties.getProjectileSpeed(), spreadHor, spreadVert,

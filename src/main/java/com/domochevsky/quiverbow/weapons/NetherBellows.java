@@ -19,9 +19,7 @@ public class NetherBellows extends MagazineFedWeapon
 		super("nether_bellows", ammo, 200);
 		setFiringBehaviour(new SalvoFiringBehaviour<NetherBellows>(this, 5, (world, weaponStack, entity, data, properties) ->
 		{
-			float spreadHor = world.rand.nextFloat() * 20 - 10; // Spread
-																// between
-			// -10 and 10
+			float spreadHor = world.rand.nextFloat() * 20 - 10; // Spread between -10 and 10
 			float spreadVert = world.rand.nextFloat() * 20 - 10;
 
 			NetherFire shot = new NetherFire(world, entity, properties.getProjectileSpeed(), spreadHor, spreadVert);

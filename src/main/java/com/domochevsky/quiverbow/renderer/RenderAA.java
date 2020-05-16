@@ -15,15 +15,12 @@ import com.domochevsky.quiverbow.models.WeaponModel.BakedWeaponModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 
 public class RenderAA extends RenderLiving<EntityArmsAssistant>
 {
@@ -58,11 +55,11 @@ public class RenderAA extends RenderLiving<EntityArmsAssistant>
 		float rotPitchInterp = interpolateRotation(turret.prevRotationPitch, turret.rotationPitch, partialTicks);
 		float rotYawInterpHead = interpolateRotation(turret.prevRotationYawHead, turret.rotationYawHead, partialTicks);
 		float netYaw = -rotYawInterpHead;
-		
+
 		if (!itemstack.isEmpty())
 		{
 			GlStateManager.pushMatrix();
-			{	
+			{
 				//Yaw
 				GlStateManager.rotate(netYaw, 0.0F, 1.0F, 0.0F);
 				//Translate to rail rotation point
@@ -80,7 +77,7 @@ public class RenderAA extends RenderLiving<EntityArmsAssistant>
 			if (!itemstack.isEmpty())
 			{
 				GlStateManager.pushMatrix();
-				{	
+				{
 				    //Yaw
 				    GlStateManager.rotate(netYaw, 0.0F, 1.0F, 0.0F);
 	                //Translate to rail rotation point
@@ -95,12 +92,12 @@ public class RenderAA extends RenderLiving<EntityArmsAssistant>
 
 		this.renderStoredItems(turret);
 	}
-	
+
 	private void renderItemOnRail(EntityArmsAssistant turret, ItemStack stack, EnumHand rail)
-	{	
+	{
 		Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        
+
 		int color = Minecraft.getMinecraft().getItemColors().colorMultiplier(stack, 0);
 		float colorR = (color >> 16 & 255) / 255.0F;
 		float colorB = (color >> 8 & 255) / 255.0F;
@@ -110,7 +107,7 @@ public class RenderAA extends RenderLiving<EntityArmsAssistant>
 		handleTransform(model, rail);
 		Minecraft.getMinecraft().getRenderItem().renderItem(stack, model);
 	}
-	
+
 	private static final FloatBuffer multBuffer = BufferUtils.createFloatBuffer(16);
 	private void handleTransform(IBakedModel model, EnumHand rail)
 	{
@@ -123,9 +120,9 @@ public class RenderAA extends RenderLiving<EntityArmsAssistant>
 			GlStateManager.multMatrix(multBuffer);
 		}
 	}
-    
+
 	private void renderStoredItems(EntityArmsAssistant turret)
 	{
-		
+
 	}
 }

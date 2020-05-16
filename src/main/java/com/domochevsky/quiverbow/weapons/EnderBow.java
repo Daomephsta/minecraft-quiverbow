@@ -32,13 +32,13 @@ public class EnderBow extends WeaponBow implements IScopedWeapon
 		return WeaponProperties.builder()
 				.intProperty(CommonProperties.PROP_MAX_ZOOM, CommonProperties.COMMENT_MAX_ZOOM, 30).build();
 	}
-	
+
 	@Override
 	public int getMaxZoom()
 	{
 		return getProperties().getInt(CommonProperties.PROP_MAX_ZOOM);
 	}
-	
+
 	@Override
 	public boolean shouldZoom(World world, EntityPlayer player, ItemStack stack)
 	{
@@ -53,9 +53,7 @@ public class EnderBow extends WeaponBow implements IScopedWeapon
 		if (entityLiving instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer) entityLiving;
-			// Either creative mode or infinity enchantment is higher than 0.
-			// Not
-			// using arrows
+			// Either creative mode or TODO infinity enchantment is higher than 0. Not using arrows
 			boolean freeShot = player.capabilities.isCreativeMode;
 
 			ArrowLooseEvent event = new ArrowLooseEvent(player, stack, world, chargeTime, false);
@@ -70,10 +68,10 @@ public class EnderBow extends WeaponBow implements IScopedWeapon
 
 			if (freeShot || player.inventory.hasItemStack(new ItemStack(Items.ARROW)))
 			{
-				float f = (float) chargeTime / 20.0F;
+				float f = chargeTime / 20.0F;
 				f = (f * f + f * 2.0F) / 3.0F;
 
-				if ((double) f < 0.1D)
+				if (f < 0.1D)
 				{
 					return;
 				}

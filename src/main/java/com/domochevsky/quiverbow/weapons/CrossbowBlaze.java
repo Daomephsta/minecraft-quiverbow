@@ -19,22 +19,12 @@ public class CrossbowBlaze extends WeaponCrossbow
 		{
 			BlazeShot entityarrow = new BlazeShot(world, entity, properties.getProjectileSpeed());
 
-			// Random Damage
-			int dmg_range = properties.getDamageMin() - properties.getDamageMin(); // If max dmg is 20
-															// and min
-			// is 10, then the range will
-			// be 10
-			int dmg = world.rand.nextInt(dmg_range + 1);// Range will be between
-														// 0
-			// and 10
-			dmg += properties.getDamageMin(); // Adding the min dmg of 10 back on top,
-									// giving us
-			// the proper damage range (10-20)
+			int dmg_range = properties.getDamageMax() - properties.getDamageMin();
+			int dmg = world.rand.nextInt(dmg_range + 1);
+			dmg += properties.getDamageMin();
 
 			entityarrow.damage = dmg;
-			entityarrow.knockbackStrength = properties.getKnockback(); // Comes with an
-																// inbuild
-			// knockback II
+			entityarrow.knockbackStrength = properties.getKnockback();
 			entityarrow.fireDuration = properties.getInt(CommonProperties.PROP_FIRE_DUR_ENTITY);
 			entityarrow.ticksInGroundMax = 200; // 200 ticks for 10 sec
 

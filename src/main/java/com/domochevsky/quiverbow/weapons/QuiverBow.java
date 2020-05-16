@@ -22,15 +22,11 @@ public class QuiverBow extends WeaponBow
 		super("quiverbow", 256);
 	}
 
-	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft)
+	@Override
+    public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft)
 	{
-		int j = this.getMaxItemUseDuration(stack) - timeLeft; // Reduces the
-		// durability by
-		// the
-		// ItemInUseCount
-		// (probably 1 for
-		// anything that
-		// isn't a tool)
+	    // Reduces the durability by the ItemInUseCount (probably 1 for anything that isn't a tool)
+		int j = this.getMaxItemUseDuration(stack) - timeLeft;
 
 		if (entityLiving instanceof EntityPlayer)
 		{
@@ -80,11 +76,7 @@ public class QuiverBow extends WeaponBow
 			else
 			{
 				entityarrow.pickupStatus = EntityArrow.PickupStatus.ALLOWED;
-				stack.setItemDamage(this.getDamage(stack) + 1); // Reversed.
-				// MORE Damage
-				// for a shorter
-				// durability
-				// bar
+				stack.setItemDamage(this.getDamage(stack) + 1); // Reversed. MORE Damage for a shorter durability bar
 			}
 
 			world.spawnEntity(entityarrow);

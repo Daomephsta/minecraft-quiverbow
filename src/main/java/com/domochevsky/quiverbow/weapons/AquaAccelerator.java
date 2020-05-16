@@ -36,17 +36,12 @@ public class AquaAccelerator extends WeaponBase
 	{
 		ItemStack stack = player.getHeldItem(hand);
 
-		// Not doing this on client side
 		if (this.getDamage(stack) >= stack.getMaxDamage()) // Is empty
 		{
-			this.checkReloadFromWater(stack, world, player);// See if you can
-			// reload
+			this.checkReloadFromWater(stack, world, player);
 			return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
 		}
-
 		firingBehaviour.fire(stack, world, player, hand);
-		// neutral firing function
-
 		return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
 	}
 

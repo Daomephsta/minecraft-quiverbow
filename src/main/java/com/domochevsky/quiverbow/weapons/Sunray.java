@@ -29,8 +29,7 @@ public class Sunray extends WeaponBase
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack)
 	{
-		double dur = (1D / getMaxCooldown()) * (getMaxCooldown() - this.getCooldown(stack)); // Display
-		// durability
+		double dur = (1D / getMaxCooldown()) * (getMaxCooldown() - this.getCooldown(stack)); // Display durability
 		return 1D - dur; // Reverse again. Tch
 	}
 
@@ -39,8 +38,7 @@ public class Sunray extends WeaponBase
 	{
 		ItemStack stack = player.getHeldItem(hand);
 
-		this.doSingleFire(world, player, stack, hand); // Handing it over to the
-		// neutral firing function
+		this.doSingleFire(world, player, stack, hand);
 		return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
 	}
 
@@ -59,19 +57,9 @@ public class Sunray extends WeaponBase
 			// Firing a beam that goes through walls
 			SunLight shot = new SunLight(world, entity, getProjectileSpeed());
 
-			// Random Damage
-			int dmg_range = this.getProperties().getDamageMin() - getProperties().getDamageMin(); // If max dmg is 20 and
-														// min
-			// is 10, then the range will
-			// be 10
-			int dmg = world.rand.nextInt(dmg_range + 1); // Range will be
-															// between 0
-			// and 10
-			dmg += getProperties().getDamageMin(); // Adding the min dmg of 10 back on top, giving
-								// us
-			// the proper damage range (10-20)
+			int dmg_range = this.getProperties().getDamageMin() - getProperties().getDamageMin();
+			int dmg = getProperties().getDamageMin() + world.rand.nextInt(dmg_range + 1);
 
-			// The moving end point
 			shot.damage = dmg;
 			shot.fireDuration = getProperties().getInt(CommonProperties.PROP_FIRE_DUR_ENTITY);
 
@@ -89,8 +77,7 @@ public class Sunray extends WeaponBase
 	}
 
 	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int animTick, boolean holdingItem) // Overhauled
-	// default
+	public void onUpdate(ItemStack stack, World world, Entity entity, int animTick, boolean holdingItem)
 	{
 		int light = world.getLight(entity.getPosition());
 

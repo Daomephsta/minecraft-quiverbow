@@ -110,7 +110,7 @@ public class ProxyThorn extends ProjectileBase
 
 		// SFX
 
-		// this.setDead(); // We've hit something, so begone with the projectile
+		this.setDead(); // We've hit something, so begone with the projectile
 	}
 
 	@Override
@@ -120,8 +120,7 @@ public class ProxyThorn extends ProjectileBase
 	}
 
 	@Override
-	public void doInGroundSFX() // Server side // Checking proximity for living
-	// entities, to see if I need to explode
+	public void doInGroundSFX() //Checking proximity for living entities, to see if I need to explode
 	{
 		if (this.ticksInGround == this.ticksInGroundMax - 1)
 		{

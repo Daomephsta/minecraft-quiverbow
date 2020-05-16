@@ -26,10 +26,7 @@ public class SoulCairn extends WeaponBase
 			@Override
 			public void fire(ItemStack stack, World world, EntityLivingBase entity, EnumHand hand)
 			{
-				entity.attackEntityFrom(DamageSource.causeThrownDamage(entity, entity), 2); // A
-																							// sacrifice
-																							// in
-																							// blood
+				entity.attackEntityFrom(DamageSource.causeThrownDamage(entity, entity), 2); // A sacrifice in blood
 				super.fire(stack, world, entity, hand);
 			}
 		});

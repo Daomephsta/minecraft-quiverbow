@@ -32,7 +32,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -63,30 +62,10 @@ public class QuiverbowMain
 
 	public static Logger logger;
 
-	//TODO Remove
-	protected Configuration config; // Accessible from other files this way
+	public static ArrayList<WeaponBase> weapons = new ArrayList<WeaponBase>();
+	public static ArrayList<AmmoBase> ammo = new ArrayList<AmmoBase>();
 
-	public static ArrayList<WeaponBase> weapons = new ArrayList<WeaponBase>(); // Holder
-	// array
-	// for
-	// all
-	// (fully
-	// set
-	// up)
-	// possible
-	// weapons
-	public static ArrayList<AmmoBase> ammo = new ArrayList<AmmoBase>(); // Same
-	// with
-	// ammo,
-	// since
-	// they
-	// got
-	// recipes
-	// as
-	// well
-
-	private static int projectileCount = 1; // A running number, to register
-	// projectiles by
+	private static int nextEntityId = 1;
 
 	public static CreativeTabs QUIVERBOW_TAB = new CreativeTabs(QuiverbowMain.MODID)
 	{
@@ -103,39 +82,21 @@ public class QuiverbowMain
 		QuiverbowConfig.load(event.getSuggestedConfigurationFile());
 		logger = event.getModLog();
 		this.registerProjectiles();
-
-		PacketHandler.initPackets(); // Used for sending particle packets, so I
-		// can do my thing purely on the server
-		// side
-
-		// Registering the Arms Assistant
+		PacketHandler.initPackets();
 		if (QuiverbowConfig.allowTurret)
 		{
 			EntityRegistry.registerModEntity(new ResourceLocation(QuiverbowMain.MODID, "turret"),
 				EntityArmsAssistant.class, "turret", 0, this, 80, 1, true);
 		}
-		proxy.preInit();
 		LootHandler.initialise();
-
-		Listener listener = new Listener();
-
-		MinecraftForge.EVENT_BUS.register(listener);
-
-		if (event.getSide().isServer())
-		{
-			return;
-		} // Client-only from this point.
-
-		ListenerClient listenerClient = new ListenerClient();
-
-		MinecraftForge.EVENT_BUS.register(listenerClient);
+		MinecraftForge.EVENT_BUS.register(new Listener());
+        proxy.preInit();
 	}
 
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
 		QuiverbowConfig.loadWeaponProperties();
-		//foo.RecipeJSONifier.generateRecipes();
 	}
 
 	@EventHandler
@@ -154,8 +115,7 @@ public class QuiverbowMain
 		}
 	}
 
-	void registerProjectiles() // Entities that get shot out of weapons as
-	// projectiles
+	void registerProjectiles()
 	{
 		this.addProjectile(BlazeShot.class, "blaze");
 		this.addProjectile(CoinShot.class, "coin");
@@ -202,8 +162,8 @@ public class QuiverbowMain
 	private void addProjectile(Class<? extends ProjectileBase> entityClass, String name)
 	{
 		EntityRegistry.registerModEntity(new ResourceLocation(QuiverbowMain.MODID, name), entityClass,
-				"projectilechevsky_" + name, projectileCount, this, 80, 1, true);
-		projectileCount += 1;
+				"projectilechevsky_" + name, nextEntityId, this, 80, 1, true);
+		nextEntityId += 1;
 	}
 
 	@Mod.EventBusSubscriber(modid = QuiverbowMain.MODID)
@@ -254,8 +214,7 @@ public class QuiverbowMain
 			registerWeaponsWithAmmo(registry);
 		}
 
-		// Registers weapons that need their ammo item type as a ctor arg with
-		// their ammo
+		// Registers weapons that need their ammo item type as a ctor arg, and said ammo
 		private static void registerWeaponsWithAmmo(IForgeRegistry<Item> registry)
 		{
 			// Sugar Engine and Sugar Magazine
@@ -267,11 +226,9 @@ public class QuiverbowMain
 			registry.registerAll(obsidianMag, addWeapon(new OSR(obsidianMag)), addWeapon(new OSP(obsidianMag)),
 					addWeapon(new OWR(obsidianMag)));
 
-			// Frost Lancer and Cold Iron Clip
 			AmmoBase coldIronClip = addAmmo(new AmmoBase(), "cold_iron_clip");
 			registry.registerAll(coldIronClip, addWeapon(new FrostLancer(coldIronClip)));
 
-			// Coin Tossers and Gold Magazine
 			AmmoBase goldMagazine = addAmmo(new GoldMagazine(), "gold_magazine");
 			registry.registerAll(goldMagazine, addWeapon(new CoinTosser(goldMagazine)),
 					addWeapon(new CoinTosserMod(goldMagazine)));
@@ -280,11 +237,9 @@ public class QuiverbowMain
 			AmmoBase enderQuartzMagazine = addAmmo(new EnderQuartzClip(), "ender_quartz_magazine");
 			registry.registerAll(enderQuartzMagazine, addWeapon(new Endernymous(enderQuartzMagazine)));
 
-			// Lapis Coil & Lapis Magazine
 			AmmoBase lapisMagazine = addAmmo(new LapisMagazine(), "lapis_magazine");
 			registry.registerAll(lapisMagazine, addWeapon(new LapisCoil(lapisMagazine)));
 
-			// Nether Bellows and Large Netherrack Magazine
 			AmmoBase largeNetherrackMagazine = addAmmo(new LargeNetherrackMagazine(), "large_netherrack_magazine");
 			registry.registerAll(largeNetherrackMagazine, addWeapon(new NetherBellows(largeNetherrackMagazine)));
 
@@ -297,7 +252,6 @@ public class QuiverbowMain
 			AmmoBase largeRedstoneMagazine = addAmmo(new LargeRedstoneMagazine(), "large_redstone_magazine");
 			registry.registerAll(largeRedstoneMagazine, addWeapon(new RedSprayer(largeRedstoneMagazine)));
 
-			// Seed Sweeper and Seed Jar
 			AmmoBase seedJar = addAmmo(new SeedJar(), "seed_jar");
 			registry.registerAll(seedJar, addWeapon(new SeedSweeper(seedJar)));
 

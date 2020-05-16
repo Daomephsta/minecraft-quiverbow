@@ -40,14 +40,9 @@ public abstract class WeaponBase extends QuiverBowItem
 	{
 		this.setMaxStackSize(1); // Default is 64
 		this.setMaxDamage(maxAmmo); // Default is 0
-		this.setHasSubtypes(true); // Got a subtype, since we're using damage
-		// values
-		//TODO: Remove. Only used by witch renderer
-		this.setFull3D(); // Not as thin as paper when held. Probably not
-		// relevant when using models
-		this.setCreativeTab(CreativeTabs.COMBAT);// On the combat tab by
-		// default, since this is a
-		// weapon
+		this.setHasSubtypes(true); // Got a subtype, since we're using damage values
+		// On the combat tab by default, since this is a weapon
+		this.setCreativeTab(CreativeTabs.COMBAT);
 		this.name = name;
 	}
 
@@ -63,12 +58,12 @@ public abstract class WeaponBase extends QuiverBowItem
 		super.addInformation(stack, world, list, flags);
 	}
 
-	// Removes the passed in value from the ammo stack
-	// Returns true if the ammo has been used up
+	/** Removes the passed in value from the ammo stack
+	*   @return if the ammo has been used up **/
 	public boolean consumeAmmo(ItemStack stack, Entity entity, int ammo)
 	{
-		// if (!(entity instanceof EntityPlayer)) { return false; } // Not a
-		// player, so not deducting ammo. Keep going!
+		// if (!(entity instanceof EntityPlayer)) { return false; }
+	    // Not a player, so not deducting ammo. Keep going!
 
 		if (entity instanceof EntityPlayer)
 		{
@@ -76,18 +71,16 @@ public abstract class WeaponBase extends QuiverBowItem
 			if (player.capabilities.isCreativeMode)
 			{
 				return false;
-			} // Is in creative mode, so not changing ammo for them either. Keep
-				// going!
+			} // Is in creative mode, so not changing ammo for them either. Keep going!
 		}
 
 		this.setDamage(stack, stack.getItemDamage() + ammo);
 
-		if (stack.getItemDamage() >= stack.getMaxDamage()) // All used up. This
-		// thing is now empty
+		// All used up. This thing is now empty
+		if (stack.getItemDamage() >= stack.getMaxDamage())
 		{
-			this.setDamage(stack, stack.getMaxDamage()); // Just making sure
-			// we're not going over
-			// the cap
+		    // Just making sure we're not going over the cap
+			this.setDamage(stack, stack.getMaxDamage());
 			return true;
 		}
 
@@ -147,15 +140,12 @@ public abstract class WeaponBase extends QuiverBowItem
 		return stack.getTagCompound().getInteger("cooldown");
 	}
 
-	public void setBurstFire(ItemStack stack, int amount) // Setting our burst
-															// fire to
-	// this amount. Assumes the
-	// tag to be valid
+	public void setBurstFire(ItemStack stack, int amount)
 	{
 		if (stack.getTagCompound() == null)
 		{
 			stack.setTagCompound(new NBTTagCompound());
-		} // Init
+		}
 		stack.getTagCompound().setInteger("burstFireLeft", amount);
 	}
 

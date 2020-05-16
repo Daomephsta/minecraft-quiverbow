@@ -29,7 +29,7 @@ public class SugarEngine extends MagazineFedWeapon
 				float spreadHor = world.rand.nextFloat() * spread - (spread / 2.0F);
 				float spreadVert = world.rand.nextFloat() * spread - (spread / 2.0F);
 
-				int dmgRange = properties.getDamageMin() - properties.getDamageMin();
+				int dmgRange = properties.getDamageMax() - properties.getDamageMin();
 				int dmg = properties.getDamageMin() + world.rand.nextInt(dmgRange + 1);
 
 				SugarRod projectile = new SugarRod(world, entity, properties.getProjectileSpeed(), spreadHor, spreadVert);
@@ -46,34 +46,17 @@ public class SugarEngine extends MagazineFedWeapon
 			{
 				stack.setTagCompound(new NBTTagCompound());
 			}
-			// Weapon is ready, so we can spin up now. set spin-down immunity to
-			// x
-			// ticks and spin up
-			stack.getTagCompound().setInteger("spinDownImmunity", 20); // Can't
-																		// spin
-																		// down
-																		// for
-																		// 20
-																		// ticks.
-																		// Also
-																		// indicates
-																		// our
-																		// desire
-																		// to
-																		// spin
-																		// up
+			// Weapon is ready, so we can spin up now. set spin-down immunity to x ticks and spin up
+			// Can't spin down for 20 ticks. Also indicates our desire to spin up
+			stack.getTagCompound().setInteger("spinDownImmunity", 20);
 
 			if (stack.getTagCompound().getInteger("spinning") < weapon.getSpinupTime())
 			{
 				return;
-			} // Not ready yet, so keep spinning up
-				// else, we're ready
+			} // Not ready yet, so keep spinning up else, we're ready
 
-			weapon.setBurstFire(stack, 4); // Setting the rods left to fire to
-											// 4, then
-			// going through that via onUpdate (Will be
-			// constantly refreshed if we're still
-			// spinning)
+			weapon.setBurstFire(stack, 4);
+			//Actual firing occurs in onUpdate()
 		}
 
 		@Override
@@ -111,8 +94,7 @@ public class SugarEngine extends MagazineFedWeapon
 	}
 
 	@Override
-	public void onUpdate(ItemStack stack, World world, Entity entity, int animTick, boolean holdingItem) // Overhauled
-	// default
+	public void onUpdate(ItemStack stack, World world, Entity entity, int animTick, boolean holdingItem)
 	{
 		super.onUpdate(stack, world, entity, animTick, holdingItem);
 		if (world.isRemote)
@@ -132,17 +114,9 @@ public class SugarEngine extends MagazineFedWeapon
 		if (stack.getTagCompound() == null)
 		{
 			stack.setTagCompound(new NBTTagCompound());
-		} // Init
+		}
 
-		if (stack.getTagCompound().getInteger("spinDownImmunity") == 0) // Not
-		// firing
-		// and
-		// no
-		// immunity
-		// left,
-		// so
-		// spinning
-		// down
+		if (stack.getTagCompound().getInteger("spinDownImmunity") == 0) // Not firing and no immunity left, so spinning down
 		{
 			if (stack.getTagCompound().getInteger("spinning") > 0)
 			{
@@ -152,15 +126,13 @@ public class SugarEngine extends MagazineFedWeapon
 			}
 			// else, not spinning
 		}
-		else // We're currently immune to spinning down, so decreasing that
-				// immunity time until we actually can
+		else // We're currently immune to spinning down, so decreasing that immunity time until we actually can
 		{
 			stack.getTagCompound().setInteger("spinDownImmunity",
 					stack.getTagCompound().getInteger("spinDownImmunity") - 1);
 
 			// Also assuming that we're trying to fire, so spinning up (This is
-			// a workaround for the fact that onRightClick isn't called every
-			// tick)
+			// a workaround for the fact that onRightClick isn't called every tick)
 			if (stack.getTagCompound().getInteger("spinning") < this.getSpinupTime())
 			{
 				stack.getTagCompound().setInteger("spinning", stack.getTagCompound().getInteger("spinning") + 1);

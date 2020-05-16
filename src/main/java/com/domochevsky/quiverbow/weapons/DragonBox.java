@@ -17,17 +17,10 @@ public class DragonBox extends WeaponBase
 	{
 		super("dragonbox", 64);
 		setFiringBehaviour(new SingleShotFiringBehaviour<DragonBox>(this, (world, weaponStack, entity, data, properties) ->
-		{ // Random Damage
-			int dmg_range = properties.getDamageMin() - properties.getDamageMin(); // If max dmg is 20 and
-														// min
-			// is 10, then the range will
-			// be 10
-			int dmg = world.rand.nextInt(dmg_range + 1); // Range will be
-															// between 0
-			// and 10
-			dmg += properties.getDamageMin(); // Adding the min dmg of 10 back on top, giving
-								// us
-			// the proper damage range (10-20)
+		{
+
+			int dmg_range = properties.getDamageMax() - properties.getDamageMin();
+			int dmg = properties.getDamageMin() + world.rand.nextInt(dmg_range + 1);
 
 			// Firing
 			SmallRocket shot = new SmallRocket(world, entity, properties.getProjectileSpeed(), 0, 0);

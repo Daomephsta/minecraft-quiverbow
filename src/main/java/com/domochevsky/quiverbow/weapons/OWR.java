@@ -37,30 +37,14 @@ public class OWR extends MagazineFedWeapon
 					new PotionEffect(MobEffects.WITHER, properties.getInt(CommonProperties.PROP_WITHER_DUR), properties.getInt(CommonProperties.PROP_WITHER_STRENGTH)));
 
 			// Random Damage
-			int dmg_range = properties.getDamageMax() - properties.getDamageMin(); // If max dmg is 20
-															// and min
-			// is 10, then the range will
-			// be 10
-			int dmg = world.rand.nextInt(dmg_range + 1); // Range will be
-															// between 0
-			// and 10
-			dmg += properties.getDamageMin(); // Adding the min dmg of 10 back on top,
-									// giving us
-			// the proper damage range (10-20)
+			int dmg_range = properties.getDamageMax() - properties.getDamageMin();
+			int dmg = properties.getDamageMin() + world.rand.nextInt(dmg_range + 1);
 
 			projectile.damage = dmg;
 
 			// Random Magic Damage
-			dmg_range = properties.getInt(PROP_MAX_MAGIC_DAMAGE) - properties.getInt(PROP_MIN_MAGIC_DAMAGE); // If max dmg
-																	// is 20 and
-			// min is 10, then the
-			// range will be 10
-			dmg = world.rand.nextInt(dmg_range + 1); // Range will be between 0
-														// and
-			// 10
-			dmg += properties.getInt(PROP_MIN_MAGIC_DAMAGE); // Adding the min dmg of 10 back on top,
-										// giving
-			// us the proper damage range (10-20)
+			dmg_range = properties.getInt(PROP_MAX_MAGIC_DAMAGE) - properties.getInt(PROP_MIN_MAGIC_DAMAGE);
+			dmg = properties.getDamageMin() + world.rand.nextInt(dmg_range + 1);
 
 			((OWRShot) projectile).damageMagic = dmg;
 			return projectile;
@@ -76,8 +60,7 @@ public class OWR extends MagazineFedWeapon
 	@Override
 	protected void doCooldownSFX(World world, Entity entity)
 	{
-		NetHelper.sendParticleMessageToAllPlayers(world, entity, EnumParticleTypes.SMOKE_LARGE, (byte) 4); // large
-		// smoke
+		NetHelper.sendParticleMessageToAllPlayers(world, entity, EnumParticleTypes.SMOKE_LARGE, (byte) 4);
 		Helper.playSoundAtEntityPos(entity, SoundEvents.BLOCK_FIRE_EXTINGUISH, 1.0F, 1.2F);
 	}
 
@@ -86,8 +69,7 @@ public class OWR extends MagazineFedWeapon
 	{
 		Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_GENERIC_EXPLODE, 0.5F, 1.5F);
 		NetHelper.sendParticleMessageToAllPlayers(world, entity, EnumParticleTypes.SPELL_INSTANT,
-				(byte) 4); // instant
-		// spell
+				(byte) 4);
 	}
 
 	@SideOnly(Side.CLIENT)

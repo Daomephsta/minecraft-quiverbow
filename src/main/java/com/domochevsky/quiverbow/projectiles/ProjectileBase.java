@@ -368,7 +368,6 @@ public class ProjectileBase extends Entity implements IProjectile
 				this.doWaterEffect();
 			}
 
-			// this.moveEntity(this.motionX, this.motionY, this.motionZ); //
 			// Alternate method. Maybe this will give us smoother movement?
 			// Doesn't seem to make much of a difference
 
@@ -386,11 +385,7 @@ public class ProjectileBase extends Entity implements IProjectile
 				this.motionY -= gravity;
 			}
 
-			this.setPosition(this.posX, this.posY, this.posZ); // Position
-			// update
-			// NetHelper.sendPositionMessageToAllPlayers(this.world,
-			// this.getEntityId(), this.posX, this.posY, this.posZ); //
-			// Informing the client about our position change explicitly
+			this.setPosition(this.posX, this.posY, this.posZ); // Position update
 
 			this.doBlockCollisions(); // block collision
 		}

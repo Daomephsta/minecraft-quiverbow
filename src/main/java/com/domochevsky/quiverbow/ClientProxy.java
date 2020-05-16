@@ -17,6 +17,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
 public class ClientProxy extends CommonProxy
@@ -24,12 +25,13 @@ public class ClientProxy extends CommonProxy
 	@Override
 	public void preInit()
 	{
+	    MinecraftForge.EVENT_BUS.register(new ListenerClient());
 		registerRenderers();
 		ModelLoaderRegistry.registerLoader(WeaponModel.Loader.INSTANCE);
 		((MetadataSerializer) SRGReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), "field_110452_an"))
 		.registerMetadataSectionType(AATransformsMetadataSerialiser.INSTANCE, AATransformsMetadataSerialiser.AATransforms.class);
 	}
-	
+
 	public void registerRenderers()
 	{
 		registerCrossStyleRender(BlazeShot.class, new ResourceLocation(QuiverbowMain.MODID, "textures/entity/rod.png"), 2, 6);
@@ -59,20 +61,20 @@ public class ClientProxy extends CommonProxy
 		registerInvisibleRender(EnderAno.class);
 		RenderingRegistry.registerEntityRenderingHandler(EntityArmsAssistant.class, RenderAA::new);
 	}
-	
+
 	private <T extends ProjectileBase> void registerCrossStyleRender(Class<T> entityClass, ResourceLocation texture, int width, int length)
 	{
 		RenderingRegistry.<T>registerEntityRenderingHandler(entityClass, manager -> new RenderCross(manager, texture, width, length));
 	}
-	
+
 	private void registerSnowballStyleRender(Class<? extends Entity> entityClass, Item toRender)
 	{
 		RenderingRegistry.registerEntityRenderingHandler(entityClass, manager -> new RenderSnowball<>(manager, toRender, Minecraft.getMinecraft().getRenderItem()));
 	}
-	
+
 	private void registerInvisibleRender(Class<? extends Entity> entityClass)
 	{
-		RenderingRegistry.registerEntityRenderingHandler(entityClass, manager -> new Render<Entity>(manager) 
+		RenderingRegistry.registerEntityRenderingHandler(entityClass, manager -> new Render<Entity>(manager)
 		{
 			@Override
 			protected ResourceLocation getEntityTexture(Entity entity)
