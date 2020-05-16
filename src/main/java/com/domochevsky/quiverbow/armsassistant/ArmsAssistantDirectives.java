@@ -279,7 +279,7 @@ public class ArmsAssistantDirectives
     public void applyAI()
     {
         applyTask(armsAssistant.targetTasks, 2, new EntityAINearestAttackableTarget<>(armsAssistant,
-            EntityLiving.class, 10, true, false, this::isValidTarget));
+            EntityLiving.class, 0, true, false, this::isValidTarget));
         switch (movementAI)
         {
         case STAY:
