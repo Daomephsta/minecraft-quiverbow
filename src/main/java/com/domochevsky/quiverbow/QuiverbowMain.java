@@ -246,44 +246,45 @@ public class QuiverbowMain
 		public static void registerEntities(RegistryEvent.Register<EntityEntry> e)
 		{
 		    if (QuiverbowConfig.allowTurret)
-		        e.getRegistry().register(createEntry("arms_assistant", 80, 1, true, EntityArmsAssistant::new));
+		        e.getRegistry().register(createEntry("arms_assistant", 80, 1, true, EntityArmsAssistant.class, EntityArmsAssistant::new));
 		    e.getRegistry().registerAll(
-    		    createEntry("blaze", 80, 1, true, BlazeShot::new),
-                createEntry("coin", 80, 1, true, CoinShot::new),
-                createEntry("rocket_small", 80, 1, true, SmallRocket::new),
-                createEntry("lapis", 80, 1, true, LapisShot::new),
-                createEntry("thorn", 80, 1, true, Thorn::new),
-                createEntry("proximity_thorn", 80, 1, true, ProxyThorn::new),
-                createEntry("sugar", 80, 1, true, SugarRod::new),
-                createEntry("rocket_big", 80, 1, true, BigRocket::new),
-                createEntry("sabot_arrow", 80, 1, true, SabotArrow::new),
-                createEntry("sabot_rocket", 80, 1, true, SabotRocket::new),
-                createEntry("seed", 80, 1, true, Seed::new),
-                createEntry("potato", 80, 1, true, PotatoShot::new),
-                createEntry("snow", 80, 1, true, SnowShot::new),
-                createEntry("ender", 80, 1, true, EnderShot::new),
-                createEntry("cold_iron", 80, 1, true, ColdIron::new),
-                createEntry("osp_shot", 80, 1, true, OSPShot::new),
-                createEntry("osr_shot", 80, 1, true, OSRShot::new),
-                createEntry("owr_shot", 80, 1, true, OWRShot::new),
-                createEntry("fen_light", 80, 1, true, FenGoop::new),
-                createEntry("flint_dust", 80, 1, true, FlintDust::new),
-                createEntry("red_light", 80, 1, true, RedLight::new),
-                createEntry("sunlight", 80, 1, true, SunLight::new),
-                createEntry("nether_fire", 80, 1, true, NetherFire::new),
-                createEntry("red_spray", 80, 1, true, RedSpray::new),
-                createEntry("soul", 80, 1, true, SoulShot::new),
-                createEntry("water", 80, 1, true, WaterShot::new),
-                createEntry("web", 80, 1, true, WebShot::new),
-                createEntry("health", 80, 1, true, HealthBeam::new),
-                createEntry("era_shot", 80, 1, true, EnderAccelerator::new),
-                createEntry("ano", 80, 1, true, EnderAno::new));
+    		    createEntry("blaze", 80, 1, true, BlazeShot.class, BlazeShot::new),
+                createEntry("coin", 80, 1, true, CoinShot.class, CoinShot::new),
+                createEntry("rocket_small", 80, 1, true, SmallRocket.class, SmallRocket::new),
+                createEntry("lapis", 80, 1, true, LapisShot.class, LapisShot::new),
+                createEntry("thorn", 80, 1, true, Thorn.class, Thorn::new),
+                createEntry("proximity_thorn", 80, 1, true, ProxyThorn.class, ProxyThorn::new),
+                createEntry("sugar", 80, 1, true, SugarRod.class, SugarRod::new),
+                createEntry("rocket_big", 80, 1, true, BigRocket.class, BigRocket::new),
+                createEntry("sabot_arrow", 80, 1, true, SabotArrow.class, SabotArrow::new),
+                createEntry("sabot_rocket", 80, 1, true, SabotRocket.class, SabotRocket::new),
+                createEntry("seed", 80, 1, true, Seed.class, Seed::new),
+                createEntry("potato", 80, 1, true, PotatoShot.class, PotatoShot::new),
+                createEntry("snow", 80, 1, true, SnowShot.class, SnowShot::new),
+                createEntry("ender", 80, 1, true, EnderShot.class, EnderShot::new),
+                createEntry("cold_iron", 80, 1, true, ColdIron.class, ColdIron::new),
+                createEntry("osp_shot", 80, 1, true, OSPShot.class, OSPShot::new),
+                createEntry("osr_shot", 80, 1, true, OSRShot.class, OSRShot::new),
+                createEntry("owr_shot", 80, 1, true, OWRShot.class, OWRShot::new),
+                createEntry("fen_light", 80, 1, true, FenGoop.class, FenGoop::new),
+                createEntry("flint_dust", 80, 1, true, FlintDust.class, FlintDust::new),
+                createEntry("red_light", 80, 1, true, RedLight.class, RedLight::new),
+                createEntry("sunlight", 80, 1, true, SunLight.class, SunLight::new),
+                createEntry("nether_fire", 80, 1, true, NetherFire.class, NetherFire::new),
+                createEntry("red_spray", 80, 1, true, RedSpray.class, RedSpray::new),
+                createEntry("soul", 80, 1, true, SoulShot.class, SoulShot::new),
+                createEntry("water", 80, 1, true, WaterShot.class, WaterShot::new),
+                createEntry("web", 80, 1, true, WebShot.class, WebShot::new),
+                createEntry("health", 80, 1, true, HealthBeam.class, HealthBeam::new),
+                createEntry("era_shot", 80, 1, true, EnderAccelerator.class, EnderAccelerator::new),
+                createEntry("ano", 80, 1, true, EnderAno.class, EnderAno::new));
 		}
 
 	    private static int nextEntityNetworkId = 0;
-		private static EntityEntry createEntry(String name, int trackingRange, int updateFrequency, boolean sendVelocityUpdates, Function<World, Entity> factory)
+		private static EntityEntry createEntry(String name, int trackingRange, int updateFrequency, boolean sendVelocityUpdates, Class<? extends Entity> entityClass, Function<World, Entity> factory)
 		{
 		    return EntityEntryBuilder.create()
+		        .entity(entityClass)
                 .id(new ResourceLocation(QuiverbowMain.MODID, name), nextEntityNetworkId++)
                 .name(name)
                 .tracker(trackingRange, updateFrequency, sendVelocityUpdates)
