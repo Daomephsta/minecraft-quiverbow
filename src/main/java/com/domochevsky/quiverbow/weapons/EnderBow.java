@@ -3,16 +3,23 @@ package com.domochevsky.quiverbow.weapons;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.util.InventoryHelper;
-import com.domochevsky.quiverbow.weapons.base.*;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
+import com.domochevsky.quiverbow.weapons.base.IScopedWeapon;
+import com.domochevsky.quiverbow.weapons.base.WeaponBow;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.ArrowLooseEvent;
@@ -53,8 +60,8 @@ public class EnderBow extends WeaponBow implements IScopedWeapon
 		if (entityLiving instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer) entityLiving;
-			// Either creative mode or TODO infinity enchantment is higher than 0. Not using arrows
-			boolean freeShot = player.capabilities.isCreativeMode;
+			// Either creative mode or infinity enchantment is higher than 0. Not using arrows
+			boolean freeShot = player.capabilities.isCreativeMode || EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, stack) > 0;
 
 			ArrowLooseEvent event = new ArrowLooseEvent(player, stack, world, chargeTime, false);
 			MinecraftForge.EVENT_BUS.post(event);
