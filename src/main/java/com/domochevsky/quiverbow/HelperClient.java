@@ -33,17 +33,10 @@ public class HelperClient
 
 		for (int count = 0; count < strength; count++)
 		{
-			world.spawnParticle(particleType, entity.posX + entity.motionX * (double) count / 4.0D, entity.posY
-				+ entity.motionY * (double) count / 4.0D, entity.posZ + entity.motionZ * (double) count / 4.0D, 0, 0.2D,
+			world.spawnParticle(particleType, entity.posX + entity.motionX * count / 4.0D, entity.posY
+				+ entity.motionY * count / 4.0D, entity.posZ + entity.motionZ * count / 4.0D, 0, 0.2D,
 				0);
 		}
-	}
-
-	// TODO: Replace with DataParameter
-	// Informing the client about the fact that my (visual) state has changed
-	public static void setTurretState(EntityArmsAssistant turret, List<IArmsAssistantUpgrade> upgrades)
-	{
-		
 	}
 
 	// Informing the client about the fact that my inventory has changed
@@ -52,7 +45,7 @@ public class HelperClient
 		// Received a slot that is higher than what we got, so assuming that
 		// this turret has a storage upgrade
 		IItemHandler inv = turret.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-		
+
 		if (itemSlot >= inv.getSlots())
 		{
 			turret.applyUpgrade(UpgradeRegistry.STORAGE);

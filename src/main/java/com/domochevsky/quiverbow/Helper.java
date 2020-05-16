@@ -5,7 +5,6 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import com.domochevsky.quiverbow.ammo.AmmoBase;
 import com.domochevsky.quiverbow.config.QuiverbowConfig;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.ProjectileBase;
@@ -22,7 +21,9 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemArrow;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EntitySelectors;
@@ -35,57 +36,6 @@ import net.minecraftforge.common.ForgeHooks;
 public class Helper
 {
 	private static final ItemStack ARROW_STACK = new ItemStack(Items.ARROW);
-
-	public static void registerAAUpgradeRecipe(ItemStack result, ItemStack[] input, String upgradeType)
-	{
-
-	}
-
-	public static Item getAmmoByClass(Class<? extends AmmoBase> targetClass)
-	{
-		for (AmmoBase ammunition : QuiverbowMain.ammo)
-		{
-			if (ammunition.getClass() == targetClass)
-			{
-				return ammunition;
-			} // Found it
-		}
-
-		return null; // Don't have what you're looking for
-	}
-
-	public static ItemStack getAmmoStack(Class<? extends AmmoBase> targetClass, int dmg)
-	{
-		for (AmmoBase ammunition : QuiverbowMain.ammo)
-		{
-			if (ammunition.getClass() == targetClass)
-			{
-				return new ItemStack(ammunition, 1, dmg);
-			}
-		}
-
-		return ItemStack.EMPTY; // No idea what you're looking for
-	}
-
-	public static ItemStack getWeaponStackByClass(Class<? extends WeaponBase> targetClass, boolean isEmpty)
-	{
-		for (WeaponBase weapon : QuiverbowMain.weapons)
-		{
-			if (weapon.getClass() == targetClass) // Found it
-			{
-				if (isEmpty) // They want the empty version of this thing
-				{
-					return Helper.createEmptyWeaponOrAmmoStack(weapon, 1);
-				}
-				else
-				{
-					return new ItemStack(weapon);
-				}
-			}
-		}
-
-		return ItemStack.EMPTY; // No idea what you want
-	}
 
 	/** Kicks the passed in entity backwards, relative to the passed in strength
 	  * Needs to be done both on client and server, because the server doesn't
