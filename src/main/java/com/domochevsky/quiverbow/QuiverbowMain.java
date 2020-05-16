@@ -1,6 +1,7 @@
 package com.domochevsky.quiverbow;
 
 import java.util.ArrayList;
+import java.util.function.Function;
 
 import org.apache.logging.log4j.Logger;
 
@@ -25,10 +26,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
@@ -44,6 +47,7 @@ import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -65,8 +69,6 @@ public class QuiverbowMain
 	public static ArrayList<WeaponBase> weapons = new ArrayList<WeaponBase>();
 	public static ArrayList<AmmoBase> ammo = new ArrayList<AmmoBase>();
 
-	private static int nextEntityId = 1;
-
 	public static CreativeTabs QUIVERBOW_TAB = new CreativeTabs(QuiverbowMain.MODID)
 	{
 		@Override
@@ -81,7 +83,6 @@ public class QuiverbowMain
 	{
 		QuiverbowConfig.load(event.getSuggestedConfigurationFile());
 		logger = event.getModLog();
-		this.registerProjectiles();
 		PacketHandler.initPackets();
 		if (QuiverbowConfig.allowTurret)
 		{
@@ -113,57 +114,6 @@ public class QuiverbowMain
 				throw new IllegalArgumentException("Quiverbow: Recieved IMC message with unknown key: " + message.key);
 			}
 		}
-	}
-
-	void registerProjectiles()
-	{
-		this.addProjectile(BlazeShot.class, "blaze");
-		this.addProjectile(CoinShot.class, "coin");
-		this.addProjectile(SmallRocket.class, "rocket_small");
-		this.addProjectile(LapisShot.class, "lapis");
-		this.addProjectile(Thorn.class, "thorn");
-		this.addProjectile(ProxyThorn.class, "proximity_thorn");
-		this.addProjectile(SugarRod.class, "sugar");
-		this.addProjectile(BigRocket.class, "rocket_big");
-		this.addProjectile(SabotArrow.class, "sabot_arrow");
-		this.addProjectile(SabotRocket.class, "sabot_rocket");
-
-		this.addProjectile(Seed.class, "seed");
-		this.addProjectile(PotatoShot.class, "potato");
-		this.addProjectile(SnowShot.class, "snow");
-
-		this.addProjectile(EnderShot.class, "ender");
-		this.addProjectile(ColdIron.class, "cold_iron");
-
-		this.addProjectile(OSPShot.class, "osp_shot");
-		this.addProjectile(OSRShot.class, "osr_shot");
-		this.addProjectile(OWRShot.class, "owr_shot");
-
-		this.addProjectile(FenGoop.class, "fen_light");
-		this.addProjectile(FlintDust.class, "flint_dust");
-
-		this.addProjectile(RedLight.class, "red_light");
-		this.addProjectile(SunLight.class, "sunlight");
-
-		this.addProjectile(NetherFire.class, "nether_fire");
-		this.addProjectile(RedSpray.class, "red_spray");
-
-		this.addProjectile(SoulShot.class, "soul");
-
-		this.addProjectile(WaterShot.class, "water");
-		this.addProjectile(WebShot.class, "web");
-
-		this.addProjectile(HealthBeam.class, "health");
-
-		this.addProjectile(EnderAccelerator.class, "era_shot");
-		this.addProjectile(EnderAno.class, "ano");
-	}
-
-	private void addProjectile(Class<? extends ProjectileBase> entityClass, String name)
-	{
-		EntityRegistry.registerModEntity(new ResourceLocation(QuiverbowMain.MODID, name), entityClass,
-				"projectilechevsky_" + name, nextEntityId, this, 80, 1, true);
-		nextEntityId += 1;
 	}
 
 	@Mod.EventBusSubscriber(modid = QuiverbowMain.MODID)
@@ -271,12 +221,7 @@ public class QuiverbowMain
 			return weapon;
 		}
 
-		private static void registerAmmo(IForgeRegistry<Item> registry) // Items.WITH
-																		// which
-																		// weapons
-																		// can
-																		// be
-																		// reloaded
+		private static void registerAmmo(IForgeRegistry<Item> registry)
 		{
 			registry.registerAll(addAmmo(new AmmoBase(), "arrow_bundle"),
 					addAmmo(new AmmoBase(), "rocket_bundle"), addAmmo(new AmmoBase(), "large_rocket"),
@@ -300,7 +245,50 @@ public class QuiverbowMain
 		@SubscribeEvent
 		public static void registerEntities(RegistryEvent.Register<EntityEntry> e)
 		{
+		    if (QuiverbowConfig.allowTurret)
+		        e.getRegistry().register(createEntry("arms_assistant", 80, 1, true, EntityArmsAssistant::new));
+		    e.getRegistry().registerAll(
+    		    createEntry("blaze", 80, 1, true, BlazeShot::new),
+                createEntry("coin", 80, 1, true, CoinShot::new),
+                createEntry("rocket_small", 80, 1, true, SmallRocket::new),
+                createEntry("lapis", 80, 1, true, LapisShot::new),
+                createEntry("thorn", 80, 1, true, Thorn::new),
+                createEntry("proximity_thorn", 80, 1, true, ProxyThorn::new),
+                createEntry("sugar", 80, 1, true, SugarRod::new),
+                createEntry("rocket_big", 80, 1, true, BigRocket::new),
+                createEntry("sabot_arrow", 80, 1, true, SabotArrow::new),
+                createEntry("sabot_rocket", 80, 1, true, SabotRocket::new),
+                createEntry("seed", 80, 1, true, Seed::new),
+                createEntry("potato", 80, 1, true, PotatoShot::new),
+                createEntry("snow", 80, 1, true, SnowShot::new),
+                createEntry("ender", 80, 1, true, EnderShot::new),
+                createEntry("cold_iron", 80, 1, true, ColdIron::new),
+                createEntry("osp_shot", 80, 1, true, OSPShot::new),
+                createEntry("osr_shot", 80, 1, true, OSRShot::new),
+                createEntry("owr_shot", 80, 1, true, OWRShot::new),
+                createEntry("fen_light", 80, 1, true, FenGoop::new),
+                createEntry("flint_dust", 80, 1, true, FlintDust::new),
+                createEntry("red_light", 80, 1, true, RedLight::new),
+                createEntry("sunlight", 80, 1, true, SunLight::new),
+                createEntry("nether_fire", 80, 1, true, NetherFire::new),
+                createEntry("red_spray", 80, 1, true, RedSpray::new),
+                createEntry("soul", 80, 1, true, SoulShot::new),
+                createEntry("water", 80, 1, true, WaterShot::new),
+                createEntry("web", 80, 1, true, WebShot::new),
+                createEntry("health", 80, 1, true, HealthBeam::new),
+                createEntry("era_shot", 80, 1, true, EnderAccelerator::new),
+                createEntry("ano", 80, 1, true, EnderAno::new));
+		}
 
+	    private static int nextEntityNetworkId = 0;
+		private static EntityEntry createEntry(String name, int trackingRange, int updateFrequency, boolean sendVelocityUpdates, Function<World, Entity> factory)
+		{
+		    return EntityEntryBuilder.create()
+                .id(new ResourceLocation(QuiverbowMain.MODID, name), nextEntityNetworkId++)
+                .name(name)
+                .tracker(trackingRange, updateFrequency, sendVelocityUpdates)
+                .factory(factory)
+                .build();
 		}
 	}
 
