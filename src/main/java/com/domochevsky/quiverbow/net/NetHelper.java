@@ -60,24 +60,23 @@ public class NetHelper
 		}
 	}
 
-	//TODO: Move to proxy?
 	public static void sendTurretInventoryMessageToPlayersInRange(World world, EntityArmsAssistant turret, ItemStack stack, int slot)
 	{
 		// Server-use only
 		if (world.isRemote) return;
 		PacketHandler.net.sendToAllTracking(new TurretInventoryMessage(turret, stack, slot), turret);
 	}
-	
+
 	public static void writeBitSet(ByteBuf to, BitSet bitSet)
 	{
 		byte[] bytes = bitSet.toByteArray();
 		to.writeInt(bytes.length);
 		to.writeBytes(bytes);
 	}
-	
+
 	public static BitSet readBitSet(ByteBuf from)
 	{
-		int byteCount = from.readInt(); 
+		int byteCount = from.readInt();
 		byte[] bytes = new byte[byteCount];
 		from.readBytes(bytes);
 		return BitSet.valueOf(bytes);
