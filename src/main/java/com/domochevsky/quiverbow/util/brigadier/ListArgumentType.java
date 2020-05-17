@@ -59,7 +59,6 @@ public class ListArgumentType<E> implements ArgumentType<List<E>>
                 }
                 catch (CommandSyntaxException e)
                 {
-                    System.out.println(e.getMessage());
                     reader.setCursor(cursorMark);
                 }
                 if (element != null)
