@@ -1,8 +1,6 @@
 {
 	"recipes":
 	{
-		"load_magazine": "com.domochevsky.quiverbow.recipes.RecipeLoadMagazine$Factory",
-		"load_ammo": "com.domochevsky.quiverbow.recipes.RecipeLoadAmmo$Factory",
 		"arms_assistant_upgrade": "com.domochevsky.quiverbow.recipes.RecipeArmsAssistantUpgrade$Factory"
 	},
 	"conditions":

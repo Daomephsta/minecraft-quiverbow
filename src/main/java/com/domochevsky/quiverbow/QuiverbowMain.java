@@ -16,6 +16,7 @@ import com.domochevsky.quiverbow.miscitems.PackedUpAA;
 import com.domochevsky.quiverbow.miscitems.QuiverBowItem;
 import com.domochevsky.quiverbow.net.PacketHandler;
 import com.domochevsky.quiverbow.projectiles.*;
+import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 import com.domochevsky.quiverbow.util.RegistryHelper;
 import com.domochevsky.quiverbow.weapons.*;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
@@ -239,7 +240,9 @@ public class QuiverbowMain
 		@SubscribeEvent
 		public static void registerRecipes(RegistryEvent.Register<IRecipe> e)
 		{
-
+		    ReloadSpecificationRegistry.INSTANCE.loadData();
+		    for (WeaponBase weapon : ReloadSpecificationRegistry.INSTANCE.getRegisteredWeapons())
+                e.getRegistry().register(new RecipeLoadAmmo(weapon).setRegistryName(MODID, "load_" + weapon.getRegistryName().getResourcePath()));
 		}
 
 		@SubscribeEvent

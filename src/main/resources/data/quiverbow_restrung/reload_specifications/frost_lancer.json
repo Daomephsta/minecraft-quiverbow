@@ -1,0 +1,10 @@
+[
+    {
+        "ingredient": {
+            "item": "quiverbow_restrung:cold_iron_clip"
+        },
+        "ammoValue": 4,
+        "min": 1,
+        "max": 1
+    }
+]

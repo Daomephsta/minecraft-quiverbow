@@ -1,0 +1,10 @@
+[
+    {
+        "ingredient": {
+            "item": "quiverbow_restrung:large_rocket"
+        },
+        "ammoValue": 1,
+        "min": 1,
+        "max": 1
+    }
+]

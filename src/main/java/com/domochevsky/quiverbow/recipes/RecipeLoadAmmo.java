@@ -1,32 +1,27 @@
 package com.domochevsky.quiverbow.recipes;
 
-import java.util.*;
-
-import org.apache.commons.lang3.tuple.Pair;
-
-import com.google.gson.*;
+import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry;
+import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry.ComponentData;
+import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry.ReloadSpecification;
+import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.JsonUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.crafting.*;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class RecipeLoadAmmo extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
 {
-	private final Item targetWeapon;
-	private final List<Map.Entry<Ingredient, AmmoData>> ammoComponents;
+	private final WeaponBase targetWeapon;
+	private final ReloadSpecification specification;
 
-	private RecipeLoadAmmo(Item targetWeapon, List<Map.Entry<Ingredient, AmmoData>> ammoComponents)
+    public RecipeLoadAmmo(WeaponBase targetWeapon)
 	{
 		this.targetWeapon = targetWeapon;
-		this.ammoComponents = ammoComponents;
+		this.specification = ReloadSpecificationRegistry.INSTANCE.getSpecification(targetWeapon);
 	}
 
 	@Override
@@ -44,25 +39,21 @@ public class RecipeLoadAmmo extends IForgeRegistryEntry.Impl<IRecipe> implements
 				if (!weaponFound) weaponFound = true;
 				else return false; // Cannot reload two weapons at the same time
 			}
-			else
-			{
-
-			}
 		}
-		for (Map.Entry<Ingredient, AmmoData> componentEntry : ammoComponents)
+		for (ComponentData component : specification.getComponents())
 		{
 			int componentCount = 0;
 			for (int s = 0; s < invCrafting.getSizeInventory(); s++)
 			{
 				ItemStack stack = invCrafting.getStackInSlot(s);
 				if (stack.isEmpty()) continue;
-				if (componentEntry.getKey().apply(stack))
+				if (component.getIngredient().apply(stack))
 				{
 					componentCount++;
-					if (componentCount > componentEntry.getValue().max) return false;
+					if (componentCount > component.getMax()) return false;
 				}
 			}
-			if (componentCount < componentEntry.getValue().min) return false;
+			if (componentCount < component.getMin()) return false;
 		}
 		return weaponFound;
 	}
@@ -85,28 +76,17 @@ public class RecipeLoadAmmo extends IForgeRegistryEntry.Impl<IRecipe> implements
 		{
 			ItemStack stack = invCrafting.getStackInSlot(s);
 			if (stack.isEmpty()) continue;
-			for (Map.Entry<Ingredient, AmmoData> ammoComponent : ammoComponents)
+			for (ComponentData component : specification.getComponents())
 			{
-				if (ammoComponent.getKey().apply(stack))
+				if (component.getIngredient().apply(stack))
 				{
-					int ammoValue = ammoComponent.getValue().ammoValue;
+					int ammoValue = component.getAmmoValue(stack);
 					weapon.setItemDamage(weapon.getItemDamage() - ammoValue);
 					break;
 				}
 			}
 		}
 		return weapon;
-	}
-
-	public RecipeLoadAmmo addComponent(Ingredient ingredient, int ammoValue)
-	{
-		return addComponent(ingredient, ammoValue, 1, 8);
-	}
-
-	public RecipeLoadAmmo addComponent(Ingredient ingredient, int ammoValue, int min, int max)
-	{
-		ammoComponents.add(Pair.of(ingredient, new AmmoData(ammoValue, min, max)));
-		return this;
 	}
 
 	@Override
@@ -125,50 +105,5 @@ public class RecipeLoadAmmo extends IForgeRegistryEntry.Impl<IRecipe> implements
 	public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv)
 	{
 		return ForgeHooks.defaultRecipeGetRemainingItems(inv);
-	}
-
-	private static class AmmoData
-	{
-		private int ammoValue;
-		private int min;
-		private int max;
-
-		public AmmoData(int ammoValue, int min, int max)
-		{
-			this.ammoValue = ammoValue;
-			this.min = min;
-			this.max = max;
-		}
-	}
-
-	public static class Factory implements IRecipeFactory
-	{
-		@Override
-		public IRecipe parse(JsonContext context, JsonObject json)
-		{
-			Item weapon = JsonUtils.getItem(json, "weapon");
-			JsonArray componentsJSON = JsonUtils.getJsonArray(json, "components");
-			List<Map.Entry<Ingredient, AmmoData>> components = new ArrayList<>();
-			for (JsonElement element : componentsJSON)
-			{
-				if (!element.isJsonObject())
-					throw new JsonSyntaxException("Expected " + element + " to be a JSON object");
-				components.add(deserialiseIngredientAmmoDataEntry((JsonObject) element, context));
-			}
-			return new RecipeLoadAmmo(weapon, components);
-		}
-
-		private static Map.Entry<Ingredient, AmmoData> deserialiseIngredientAmmoDataEntry(JsonObject entry, JsonContext context)
-		{
-			Ingredient ingredient = CraftingHelper.getIngredient(entry.get("ing"), context);
-			AmmoData ammoData = deserialiseAmmoData(JsonUtils.getJsonObject(entry, "data"));
-			return new AbstractMap.SimpleImmutableEntry<Ingredient, AmmoData>(ingredient, ammoData);
-		}
-
-		private static AmmoData deserialiseAmmoData(JsonObject jsonObj)
-		{
-			return new AmmoData(JsonUtils.getInt(jsonObj, "ammoValue"), JsonUtils.getInt(jsonObj, "min"),
-					JsonUtils.getInt(jsonObj, "max"));
-		}
 	}
 }

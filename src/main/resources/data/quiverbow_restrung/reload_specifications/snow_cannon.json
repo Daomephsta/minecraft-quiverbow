@@ -1,0 +1,10 @@
+[
+    {
+        "ingredient": {
+            "item": "minecraft:snow"
+        },
+        "ammoValue": 4,
+        "min": 1,
+        "max": 8
+    }
+]

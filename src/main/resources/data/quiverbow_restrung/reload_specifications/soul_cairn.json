@@ -1,0 +1,10 @@
+[
+    {
+        "ingredient": {
+            "item": "minecraft:diamond"
+        },
+        "ammoValue": 1,
+        "min": 1,
+        "max": 1
+    }
+]

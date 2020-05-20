@@ -1,0 +1,10 @@
+[
+    {
+        "ingredient": {
+            "item": "minecraft:water_bucket"
+        },
+        "ammoValue": 1,
+        "min": 1,
+        "max": 1
+    }
+]

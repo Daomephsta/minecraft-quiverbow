@@ -6,6 +6,9 @@ import java.util.HashSet;
 import java.util.UUID;
 
 import com.domochevsky.quiverbow.QuiverbowMain;
+import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry;
+import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry.ComponentData;
+import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry.ReloadSpecification;
 import com.domochevsky.quiverbow.loot.LootHandler;
 import com.domochevsky.quiverbow.miscitems.PackedUpAA;
 import com.domochevsky.quiverbow.net.NetHelper;
@@ -15,6 +18,8 @@ import com.google.common.collect.MultimapBuilder;
 
 import daomephsta.umbra.streams.NBTCollectors;
 import io.netty.buffer.ByteBuf;
+import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.EntityAIAttackRanged;
 import net.minecraft.entity.ai.EntityAIHurtByTarget;
@@ -193,7 +198,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 					break;
 				}
 			}
-			if (!player.capabilities.isCreativeMode) player.setHeldItem(hand, resultStack);
+			player.setHeldItem(hand, player.capabilities.isCreativeMode ? playerHandStack.copy() : resultStack);
 
 			return true;
 		}
@@ -380,6 +385,8 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 	    if (!weaponStack.isEmpty() && weaponStack.getItem() instanceof WeaponBase)
         {
             WeaponBase weapon = (WeaponBase) weaponStack.getItem();
+            if (weaponStack.getItemDamage() == weaponStack.getMaxDamage())
+                tryReload(weaponStack, weapon);
             if (weapon.getCooldown(weaponStack) == 0)
             {
                 return weapon.doSingleFire(world, this, weaponStack, EnumHand.MAIN_HAND);
@@ -387,6 +394,43 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
         }
         return false;
 	}
+
+    private void tryReload(ItemStack weaponStack, WeaponBase weapon)
+    {
+        ReloadSpecification specification = ReloadSpecificationRegistry.INSTANCE.getSpecification(weapon);
+        if (specification == null) return;
+        int ammoValue = 0;
+        Object2IntMap<ItemStack> toConsume = new Object2IntArrayMap<>();
+        for (ComponentData component : specification.getComponents())
+        {
+            int componentCount = 0;
+            for (int s = 0; s < inventory.getSlots(); s++)
+            {
+                ItemStack stack = inventory.getStackInSlot(s);
+                if (component.getIngredient().apply(stack))
+                {
+                    componentCount = Math.min(stack.getCount() - componentCount, component.getMax());
+                    ammoValue += componentCount * component.getAmmoValue(stack);
+                    toConsume.put(stack, componentCount);
+                }
+            }
+            if (componentCount < component.getMin() || componentCount == 0)
+                return;
+        }
+        for (Object2IntMap.Entry<ItemStack> entry : toConsume.object2IntEntrySet())
+        {
+            ItemStack stack = entry.getKey();
+            int componentCount = entry.getIntValue();
+            if (stack.getItem().hasContainerItem(stack))
+            {
+                ItemStack container = stack.getItem().getContainerItem(stack);
+                container.setCount(componentCount);
+                entityDropItem(container, 0.0F);
+            }
+            stack.shrink(componentCount);
+        }
+        weaponStack.setItemDamage(weaponStack.getItemDamage() - ammoValue);
+    }
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource damageSourceIn)
