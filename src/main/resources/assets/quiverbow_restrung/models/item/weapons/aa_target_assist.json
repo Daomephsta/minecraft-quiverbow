@@ -1,6 +1,0 @@
-{
-    "parent": "quiverbow_restrung:item/weapons/weapon",
-    "textures": {
-        "layer0": "quiverbow_restrung:items/weapons/aa_target_assistant"
-    }
-}

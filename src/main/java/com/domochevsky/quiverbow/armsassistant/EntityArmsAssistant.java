@@ -376,8 +376,13 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 	@Override
 	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor)
 	{
-		if (!tryFireWeapon(getHeldItemMainhand()))
-		    tryFireWeapon(getHeldItemOffhand());
+		tryFire();
+	}
+
+	public void tryFire()
+	{
+	    if (!tryFireWeapon(getHeldItemMainhand()))
+            tryFireWeapon(getHeldItemOffhand());
 	}
 
 	private boolean tryFireWeapon(ItemStack weaponStack)

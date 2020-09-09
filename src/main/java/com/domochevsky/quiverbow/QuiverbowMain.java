@@ -140,7 +140,8 @@ public class QuiverbowMain
 					RegistryHelper.registerItem(new QuiverBowItem(), ".misc.", "part_sugar_engine_body"),
 					RegistryHelper.registerItem(new QuiverBowItem(), ".misc.", "part_sugar_engine_barrel"),
 					RegistryHelper.registerItem(new IncompleteEnderRailAccelerator(), ".misc.", "incomplete_ender_rail_accelerator"),
-					RegistryHelper.registerItem(new PackedUpAA(), ".misc.", "arms_assistant"));
+					RegistryHelper.registerItem(new PackedUpAA(), ".misc.", "arms_assistant"),
+					RegistryHelper.registerItem(new AATargeter(), ".misc.", "aa_target_assistant"));
 		}
 
 		private static void registerWeapons(IForgeRegistry<Item> registry) // The
@@ -160,7 +161,6 @@ public class QuiverbowMain
 					addWeapon(new AquaAccelerator()), addWeapon(new SilkenSpinner()),
 					// TODO: Reimplement addWeapon(new MediGun()),
 					addWeapon(new ERA())
-	                // TODO: Reimplement addWeapon(new AATargeter())
 					);
 			registerWeaponsWithAmmo(registry);
 		}
@@ -323,6 +323,7 @@ public class QuiverbowMain
 			setStandardModelLocation(ItemRegistry.PART_SUGAR_ENGINE_BARREL);
 			setStandardModelLocation(ItemRegistry.ARMS_ASSISTANT);
 			setStandardModelLocation(ItemRegistry.INCOMPLETE_ENDER_RAIL_ACCELERATOR);
+			setStandardModelLocation(ItemRegistry.AA_TARGET_ASSISTANT);
 		}
 
         private static void setStandardModelLocation(Item item)

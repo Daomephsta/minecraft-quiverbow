@@ -13,6 +13,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import com.domochevsky.quiverbow.QuiverbowMain;
+import com.domochevsky.quiverbow.armsassistant.ai.ArmsAssistantAITargeterControlled;
 import com.domochevsky.quiverbow.armsassistant.ai.EntityAIFollowOwner;
 import com.domochevsky.quiverbow.armsassistant.ai.EntityAIMaintainPosition;
 import com.google.common.base.Splitter;
@@ -54,6 +55,7 @@ public class ArmsAssistantDirectives
                                                                  targetBlacklist;
     private final MovementAI movementAI;
     private final Set<Notification> notifications;
+    private final boolean remoteFire;
     private final Collection<EntityAIBase> aiTasks = new ArrayList<>();
 
     private ArmsAssistantDirectives(EntityArmsAssistant armsAssistant)
@@ -63,6 +65,7 @@ public class ArmsAssistantDirectives
         this.targetBlacklist = (directedEntity, target) -> false;
         this.movementAI = MovementAI.NONE;
         this.notifications = EnumSet.noneOf(Notification.class);
+        this.remoteFire = false;
     }
 
     private ArmsAssistantDirectives(Builder builder)
@@ -72,6 +75,7 @@ public class ArmsAssistantDirectives
         this.targetBlacklist = builder.targetBlacklist.stream().reduce(BiPredicate::or).orElse((directedEntity, target) -> false);
         this.movementAI = builder.movementAI;
         this.notifications = builder.notifications;
+        this.remoteFire = builder.remoteFire;
     }
 
     public static ArmsAssistantDirectives defaultDirectives(EntityArmsAssistant armsAssistant)
@@ -137,6 +141,13 @@ public class ArmsAssistantDirectives
             return Command.SINGLE_SUCCESS;
         }));
         dispatcher.register(tellDirective());
+        dispatcher.register(literal("REMOTE").then(literal("FIRE")
+            .executes(ctx ->
+            {
+                ctx.getSource().remoteFire = true;
+                return Command.SINGLE_SUCCESS;
+            }))
+        );
         Builder builder = new Builder(armsAssistant);
         int lineNumber = 1;
         for (String line : lines)
@@ -278,7 +289,9 @@ public class ArmsAssistantDirectives
 
     public void applyAI()
     {
-        applyTask(armsAssistant.targetTasks, 2, new EntityAINearestAttackableTarget<>(armsAssistant,
+        if (remoteFire)
+            applyTask(armsAssistant.tasks, 3, new ArmsAssistantAITargeterControlled(armsAssistant));
+        applyTask(armsAssistant.targetTasks, 3, new EntityAINearestAttackableTarget<>(armsAssistant,
             EntityLiving.class, 0, true, false, this::isValidTarget));
         switch (movementAI)
         {
@@ -352,6 +365,7 @@ public class ArmsAssistantDirectives
                                                                    targetBlacklist = new ArrayList<>();
         MovementAI movementAI = MovementAI.NONE;
         Set<Notification> notifications;
+        boolean remoteFire = false;
 
         Builder(EntityArmsAssistant armsAssistant)
         {

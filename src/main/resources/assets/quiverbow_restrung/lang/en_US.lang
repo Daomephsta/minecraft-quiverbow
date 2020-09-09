@@ -74,9 +74,6 @@ item.quiverbow_restrung.ammo.box_of_flint_dust.name=Box of Flint Dust
 item.quiverbow_restrung.ammo.box_of_flint_dust.description=All boxed up.
 
 //Weapons
-item.quiverbow_restrung.weapon.aa_target_assist.name=AA Target Designator
-item.quiverbow_restrung.weapon.aa_target_assist.description=§9Used to set AA targets, and fire weapons of ridden AAs Over there!
-
 item.quiverbow_restrung.weapon.coin_tosser_mod.name=Modified Coin Tosser
 item.quiverbow_restrung.weapon.coin_tosser_mod.ammostatus=§9Gold Nuggets: %d / %d
 item.quiverbow_restrung.weapon.coin_tosser_mod.loadtext=§eCraft with a Gold Magazine to reload.
@@ -304,6 +301,8 @@ item.quiverbow_restrung.misc.part_sugar_engine_body.description=To be outfitted 
 item.quiverbow_restrung.misc.incomplete_ender_rail_accelerator.name=Ender Rail Accelerator (Incomplete)
 item.quiverbow_restrung.misc.incomplete_ender_rail_accelerator.description=Use with 27 Powered Rails in other hand to complete
 item.quiverbow_restrung.misc.incomplete_ender_rail_accelerator.completeFail=27 Powered Rails required in other hand to complete
+item.quiverbow_restrung.misc.aa_target_assistant.name=AA Target Designator
+item.quiverbow_restrung.misc.aa_target_assistant.description=§9Used to set AA targets, and fire weapons of ridden AAs\nOver there!
 
 item.quiverbow_restrung.misc.arms_assistant.name=Packed Up Arms Assistant
 item.quiverbow_restrung.misc.arms_assistant.description=It's sizing you up
