@@ -1,6 +1,7 @@
 package com.domochevsky.quiverbow.util;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -52,25 +53,22 @@ public class InventoryHelper
 	}
 
 	// Utils for interacting with and checking both hands
-
-	public static ItemStack findItemInHands(EntityPlayer player, Item item)
+	public static ItemStack findItemInHands(EntityLivingBase entity, Item item)
 	{
-		ItemStack mainHand = player.getHeldItemMainhand();
-		ItemStack offHand = player.getHeldItemOffhand();
+		ItemStack mainHand = entity.getHeldItemMainhand();
+		ItemStack offHand = entity.getHeldItemOffhand();
 
-		if (mainHand.getItem() == item && offHand.getItem() == item) return mainHand;
-		else if (mainHand.getItem() == item) return mainHand;
+		if (mainHand.getItem() == item) return mainHand;
 		else if (offHand.getItem() == item) return offHand;
 		else return ItemStack.EMPTY;
 	}
 
-	public static ItemStack findItemInHandsByClass(EntityPlayer player, Class<?> clazz)
+	public static ItemStack findItemInHandsByClass(EntityLivingBase entity, Class<?> clazz)
 	{
-		ItemStack mainHand = player.getHeldItemMainhand();
-		ItemStack offHand = player.getHeldItemOffhand();
+		ItemStack mainHand = entity.getHeldItemMainhand();
+		ItemStack offHand = entity.getHeldItemOffhand();
 
-		if (clazz.isInstance(mainHand.getItem()) && clazz.isInstance(offHand.getItem())) return mainHand;
-		else if (clazz.isInstance(mainHand.getItem())) return mainHand;
+		if (clazz.isInstance(mainHand.getItem())) return mainHand;
 		else if (clazz.isInstance(offHand.getItem())) return offHand;
 		else return ItemStack.EMPTY;
 	}
