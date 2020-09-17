@@ -55,7 +55,7 @@ public class ArmsAssistantDirectives
                                                                  targetBlacklist;
     private final MovementAI movementAI;
     private final Set<Notification> notifications;
-    private final boolean remoteFire;
+    private final boolean remoteFire, staggerFire;
     private final Collection<EntityAIBase> aiTasks = new ArrayList<>();
 
     private ArmsAssistantDirectives(EntityArmsAssistant armsAssistant)
@@ -65,7 +65,7 @@ public class ArmsAssistantDirectives
         this.targetBlacklist = (directedEntity, target) -> false;
         this.movementAI = MovementAI.NONE;
         this.notifications = EnumSet.noneOf(Notification.class);
-        this.remoteFire = false;
+        this.remoteFire = this.staggerFire = false;
     }
 
     private ArmsAssistantDirectives(Builder builder)
@@ -76,6 +76,7 @@ public class ArmsAssistantDirectives
         this.movementAI = builder.movementAI;
         this.notifications = builder.notifications;
         this.remoteFire = builder.remoteFire;
+        this.staggerFire = builder.staggerFire;
     }
 
     public static ArmsAssistantDirectives defaultDirectives(EntityArmsAssistant armsAssistant)
@@ -145,6 +146,13 @@ public class ArmsAssistantDirectives
             .executes(ctx ->
             {
                 ctx.getSource().remoteFire = true;
+                return Command.SINGLE_SUCCESS;
+            }))
+        );
+        dispatcher.register(literal("STAGGER").then(literal("FIRE")
+            .executes(ctx ->
+            {
+                ctx.getSource().staggerFire = true;
                 return Command.SINGLE_SUCCESS;
             }))
         );
@@ -344,6 +352,11 @@ public class ArmsAssistantDirectives
         return true;
     }
 
+    public boolean shouldStaggerFire()
+    {
+        return staggerFire;
+    }
+
     private static enum MovementAI
     {
         STAY,
@@ -365,7 +378,8 @@ public class ArmsAssistantDirectives
                                                                    targetBlacklist = new ArrayList<>();
         MovementAI movementAI = MovementAI.NONE;
         Set<Notification> notifications;
-        boolean remoteFire = false;
+        boolean remoteFire = false,
+                staggerFire = false;
 
         Builder(EntityArmsAssistant armsAssistant)
         {

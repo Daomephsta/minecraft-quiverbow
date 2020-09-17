@@ -381,23 +381,35 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 
 	public void tryFire()
 	{
-	    if (!tryFireWeapon(getHeldItemMainhand()))
-            tryFireWeapon(getHeldItemOffhand());
+	    if (directives.shouldStaggerFire())
+	    {
+	        float mainCooldown = tryFireWeapon(EnumHand.MAIN_HAND);
+            if (mainCooldown >= 0.5F)
+	            tryFireWeapon(EnumHand.OFF_HAND);
+	    }
+	    else //Simultaneous fire
+	    {
+	        tryFireWeapon(EnumHand.MAIN_HAND);
+	        tryFireWeapon(EnumHand.OFF_HAND);
+	    }
 	}
 
-	private boolean tryFireWeapon(ItemStack weaponStack)
+	private float tryFireWeapon(EnumHand hand)
 	{
+	    ItemStack weaponStack = getHeldItem(hand);
 	    if (!weaponStack.isEmpty() && weaponStack.getItem() instanceof WeaponBase)
         {
             WeaponBase weapon = (WeaponBase) weaponStack.getItem();
             if (weaponStack.getItemDamage() == weaponStack.getMaxDamage())
                 tryReload(weaponStack, weapon);
-            if (weapon.getCooldown(weaponStack) == 0)
+            int cooldown = weapon.getCooldown(weaponStack);
+            if (cooldown == 0 && weapon.doSingleFire(world, this, weaponStack, EnumHand.MAIN_HAND))
             {
-                return weapon.doSingleFire(world, this, weaponStack, EnumHand.MAIN_HAND);
+                return 0.0F;
             }
+            return (float) cooldown / weapon.getMaxCooldown();
         }
-        return false;
+        return 1.0F;
 	}
 
     private void tryReload(ItemStack weaponStack, WeaponBase weapon)
