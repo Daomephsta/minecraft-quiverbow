@@ -1,6 +1,7 @@
 package com.domochevsky.quiverbow;
 
 import com.domochevsky.quiverbow.config.QuiverbowConfig;
+import com.domochevsky.quiverbow.items.ItemRegistry;
 import com.domochevsky.quiverbow.util.InventoryHelper;
 import com.domochevsky.quiverbow.weapons.base.IScopedWeapon;
 
@@ -10,7 +11,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
@@ -26,6 +29,13 @@ public class ListenerClient
 	public void onClientTick(ClientTickEvent event)
 	{
 		handleZoom();
+		Minecraft mc = Minecraft.getMinecraft();
+		if (mc.pointedEntity != null
+		    && !InventoryHelper.findItemInHands(mc.player, ItemRegistry.AA_TARGET_ASSISTANT).isEmpty())
+		{
+		    mc.player.sendStatusMessage(new TextComponentString(
+		        EntityList.getKey(mc.pointedEntity.getClass()).toString()), true);
+		}
 	}
 
 	@SubscribeEvent
