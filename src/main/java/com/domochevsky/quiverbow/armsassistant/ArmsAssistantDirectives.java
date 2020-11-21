@@ -52,6 +52,7 @@ import net.minecraftforge.common.util.Constants.NBT;
 public class ArmsAssistantDirectives
 {
     private static final Splitter ON_NEWLINE = Splitter.onPattern("\\n").omitEmptyStrings().trimResults();
+    private static final CommandDispatcher<Builder> PARSER = buildParser();
 
     private EntityArmsAssistant armsAssistant;
     private final BiPredicate<EntityArmsAssistant, EntityLiving> targetSelector,
@@ -132,6 +133,28 @@ public class ArmsAssistantDirectives
 
     private static ArmsAssistantDirectives fromLines(EntityArmsAssistant armsAssistant, Iterable<String> lines, Consumer<ITextComponent> errorHandler)
     {
+        Builder builder = new Builder(armsAssistant);
+        int lineNumber = 1;
+        for (String line : lines)
+        {
+            try
+            {
+                ParseResults<Builder> parse = PARSER.parse(line, builder);
+                PARSER.execute(parse);
+            }
+            catch (CommandSyntaxException e)
+            {
+                errorHandler.accept(new TextComponentTranslation(
+                    QuiverbowMain.MODID + ".arms_assistant.directives.errorPrefix", lineNumber).appendText(e.getMessage()));
+            }
+            //TODO Revisit line counting, it doesn't handle empty lines well
+            lineNumber += 1;
+        }
+        return new ArmsAssistantDirectives(builder);
+    }
+
+    private static CommandDispatcher<Builder> buildParser()
+    {
         CommandDispatcher<Builder> dispatcher = new CommandDispatcher<>();
         dispatcher.register(targetingDirective("TARGET", (builder, selector) -> builder.targetSelectors.add(selector)));
         dispatcher.register(targetingDirective("IGNORE", (builder, selector) -> builder.targetBlacklist.add(selector)));
@@ -167,24 +190,7 @@ public class ArmsAssistantDirectives
                 return Command.SINGLE_SUCCESS;
             }))
         );
-        Builder builder = new Builder(armsAssistant);
-        int lineNumber = 1;
-        for (String line : lines)
-        {
-            try
-            {
-                ParseResults<Builder> parse = dispatcher.parse(line, builder);
-                dispatcher.execute(parse);
-            }
-            catch (CommandSyntaxException e)
-            {
-                errorHandler.accept(new TextComponentTranslation(
-                    QuiverbowMain.MODID + ".arms_assistant.directives.errorPrefix", lineNumber).appendText(e.getMessage()));
-            }
-            //TODO Revisit line counting, it doesn't handle empty lines well
-            lineNumber += 1;
-        }
-        return new ArmsAssistantDirectives(builder);
+        return dispatcher;
     }
 
     private static final DynamicCommandExceptionType UNKNOWN_ENTITY
@@ -243,13 +249,13 @@ public class ArmsAssistantDirectives
         = new DynamicCommandExceptionType(condition -> new LiteralMessage("Unknown entity condition '" + condition + "'"));
     private static BiPredicate<EntityArmsAssistant, EntityLiving> parseEntityCondition(String condition) throws CommandSyntaxException
     {
-        if (condition.equals("hostile"))
+        if (condition.equals("HOSTILE"))
             return (directedEntity, target) -> IMob.MOB_SELECTOR.apply(target);
-        else if (condition.equals("friendly"))
+        else if (condition.equals("FRIENDLY"))
             return (directedEntity, target) -> directedEntity.isOnSameTeam(target);
-        else if (condition.equals("injured"))
+        else if (condition.equals("INJURED"))
             return (directedEntity, target) -> target.getHealth() < target.getMaxHealth();
-        else if (condition.equals("flying"))
+        else if (condition.equals("FLYING"))
             return (directedEntity, target) -> target instanceof EntityFlying || target instanceof EntityBat;
         else
             throw UNKNOWN_ENTITY_CONDITION.create(condition);
