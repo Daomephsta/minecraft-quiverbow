@@ -129,21 +129,18 @@ public class ERA extends WeaponBase
 							damageTerrain); // Hurtin' more
 				}
 
-				if (!world.isRemote)
-				{
-					// Spawn projectile and go
-					EnderAccelerator shot = new EnderAccelerator(world, entity, 5.0f);
+				// Spawn projectile and go
+				EnderAccelerator shot = new EnderAccelerator(world, entity, 5.0f);
 
-					int dmg_range = getProperties().getDamageMax() - getProperties().getDamageMin();
-					int dmg = getProperties().getDamageMin() + world.rand.nextInt(dmg_range + 1);
+				int dmg_range = getProperties().getDamageMax() - getProperties().getDamageMin();
+				int dmg = getProperties().getDamageMin() + world.rand.nextInt(dmg_range + 1);
 
-					shot.damage = dmg;
-					shot.ticksInAirMax = 120; // 6 sec?
-					shot.damageTerrain = damageTerrain;
-					shot.explosionSize = getProperties().getFloat(PROP_SELF_EXPLOSION_SIZE);
+				shot.damage = dmg;
+				shot.ticksInAirMax = 120; // 6 sec?
+				shot.damageTerrain = damageTerrain;
+				shot.explosionSize = getProperties().getFloat(PROP_SELF_EXPLOSION_SIZE);
 
-					world.spawnEntity(shot);
-				}
+				world.spawnEntity(shot);
 
 				// Set weapon to "burnt out" (if the user's a player and not in creative mode)
 				if (entity instanceof EntityPlayer)

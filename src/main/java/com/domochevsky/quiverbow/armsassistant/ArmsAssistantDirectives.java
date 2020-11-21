@@ -4,6 +4,7 @@ import static com.domochevsky.quiverbow.util.brigadier.ListArgumentType.getList;
 import static com.domochevsky.quiverbow.util.brigadier.ListArgumentType.list;
 import static com.domochevsky.quiverbow.util.brigadier.ResourceLocationArgumentType.getResourceLocation;
 import static com.domochevsky.quiverbow.util.brigadier.ResourceLocationArgumentType.resourceLocation;
+import static com.google.common.collect.Streams.stream;
 import static com.mojang.brigadier.arguments.StringArgumentType.string;
 
 import java.util.*;
@@ -16,6 +17,8 @@ import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.armsassistant.ai.ArmsAssistantAITargeterControlled;
 import com.domochevsky.quiverbow.armsassistant.ai.EntityAIFollowOwner;
 import com.domochevsky.quiverbow.armsassistant.ai.EntityAIMaintainPosition;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
+import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.google.common.base.Splitter;
 import com.google.gson.JsonParseException;
 import com.mojang.brigadier.Command;
@@ -55,7 +58,7 @@ public class ArmsAssistantDirectives
                                                                  targetBlacklist;
     private final MovementAI movementAI;
     private final Set<Notification> notifications;
-    private final boolean remoteFire, staggerFire;
+    private final boolean remoteFire, staggerFire, safetyRange;
     private final Collection<EntityAIBase> aiTasks = new ArrayList<>();
 
     private ArmsAssistantDirectives(EntityArmsAssistant armsAssistant)
@@ -65,7 +68,7 @@ public class ArmsAssistantDirectives
         this.targetBlacklist = (directedEntity, target) -> false;
         this.movementAI = MovementAI.NONE;
         this.notifications = EnumSet.noneOf(Notification.class);
-        this.remoteFire = this.staggerFire = false;
+        this.remoteFire = this.staggerFire = this.safetyRange = false;
     }
 
     private ArmsAssistantDirectives(Builder builder)
@@ -77,6 +80,7 @@ public class ArmsAssistantDirectives
         this.notifications = builder.notifications;
         this.remoteFire = builder.remoteFire;
         this.staggerFire = builder.staggerFire;
+        this.safetyRange = builder.safetyRange;
     }
 
     public static ArmsAssistantDirectives defaultDirectives(EntityArmsAssistant armsAssistant)
@@ -153,6 +157,13 @@ public class ArmsAssistantDirectives
             .executes(ctx ->
             {
                 ctx.getSource().staggerFire = true;
+                return Command.SINGLE_SUCCESS;
+            }))
+        );
+        dispatcher.register(literal("SAFETY").then(literal("RANGE")
+            .executes(ctx ->
+            {
+                ctx.getSource().safetyRange = true;
                 return Command.SINGLE_SUCCESS;
             }))
         );
@@ -325,6 +336,18 @@ public class ArmsAssistantDirectives
 
     private boolean isValidTarget(EntityLiving candidate)
     {
+        if (safetyRange)
+        {
+            float maxDamageRange = stream(armsAssistant.getHeldEquipment())
+                .filter(stack -> stack.getItem() instanceof WeaponBase)
+                .map(stack -> ((WeaponBase) stack.getItem()).getProperties())
+                .filter(props -> props.has(CommonProperties.PROP_EXPLOSION_SIZE))
+                .map(props -> props.getFloat(CommonProperties.PROP_EXPLOSION_SIZE))
+                .max(Float::compareTo)
+                .orElse(0.0F) + 2.0F; // Extra distance, to be safe
+            if (armsAssistant.getDistance(candidate) <= maxDamageRange)
+                return false;
+        }
         return targetSelector.test(armsAssistant, candidate) && !targetBlacklist.test(armsAssistant, candidate);
     }
 
@@ -379,7 +402,8 @@ public class ArmsAssistantDirectives
         MovementAI movementAI = MovementAI.NONE;
         Set<Notification> notifications;
         boolean remoteFire = false,
-                staggerFire = false;
+                staggerFire = false,
+                safetyRange = false;
 
         Builder(EntityArmsAssistant armsAssistant)
         {
