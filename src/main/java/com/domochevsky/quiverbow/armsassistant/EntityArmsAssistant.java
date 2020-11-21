@@ -65,16 +65,14 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 	{
 		super(world);
 		this.setSize(1.0F, 1.2F);
-		this.directives = ArmsAssistantDirectives.defaultDirectives(this);
-		this.directivesBook = ItemStack.EMPTY;
+        updateDirectives(ItemStack.EMPTY);
 	}
 
 	public EntityArmsAssistant(World world, EntityPlayer player)
 	{
 		this(world);
 		this.ownerUUID = player.getPersistentID();
-		this.directives = ArmsAssistantDirectives.defaultDirectives(this);
-		this.directivesBook = ItemStack.EMPTY;
+        updateDirectives(ItemStack.EMPTY);
 	}
 
 	@Override
@@ -260,7 +258,8 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 	    if (world.isRemote)
 	        return;
 	    this.directivesBook = directivesBook;
-	    this.directives.revertAI();
+	    if (this.directives != null)
+	        this.directives.revertAI();
 	    ArmsAssistantDirectives newDirectives = directivesBook.isEmpty()
 	    ? ArmsAssistantDirectives.defaultDirectives(this)
 	    : ArmsAssistantDirectives.from(this, directivesBook, error ->
