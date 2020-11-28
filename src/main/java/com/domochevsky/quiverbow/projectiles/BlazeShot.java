@@ -1,7 +1,9 @@
 package com.domochevsky.quiverbow.projectiles;
 
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -24,10 +26,14 @@ public class BlazeShot extends ProjectileBase
 		super(world);
 	}
 
-	public BlazeShot(World world, Entity entity, float speed)
+	public BlazeShot(World world, Entity entity, WeaponProperties properties)
 	{
 		super(world);
-		this.doSetup(entity, speed);
+		this.doSetup(entity, properties.getProjectileSpeed());
+        this.damage = properties.generateDamage(rand);
+        this.knockbackStrength = properties.getKnockback();
+        this.fireDuration = properties.getInt(CommonProperties.FIRE_DUR_ENTITY);
+        this.ticksInGroundMax = 200;
 	}
 
 	@Override

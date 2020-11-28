@@ -1,41 +1,73 @@
 package com.domochevsky.quiverbow;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 import org.apache.logging.log4j.Logger;
 
+import com.domochevsky.quiverbow.accessor.BlockAccessors;
 import com.domochevsky.quiverbow.ammo.*;
 import com.domochevsky.quiverbow.armsassistant.EntityArmsAssistant;
 import com.domochevsky.quiverbow.blocks.FenLight;
 import com.domochevsky.quiverbow.config.QuiverbowConfig;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.items.ItemRegistry;
 import com.domochevsky.quiverbow.loot.LootHandler;
 import com.domochevsky.quiverbow.miscitems.IncompleteEnderRailAccelerator;
 import com.domochevsky.quiverbow.miscitems.PackedUpAA;
 import com.domochevsky.quiverbow.miscitems.QuiverBowItem;
+import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.net.PacketHandler;
 import com.domochevsky.quiverbow.projectiles.*;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 import com.domochevsky.quiverbow.util.RegistryHelper;
-import com.domochevsky.quiverbow.weapons.*;
+import com.domochevsky.quiverbow.weapons.AATargeter;
+import com.domochevsky.quiverbow.weapons.ERA;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
+import com.domochevsky.quiverbow.weapons.base.Weapon;
+import com.domochevsky.quiverbow.weapons.base.Weapon.Effect;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
+import com.domochevsky.quiverbow.weapons.base.ammosource.InternalAmmoSource;
+import com.domochevsky.quiverbow.weapons.base.ammosource.InventoryAmmoSource;
+import com.domochevsky.quiverbow.weapons.base.ammosource.MagazineAmmoSource;
+import com.domochevsky.quiverbow.weapons.base.ammosource.WaterAmmoSource;
+import com.domochevsky.quiverbow.weapons.base.effects.DamageWeapon;
+import com.domochevsky.quiverbow.weapons.base.effects.Knockback;
+import com.domochevsky.quiverbow.weapons.base.effects.PlaySound;
+import com.domochevsky.quiverbow.weapons.base.effects.SpawnParticle;
+import com.domochevsky.quiverbow.weapons.base.fireshape.HitscanFireShape;
+import com.domochevsky.quiverbow.weapons.base.fireshape.ProjectileFactory;
+import com.domochevsky.quiverbow.weapons.base.fireshape.SingleShotFireShape;
+import com.domochevsky.quiverbow.weapons.base.fireshape.SpreadFireShape;
+import com.domochevsky.quiverbow.weapons.base.trigger.*;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 
 import daomephsta.umbra.resources.ResourceLocationExt;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -67,7 +99,8 @@ public class QuiverbowMain
 
 	public static Logger logger;
 
-	public static ArrayList<WeaponBase> weapons = new ArrayList<WeaponBase>();
+	public static ArrayList<WeaponBase> legacyWeapons = new ArrayList<WeaponBase>();
+	public static ArrayList<Weapon> weapons = new ArrayList<>();
 	public static ArrayList<AmmoBase> ammo = new ArrayList<AmmoBase>();
 
 	public static CreativeTabs QUIVERBOW_TAB = new CreativeTabs(QuiverbowMain.MODID)
@@ -144,24 +177,298 @@ public class QuiverbowMain
 					RegistryHelper.registerItem(new AATargeter(), ".misc.", "aa_target_assistant"));
 		}
 
-		private static void registerWeapons(IForgeRegistry<Item> registry) // The
-																			// weapons
-																			// themselves
+		private static void registerWeapons(IForgeRegistry<Item> registry)
 		{
-			registry.registerAll(addWeapon(new CrossbowCompact()), addWeapon(new CrossbowDouble()),
-					addWeapon(new CrossbowBlaze()), addWeapon(new CrossbowAuto()), addWeapon(new CrossbowAutoImp()),
-					addWeapon(new DragonBox()), addWeapon(new DragonBoxQuad()), addWeapon(new RPG()),
-					addWeapon(new RPGImp()), addWeapon(new MortarArrow()), addWeapon(new MortarDragon()),
-					addWeapon(new Seedling()), addWeapon(new Potatosser()), addWeapon(new SnowCannon()),
-					addWeapon(new QuiverBow()), addWeapon(new EnderBow()), addWeapon(new EnderRifle()),
-					addWeapon(new FenFire()),
-					// TODO: Reimplement addWeapon(new FlintDuster()),
-					// TODO: Reimplement addWeapon(new Sunray()),
-					addWeapon(new PowderKnuckle()), addWeapon(new PowderKnuckleMod()), addWeapon(new SoulCairn()),
-					addWeapon(new AquaAccelerator()), addWeapon(new SilkenSpinner()),
-					// TODO: Reimplement addWeapon(new MediGun()),
-					addWeapon(new ERA())
-					);
+	        ProjectileFactory crossbowBolt = (world, shooter, properties) ->
+	        {
+	            EntityArrow entityarrow = Helper.createArrow(world, shooter);
+	            entityarrow.shoot(shooter, shooter.rotationPitch, shooter.rotationYaw, 0.0F,
+	                properties.getProjectileSpeed(), 0.5F);
+	            entityarrow.setDamage(properties.generateDamage(world.rand));
+	            entityarrow.setKnockbackStrength(properties.getKnockback());
+	            return entityarrow;
+	        };
+			registry.registerAll(
+                addWeapon("compact_crossbow",
+                    WeaponProperties.builder().minimumDamage(14).maximumDamage(20)
+                        .projectileSpeed(2.5F).knockback(2).cooldown(25).mobUsable(),
+                    new SemiAutomaticTrigger(new InternalAmmoSource(1), new SingleShotFireShape(crossbowBolt)))
+                    .fireEffects(new PlaySound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 0.5F)),
+                addWeapon("double_crossbow",
+                    WeaponProperties.builder().minimumDamage(14).maximumDamage(20)
+                        .projectileSpeed(2.5F).knockback(2).cooldown(25).mobUsable(),
+                    new SemiAutomaticTrigger(new InternalAmmoSource(2), new SingleShotFireShape(crossbowBolt)))
+                    .fireEffects(new PlaySound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 0.5F))
+                    .cooldownEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 0.4F)),
+				addWeapon("blaze_crossbow",
+                    WeaponProperties.builder().minimumDamage(20).maximumDamage(30)
+                        .projectileSpeed(3.0F).knockback(2).mobUsable()
+                        .intProperty(CommonProperties.FIRE_DUR_ENTITY, 15),
+                    new SemiAutomaticTrigger(new InternalAmmoSource(1), new SingleShotFireShape(BlazeShot::new)))
+                    .fireEffects(new PlaySound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 0.5F),
+                    new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.0F, 0.5F),
+                    new SpawnParticle(EnumParticleTypes.SMOKE_NORMAL, 0.5D)),
+				addWeapon("autoloader_crossbow",
+                    WeaponProperties.builder().minimumDamage(10).maximumDamage(16)
+                        .projectileSpeed(2.5F).knockback(1).cooldown(8).mobUsable(),
+                    new AutoLoadingTrigger(new InternalAmmoSource(8), new SingleShotFireShape(crossbowBolt)))
+                    .fireEffects(new PlaySound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 0.5F)),
+				addWeapon("auto_crossbow",
+                    WeaponProperties.builder().minimumDamage(10).maximumDamage(16)
+                        .projectileSpeed(2.5F).knockback(1).cooldown(8).mobUsable(),
+                    new AutomaticTrigger(new InternalAmmoSource(16), new SingleShotFireShape(crossbowBolt)))
+                    .fireEffects(new PlaySound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 0.5F)));
+			ProjectileFactory arrow = (world, user, properties) ->
+			{
+			    float seconds = (user.getActiveItemStack().getMaxItemUseDuration() - user.getItemInUseCount()) / 20.0F;
+			    float velocity = Math.min(seconds * (seconds + 2.0F) / 3.0F, 1.0F);
+			    EntityArrow entityarrow = Helper.createArrow(world, user);
+			    entityarrow.shoot(user, user.rotationPitch, user.rotationYaw, 0.0F, velocity * 3.0F, 1.0F);
+			    if (velocity >= 1.0F)
+			        entityarrow.setIsCritical(true);
+			    entityarrow.pickupStatus = user instanceof EntityPlayer
+			        && ((EntityPlayer) user).capabilities.isCreativeMode
+			        ? EntityArrow.PickupStatus.CREATIVE_ONLY
+			            : EntityArrow.PickupStatus.ALLOWED;
+			    return entityarrow;
+			};
+            Effect arrowSound = (world, user, stack, properties) ->
+            {
+                float seconds = (user.getActiveItemStack().getMaxItemUseDuration() - user.getItemInUseCount()) / 20.0F;
+                float velocity = Math.min(seconds * (seconds + 2.0F) / 3.0F, 1.0F);
+                float pitch = 1.0F / (world.rand.nextFloat() * 0.4F + 1.2F) + velocity * 0.5F;
+                Helper.playSoundAtEntityPos(user, SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, pitch);
+            };
+			registry.registerAll(
+    			addWeapon("quiverbow",
+                    WeaponProperties.builder(),
+                    new DrawnTrigger(new InternalAmmoSource(256), new SingleShotFireShape(arrow)))
+                    .fireEffects(arrowSound),
+                addWeapon("ender_bow",
+                    WeaponProperties.builder().floatProperty(CommonProperties.MAX_ZOOM, 30),
+                    new DrawnTrigger(new InventoryAmmoSource(Items.ARROW), new SingleShotFireShape(arrow)))
+                    .fireEffects(new DamageWeapon(), arrowSound)
+                    .setMaxDamage(256)
+            );
+            Effect breakIfEmpty = (world, shooter, stack, properties) ->
+            {
+                if (stack.getItemDamage() >= stack.getMaxDamage())
+                {
+                    shooter.renderBrokenItemStack(stack);
+                    stack.setCount(0);
+                    if (!world.isRemote)
+                    {
+                        shooter.entityDropItem(new ItemStack(Blocks.PISTON), 1.0F);
+                        shooter.entityDropItem(new ItemStack(Blocks.TRIPWIRE_HOOK), 1.0F);
+                    }
+                    Helper.playSoundAtEntityPos(shooter, SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 1.5F);
+                }
+            };
+            registry.register(addWeapon("seedling",
+                    WeaponProperties.builder().minimumDamage(1)
+                        .maximumDamage(1).projectileSpeed(1.3F).mobUsable()
+                        .floatProperty(CommonProperties.SPREAD, 5.0F),
+                    new AutomaticTrigger(new InternalAmmoSource(32), new SpreadFireShape(Seed::new, 1)))
+                    .fireEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.6F, 0.7F),
+                        breakIfEmpty)
+            );
+			registry.registerAll(
+				addWeapon("dragonbox",
+					WeaponProperties.builder().minimumDamage(4).maximumDamage(6)
+					    .projectileSpeed(1.3F).knockback(2).kickback(1).cooldown(10).mobUsable()
+		                .intProperty(CommonProperties.FIRE_DUR_ENTITY, 6)
+		                .floatProperty(CommonProperties.EXPLOSION_SIZE, 1.0F)
+		                .booleanProperty(CommonProperties.DAMAGE_TERRAIN, true),
+		            new AutomaticTrigger(new InternalAmmoSource(64), new SingleShotFireShape(SmallRocket::new)))
+					.fireEffects(new PlaySound(SoundEvents.ENTITY_FIREWORK_LAUNCH, 1.0F, 1.0F)),
+				addWeapon("quad_dragonbox",
+                    WeaponProperties.builder().minimumDamage(4).maximumDamage(6)
+                    .projectileSpeed(1.3F).knockback(2).kickback(1).cooldown(10).mobUsable()
+                    .intProperty(CommonProperties.FIRE_DUR_ENTITY, 6)
+                    .floatProperty(CommonProperties.EXPLOSION_SIZE, 1.0F)
+                    .booleanProperty(CommonProperties.DAMAGE_TERRAIN, true)
+                    .floatProperty(CommonProperties.SPREAD, 6),
+                    new AutomaticTrigger(new InternalAmmoSource(64),
+                        new SpreadFireShape(SmallRocket::new, 4)))
+                    .fireEffects(new PlaySound(SoundEvents.ENTITY_FIREWORK_LAUNCH, 1.0F, 1.0F)),
+				addWeapon("rocket_launcher",
+					WeaponProperties.builder().projectileSpeed(2.0F).kickback(3).cooldown(60).mobUsable()
+		                .floatProperty(CommonProperties.EXPLOSION_SIZE, 4.0F)
+		                .intProperty(BigRocket.TRAVEL_TIME, 20)
+		                .booleanProperty(CommonProperties.DAMAGE_TERRAIN, true),
+                    new AutomaticTrigger(new InternalAmmoSource(1), new SingleShotFireShape(SmallRocket::new)))
+                    .fireEffects(new PlaySound(SoundEvents.ENTITY_FIREWORK_LAUNCH, 2.0F, 0.6F)),
+				addWeapon("rocket_launcher_imp",
+                    WeaponProperties.builder().projectileSpeed(2.0F).kickback(3).cooldown(60).mobUsable()
+                        .floatProperty(CommonProperties.EXPLOSION_SIZE, 4.0F)
+                        .intProperty(BigRocket.TRAVEL_TIME, 20)
+                        .booleanProperty(CommonProperties.DAMAGE_TERRAIN, true),
+                    new AutomaticTrigger(new InternalAmmoSource(1), new SingleShotFireShape(SmallRocket::new)))
+                    .fireEffects(new PlaySound(SoundEvents.ENTITY_FIREWORK_LAUNCH, 2.0F, 0.6F)),
+				addWeapon("arrow_mortar",
+                    WeaponProperties.builder().minimumDamage(2).maximumDamage(10)
+                        .projectileSpeed(1.5F).kickback(3).cooldown(20).mobUsable(),
+                    new SemiAutomaticTrigger(new InternalAmmoSource(8), new SingleShotFireShape(SabotArrow::new)))
+					.fireEffects(new PlaySound(SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 2.0F),
+					    new SpawnParticle(EnumParticleTypes.SMOKE_LARGE, 0))
+					.cooldownEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.6F, 2.0F)),
+				addWeapon("dragon_mortar",
+                    WeaponProperties.builder().minimumDamage(4).maximumDamage(6)
+                        .projectileSpeed(3.0F).cooldown(20).mobUsable()
+                        .intProperty(CommonProperties.FIRE_DUR_ENTITY, 6)
+                        .floatProperty(CommonProperties.EXPLOSION_SIZE, 1.0F),
+                    new SemiAutomaticTrigger(new InternalAmmoSource(8), new SingleShotFireShape(SabotRocket::new)))
+                    .fireEffects(new PlaySound(SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 2.0F),
+                        new SpawnParticle(EnumParticleTypes.SMOKE_LARGE, 0))
+                    .cooldownEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.6F, 2.0F)),
+				addWeapon("potatosser",
+					WeaponProperties.builder().minimumDamage(2).maximumDamage(5)
+					    .projectileSpeed(1.5F).cooldown(15).mobUsable()
+					    .booleanProperty(CommonProperties.SHOULD_DROP, true),
+					new AutomaticTrigger(new InternalAmmoSource(14), new SingleShotFireShape(PotatoShot::new)))
+					.fireEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 0.7F, 0.4F))
+					.cooldownEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.3F, 3.0F)),
+				addWeapon("snow_cannon",
+                    WeaponProperties.builder().minimumDamage(1).maximumDamage(2)
+                        .projectileSpeed(1.5F).kickback(2).cooldown(15).mobUsable()
+                        .floatProperty(CommonProperties.SPREAD, 10.0F)
+                        .intProperty(CommonProperties.SLOWNESS_STRENGTH, 3)
+                        .intProperty(CommonProperties.SLOWNESS_DUR, 40),
+                    new AutomaticTrigger(new InternalAmmoSource(64), new SpreadFireShape(SnowShot::new, 4)))
+                    .fireEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F)),
+				addWeapon("ender_rifle",
+                    WeaponProperties.builder().minimumDamage(4).maximumDamage(16)
+                        .projectileSpeed(3.0F).knockback(1).kickback(3).cooldown(25).mobUsable()
+                        .floatProperty(EnderShot.BONUS_DAMAGE, 1.0F)
+                        .floatProperty(CommonProperties.MAX_ZOOM, 30),
+                    new SemiAutomaticTrigger(new InternalAmmoSource(8), new SingleShotFireShape(FenGoop::new)))
+                    .fireEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F),
+                        new SpawnParticle(EnumParticleTypes.SMOKE_NORMAL, 0.0F))
+                    .cooldownEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.7F, 0.2F),
+                        new SpawnParticle(EnumParticleTypes.SMOKE_NORMAL, 0.0F)),
+				addWeapon("fen_fire",
+					WeaponProperties.builder().projectileSpeed(1.5F).cooldown(20)
+		                .intProperty(CommonProperties.FIRE_DUR_ENTITY, 1)
+		                .intProperty(CommonProperties.DESPAWN_TIME.getLeft(),
+		                    "How long fen lights stay lit in ticks. Set to 0 for infinite time", 0),
+                    new SemiAutomaticTrigger(new InternalAmmoSource(32), new SingleShotFireShape(FenGoop::new)))
+                    .fireEffects(new PlaySound(SoundEvents.ENTITY_ARROW_SHOOT, 0.7F, 0.3F))
+                    .cooldownEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.8F, 2.0F)),
+				// TODO: Reimplement addWeapon(new FlintDuster()),
+				// TODO: Reimplement addWeapon(new Sunray()),
+				addWeapon("powder_knuckles",
+                    WeaponProperties.builder().minimumDamage(1).maximumDamage(18)
+                        .floatProperty(CommonProperties.EXPLOSION_SIZE, 1.5F)
+                        .booleanProperty(CommonProperties.DAMAGE_TERRAIN, true),
+                    new PunchTrigger(new InternalAmmoSource(8), new HitscanFireShape((world, user, properties, x, y, z) ->
+                    {
+                        if (!world.isRemote)
+                            world.createExplosion(user, x, y, z, properties.getFloat(CommonProperties.EXPLOSION_SIZE), properties.getBoolean(CommonProperties.DAMAGE_TERRAIN));
+                        NetHelper.sendParticleMessageToAllPlayers(world, user, EnumParticleTypes.SMOKE_NORMAL, (byte) 0);
+                    })))
+				    .fireEffects((world, user, stack, properties) -> Helper.causeSelfDamage(user, ((Weapon) stack.getItem()).getProperties().getDamageMin())),
+				addWeapon("powder_knuckles_mod",
+                    WeaponProperties.builder().minimumDamage(2).maximumDamage(14)
+                        .floatProperty(CommonProperties.EXPLOSION_SIZE, 1.5F),
+                    new PunchTrigger(new InternalAmmoSource(8), new HitscanFireShape((world, user, properties, x, y, z) ->
+                    {
+                        for (int deltaX = -1; deltaX <= 1; deltaX++)
+                        {
+                            for (int deltaY = -1; deltaY <= 1; deltaY++)
+                            {
+                                for (int deltaZ = -1; deltaZ <= 1; deltaZ++)
+                                {
+                                    BlockPos pos = new BlockPos(x + deltaX, y + deltaY, z + deltaZ);
+                                    IBlockState toBreak = world.getBlockState(pos);
+                                    float hardness = toBreak.getBlockHardness(world, pos);
+                                    // hardness 100 means resistant to all but the strongest explosions
+                                    if (hardness == -1 || hardness >= 100 || toBreak.getBlock().getHarvestLevel(toBreak) > 1)
+                                        continue;
+                                    if (user instanceof EntityPlayer && toBreak.getBlock()
+                                        .canSilkHarvest(world, pos, toBreak, (EntityPlayer) user))
+                                    {
+                                        List<ItemStack> items = Lists.newArrayList(BlockAccessors.getSilkTouchDrop(toBreak));
+                                        ForgeEventFactory.fireBlockHarvesting(items, world, pos, toBreak, 0, 1.0f, true, (EntityPlayer) user);
+                                        world.destroyBlock(pos, false);
+                                        for (ItemStack stack : items)
+                                            Block.spawnAsEntity(world, pos, stack);
+                                    }
+                                    else
+                                        Helper.breakBlock(world, user, pos);
+                                }
+                            }
+                        }
+                        if (!world.isRemote)
+                        {
+                            // Explosion ignores terrain, block destruction handled above
+                            world.createExplosion(user, x, y, z, properties.getFloat(CommonProperties.EXPLOSION_SIZE), false);
+                        }
+                        NetHelper.sendParticleMessageToAllPlayers(world, user, EnumParticleTypes.SMOKE_NORMAL, (byte) 0);
+                    }))),
+				addWeapon("soul_cairn",
+                    WeaponProperties.builder().projectileSpeed(3.0F).kickback(4).cooldown(20),
+                    new AutomaticTrigger(new InternalAmmoSource(1), new SingleShotFireShape(SoulShot::new)))
+                    .fireEffects(new PlaySound(SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 2.0F),
+                        new PlaySound(SoundEvents.BLOCK_NOTE_BASS, 1.0F, 0.4F),
+                        (world, user, stack, properties) -> Helper.causeSelfDamage(user, 2.0F)),
+                addWeapon("aqua_accelerator",
+                    WeaponProperties.builder().projectileSpeed(1.5F),
+                    new AutomaticTrigger(new WaterAmmoSource(), new SingleShotFireShape(WaterShot::new)))
+                    .fireEffects(new PlaySound(SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 2.0F)),
+				addWeapon("silken_spinner",
+                    WeaponProperties.builder().projectileSpeed(1.5F).cooldown(20),
+                    new SemiAutomaticTrigger(new InternalAmmoSource(8), new SingleShotFireShape(WebShot::new)))
+                    .fireEffects(new PlaySound(SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 2.0F)),
+                addWeapon("frost_lancer",
+                    WeaponProperties.builder().minimumDamage(9).maximumDamage(18)
+                        .projectileSpeed(3.5F).knockback(3).kickback(4).cooldown(40).mobUsable()
+                        .intProperty(CommonProperties.SLOWNESS_STRENGTH, 3)
+                        .intProperty(CommonProperties.SLOWNESS_DUR, 120)
+                        .intProperty(CommonProperties.NAUSEA_DUR, 120)
+                        .intProperty(ColdIron.NAUSEA_STRENGTH, 120)
+                        .floatProperty(CommonProperties.MAX_ZOOM, 20),
+                    new SemiAutomaticTrigger(new InternalAmmoSource(4),
+                        new SingleShotFireShape(ColdIron::new)))
+                    .fireEffects(new PlaySound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.8F, 1.5F),
+                        new SpawnParticle(EnumParticleTypes.SMOKE_NORMAL, 0.0F))
+                    .cooldownEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.7F, 0.2F),
+                        new SpawnParticle(EnumParticleTypes.SMOKE_NORMAL, 0.0F))
+                // TODO: Reimplement addWeapon(new MediGun())
+            );
+			registry.register(addWeapon("ender_rail_accelerator",
+                WeaponProperties.builder().minimumDamage(120).maximumDamage(150)
+                    .projectileSpeed(5.0F).kickback(30)
+                    .floatProperty(ERA.SELF_EXPLOSION_SIZE,4.0F)
+                    .floatProperty(CommonProperties.EXPLOSION_SIZE, 8.0F)
+                    .booleanProperty(CommonProperties.DAMAGE_TERRAIN, true),
+                new ERATrigger(new InternalAmmoSource(1),
+                    new SingleShotFireShape(EnderAccelerator::new)))
+                .fireEffects(new Knockback(),
+                    (world, user, stack, properties) ->
+                    {
+                        if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("hasEmeraldMuzzle"))
+                        {
+                            Helper.causeSelfDamage(user, 15.0F);
+                            Helper.playSoundAtEntityPos(user,
+                                SoundEvents.ENTITY_GENERIC_EXPLODE, 2.0F, 0.1F);
+                            NetHelper.sendParticleMessageToAllPlayers(world, user,
+                                EnumParticleTypes.SMOKE_LARGE, (byte) 6);
+                        }
+                        else
+                        {
+                            Helper.causeSelfDamage(user, 20.0F);
+                            if (!world.isRemote)
+                            {
+                                world.createExplosion(user, user.posX, user.posY, user.posZ,
+                                    properties.getFloat(ERA.SELF_EXPLOSION_SIZE),
+                                    properties.getBoolean(CommonProperties.DAMAGE_TERRAIN));
+                            }
+                        }
+                    },
+                    new PlaySound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.8F, 1.5F),
+                    new SpawnParticle(EnumParticleTypes.SMOKE_NORMAL, 0.0F))
+                .cooldownEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.7F, 0.2F),
+                    new SpawnParticle(EnumParticleTypes.SMOKE_NORMAL, 0.0F)));
 			registerWeaponsWithAmmo(registry);
 		}
 
@@ -170,41 +477,161 @@ public class QuiverbowMain
 		{
 			// Sugar Engine and Sugar Magazine
 			AmmoBase sugarMag = addAmmo(new GatlingAmmo(), "sugar_magazine");
-			registry.registerAll(sugarMag, addWeapon(new SugarEngine(sugarMag)));
+			registry.registerAll(sugarMag, addWeapon("sugar_engine",
+                WeaponProperties.builder().minimumDamage(1).maximumDamage(3)
+                    .projectileSpeed(2.0F).kickback(1).mobUsable()
+                    .floatProperty(CommonProperties.SPREAD, 5.0F),
+                new SpoolingTrigger(new MagazineAmmoSource(sugarMag)
+                        .unloadEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F)),
+                    new SpreadFireShape(SugarRod::new, 1)))
+                .fireEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.0F, 0.2F),
+                    new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 0.6F, 3.0F), new Knockback()));
 
 			// Obsidian weapons and Obsidian Magazine
 			AmmoBase obsidianMag = addAmmo(new ObsidianMagazine(), "obsidian_magazine");
-			registry.registerAll(obsidianMag, addWeapon(new OSR(obsidianMag)), addWeapon(new OSP(obsidianMag)),
-					addWeapon(new OWR(obsidianMag)));
-
-			AmmoBase coldIronClip = addAmmo(new AmmoBase(), "cold_iron_clip");
-			registry.registerAll(coldIronClip, addWeapon(new FrostLancer(coldIronClip)));
+			registry.registerAll(obsidianMag,
+			    addWeapon("splinter_rifle",
+                    WeaponProperties.builder().minimumDamage(7).maximumDamage(13)
+                        .projectileSpeed(3.0F).knockback(2).kickback(4).cooldown(100).mobUsable()
+                        .intProperty(CommonProperties.WITHER_STRENGTH, 3)
+                        .intProperty(CommonProperties.WITHER_DUR, 61),
+                    new SemiAutomaticTrigger(new MagazineAmmoSource(obsidianMag)
+                            .unloadEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.7F, 0.3F)),
+                        new SingleShotFireShape(OSRShot::new)))
+                    .fireEffects(new PlaySound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.5F, 1.5F),
+                        new SpawnParticle(EnumParticleTypes.SMOKE_NORMAL, 0.0F))
+                    .cooldownEffects(new SpawnParticle(EnumParticleTypes.SMOKE_NORMAL, 0.0F),
+                        new PlaySound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.5F, 1.2F)),
+			    addWeapon("splinter_pistol",
+                    WeaponProperties.builder().minimumDamage(4).maximumDamage(8)
+                        .projectileSpeed(1.7F).cooldown(15).mobUsable()
+                        .intProperty(CommonProperties.WITHER_STRENGTH, 1)
+                        .intProperty(CommonProperties.WITHER_DUR, 61),
+                    new SemiAutomaticTrigger(new MagazineAmmoSource(obsidianMag)
+                            .unloadEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.7F, 0.3F)),
+                        new SingleShotFireShape(OSPShot::new)))
+                    .fireEffects(new PlaySound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.4F, 1.5F),
+                        new SpawnParticle(EnumParticleTypes.SMOKE_NORMAL, 0.0F))
+                    .cooldownEffects(new PlaySound(SoundEvents.BLOCK_PISTON_EXTEND, 0.3F, 0.4F)),
+			    addWeapon("wither_rifle",
+                    WeaponProperties.builder().minimumDamage(7).maximumDamage(13)
+                    .projectileSpeed(3.0F).knockback(2).kickback(6).cooldown(60)
+                        .intProperty(OWRShot.MIN_MAGIC_DAMAGE, 6)
+                        .intProperty(OWRShot.MAX_MAGIC_DAMAGE, 14)
+                        .intProperty(CommonProperties.WITHER_STRENGTH, 3)
+                        .intProperty(CommonProperties.WITHER_DUR, 61),
+                    new SemiAutomaticTrigger(new MagazineAmmoSource(obsidianMag)
+                            .unloadEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.7F, 0.3F)),
+                        new SingleShotFireShape(OWRShot::new)))
+                    .fireEffects(new PlaySound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.5F, 1.5F),
+                        new SpawnParticle(EnumParticleTypes.SPELL_INSTANT, 0.0F))
+                    .cooldownEffects(new SpawnParticle(EnumParticleTypes.SMOKE_NORMAL, 0.0F),
+                        new PlaySound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 1.0F, 1.2F)));
 
 			AmmoBase goldMagazine = addAmmo(new GoldMagazine(), "gold_magazine");
-			registry.registerAll(goldMagazine, addWeapon(new CoinTosser(goldMagazine)),
-					addWeapon(new CoinTosserMod(goldMagazine)));
+			registry.registerAll(goldMagazine,
+                addWeapon("coin_tosser",
+                    WeaponProperties.builder().minimumDamage(1).maximumDamage(3)
+                        .projectileSpeed(2.5F).kickback(1) .cooldown(15).mobUsable()
+                        .booleanProperty(CommonProperties.SHOULD_DROP, true)
+                        .floatProperty(CommonProperties.SPREAD, 5),
+                    new AutomaticTrigger(new MagazineAmmoSource(goldMagazine)
+                        .unloadEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F)),
+                        new SpreadFireShape(CoinShot::new, 9)))
+                    .fireEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 3.0F)),
+			    addWeapon("coin_tosser_mod",
+                    WeaponProperties.builder().minimumDamage(1).maximumDamage(3)
+                    .projectileSpeed(2.5F).kickback(1) .cooldown(15).mobUsable()
+                    .booleanProperty(CommonProperties.SHOULD_DROP, true)
+                    .floatProperty(CommonProperties.SPREAD, 2),
+                    new AutomaticTrigger(new MagazineAmmoSource(goldMagazine)
+                            .unloadEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F)),
+                        new SpreadFireShape(CoinShot::new, 3)))
+                    .fireEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 3.0F)));
 
 			// Hidden Ender Pistol and Ender Quartz Magazine
 			AmmoBase enderQuartzMagazine = addAmmo(new EnderQuartzClip(), "ender_quartz_magazine");
-			registry.registerAll(enderQuartzMagazine, addWeapon(new Endernymous(enderQuartzMagazine)));
+			registry.registerAll(enderQuartzMagazine, addWeapon("hidden_ender_pistol",
+                WeaponProperties.builder().minimumDamage(16).maximumDamage(24)
+                    .projectileSpeed(5.0F).kickback(1).cooldown(20)
+                    .intProperty(CommonProperties.DESPAWN_TIME, 40),
+                new SemiAutomaticTrigger(new MagazineAmmoSource(enderQuartzMagazine)
+                        .unloadEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.3F)),
+                    new SingleShotFireShape(EnderAno::new)))
+                .fireEffects(new PlaySound(SoundEvents.ENTITY_FIREWORK_LARGE_BLAST, 1.4F, 0.5F),
+                    new SpawnParticle(EnumParticleTypes.PORTAL, 0.0F))
+                .cooldownEffects(new PlaySound(SoundEvents.BLOCK_GLASS_BREAK, 0.3F, 0.3F)));
 
 			AmmoBase lapisMagazine = addAmmo(new LapisMagazine(), "lapis_magazine");
-			registry.registerAll(lapisMagazine, addWeapon(new LapisCoil(lapisMagazine)));
+			registry.registerAll(lapisMagazine, addWeapon("lapis_coil",
+                WeaponProperties.builder().minimumDamage(1).maximumDamage(3)
+                    .projectileSpeed(2.5F).cooldown(4).mobUsable()
+                    .intProperty(LapisShot.WEAKNESS_STRENGTH, 2)
+                    .intProperty(LapisShot.WEAKNESS_DUR, 40)
+                    .intProperty(CommonProperties.NAUSEA_DUR, 40)
+                    .intProperty(LapisShot.HUNGER_STRENGTH, 2)
+                    .intProperty(LapisShot.HUNGER_DUR, 40)
+                    .intProperty(CommonProperties.DESPAWN_TIME, 100),
+                new AutomaticTrigger(new MagazineAmmoSource(lapisMagazine)
+                        .unloadEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F)),
+                    new SingleShotFireShape(LapisShot::new)))
+                .fireEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.0F, 0.5F),
+                    new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 3.0F)));
 
 			AmmoBase largeNetherrackMagazine = addAmmo(new LargeNetherrackMagazine(), "large_netherrack_magazine");
-			registry.registerAll(largeNetherrackMagazine, addWeapon(new NetherBellows(largeNetherrackMagazine)));
+			registry.registerAll(largeNetherrackMagazine, addWeapon("nether_bellows",
+    			WeaponProperties.builder().minimumDamage(1).maximumDamage(1)
+    			    .projectileSpeed(0.75F).mobUsable()
+    			    .intProperty(CommonProperties.FIRE_DUR_ENTITY, 3)
+    			    .floatProperty(CommonProperties.SPREAD, 10),
+                new AutomaticTrigger(new MagazineAmmoSource(largeNetherrackMagazine)
+                        .unloadEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F)),
+                    new SpreadFireShape(NetherFire::new, 5)))
+                .fireEffects(new PlaySound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 1.0F, 0.3F)));
 
 			// Thorn Spitter, Proximity Thorn Thrower and Thorn Magazine
 			AmmoBase thornMagazine = addAmmo(new NeedleMagazine(), "thorn_magazine");
-			registry.registerAll(thornMagazine, addWeapon(new ThornSpitter(thornMagazine)),
-					addWeapon(new ProximityNeedler(thornMagazine)));
+			registry.registerAll(thornMagazine,
+			        addWeapon("thorn_spitter",
+    		            WeaponProperties.builder().minimumDamage(1).maximumDamage(2)
+    		                .projectileSpeed(1.75F).cooldown(10).mobUsable(),
+    	                new BurstTrigger(4, new MagazineAmmoSource(largeNetherrackMagazine)
+                                .unloadEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.7F, 1.3F)),
+    	                    new SingleShotFireShape(Thorn::new)))
+    	                .fireEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.6F, 0.6F)),
+					addWeapon("proximity_thorn_thrower",
+    					WeaponProperties.builder().minimumDamage(1).maximumDamage(2)
+    					    .projectileSpeed(2.0F).kickback(2).cooldown(20)
+        	                .intProperty(CommonProperties.DESPAWN_TIME, 6000)
+        	                .intProperty(ProxyThorn.PROX_CHECK_INTERVAL, 20)
+        	                .intProperty(ProxyThorn.THORN_AMOUNT, 32)
+        	                .floatProperty(ProxyThorn.TRIGGER_DISTANCE, 2.0F),
+                        new AutomaticTrigger(new MagazineAmmoSource(thornMagazine)
+                                .unloadEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.3F)),
+                            new SingleShotFireShape(ProxyThorn::new)))
+                        .fireEffects(new PlaySound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.7F, 1.5F)));
 
 			// Redstone Sprayer and Large Redstone Magazine
 			AmmoBase largeRedstoneMagazine = addAmmo(new LargeRedstoneMagazine(), "large_redstone_magazine");
-			registry.registerAll(largeRedstoneMagazine, addWeapon(new RedSprayer(largeRedstoneMagazine)));
+			registry.registerAll(largeRedstoneMagazine, addWeapon("redstone_sprayer",
+                WeaponProperties.builder().projectileSpeed(0.5F).mobUsable()
+                    .intProperty(CommonProperties.WITHER_STRENGTH, 2)
+                    .intProperty(CommonProperties.WITHER_DUR, 20)
+                    .intProperty(RedSpray.BLINDNESS_DUR, 20),
+                new AutomaticTrigger(new MagazineAmmoSource(largeRedstoneMagazine)
+                        .unloadEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F)),
+                    new SpreadFireShape(RedSpray::new, 5)))
+                .fireEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.6F, 0.9F)));
 
 			AmmoBase seedJar = addAmmo(new SeedJar(), "seed_jar");
-			registry.registerAll(seedJar, addWeapon(new SeedSweeper(seedJar)));
+			registry.registerAll(seedJar, addWeapon("seed_sweeper",
+                WeaponProperties.builder().minimumDamage(1).maximumDamage(1)
+                    .projectileSpeed(1.6F).mobUsable()
+                    .floatProperty(CommonProperties.SPREAD, 13.0F),
+                new AutomaticTrigger(new MagazineAmmoSource(seedJar)
+                        .unloadEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.7F, 0.3F)),
+                    new SpreadFireShape(Seed::new, 8)))
+                .fireEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.6F, 0.9F)));
 
 			// Lightning Red and Redstone Magazine
 			/* TODO: Reimplement _AmmoBase redstoneMagazine = addAmmo(new
@@ -213,18 +640,16 @@ public class QuiverbowMain
 			 * LightningRed(redstoneMagazine))); */
 		}
 
-		// Helper function for taking care of weapon registration
-		private static Item addWeapon(WeaponBase weapon)
+		private static Weapon addWeapon(String name, WeaponProperties.Builder propertiesBuilder, Trigger trigger)
 		{
-			QuiverbowMain.weapons.add(weapon);
-			weapon.setRegistryName(QuiverbowMain.MODID, weapon.getName());
-			weapon.setUnlocalizedName(QuiverbowMain.MODID + ".weapon." + weapon.getName());
-			return weapon;
+		    Weapon weapon = new Weapon(name, propertiesBuilder, trigger);
+            QuiverbowMain.weapons.add(weapon);
+		    return weapon;
 		}
 
 		private static void registerAmmo(IForgeRegistry<Item> registry)
 		{
-			registry.registerAll(addAmmo(new AmmoBase(), "arrow_bundle"),
+			registry.registerAll(addAmmo(new AmmoBase(), "arrow_bundle"), addAmmo(new AmmoBase(), "cold_iron_clip"),
 					addAmmo(new AmmoBase(), "rocket_bundle"), addAmmo(new AmmoBase(), "large_rocket"),
 					addAmmo(new BoxOfFlintDust(), "box_of_flint_dust"));
 		}
@@ -241,7 +666,7 @@ public class QuiverbowMain
 		public static void registerRecipes(RegistryEvent.Register<IRecipe> e)
 		{
 		    ReloadSpecificationRegistry.INSTANCE.loadData();
-		    for (WeaponBase weapon : ReloadSpecificationRegistry.INSTANCE.getRegisteredWeapons())
+		    for (Item weapon : ReloadSpecificationRegistry.INSTANCE.getRegisteredWeapons())
                 e.getRegistry().register(new RecipeLoadAmmo(weapon).setRegistryName(MODID, "load_" + weapon.getRegistryName().getResourcePath()));
 		}
 
@@ -308,9 +733,9 @@ public class QuiverbowMain
 						new ModelResourceLocation(ResourceLocationExt.prefixPath(ammunition.getRegistryName(), "ammo/"), "inventory"));
 			}
 
-			for (WeaponBase weapon : weapons)
+			for (Item weapon : Iterables.concat(weapons, legacyWeapons))
 			{
-			    if (weapon == ItemRegistry.AUTO_CROSSBOW)
+			    if (weapon == ItemRegistry.AUTOLOADER_CROSSBOW)
 			    {
 			        registerCrossbowModel(weapon);
 			        continue;
@@ -345,7 +770,7 @@ public class QuiverbowMain
 	       ModelLoader.setCustomMeshDefinition(crossbow, stack ->
 	       {
 	           if (stack.getItemDamage() >= stack.getMaxDamage()) return empty;
-	           if (!CrossbowAuto.isChambered(stack)) return unchambered;
+	           if (!AutoLoadingTrigger.isLoaded(stack)) return unchambered;
 	           return chambered;
 	       });
 	    }

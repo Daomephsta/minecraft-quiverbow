@@ -1,9 +1,14 @@
 package com.domochevsky.quiverbow.projectiles;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -13,6 +18,10 @@ import net.minecraft.world.World;
 
 public class OWRShot extends ProjectilePotionEffect
 {
+    public static final Pair<String, String>
+        MIN_MAGIC_DAMAGE = Pair.of("minDamageMagic", "The minimum magic damage this weapon does"),
+        MAX_MAGIC_DAMAGE = Pair.of("maxDamageMagic", "The maximum magic damage this weapon does");
+
 	public int entitiesHit;
 	public int damageMagic;
 
@@ -23,10 +32,15 @@ public class OWRShot extends ProjectilePotionEffect
 		super(world);
 	}
 
-	public OWRShot(World world, Entity entity, float speed, PotionEffect... effects)
+	public OWRShot(World world, Entity entity, WeaponProperties properties)
 	{
-		super(world, effects);
-		this.doSetup(entity, speed);
+		super(world, new PotionEffect(MobEffects.WITHER,
+		    properties.getInt(CommonProperties.WITHER_DUR),
+		    properties.getInt(CommonProperties.WITHER_STRENGTH)));
+		this.doSetup(entity, properties.getProjectileSpeed());
+		this.damage = properties.generateDamage(world.rand);
+		this.damageMagic = Helper.randomIntInRange(world.rand,
+		    properties.getInt(MIN_MAGIC_DAMAGE), properties.getInt(MAX_MAGIC_DAMAGE));
 	}
 
 	@Override

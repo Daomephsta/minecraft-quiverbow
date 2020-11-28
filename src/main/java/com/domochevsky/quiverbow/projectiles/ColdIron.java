@@ -1,9 +1,14 @@
 package com.domochevsky.quiverbow.projectiles;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.init.MobEffects;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
@@ -12,15 +17,23 @@ import net.minecraft.world.World;
 
 public class ColdIron extends ProjectilePotionEffect
 {
+    public static final Pair<String, String> NAUSEA_STRENGTH =
+        Pair.of("nauseaStrength", "The strength of the Nausea effect applied");
+
 	public ColdIron(World world)
 	{
 		super(world);
 	}
 
-	public ColdIron(World world, Entity entity, float speed, PotionEffect... effects)
+	public ColdIron(World world, Entity entity, WeaponProperties properties)
 	{
-		super(world, effects);
-		this.doSetup(entity, speed);
+		super(world, new PotionEffect(MobEffects.SLOWNESS, properties.getInt(CommonProperties.SLOWNESS_DUR),
+		    properties.getInt(CommonProperties.SLOWNESS_STRENGTH)),
+	        new PotionEffect(MobEffects.NAUSEA, properties.getInt(CommonProperties.NAUSEA_DUR),
+	            properties.getInt(NAUSEA_STRENGTH)));
+		this.doSetup(entity, properties.getProjectileSpeed());
+		this.damage = properties.generateDamage(world.rand);
+		this.knockbackStrength = properties.getKnockback();
 	}
 
 	@Override

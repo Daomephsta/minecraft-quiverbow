@@ -1,7 +1,9 @@
 package com.domochevsky.quiverbow.projectiles;
 
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -23,16 +25,12 @@ public class CoinShot extends ProjectileBase
 		super(world);
 	}
 
-	public CoinShot(World world, Entity entity, float speed)
+	public CoinShot(World world, Entity entity, WeaponProperties properties, float accHor, float accVert)
 	{
 		super(world);
-		this.doSetup(entity, speed);
-	}
-
-	public CoinShot(World world, Entity entity, float speed, float accHor, float accVert)
-	{
-		super(world);
-		this.doSetup(entity, speed, accHor, accVert);
+		this.doSetup(entity, properties.getProjectileSpeed(), accHor, accVert);
+        this.damage = properties.generateDamage(world.rand);
+        this.setDrop(properties.getBoolean(CommonProperties.SHOULD_DROP));
 	}
 
 	public void setDrop(boolean set)

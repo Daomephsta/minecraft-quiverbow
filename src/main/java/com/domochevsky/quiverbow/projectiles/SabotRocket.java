@@ -1,31 +1,34 @@
 package com.domochevsky.quiverbow.projectiles;
 
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class SabotRocket extends ProjectileBase
 {
-	public float speed;
-
 	public SabotRocket(World world)
 	{
 		super(world);
 	}
 
-	public SabotRocket(World world, Entity entity, float speed)
+	public SabotRocket(World world, Entity entity, WeaponProperties properties)
 	{
 		super(world);
-		this.speed = speed;
-		this.doSetup(entity, speed);
+		this.doSetup(entity, properties.getProjectileSpeed());
+        this.damage = properties.generateDamage(rand);
+        this.fireDuration = properties.getInt(CommonProperties.FIRE_DUR_ENTITY);
+        this.explosionSize = properties.getFloat(CommonProperties.EXPLOSION_SIZE);
 	}
 
 	@Override
@@ -62,8 +65,8 @@ public class SabotRocket extends ProjectileBase
 
 	private void fireRocket(float accHor, float accVert)
 	{
-		SmallRocket arrow = new SmallRocket(this.world, this, (this.speed / 3), accHor, accVert); // Half
-		// speed
+		float speed = MathHelper.sqrt(motionX * motionX + motionY * motionY + motionZ * motionZ);
+        SmallRocket arrow = new SmallRocket(this.world, this, speed / 3.0F, accHor, accVert); // Half
 
 		arrow.damage = this.damage;
 		arrow.fireDuration = this.fireDuration;

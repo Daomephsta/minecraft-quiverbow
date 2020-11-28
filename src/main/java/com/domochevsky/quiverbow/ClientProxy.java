@@ -2,7 +2,6 @@ package com.domochevsky.quiverbow;
 
 import com.domochevsky.quiverbow.armsassistant.EntityArmsAssistant;
 import com.domochevsky.quiverbow.client.render.EnderBowPredictionRenderer;
-import com.domochevsky.quiverbow.client.render.EnderBowPredictionRenderer.Tracer;
 import com.domochevsky.quiverbow.models.AATransformsMetadataSerialiser;
 import com.domochevsky.quiverbow.models.WeaponModel;
 import com.domochevsky.quiverbow.projectiles.*;
@@ -61,6 +60,7 @@ public class ClientProxy extends CommonProxy
 		registerSnowballStyleRender(FenGoop.class, Items.GLOWSTONE_DUST);
 		registerSnowballStyleRender(WebShot.class, Items.SNOWBALL);
 		registerInvisibleRender(EnderAno.class);
+		registerInvisibleRender(EnderAccelerator.class);
 		RenderingRegistry.registerEntityRenderingHandler(EntityArmsAssistant.class, RenderAA::new);
 		RenderingRegistry.registerEntityRenderingHandler(EnderBowPredictionRenderer.Tracer.class, EnderBowPredictionRenderer.RenderTracer::new);
 	}

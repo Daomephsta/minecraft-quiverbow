@@ -5,6 +5,7 @@ import java.util.*;
 
 import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.util.Resources;
+import com.domochevsky.quiverbow.weapons.base.Weapon;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.google.gson.*;
 
@@ -20,13 +21,13 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 public class ReloadSpecificationRegistry
 {
     public static final ReloadSpecificationRegistry INSTANCE = new ReloadSpecificationRegistry();
-    private final Map<WeaponBase, ReloadSpecification> specsByWeapon = new HashMap<>();
+    private final Map<Item, ReloadSpecification> specsByWeapon = new HashMap<>();
 
     private ReloadSpecificationRegistry() {}
 
-    public ReloadSpecification getSpecification(WeaponBase weapon)
+    public ReloadSpecification getSpecification(Item targetWeapon)
     {
-        return specsByWeapon.get(weapon);
+        return specsByWeapon.get(targetWeapon);
     }
 
     public void loadData()
@@ -61,8 +62,8 @@ public class ReloadSpecificationRegistry
                 }
             }
             Item weapon = getWeapon(path);
-            if (weapon instanceof WeaponBase)
-                specsByWeapon.put((WeaponBase) weapon, reloadSpecification);
+            if (weapon instanceof WeaponBase || weapon instanceof Weapon)
+                specsByWeapon.put(weapon, reloadSpecification);
             else
                 throw new JsonSyntaxException(weapon + " is not a weapon");
         });
@@ -76,7 +77,7 @@ public class ReloadSpecificationRegistry
         return ForgeRegistries.ITEMS.getValue(weaponId);
     }
 
-    public Collection<WeaponBase> getRegisteredWeapons()
+    public Set<Item> getRegisteredWeapons()
     {
         return specsByWeapon.keySet();
     }

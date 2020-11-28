@@ -26,10 +26,10 @@ import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.*;
-import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
@@ -176,34 +176,7 @@ public class Helper
 		{
 			if (QuiverbowConfig.sendBlockBreak)
 			{
-				if (entity instanceof ProjectileBase)
-				{
-					ProjectileBase projectile = (ProjectileBase) entity;
-
-					// If you were shot by a player, are they allowed to break this block?
-					Entity shooter = projectile.getShooter();
-
-					if (shooter instanceof EntityPlayerMP)
-					{
-						GameType gametype = world.getWorldInfo().getGameType();
-						int result = ForgeHooks.onBlockBreakEvent(world, gametype, (EntityPlayerMP) shooter, pos);
-
-						if (result == -1)
-						{
-							return false;
-						} // Not allowed to do this
-					}
-				}
-				else if (entity instanceof EntityPlayerMP)
-				{
-					GameType gametype = entity.world.getWorldInfo().getGameType();
-					int result = ForgeHooks.onBlockBreakEvent(entity.world, gametype, (EntityPlayerMP) entity, pos);
-
-					if (result == -1)
-					{
-						return false;
-					} // Not allowed to do this
-				}
+				breakBlock(world, entity, pos);
 			}
 			// else, not interested in sending such a event, so whatever
 
@@ -213,6 +186,33 @@ public class Helper
 		}
 
 		return false; // Couldn't break whatever's there
+	}
+
+    public static void breakBlock(World world, Entity breaker, BlockPos pos)
+    {
+        if (breaker instanceof ProjectileBase)
+            breaker = ((ProjectileBase) breaker).getShooter();
+        if (breaker instanceof EntityPlayerMP)
+        {
+        	if (ForgeHooks.onBlockBreakEvent(breaker.world,
+        	    breaker.world.getWorldInfo().getGameType(),
+        	    (EntityPlayerMP) breaker, pos) == -1)
+            {
+                return;
+            }
+        }
+        world.destroyBlock(pos, true);
+    }
+
+	public static boolean canEdit(World world, EntityLivingBase editor, BlockPos pos)
+	{
+	    if (editor instanceof EntityPlayer)
+	    {
+	        EntityPlayer player = (EntityPlayer) editor;
+	        return world.isBlockModifiable(player, pos);
+	    }
+	    else
+	        return world.getGameRules().getBoolean("mobGriefing");
 	}
 
 	// Does the weapon have a custom name or other upgrades? If so then we're
@@ -315,7 +315,7 @@ public class Helper
 		return result;
 	}
 
-	public static void raytraceAll(List<RayTraceResult> results, World world, @Nullable Entity exclude, Vec3d startVec, Vec3d endVec)
+	public static List<RayTraceResult> raytraceAll(List<RayTraceResult> results, World world, @Nullable Entity exclude, Vec3d startVec, Vec3d endVec)
 	{
 		RayTraceResult blockRaytrace = world.rayTraceBlocks(startVec, endVec);
 		if (blockRaytrace != null) results.add(blockRaytrace);
@@ -331,10 +331,19 @@ public class Helper
 			RayTraceResult intercept = collisionBB.calculateIntercept(startVec, endVec);
 			if (intercept != null) results.add(new RayTraceResult(entity, intercept.hitVec));
 		}
+		return results;
 	}
 
 	public static int randomIntInRange(Random random, int min, int max)
 	{
 		return random.nextInt(max - min + 1) + min;
+	}
+
+	public static void causeSelfDamage(EntityLivingBase self, float amount)
+	{
+	    if (self instanceof EntityPlayer)
+	        self.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) self), amount);
+	    else
+	        self.attackEntityFrom(DamageSource.causeMobDamage(self), amount);
 	}
 }

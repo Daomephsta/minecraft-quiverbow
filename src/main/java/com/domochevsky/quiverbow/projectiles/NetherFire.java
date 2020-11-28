@@ -1,7 +1,9 @@
 package com.domochevsky.quiverbow.projectiles;
 
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 
 import net.minecraft.block.BlockSnow;
 import net.minecraft.block.material.Material;
@@ -22,10 +24,11 @@ public class NetherFire extends ProjectileBase
 		super(world);
 	}
 
-	public NetherFire(World world, Entity entity, float speed, float accHor, float accVert)
+	public NetherFire(World world, Entity entity, WeaponProperties properties, float accHor, float accVert)
 	{
 		super(world);
-		this.doSetup(entity, speed, accHor, accVert);
+		this.doSetup(entity, properties.getProjectileSpeed(), accHor, accVert);
+        this.fireDuration = properties.getInt(CommonProperties.FIRE_DUR_ENTITY);
 	}
 
 	@Override

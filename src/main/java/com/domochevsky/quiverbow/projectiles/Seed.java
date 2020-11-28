@@ -1,6 +1,7 @@
 package com.domochevsky.quiverbow.projectiles;
 
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -18,10 +19,11 @@ public class Seed extends ProjectileBase
 		super(world);
 	}
 
-	public Seed(World world, Entity entity, float speed, float accHor, float accVert)
+	public Seed(World world, Entity entity, WeaponProperties properties, float accHor, float accVert)
 	{
 		super(world);
-		this.doSetup(entity, speed, accHor, accVert);
+		this.doSetup(entity, properties.getProjectileSpeed(), accHor, accVert);
+		this.damage = properties.generateDamage(rand);
 	}
 
 	@Override

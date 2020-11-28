@@ -347,8 +347,8 @@ public class ArmsAssistantDirectives
             float maxDamageRange = stream(armsAssistant.getHeldEquipment())
                 .filter(stack -> stack.getItem() instanceof WeaponBase)
                 .map(stack -> ((WeaponBase) stack.getItem()).getProperties())
-                .filter(props -> props.has(CommonProperties.PROP_EXPLOSION_SIZE))
-                .map(props -> props.getFloat(CommonProperties.PROP_EXPLOSION_SIZE))
+                .filter(props -> props.has(CommonProperties.EXPLOSION_SIZE))
+                .map(props -> props.getFloat(CommonProperties.EXPLOSION_SIZE))
                 .max(Float::compareTo)
                 .orElse(0.0F) + 2.0F; // Extra distance, to be safe
             if (armsAssistant.getDistance(candidate) <= maxDamageRange)

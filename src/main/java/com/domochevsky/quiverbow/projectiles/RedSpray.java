@@ -1,8 +1,13 @@
 package com.domochevsky.quiverbow.projectiles;
 
+import org.apache.commons.lang3.tuple.Pair;
+
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
@@ -11,16 +16,21 @@ import net.minecraft.world.World;
 
 public class RedSpray extends ProjectilePotionEffect
 {
-	public RedSpray(World world)
+	public static final Pair<String, String> BLINDNESS_DUR =
+    Pair.of("blindnessDur", "The duration in ticks of the Blindness effect applied");
+
+    public RedSpray(World world)
 	{
 		super(world);
 	}
 
-	public RedSpray(World world, Entity entity, float speed, float accHor, float accVert, PotionEffect... effects)
+	public RedSpray(World world, Entity entity, WeaponProperties properties, float accHor, float accVert)
 	{
-		super(world, effects);
+		super(world, new PotionEffect(MobEffects.WITHER, properties.getInt(CommonProperties.WITHER_DUR),
+		    properties.getInt(CommonProperties.WITHER_STRENGTH)),
+            new PotionEffect(MobEffects.BLINDNESS, properties.getInt(BLINDNESS_DUR), 1));
 		this.damage = 0;
-		this.doSetup(entity, speed, accHor, accVert);
+		this.doSetup(entity, properties.getProjectileSpeed(), accHor, accVert);
 	}
 
 	@Override

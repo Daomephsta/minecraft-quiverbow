@@ -1,5 +1,6 @@
 package com.domochevsky.quiverbow.projectiles;
 
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
 
 import net.minecraft.block.material.Material;
@@ -22,10 +23,10 @@ public class WaterShot extends ProjectileBase
 		super(world);
 	}
 
-	public WaterShot(World world, Entity entity, float speed)
+	public WaterShot(World world, Entity entity, WeaponProperties properties)
 	{
 		super(world);
-		this.doSetup(entity, speed);
+		this.doSetup(entity, properties.getProjectileSpeed());
 	}
 
 	@Override

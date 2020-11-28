@@ -1,7 +1,9 @@
 package com.domochevsky.quiverbow.projectiles;
 
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityEnderman;
@@ -22,10 +24,12 @@ public class EnderAno extends ProjectileBase
 		super(world);
 	}
 
-	public EnderAno(World world, Entity entity, float speed)
+	public EnderAno(World world, Entity entity, WeaponProperties properties)
 	{
 		super(world);
-		this.doSetup(entity, speed);
+		this.doSetup(entity, properties.getProjectileSpeed());
+		this.damage = properties.generateDamage(rand);
+        this.ticksInAirMax = properties.getInt(CommonProperties.DESPAWN_TIME);
 	}
 
 	@Override

@@ -1,9 +1,12 @@
 package com.domochevsky.quiverbow.projectiles;
 
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
@@ -19,17 +22,19 @@ public class OSPShot extends ProjectilePotionEffect
 		super(world);
 	}
 
-	public OSPShot(World world, Entity entity, float speed, PotionEffect... effects)
+	public OSPShot(World world, Entity entity, WeaponProperties properties)
 	{
-		super(world, effects);
-		this.doSetup(entity, speed);
+		super(world, new PotionEffect(MobEffects.WITHER,
+		    properties.getInt(CommonProperties.WITHER_DUR),
+		    properties.getInt(CommonProperties.WITHER_STRENGTH)));
+		this.doSetup(entity, properties.getProjectileSpeed());
+		this.damage = properties.generateDamage(world.rand);
 	}
 
 	@Override
 	public void doFlightSFX()
 	{
 		// Doing our own (reduced) gravity
-
 		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SMOKE_NORMAL,
 				(byte) 1);
 	}

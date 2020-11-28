@@ -1,12 +1,15 @@
 package com.domochevsky.quiverbow.projectiles;
 
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityBlaze;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
@@ -22,10 +25,12 @@ public class SnowShot extends ProjectilePotionEffect
 		super(world);
 	}
 
-	public SnowShot(World world, Entity entity, float speed, float accHor, float accVert, PotionEffect... effects)
+	public SnowShot(World world, Entity entity, WeaponProperties properties, float accHor, float accVert)
 	{
-		super(world, effects);
-		this.doSetup(entity, speed, accHor, accVert);
+		super(world, new PotionEffect(MobEffects.SLOWNESS, properties.getInt(CommonProperties.SLOWNESS_DUR),
+		    properties.getInt(CommonProperties.SLOWNESS_STRENGTH)));
+		this.doSetup(entity, properties.getProjectileSpeed(), accHor, accVert);
+		this.damage = properties.generateDamage(rand);
 	}
 
 	@Override

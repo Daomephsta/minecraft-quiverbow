@@ -1,6 +1,8 @@
 package com.domochevsky.quiverbow.projectiles;
 
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
@@ -20,11 +22,13 @@ public class EnderAccelerator extends ProjectileBase implements IEntityAdditiona
 		super(world);
 	}
 
-	public EnderAccelerator(World world, Entity entity, float speed)
+	public EnderAccelerator(World world, Entity entity, WeaponProperties properties)
 	{
 		super(world);
-		this.doSetup(entity, speed);
-
+		this.doSetup(entity, properties.getProjectileSpeed());
+        this.ticksInAirMax = 120;
+        this.damageTerrain = properties.getBoolean(CommonProperties.DAMAGE_TERRAIN);
+        this.explosionSize = properties.getFloat(CommonProperties.EXPLOSION_SIZE);
 		this.ownerX = entity.posX;
 		this.ownerY = entity.posY + entity.getEyeHeight();
 		this.ownerZ = entity.posZ;
@@ -39,12 +43,10 @@ public class EnderAccelerator extends ProjectileBase implements IEntityAdditiona
 	@Override
 	public void doFlightSFX()
 	{
-		if (this.ticksExisted > this.ticksInAirMax) // There's only so long we
-		// can exist
+		if (this.ticksExisted > this.ticksInAirMax)
 		{
-			this.world.createExplosion(this, this.posX, this.posY, this.posZ, 8.0f, damageTerrain); // Ripping
-			// itself
-			// apart
+		    if (!world.isRemote)
+		        this.world.createExplosion(this, this.posX, this.posY, this.posZ, 8.0f, damageTerrain);
 			this.setDead();
 		}
 
@@ -56,21 +58,28 @@ public class EnderAccelerator extends ProjectileBase implements IEntityAdditiona
 	@Override
 	public void onImpact(RayTraceResult target)
 	{
+	    System.out.println(target);
 		if (target.entityHit != null) // We hit a living thing!
 		{
-			// Damage
 			target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
 					this.damage);
 			target.entityHit.hurtResistantTime = 0; // No immunity frames
 		}
 
-		this.world.createExplosion(this, this.posX, this.posY, this.posZ, this.explosionSize, damageTerrain); // Big
-		// baddaboom
+		if (!world.isRemote)
+		    world.createExplosion(this, this.posX, this.posY, this.posZ, this.explosionSize, damageTerrain);
 
 		// SFX
 		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SPELL, (byte) 8);
 
 		this.setDead(); // No matter what, we're done here
+	}
+
+	// ERA self-detonation kills it otherwise
+	@Override
+	public boolean isImmuneToExplosions()
+	{
+	    return true;
 	}
 
 	@Override

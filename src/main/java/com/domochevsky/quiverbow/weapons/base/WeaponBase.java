@@ -243,7 +243,10 @@ public abstract class WeaponBase extends QuiverBowItem
 		subItems.add(Helper.createEmptyWeaponOrAmmoStack(this, 1));
 	}
 
-	protected abstract WeaponProperties createDefaultProperties();
+	protected WeaponProperties createDefaultProperties()
+	{
+        return properties;
+	}
 
 	public WeaponProperties getProperties()
 	{

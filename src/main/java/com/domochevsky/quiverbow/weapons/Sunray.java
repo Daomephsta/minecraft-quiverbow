@@ -61,7 +61,7 @@ public class Sunray extends WeaponBase
 			int dmg = getProperties().getDamageMin() + world.rand.nextInt(dmg_range + 1);
 
 			shot.damage = dmg;
-			shot.fireDuration = getProperties().getInt(CommonProperties.PROP_FIRE_DUR_ENTITY);
+			shot.fireDuration = getProperties().getInt(CommonProperties.FIRE_DUR_ENTITY);
 
 			shot.ignoreFrustumCheck = true;
 
@@ -105,7 +105,7 @@ public class Sunray extends WeaponBase
 	protected WeaponProperties createDefaultProperties()
 	{
 		return WeaponProperties.builder().minimumDamage(14).maximumDamage(20).kickback(3).cooldown(120)
-				.intProperty(CommonProperties.PROP_FIRE_DUR_ENTITY, CommonProperties.COMMENT_FIRE_DUR_ENTITY, 10)
+				.intProperty(CommonProperties.FIRE_DUR_ENTITY, 10)
 				.intProperty(PROP_MIN_LIGHT, "The minimum light level needed to recharge", 12).build();
 	}
 

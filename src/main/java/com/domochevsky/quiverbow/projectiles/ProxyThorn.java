@@ -2,8 +2,12 @@ package com.domochevsky.quiverbow.projectiles;
 
 import java.util.List;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -21,6 +25,11 @@ import net.minecraft.world.World;
 
 public class ProxyThorn extends ProjectileBase
 {
+    public static final Pair<String, String>
+        PROX_CHECK_INTERVAL = Pair.of("checkInterval", "The number of ticks inbetween proximity checks"),
+        THORN_AMOUNT = Pair.of("thornAmount", "The number of thorns created when a proximity thorn detonates"),
+        TRIGGER_DISTANCE = Pair.of("triggerDistance", "The distance proximity thorns trigger at");
+
 	public int proxyDelay = 20; // Only checking every so often
 	private double thornSpeed = 1.5;
 	public double triggerDistance = 2.0;
@@ -33,11 +42,16 @@ public class ProxyThorn extends ProjectileBase
 		super(world);
 	}
 
-	public ProxyThorn(World world, Entity entity, float speed)
+	public ProxyThorn(World world, Entity entity, WeaponProperties properties)
 	{
 		super(world);
-		this.doSetup(entity, speed);
-		this.thornSpeed = speed;
+		this.doSetup(entity, properties.getProjectileSpeed());
+		this.thornSpeed = properties.getProjectileSpeed();
+        this.damage = properties.generateDamage(rand);
+        this.ticksInGroundMax = properties.getInt(CommonProperties.DESPAWN_TIME);
+        this.triggerDistance = properties.getFloat(TRIGGER_DISTANCE);
+        this.proxyDelay = properties.getInt(PROX_CHECK_INTERVAL);
+        this.thornAmount = properties.getInt(THORN_AMOUNT);
 	}
 
 	@Override

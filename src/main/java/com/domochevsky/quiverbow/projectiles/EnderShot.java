@@ -1,6 +1,9 @@
 package com.domochevsky.quiverbow.projectiles;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
 
 import net.minecraft.entity.Entity;
@@ -12,6 +15,8 @@ import net.minecraft.world.World;
 
 public class EnderShot extends ProjectileBase
 {
+    public static final Pair<String, String> BONUS_DAMAGE = Pair.of("bonusDamage", "How much extra damage the projectile does for every tick in flight");
+
 	public int damageMax; // How much damage we can deal, tops
 	public double damageIncrease; // By how much we increase our current
 	// damage, each tick
@@ -21,10 +26,14 @@ public class EnderShot extends ProjectileBase
 		super(world);
 	}
 
-	public EnderShot(World world, Entity entity, float speed)
+	public EnderShot(World world, Entity entity, WeaponProperties properties)
 	{
 		super(world);
-		this.doSetup(entity, speed);
+		this.doSetup(entity, properties.getProjectileSpeed());
+        this.damage = properties.getDamageMin();
+        this.damageMax = properties.getDamageMax();
+        this.damageIncrease = properties.getFloat(BONUS_DAMAGE);
+        this.knockbackStrength = properties.getKnockback();
 	}
 
 	@Override

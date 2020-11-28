@@ -19,7 +19,7 @@ public class ItemRegistry
 	public static final Item COMPACT_CROSSBOW = null;
 	public static final Item DOUBLE_CROSSBOW = null;
 	public static final Item BLAZE_CROSSBOW = null;
-	public static final Item AUTO_CROSSBOW = null;
+	public static final Item AUTOLOADER_CROSSBOW = null;
 	public static final Item AUTO_CROSSBOW_IMP = null;
 	public static final Item COIN_TOSSER = null;
 	public static final Item COIN_TOSSER_MOD = null;

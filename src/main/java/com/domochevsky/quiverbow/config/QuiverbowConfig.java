@@ -4,10 +4,13 @@ import java.io.File;
 
 import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.projectiles.SoulShot;
+import com.domochevsky.quiverbow.weapons.base.Weapon;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.config.*;
+import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -34,13 +37,13 @@ public class QuiverbowConfig
 	public static boolean sendBlockBreak;
 	// How fast scoped weapons zoom in and out. Smaller numbers zoom faster.
 	public static float zoomSpeed;
-	
+
 	private static Configuration config;
 
 	public static void load(File suggestedFile)
 	{
 		config = new Configuration(suggestedFile);
-		
+
 		config.load();
 		//Load general config properties. The # makes the sorter put it at the top
 		breakGlass = config.getBoolean("breakGlass", "#general", true,
@@ -63,14 +66,16 @@ public class QuiverbowConfig
 		}
 		config.save();
 	}
-	
+
 	public static void loadWeaponProperties()
 	{
 		//Load weapon properties from config
-		for (WeaponBase weapon : QuiverbowMain.weapons)
+		for (WeaponBase weapon : QuiverbowMain.legacyWeapons)
 		{
 			weapon.getProperties().loadFromConfig(config.getCategory(weapon.getName()));
 		}
+		for (Weapon weapon : QuiverbowMain.weapons)
+            weapon.getProperties().loadFromConfig(config.getCategory(weapon.getRegistryName().getResourcePath()));
 		config.save();
 	}
 

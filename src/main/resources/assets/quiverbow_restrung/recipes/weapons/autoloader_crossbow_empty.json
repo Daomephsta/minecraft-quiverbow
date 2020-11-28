@@ -1,0 +1,33 @@
+{
+  "conditions": [
+    {
+      "type": "quiverbow_restrung:weapon_enabled",
+      "id": "quiverbow_restrung:autoloader_crossbow"
+    }
+  ],
+  "pattern": [
+    "iii",
+    "pcp",
+    " t "
+  ],
+  "key": {
+    "p": {
+      "item": "minecraft:piston"
+    },
+    "c": {
+      "item": "quiverbow_restrung:double_crossbow",
+      "data": 2
+    },
+    "t": {
+      "item": "minecraft:tripwire_hook"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:autoloader_crossbow",
+    "data": 8
+  }
+}

@@ -7,19 +7,16 @@
   ],
   "pattern": [
     "iii",
-    "pcp",
-    " t "
+    "scs",
+    " i "
   ],
   "key": {
-    "p": {
-      "item": "minecraft:piston"
+    "s": {
+      "item": "minecraft:sticky_piston"
     },
     "c": {
-      "item": "quiverbow_restrung:double_crossbow",
-      "data": 2
-    },
-    "t": {
-      "item": "minecraft:tripwire_hook"
+      "item": "quiverbow_restrung:autoloader_crossbow",
+      "data": 8
     },
     "i": {
       "item": "minecraft:iron_ingot"
@@ -28,6 +25,6 @@
   "type": "minecraft:crafting_shaped",
   "result": {
     "item": "quiverbow_restrung:auto_crossbow",
-    "data": 8
+    "data": 16
   }
 }

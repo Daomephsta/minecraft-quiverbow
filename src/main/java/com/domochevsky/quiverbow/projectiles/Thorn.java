@@ -1,6 +1,7 @@
 package com.domochevsky.quiverbow.projectiles;
 
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
 
 import net.minecraft.entity.Entity;
@@ -16,10 +17,11 @@ public class Thorn extends ProjectileBase
 		super(world);
 	}
 
-	public Thorn(World world, Entity entity, float speed)
+	public Thorn(World world, Entity entity, WeaponProperties properties)
 	{
 		super(world);
-		this.doSetup(entity, speed);
+		this.doSetup(entity, properties.getProjectileSpeed());
+		this.damage = properties.generateDamage(rand);
 	}
 
 	public Thorn(World world, Entity entity, float speed, float yaw, float pitch)

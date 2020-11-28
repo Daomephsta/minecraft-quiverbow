@@ -2,6 +2,8 @@ package com.domochevsky.quiverbow.weapons;
 
 import java.util.List;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
@@ -27,7 +29,11 @@ import net.minecraft.world.World;
 //TODO: JEI integration to direct players to craft the incomplete ERA
 public class ERA extends WeaponBase
 {
-    private static final String PROP_SELF_EXPLOSION_SIZE = "selfExplosionSize";
+    private static final String ACC_SFX = "accSFX";
+    private static final String VELOCITY = "acceleration";
+    private static final int MAX_VELOCITY = 54;
+    public static final Pair<String, String> SELF_EXPLOSION_SIZE = Pair.of("selfExplosionSize",
+        "How large the explosion at the user location is in blocks. A TNT explosion is 4.0 blocks");
     private static final String REINFORCED_MUZZLE = "hasEmeraldMuzzle";
 	private class ERAFiringBehaviour extends FiringBehaviourBase<ERA>
 	{
@@ -40,11 +46,7 @@ public class ERA extends WeaponBase
 		public void fire(ItemStack stack, World world, EntityLivingBase entity, EnumHand hand)
 		{
 			if (ERA.isAccelerating(stack))
-			{
-				return;
-			} // Already in the middle of firing
-
-			// Firing
+			    return;
 			ERA.startAccelerating(stack);
 		}
 
@@ -68,31 +70,27 @@ public class ERA extends WeaponBase
 
 		if (ERA.isAccelerating(stack))
 		{
-			stack.getTagCompound().setInteger("acceleration", stack.getTagCompound().getInteger("acceleration") - 1); // Ticking down
-			stack.getTagCompound().setFloat("accSFX", stack.getTagCompound().getFloat("accSFX") + 0.02f); // And pitching up
+			stack.getTagCompound().setInteger(VELOCITY, stack.getTagCompound().getInteger(VELOCITY) - 1); // Ticking down
+			stack.getTagCompound().setFloat(ACC_SFX, stack.getTagCompound().getFloat(ACC_SFX) + 0.02f); // And pitching up
 
 			Helper.playSoundAtEntityPos(entity, SoundEvents.ENTITY_ENDERMEN_TELEPORT,
-					stack.getTagCompound().getFloat("accSFX"), stack.getTagCompound().getFloat("accSFX"));
+					stack.getTagCompound().getFloat(ACC_SFX), stack.getTagCompound().getFloat(ACC_SFX));
 
-			if (stack.getTagCompound().getInteger("acceleration") <= 0) // Ready to fire
+			if (stack.getTagCompound().getInteger(VELOCITY) <= 0) // Ready to fire
 			{
 				Helper.knockUserBack(entity, this.getKickback()); // Kickback Upgrade
 				if (stack.hasTagCompound() && stack.getTagCompound().getBoolean(REINFORCED_MUZZLE))
-				{
-					entity.attackEntityFrom(DamageSource.causeThrownDamage(entity, entity), 15.0f); // Hurtin' (but less so)
-				}
-				else
-				{
-					entity.attackEntityFrom(DamageSource.causeThrownDamage(entity, entity), 20.0f); // Hurtin'
-				}
+                    entity.attackEntityFrom(DamageSource.causeThrownDamage(entity, entity), 15.0f); // Hurtin' (but less so)
+                else
+                    entity.attackEntityFrom(DamageSource.causeThrownDamage(entity, entity), 20.0f); // Hurtin'
 
 				boolean damageTerrain = world.getGameRules().getBoolean("mobGriefing");
 
 				if (!holdingItem) // Isn't holding the weapon, so this is gonna go off in their pockets
 				{
 					entity.hurtResistantTime = 0; // No rest for the wicked
-					world.createExplosion(entity, entity.posX, entity.posY, entity.posZ, getProperties().getFloat(CommonProperties.PROP_EXPLOSION_SIZE),
-							getProperties().getBoolean(CommonProperties.PROP_DAMAGE_TERRAIN)); // Big baddaboom
+					world.createExplosion(entity, entity.posX, entity.posY, entity.posZ, getProperties().getFloat(CommonProperties.EXPLOSION_SIZE),
+							getProperties().getBoolean(CommonProperties.DAMAGE_TERRAIN)); // Big baddaboom
 
 					// Set weapon to "burnt out" (if the user's a player and not in creative mode)
 					if (entity instanceof EntityPlayer)
@@ -113,7 +111,7 @@ public class ERA extends WeaponBase
 
 				if (entity instanceof EntityPlayer)
 				{
-					damageTerrain = getProperties().getBoolean(CommonProperties.PROP_DAMAGE_TERRAIN);
+					damageTerrain = getProperties().getBoolean(CommonProperties.DAMAGE_TERRAIN);
 				} // Players don't care about mob griefing rules, but play by their own rules
 
 				if (stack.hasTagCompound() && stack.getTagCompound().getBoolean(REINFORCED_MUZZLE))
@@ -125,22 +123,12 @@ public class ERA extends WeaponBase
 				}
 				else
 				{
-					world.createExplosion(entity, entity.posX, entity.posY, entity.posZ, getProperties().getFloat(PROP_SELF_EXPLOSION_SIZE),
+					world.createExplosion(entity, entity.posX, entity.posY, entity.posZ, getProperties().getFloat(SELF_EXPLOSION_SIZE),
 							damageTerrain); // Hurtin' more
 				}
 
 				// Spawn projectile and go
-				EnderAccelerator shot = new EnderAccelerator(world, entity, 5.0f);
-
-				int dmg_range = getProperties().getDamageMax() - getProperties().getDamageMin();
-				int dmg = getProperties().getDamageMin() + world.rand.nextInt(dmg_range + 1);
-
-				shot.damage = dmg;
-				shot.ticksInAirMax = 120; // 6 sec?
-				shot.damageTerrain = damageTerrain;
-				shot.explosionSize = getProperties().getFloat(PROP_SELF_EXPLOSION_SIZE);
-
-				world.spawnEntity(shot);
+				world.spawnEntity(new EnderAccelerator(world, entity, getProperties()));
 
 				// Set weapon to "burnt out" (if the user's a player and not in creative mode)
 				if (entity instanceof EntityPlayer)
@@ -171,28 +159,15 @@ public class ERA extends WeaponBase
 
 	private static void startAccelerating(ItemStack stack)
 	{
-		if (stack.getTagCompound() == null)
-		{
-			stack.setTagCompound(new NBTTagCompound());
-		}
-
-		stack.getTagCompound().setInteger("acceleration", 54);
-		stack.getTagCompound().setFloat("accSFX", 0.02f);
+		if (!stack.hasTagCompound())
+		    stack.setTagCompound(new NBTTagCompound());
+		stack.getTagCompound().setInteger(VELOCITY, MAX_VELOCITY);
+		stack.getTagCompound().setFloat(ACC_SFX, 0.02f);
 	}
 
 	private static boolean isAccelerating(ItemStack stack)
 	{
-		if (stack.getTagCompound() == null)
-		{
-			return false;
-		}
-
-		if (stack.getTagCompound().getInteger("acceleration") <= 0)
-		{
-			return false;
-		} // If this is higher than 0 then it's currently counting down to the moment it fires
-
-		return true; // Seems to check out
+	    return stack.hasTagCompound() && stack.getTagCompound().getInteger(VELOCITY) > 0;
 	}
 
 	@Override
@@ -217,12 +192,10 @@ public class ERA extends WeaponBase
 	@Override
 	protected WeaponProperties createDefaultProperties()
 	{
-		return WeaponProperties.builder().minimumDamage(120).maximumDamage(150).kickback(30)
-				.floatProperty(PROP_SELF_EXPLOSION_SIZE,
-						"How large the explosion at the user location is in blocks. A TNT explosion is 4.0 blocks",
-						4.0F)
-				.floatProperty(CommonProperties.PROP_EXPLOSION_SIZE, CommonProperties.COMMENT_EXPLOSION_SIZE, 8.0F)
-				.booleanProperty(CommonProperties.PROP_DAMAGE_TERRAIN, CommonProperties.COMMENT_DAMAGE_TERRAIN, true)
+		return WeaponProperties.builder().minimumDamage(120).maximumDamage(150).kickback(30).projectileSpeed(5.0F)
+				.floatProperty(SELF_EXPLOSION_SIZE,4.0F)
+				.floatProperty(CommonProperties.EXPLOSION_SIZE, 8.0F)
+				.booleanProperty(CommonProperties.DAMAGE_TERRAIN, true)
 				.build();
 	}
 }

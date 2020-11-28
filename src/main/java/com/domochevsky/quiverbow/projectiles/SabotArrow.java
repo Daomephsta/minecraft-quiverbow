@@ -1,6 +1,7 @@
 package com.domochevsky.quiverbow.projectiles;
 
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
 
 import net.minecraft.entity.Entity;
@@ -15,18 +16,16 @@ import net.minecraft.world.World;
 
 public class SabotArrow extends ProjectileBase
 {
-	public float speed;
-
 	public SabotArrow(World world)
 	{
 		super(world);
 	}
 
-	public SabotArrow(World world, Entity entity, float speed)
+	public SabotArrow(World world, Entity entity, WeaponProperties properties)
 	{
 		super(world);
-		this.speed = speed;
-		this.doSetup(entity, speed);
+		this.doSetup(entity, properties.getProjectileSpeed());
+		this.damage = properties.generateDamage(rand);
 	}
 
 	@Override

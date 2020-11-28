@@ -1,11 +1,16 @@
 package com.domochevsky.quiverbow.projectiles;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumParticleTypes;
@@ -15,15 +20,30 @@ import net.minecraft.world.World;
 
 public class LapisShot extends ProjectilePotionEffect
 {
-	public LapisShot(World world)
+	public static final Pair<String, String> WEAKNESS_STRENGTH =
+    Pair.of("weaknessStrength", "The strength of the Weakness effect applied");
+    public static final Pair<String, String> WEAKNESS_DUR =
+    Pair.of("weaknessDur", "The duration in ticks of the Weakness effect applied");
+    public static final Pair<String, String> HUNGER_STRENGTH =
+    Pair.of("hungerStrength", "The strength of the Hunger effect applied");
+    public static final Pair<String, String> HUNGER_DUR =
+    Pair.of("hungerDur", "The duration in ticks of the Hunger effect applied");
+
+    public LapisShot(World world)
 	{
 		super(world);
 	}
 
-	public LapisShot(World world, Entity entity, float speed, PotionEffect... effects)
+	public LapisShot(World world, Entity entity, WeaponProperties properties)
 	{
-		super(world, effects);
-		this.doSetup(entity, speed);
+		super(world, new PotionEffect(MobEffects.NAUSEA, properties.getInt(CommonProperties.NAUSEA_DUR), 1),
+            new PotionEffect(MobEffects.HUNGER,
+                properties.getInt(HUNGER_DUR), properties.getInt(HUNGER_STRENGTH)),
+            new PotionEffect(MobEffects.WEAKNESS,
+                properties.getInt(WEAKNESS_DUR), properties.getInt(WEAKNESS_STRENGTH)));
+		this.doSetup(entity, properties.getProjectileSpeed());
+		this.damage = properties.generateDamage(rand);
+        this.ticksInGroundMax = properties.getInt(CommonProperties.DESPAWN_TIME);
 	}
 
 	@Override

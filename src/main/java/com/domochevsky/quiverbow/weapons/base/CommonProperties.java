@@ -1,28 +1,19 @@
 package com.domochevsky.quiverbow.weapons.base;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 public class CommonProperties
 {
-	public static final String PROP_FIRE_DUR_ENTITY = "fireDurationEntity",
-			COMMENT_FIRE_DUR_ENTITY = "The number of seconds the projectile sets entities on fire for";
-	public static final String PROP_SPREAD = "spread", COMMENT_SPREAD = "How inaccurate this weapon is";
-	public static final String PROP_DESPAWN_TIME = "despawnTicks",
-			COMMENT_DESPAWN_TIME = "How long it takes for projectiles to despawn";
-	public static final String PROP_DAMAGE_TERRAIN = "damageTerrain",
-			COMMENT_DAMAGE_TERRAIN = "If true this weapon can damage terrain when used by a player";
-	public static final String PROP_EXPLOSION_SIZE = "explosionSize",
-			COMMENT_EXPLOSION_SIZE = "How large the explosion is in blocks. A TNT explosion is 4.0 blocks";
-	public static final String PROP_SHOULD_DROP = "shouldDrop",
-			COMMENT_SHOULD_DROP = "If true projectiles will drop their item equivalent if they don't hit an entity";
-	public static final String PROP_WITHER_STRENGTH = "witherStrength",
-			COMMENT_WITHER_STRENGTH = "The strength of the Wither effect applied";
-	public static final String PROP_WITHER_DUR = "witherDur",
-			COMMENT_WITHER_DUR = "The duration in ticks of the Wither effect applied";
-	public static final String PROP_NAUSEA_DUR = "nauseaDur",
-			COMMENT_NAUSEA_DUR = "The duration in ticks of the Nausea effect applied";
-	public static final String PROP_SLOWNESS_STRENGTH = "slownessStrength",
-			COMMENT_SLOWNESS_STRENGTH = "The strength of the Slowness effect applied";
-	public static final String PROP_SLOWNESS_DUR = "slownessDur",
-			COMMENT_SLOWNESS_DUR = "The duration of the Slowness effect applied";
-	public static final String PROP_MAX_ZOOM = "maxZoom",
-			COMMENT_MAX_ZOOM = "How far this weapon can zoom in. Larger numbers mean lower maximum zoom";
+	public static final Pair<String, String> FIRE_DUR_ENTITY = Pair.of("fireDurationEntity", "The number of seconds the projectile sets entities on fire for");
+	public static final Pair<String, String> SPREAD = Pair.of("spread", "How inaccurate this weapon is");
+	public static final Pair<String, String> DESPAWN_TIME = Pair.of("despawnTicks", "How long it takes for projectiles to despawn");
+	public static final Pair<String, String> DAMAGE_TERRAIN = Pair.of("damageTerrain", "If true this weapon can damage terrain when used by a player");
+	public static final Pair<String, String> EXPLOSION_SIZE = Pair.of("explosionSize", "How large the explosion is in blocks. A TNT explosion is 4.0 blocks");
+	public static final Pair<String, String> SHOULD_DROP = Pair.of("shouldDrop", "If true projectiles will drop their item equivalent if they don't hit an entity");
+	public static final Pair<String, String> WITHER_STRENGTH = Pair.of("witherStrength", "The strength of the Wither effect applied");
+	public static final Pair<String, String> WITHER_DUR = Pair.of("witherDur", "The duration in ticks of the Wither effect applied");
+	public static final Pair<String, String> NAUSEA_DUR = Pair.of("nauseaDur", "The duration in ticks of the Nausea effect applied");
+	public static final Pair<String, String> SLOWNESS_STRENGTH = Pair.of("slownessStrength", "The strength of the Slowness effect applied");
+	public static final Pair<String, String> SLOWNESS_DUR = Pair.of("slownessDur", "The duration of the Slowness effect applied");
+	public static final Pair<String, String> MAX_ZOOM = Pair.of("maxZoom", "How far this weapon can zoom in. Larger numbers mean lower maximum zoom");
 }

@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.QuiverbowMain;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
 
 import net.minecraft.entity.Entity;
@@ -32,10 +33,10 @@ public class SoulShot extends ProjectileBase
 		super(world);
 	}
 
-	public SoulShot(World world, Entity entity, float speed)
+	public SoulShot(World world, Entity entity, WeaponProperties properties)
 	{
 		super(world);
-		this.doSetup(entity, speed);
+		this.doSetup(entity, properties.getProjectileSpeed());
 	}
 
 	@Override

@@ -2,6 +2,8 @@ package com.domochevsky.quiverbow.projectiles;
 
 import com.domochevsky.quiverbow.blocks.BlockRegistry;
 import com.domochevsky.quiverbow.blocks.FenLight;
+import com.domochevsky.quiverbow.config.WeaponProperties;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.Entity;
@@ -21,10 +23,12 @@ public class FenGoop extends ProjectileBase
 		super(world);
 	}
 
-	public FenGoop(World world, Entity entity, float speed)
+	public FenGoop(World world, Entity entity, WeaponProperties properties)
 	{
 		super(world);
-		this.doSetup(entity, speed);
+		this.doSetup(entity, properties.getProjectileSpeed());
+        this.fireDuration = properties.getInt(CommonProperties.FIRE_DUR_ENTITY);
+        this.lightTick = properties.getInt(CommonProperties.DESPAWN_TIME);
 	}
 
 	public int lightTick;

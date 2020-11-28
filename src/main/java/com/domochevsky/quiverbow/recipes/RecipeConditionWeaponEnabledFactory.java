@@ -2,6 +2,7 @@ package com.domochevsky.quiverbow.recipes;
 
 import java.util.function.BooleanSupplier;
 
+import com.domochevsky.quiverbow.weapons.base.Weapon;
 import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.google.gson.JsonObject;
 
@@ -20,7 +21,10 @@ public class RecipeConditionWeaponEnabledFactory implements IConditionFactory
 		String regName = JsonUtils.getString(jsonObj, "id");
 		Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(regName));
 		if(item == null) throw new IllegalArgumentException(regName + " is not a registered item");
-		if((item instanceof WeaponBase) == false)  throw new IllegalArgumentException(regName + " is not an instance of WeaponBase");
-		return () -> ((WeaponBase) item).getProperties().isEnabled();
+		if(item instanceof WeaponBase)
+		    return () -> ((WeaponBase) item).getProperties().isEnabled();
+		if(item instanceof Weapon)
+		    return () -> ((Weapon) item).getProperties().isEnabled();
+		throw new IllegalArgumentException(regName + " is not an instance of Weapon/WeaponBase");
 	}
 }

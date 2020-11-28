@@ -1,7 +1,9 @@
 package com.domochevsky.quiverbow.projectiles;
 
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -25,10 +27,20 @@ public class SmallRocket extends ProjectileBase
 		super(world);
 	}
 
-	public SmallRocket(World world, Entity entity, float speed)
+	public SmallRocket(World world, Entity entity, WeaponProperties properties)
 	{
-		super(world);
-		this.doSetup(entity, speed);
+        this(world, entity, properties, 0, 0);
+	}
+
+	public SmallRocket(World world, Entity entity,
+	    WeaponProperties properties, float accHor, float accVert)
+	{
+	    super(world);
+	    this.doSetup(entity, properties.getProjectileSpeed(), accHor, accVert);
+        this.damage = properties.generateDamage(rand);
+        this.fireDuration = properties.getInt(CommonProperties.FIRE_DUR_ENTITY);
+        this.explosionSize = properties.getFloat(CommonProperties.EXPLOSION_SIZE);
+        this.dmgTerrain = properties.getBoolean(CommonProperties.DAMAGE_TERRAIN);
 	}
 
 	public SmallRocket(World world, Entity entity, float speed, float accHor, float accVert)
@@ -119,7 +131,8 @@ public class SmallRocket extends ProjectileBase
 				// things?
 			}
 
-			this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float) this.explosionSize, griefing);
+			if (!world.isRemote)
+                this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float) this.explosionSize, griefing);
 			// 4.0F is TNT, false is for "not flaming"
 			// Editchevsky: Actually, false is double-used for "don't damage
 			// terrain"

@@ -2,8 +2,15 @@ package com.domochevsky.quiverbow.config;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
-import com.domochevsky.quiverbow.config.properties.*;
+import org.apache.commons.lang3.tuple.Pair;
+
+import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.properties.BooleanProperty;
+import com.domochevsky.quiverbow.config.properties.FloatProperty;
+import com.domochevsky.quiverbow.config.properties.IntProperty;
+import com.domochevsky.quiverbow.config.properties.WeaponProperty;
 
 import net.minecraftforge.common.config.ConfigCategory;
 
@@ -86,11 +93,31 @@ public class WeaponProperties
 	{
 		return isMobUsable.getValue();
 	}
-	
+
+	public boolean has(Pair<String, String> property)
+	{
+	    return usedProperties.containsKey(property.getLeft());
+	}
+
 	public boolean has(String name)
 	{
 		return usedProperties.containsKey(name);
 	}
+
+    public boolean getBoolean(Pair<String, String> property)
+    {
+        return getPropertyAndCheck(property.getLeft(), BooleanProperty.class).getValue();
+    }
+
+    public int getInt(Pair<String, String> property)
+    {
+        return getPropertyAndCheck(property.getLeft(), IntProperty.class).getValue();
+    }
+
+    public float getFloat(Pair<String, String> property)
+    {
+        return getPropertyAndCheck(property.getLeft(), FloatProperty.class).getValue();
+    }
 
 	public boolean getBoolean(String name)
 	{
@@ -197,17 +224,32 @@ public class WeaponProperties
 			return this;
 		}
 
+		public Builder booleanProperty(Pair<String, String> property, boolean defaultValue)
+        {
+            return booleanProperty(property.getLeft(), property.getRight(), defaultValue);
+        }
+
 		public Builder booleanProperty(String name, String comment, boolean defaultValue)
 		{
 			usedProperties.put(name, new BooleanProperty(name, comment, defaultValue));
 			return this;
 		}
 
+		public Builder intProperty(Pair<String, String> property, int defaultValue)
+        {
+            return intProperty(property.getLeft(), property.getRight(), defaultValue);
+        }
+
 		public Builder intProperty(String name, String comment, int defaultValue)
 		{
 			usedProperties.put(name,
 					new IntProperty(name, comment, defaultValue, Integer.MIN_VALUE, Integer.MAX_VALUE));
 			return this;
+		}
+
+		public Builder floatProperty(Pair<String, String> property, float defaultValue)
+		{
+		    return floatProperty(property.getLeft(), property.getRight(), defaultValue);
 		}
 
 		public Builder floatProperty(String name, String comment, float defaultValue)
@@ -227,4 +269,9 @@ public class WeaponProperties
 			return new WeaponProperties(this);
 		}
 	}
+
+    public int generateDamage(Random rand)
+    {
+        return Helper.randomIntInRange(rand, getDamageMin(), getDamageMax());
+    }
 }

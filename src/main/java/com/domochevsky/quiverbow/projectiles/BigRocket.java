@@ -1,6 +1,10 @@
 package com.domochevsky.quiverbow.projectiles;
 
+import org.apache.commons.lang3.tuple.Pair;
+
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -13,6 +17,8 @@ import net.minecraft.world.World;
 
 public class BigRocket extends ProjectileBase
 {
+    public static final Pair<String, String> TRAVEL_TIME = Pair.of("maxFlightTime", "The maximum flight time of the rocket. It will explode after this.");
+
 	public int travelTicksMax;
 	public boolean dmgTerrain;
 
@@ -21,10 +27,13 @@ public class BigRocket extends ProjectileBase
 		super(world);
 	}
 
-	public BigRocket(World world, Entity entity, float speed)
+	public BigRocket(World world, Entity entity, WeaponProperties properties)
 	{
 		super(world);
-		this.doSetup(entity, speed);
+		this.doSetup(entity, properties.getProjectileSpeed());
+        this.explosionSize = properties.getFloat(CommonProperties.EXPLOSION_SIZE);
+        this.travelTicksMax = properties.getInt(BigRocket.TRAVEL_TIME);
+        this.dmgTerrain = properties.getBoolean(CommonProperties.DAMAGE_TERRAIN);
 	}
 
 	@Override
@@ -47,7 +56,8 @@ public class BigRocket extends ProjectileBase
 			// things?
 		}
 
-		this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float) this.explosionSize, griefing); // Bewm
+		if (!world.isRemote)
+            this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float) this.explosionSize, griefing); // Bewm
 
 		this.setDead(); // We've hit something, so begone with the projectile
 	}
@@ -76,7 +86,8 @@ public class BigRocket extends ProjectileBase
 					// things?
 				}
 
-				this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float) this.explosionSize, griefing); // Bewm
+				if (!world.isRemote)
+				    this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float) this.explosionSize, griefing); // Bewm
 
 				this.setDead(); // We've hit something, so begone with the
 				// projectile

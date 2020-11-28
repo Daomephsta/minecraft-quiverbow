@@ -1,6 +1,7 @@
 package com.domochevsky.quiverbow.projectiles;
 
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
 
 import net.minecraft.entity.Entity;
@@ -16,10 +17,11 @@ public class SugarRod extends ProjectileBase
 		super(world);
 	}
 
-	public SugarRod(World world, Entity entity, float speed, float accHor, float accVert)
+	public SugarRod(World world, Entity entity, WeaponProperties properties, float accHor, float accVert)
 	{
 		super(world);
-		this.doSetup(entity, speed, accHor, accVert);
+		this.doSetup(entity, properties.getProjectileSpeed(), accHor, accVert);
+		this.damage = properties.generateDamage(rand);
 	}
 
 	@Override

@@ -1,14 +1,17 @@
 package com.domochevsky.quiverbow;
 
 import com.domochevsky.quiverbow.config.QuiverbowConfig;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.items.ItemRegistry;
 import com.domochevsky.quiverbow.util.InventoryHelper;
-import com.domochevsky.quiverbow.weapons.base.IScopedWeapon;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
+import com.domochevsky.quiverbow.weapons.base.Weapon;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -50,6 +53,7 @@ public class ListenerClient
 		if (Minecraft.getMinecraft() == null) return;
 		//Check that a world is loaded
 		if (Minecraft.getMinecraft().world == null) return;
+        EntityPlayerSP player = Minecraft.getMinecraft().player;
 
 		updateFovModifierHand();
 
@@ -58,13 +62,14 @@ public class ListenerClient
 		float maxZoomFovModifier = 0;
 
 		ItemStack heldWeapon;
-		if (!(heldWeapon = InventoryHelper.findItemInHandsByClass(Minecraft.getMinecraft().player, IScopedWeapon.class))
-				.isEmpty())
+        if (player.isSneaking() &&
+            !(heldWeapon = InventoryHelper.findItemInHandsByClass(player, Weapon.class)).isEmpty())
 		{
 			holdingWeapon = true;
-			shouldZoom = ((IScopedWeapon) heldWeapon.getItem()).shouldZoom(Minecraft.getMinecraft().world,
-					Minecraft.getMinecraft().player, heldWeapon);
-			maxZoomFovModifier = getFOVModifier(((IScopedWeapon) heldWeapon.getItem()).getMaxZoom());
+			WeaponProperties properties = ((Weapon) heldWeapon.getItem()).getProperties();
+            shouldZoom = properties.has(CommonProperties.MAX_ZOOM);
+            if (shouldZoom)
+                maxZoomFovModifier = getFOVModifier(properties.getFloat(CommonProperties.MAX_ZOOM));
 		}
 		if (this.wasZoomedLastTick)
 		{

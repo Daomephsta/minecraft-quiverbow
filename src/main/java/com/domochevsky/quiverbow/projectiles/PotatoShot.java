@@ -1,7 +1,9 @@
 package com.domochevsky.quiverbow.projectiles;
 
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
+import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -22,10 +24,12 @@ public class PotatoShot extends ProjectileBase
 		super(world);
 	}
 
-	public PotatoShot(World world, Entity entity, float speed)
+	public PotatoShot(World world, Entity entity, WeaponProperties properties)
 	{
 		super(world);
-		this.doSetup(entity, speed);
+		this.doSetup(entity, properties.getProjectileSpeed());
+		this.damage = properties.generateDamage(rand);
+        this.setDrop(properties.getBoolean(CommonProperties.SHOULD_DROP));
 	}
 
 	public void setDrop(boolean set)
