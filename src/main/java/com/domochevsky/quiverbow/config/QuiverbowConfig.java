@@ -5,7 +5,6 @@ import java.io.File;
 import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.projectiles.SoulShot;
 import com.domochevsky.quiverbow.weapons.base.Weapon;
-import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Config;
@@ -69,11 +68,6 @@ public class QuiverbowConfig
 
 	public static void loadWeaponProperties()
 	{
-		//Load weapon properties from config
-		for (WeaponBase weapon : QuiverbowMain.legacyWeapons)
-		{
-			weapon.getProperties().loadFromConfig(config.getCategory(weapon.getName()));
-		}
 		for (Weapon weapon : QuiverbowMain.weapons)
             weapon.getProperties().loadFromConfig(config.getCategory(weapon.getRegistryName().getResourcePath()));
 		config.save();

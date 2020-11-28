@@ -23,11 +23,9 @@ import com.domochevsky.quiverbow.projectiles.*;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 import com.domochevsky.quiverbow.util.RegistryHelper;
 import com.domochevsky.quiverbow.weapons.AATargeter;
-import com.domochevsky.quiverbow.weapons.ERA;
 import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 import com.domochevsky.quiverbow.weapons.base.Weapon;
 import com.domochevsky.quiverbow.weapons.base.Weapon.Effect;
-import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.domochevsky.quiverbow.weapons.base.ammosource.InternalAmmoSource;
 import com.domochevsky.quiverbow.weapons.base.ammosource.InventoryAmmoSource;
 import com.domochevsky.quiverbow.weapons.base.ammosource.MagazineAmmoSource;
@@ -41,7 +39,6 @@ import com.domochevsky.quiverbow.weapons.base.fireshape.ProjectileFactory;
 import com.domochevsky.quiverbow.weapons.base.fireshape.SingleShotFireShape;
 import com.domochevsky.quiverbow.weapons.base.fireshape.SpreadFireShape;
 import com.domochevsky.quiverbow.weapons.base.trigger.*;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import daomephsta.umbra.resources.ResourceLocationExt;
@@ -66,7 +63,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -99,7 +95,6 @@ public class QuiverbowMain
 
 	public static Logger logger;
 
-	public static ArrayList<WeaponBase> legacyWeapons = new ArrayList<WeaponBase>();
 	public static ArrayList<Weapon> weapons = new ArrayList<>();
 	public static ArrayList<AmmoBase> ammo = new ArrayList<AmmoBase>();
 
@@ -124,7 +119,6 @@ public class QuiverbowMain
 				EntityArmsAssistant.class, "turret", 0, this, 80, 1, true);
 		}
 		LootHandler.initialise();
-		MinecraftForge.EVENT_BUS.register(new Listener());
         proxy.preInit();
 	}
 
@@ -438,7 +432,7 @@ public class QuiverbowMain
 			registry.register(addWeapon("ender_rail_accelerator",
                 WeaponProperties.builder().minimumDamage(120).maximumDamage(150)
                     .projectileSpeed(5.0F).kickback(30)
-                    .floatProperty(ERA.SELF_EXPLOSION_SIZE,4.0F)
+                    .floatProperty(EnderAccelerator.SELF_EXPLOSION_SIZE,4.0F)
                     .floatProperty(CommonProperties.EXPLOSION_SIZE, 8.0F)
                     .booleanProperty(CommonProperties.DAMAGE_TERRAIN, true),
                 new ERATrigger(new InternalAmmoSource(1),
@@ -460,7 +454,7 @@ public class QuiverbowMain
                             if (!world.isRemote)
                             {
                                 world.createExplosion(user, user.posX, user.posY, user.posZ,
-                                    properties.getFloat(ERA.SELF_EXPLOSION_SIZE),
+                                    properties.getFloat(EnderAccelerator.SELF_EXPLOSION_SIZE),
                                     properties.getBoolean(CommonProperties.DAMAGE_TERRAIN));
                             }
                         }
@@ -733,7 +727,7 @@ public class QuiverbowMain
 						new ModelResourceLocation(ResourceLocationExt.prefixPath(ammunition.getRegistryName(), "ammo/"), "inventory"));
 			}
 
-			for (Item weapon : Iterables.concat(weapons, legacyWeapons))
+			for (Item weapon : weapons)
 			{
 			    if (weapon == ItemRegistry.AUTOLOADER_CROSSBOW)
 			    {

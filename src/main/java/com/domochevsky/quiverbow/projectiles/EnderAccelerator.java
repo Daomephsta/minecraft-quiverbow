@@ -1,5 +1,7 @@
 package com.domochevsky.quiverbow.projectiles;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.weapons.base.CommonProperties;
@@ -14,6 +16,8 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EnderAccelerator extends ProjectileBase implements IEntityAdditionalSpawnData
 {
+    public static final Pair<String, String> SELF_EXPLOSION_SIZE = Pair.of("selfExplosionSize",
+        "How large the explosion at the user location is in blocks. A TNT explosion is 4.0 blocks");
 	public boolean damageTerrain;
 	public float explosionSize;
 

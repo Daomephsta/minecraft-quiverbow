@@ -12,7 +12,8 @@ import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry.ReloadSpecific
 import com.domochevsky.quiverbow.loot.LootHandler;
 import com.domochevsky.quiverbow.miscitems.PackedUpAA;
 import com.domochevsky.quiverbow.net.NetHelper;
-import com.domochevsky.quiverbow.weapons.base.WeaponBase;
+import com.domochevsky.quiverbow.weapons.base.Weapon;
+import com.domochevsky.quiverbow.weapons.base.trigger.Trigger;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 
@@ -150,7 +151,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 			return false;
 		}
 		// Equip weapon
-		else if (playerHandStack.getItem() instanceof WeaponBase)
+		else if (playerHandStack.getItem() instanceof Weapon)
 		{
 			// Take weapon from player
 			if (!player.capabilities.isCreativeMode) player.setHeldItem(hand, ItemStack.EMPTY);
@@ -396,22 +397,23 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 	private float tryFireWeapon(EnumHand hand)
 	{
 	    ItemStack weaponStack = getHeldItem(hand);
-	    if (!weaponStack.isEmpty() && weaponStack.getItem() instanceof WeaponBase)
+	    if (!weaponStack.isEmpty() && weaponStack.getItem() instanceof Weapon)
         {
-            WeaponBase weapon = (WeaponBase) weaponStack.getItem();
+            Weapon weapon = (Weapon) weaponStack.getItem();
+            Trigger trigger = weapon.getTrigger();
             if (weaponStack.getItemDamage() == weaponStack.getMaxDamage())
                 tryReload(weaponStack, weapon);
-            int cooldown = weapon.getCooldown(weaponStack);
-            if (cooldown == 0 && weapon.doSingleFire(world, this, weaponStack, EnumHand.MAIN_HAND))
+            int cooldown = Weapon.getCooldown(weaponStack);
+            if (cooldown == 0 && trigger.attackPressed(world, this, weaponStack, weapon.getProperties()))
             {
                 return 0.0F;
             }
-            return (float) cooldown / weapon.getMaxCooldown();
+            return (float) cooldown / weapon.getProperties().getMaxCooldown();
         }
         return 1.0F;
 	}
 
-    private void tryReload(ItemStack weaponStack, WeaponBase weapon)
+    private void tryReload(ItemStack weaponStack, Weapon weapon)
     {
         ReloadSpecification specification = ReloadSpecificationRegistry.INSTANCE.getSpecification(weapon);
         if (specification == null) return;

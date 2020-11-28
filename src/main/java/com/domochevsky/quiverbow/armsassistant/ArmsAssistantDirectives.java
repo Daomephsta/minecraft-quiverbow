@@ -18,7 +18,7 @@ import com.domochevsky.quiverbow.armsassistant.ai.ArmsAssistantAITargeterControl
 import com.domochevsky.quiverbow.armsassistant.ai.EntityAIFollowOwner;
 import com.domochevsky.quiverbow.armsassistant.ai.EntityAIMaintainPosition;
 import com.domochevsky.quiverbow.weapons.base.CommonProperties;
-import com.domochevsky.quiverbow.weapons.base.WeaponBase;
+import com.domochevsky.quiverbow.weapons.base.Weapon;
 import com.google.common.base.Splitter;
 import com.google.gson.JsonParseException;
 import com.mojang.brigadier.Command;
@@ -345,8 +345,8 @@ public class ArmsAssistantDirectives
         if (safetyRange)
         {
             float maxDamageRange = stream(armsAssistant.getHeldEquipment())
-                .filter(stack -> stack.getItem() instanceof WeaponBase)
-                .map(stack -> ((WeaponBase) stack.getItem()).getProperties())
+                .filter(stack -> stack.getItem() instanceof Weapon)
+                .map(stack -> ((Weapon) stack.getItem()).getProperties())
                 .filter(props -> props.has(CommonProperties.EXPLOSION_SIZE))
                 .map(props -> props.getFloat(CommonProperties.EXPLOSION_SIZE))
                 .max(Float::compareTo)

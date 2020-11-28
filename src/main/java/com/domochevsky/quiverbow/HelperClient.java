@@ -1,8 +1,7 @@
 package com.domochevsky.quiverbow;
 
-import java.util.List;
-
-import com.domochevsky.quiverbow.armsassistant.*;
+import com.domochevsky.quiverbow.armsassistant.EntityArmsAssistant;
+import com.domochevsky.quiverbow.armsassistant.UpgradeRegistry;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;

@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 import com.domochevsky.quiverbow.config.QuiverbowConfig;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.ProjectileBase;
-import com.domochevsky.quiverbow.weapons.base.WeaponBase;
+import com.domochevsky.quiverbow.weapons.base.Weapon;
 
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -228,7 +228,7 @@ public class Helper
 		{
 			ItemStack stack = craftMatrix.getStackInSlot(slot);
 
-			if (!stack.isEmpty() && stack.getItem() instanceof WeaponBase) // Found it. Does it have a name tag?
+			if (!stack.isEmpty() && stack.getItem() instanceof Weapon) // Found it. Does it have a name tag?
 			{
 				if (stack.hasDisplayName() && !newItem.hasDisplayName())
 				{

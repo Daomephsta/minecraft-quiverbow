@@ -6,7 +6,6 @@ import java.util.*;
 import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.util.Resources;
 import com.domochevsky.quiverbow.weapons.base.Weapon;
-import com.domochevsky.quiverbow.weapons.base.WeaponBase;
 import com.google.gson.*;
 
 import net.minecraft.item.Item;
@@ -62,7 +61,7 @@ public class ReloadSpecificationRegistry
                 }
             }
             Item weapon = getWeapon(path);
-            if (weapon instanceof WeaponBase || weapon instanceof Weapon)
+            if (weapon instanceof Weapon)
                 specsByWeapon.put(weapon, reloadSpecification);
             else
                 throw new JsonSyntaxException(weapon + " is not a weapon");

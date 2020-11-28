@@ -145,6 +145,11 @@ public final class Weapon extends Item
         return properties;
     }
 
+    public Trigger getTrigger()
+    {
+        return trigger;
+    }
+
     public Weapon fireEffects(Effect... fireEffects)
     {
         this.fireEffects = fireEffects;
