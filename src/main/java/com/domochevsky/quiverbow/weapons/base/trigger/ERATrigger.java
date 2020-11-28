@@ -42,6 +42,7 @@ public class ERATrigger extends Trigger
     @Override
     public boolean weaponTick(World world, EntityLivingBase user, ItemStack stack, WeaponProperties properties)
     {
+        super.weaponTick(world, user, stack, properties);
         if (!getTag(stack).getBoolean(FIRING))
             return false;
         int fireCountdown = getTag(stack).getInteger(COUNTDOWN);

@@ -1,26 +1,17 @@
 package com.domochevsky.quiverbow.weapons.base.ammosource;
 
 import com.domochevsky.quiverbow.config.WeaponProperties;
-import com.domochevsky.quiverbow.weapons.base.Weapon;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 
-public class InternalAmmoSource implements AmmoSource
+public class SolarAmmoSource extends InternalAmmoSource
 {
-    private final int max,
-                      consumption;
-
-    public InternalAmmoSource(int max)
+    public SolarAmmoSource(int max)
     {
-        this(max, 1);
-    }
-
-    public InternalAmmoSource(int max, int consumption)
-    {
-        this.max = max;
-        this.consumption = consumption;
+        super(max, 3);
     }
 
     @Override
@@ -28,7 +19,7 @@ public class InternalAmmoSource implements AmmoSource
     {
         if (shooter instanceof EntityPlayer && ((EntityPlayer) shooter).capabilities.isCreativeMode)
             return true;
-        return stack.getItemDamage() + consumption <= stack.getMaxDamage();
+        return stack.getItemDamage() + 10 <= stack.getMaxDamage();
     }
 
     @Override
@@ -38,13 +29,14 @@ public class InternalAmmoSource implements AmmoSource
             return true;
         if (!hasAmmo(shooter, stack, properties))
             return false;
-        stack.setItemDamage(stack.getItemDamage() + consumption);
+        stack.setItemDamage(stack.getItemDamage() + 10);
         return true;
     }
 
     @Override
-    public void adjustItemProperties(Weapon weapon)
+    public void weaponTick(World world, EntityLivingBase user, ItemStack stack, WeaponProperties properties)
     {
-        weapon.setMaxDamage(max);
+        if (stack.getItemDamage() > 0 && world.getLight(user.getPosition()) >= properties.getInt("minLight"))
+            stack.setItemDamage(stack.getItemDamage() - 1);
     }
 }

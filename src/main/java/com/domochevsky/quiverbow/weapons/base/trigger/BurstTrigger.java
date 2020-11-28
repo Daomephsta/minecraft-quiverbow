@@ -44,6 +44,7 @@ public class BurstTrigger extends Trigger
     @Override
     public boolean weaponTick(World world, EntityLivingBase user, ItemStack stack, WeaponProperties properties)
     {
+        super.weaponTick(world, user, stack, properties);
         if (!stack.hasTagCompound())
             return false;
         NBTTagCompound tag = stack.getTagCompound();

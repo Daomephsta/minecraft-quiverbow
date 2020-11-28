@@ -60,6 +60,7 @@ public class SpoolingTrigger extends Trigger
     @Override
     public boolean weaponTick(World world, EntityLivingBase user, ItemStack stack, WeaponProperties properties)
     {
+        super.weaponTick(world, user, stack, properties);
         // Momentum is lost while not firing
         if (user.getActiveItemStack() != stack)
         {

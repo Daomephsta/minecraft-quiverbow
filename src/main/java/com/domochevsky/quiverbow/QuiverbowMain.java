@@ -26,40 +26,42 @@ import com.domochevsky.quiverbow.weapons.AATargeter;
 import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 import com.domochevsky.quiverbow.weapons.base.Weapon;
 import com.domochevsky.quiverbow.weapons.base.Weapon.Effect;
-import com.domochevsky.quiverbow.weapons.base.ammosource.InternalAmmoSource;
-import com.domochevsky.quiverbow.weapons.base.ammosource.InventoryAmmoSource;
-import com.domochevsky.quiverbow.weapons.base.ammosource.MagazineAmmoSource;
-import com.domochevsky.quiverbow.weapons.base.ammosource.WaterAmmoSource;
+import com.domochevsky.quiverbow.weapons.base.ammosource.*;
 import com.domochevsky.quiverbow.weapons.base.effects.DamageWeapon;
 import com.domochevsky.quiverbow.weapons.base.effects.Knockback;
 import com.domochevsky.quiverbow.weapons.base.effects.PlaySound;
 import com.domochevsky.quiverbow.weapons.base.effects.SpawnParticle;
-import com.domochevsky.quiverbow.weapons.base.fireshape.HitscanFireShape;
-import com.domochevsky.quiverbow.weapons.base.fireshape.ProjectileFactory;
-import com.domochevsky.quiverbow.weapons.base.fireshape.SingleShotFireShape;
-import com.domochevsky.quiverbow.weapons.base.fireshape.SpreadFireShape;
+import com.domochevsky.quiverbow.weapons.base.fireshape.*;
 import com.domochevsky.quiverbow.weapons.base.trigger.*;
 import com.google.common.collect.Lists;
 
 import daomephsta.umbra.resources.ResourceLocationExt;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSnow;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -348,8 +350,83 @@ public class QuiverbowMain
                     new SemiAutomaticTrigger(new InternalAmmoSource(32), new SingleShotFireShape(FenGoop::new)))
                     .fireEffects(new PlaySound(SoundEvents.ENTITY_ARROW_SHOOT, 0.7F, 0.3F))
                     .cooldownEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.8F, 2.0F)),
-				// TODO: Reimplement addWeapon(new FlintDuster()),
-				// TODO: Reimplement addWeapon(new Sunray()),
+                addWeapon("flint_duster",
+                    WeaponProperties.builder().damage(1)
+                        .intProperty("maxRange", "The maximum range of this weapon in blocks", 7),
+                    new AutomaticTrigger(new InternalAmmoSource(256),
+                        new BeamFireShape((stack, world, user, target, properties) ->
+                        {
+                            if (target.typeOfHit == RayTraceResult.Type.ENTITY)
+                            {
+                                target.entityHit.attackEntityFrom(DamageSource.GENERIC,
+                                    properties.generateDamage(world.rand));
+                            }
+                            else if (target.typeOfHit == RayTraceResult.Type.BLOCK)
+                            {
+                                BlockPos pos = target.getBlockPos();
+                                IBlockState toMine = world.getBlockState(pos);
+                                if (toMine.getBlockHardness(world, pos) <= 2 ||
+                                    toMine.getBlock().getHarvestLevel(toMine) <= 0)
+                                {
+                                    Helper.breakBlock(world, user, pos);
+                                    for (int i = 0; i < 4; i++)
+                                    {
+                                        world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL,
+                                            target.hitVec.x, target.hitVec.y, target.hitVec.z, 0, 0, 0);
+                                    }
+                                }
+                            }
+                        }, 0x000000, 8.0F)))
+                    .fireEffects(new PlaySound(SoundEvents.ENTITY_BAT_TAKEOFF, 0.5F, 0.6F),
+                        new PlaySound(SoundType.GROUND.getBreakSound(), 1.0F, 1.0F)),
+                addWeapon("sunray",
+                    WeaponProperties.builder().minimumDamage(14).maximumDamage(20).kickback(3)
+                        .intProperty(CommonProperties.FIRE_DUR_ENTITY, 10)
+                        .intProperty(BeamFireShape.PIERCING, 1)
+                        .intProperty("minLight", "The minimum light level needed to recharge", 12),
+                    new AutomaticTrigger(new SolarAmmoSource(100),
+                        new BeamFireShape((stack, world, user, target, properties) ->
+                        {
+                            if (target.typeOfHit == RayTraceResult.Type.ENTITY)
+                            {
+                                target.entityHit.attackEntityFrom(DamageSource.ON_FIRE,
+                                    properties.generateDamage(world.rand));
+                                target.entityHit.hurtResistantTime = 0;
+                                target.entityHit.setFire(properties.getInt(CommonProperties.FIRE_DUR_ENTITY));
+                            }
+                            else if (target.typeOfHit == RayTraceResult.Type.BLOCK)
+                            {
+                                BlockPos pos = target.getBlockPos();
+                                IBlockState state = world.getBlockState(pos);
+                                BlockPos posUp = pos.up();
+                                IBlockState upState = world.getBlockState(posUp);
+                                if (upState.getBlock().isAir(upState, world, posUp))
+                                    world.setBlockState(posUp, Blocks.FIRE.getDefaultState());
+                                else if (state.getBlock() == Blocks.SNOW)
+                                {
+                                    world.setBlockState(pos, Blocks.SNOW_LAYER.getDefaultState()
+                                        .withProperty(BlockSnow.LAYERS, 7));
+                                }
+                                else if (state.getBlock() == Blocks.SNOW_LAYER)
+                                {
+                                    int layers = state.getValue(BlockSnow.LAYERS);
+
+                                    world.setBlockState(pos, layers > 1
+                                        ? Blocks.SNOW_LAYER.getDefaultState()
+                                            .withProperty(BlockSnow.LAYERS, layers - 1)
+                                        : Blocks.AIR.getDefaultState());
+                                }
+                                else if (state.getBlock() == Blocks.ICE)
+                                    world.setBlockState(pos, Blocks.WATER.getDefaultState());
+                                else if (state.getMaterial() == Material.WATER)
+                                    world.setBlockToAir(pos);
+                            }
+                        }, 0xFFFFFF, 64.0F)))
+                    .fireEffects(new Knockback(), new PlaySound(SoundEvents.ENTITY_BLAZE_DEATH, 0.7F, 2.0F),
+                        new PlaySound(SoundEvents.ENTITY_FIREWORK_BLAST, 2.0F, 0.1F),
+                        new SpawnParticle(EnumParticleTypes.REDSTONE, 0.5F))
+                    .cooldownEffects(new PlaySound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 1.0F, 0.5F),
+                        new PlaySound(SoundEvents.ENTITY_CAT_HISS, 0.6F, 2.0F)),
 				addWeapon("powder_knuckles",
                     WeaponProperties.builder().minimumDamage(1).maximumDamage(18)
                         .floatProperty(CommonProperties.EXPLOSION_SIZE, 1.5F)
@@ -426,8 +503,29 @@ public class QuiverbowMain
                     .fireEffects(new PlaySound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.8F, 1.5F),
                         new SpawnParticle(EnumParticleTypes.SMOKE_NORMAL, 0.0F))
                     .cooldownEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.7F, 0.2F),
-                        new SpawnParticle(EnumParticleTypes.SMOKE_NORMAL, 0.0F))
-                // TODO: Reimplement addWeapon(new MediGun())
+                        new SpawnParticle(EnumParticleTypes.SMOKE_NORMAL, 0.0F)),
+                addWeapon("ray_of_hope",
+                    WeaponProperties.builder(),
+                    new AutomaticTrigger(new InternalAmmoSource(320),
+                        new BeamFireShape((stack, world, user, target, properties) ->
+                        {
+                            if (target.entityHit instanceof EntityLivingBase)
+                            {
+                                EntityLivingBase living = (EntityLivingBase) target.entityHit;
+                                if (living.isEntityUndead())
+                                    living.addPotionEffect(new PotionEffect(MobEffects.WITHER, 20, 3));
+                                else
+                                {
+                                    if (living.getHealth() >= living.getMaxHealth() &&
+                                        living.getAbsorptionAmount() < living.getMaxHealth())
+                                    {
+                                        living.setAbsorptionAmount(living.getAbsorptionAmount() + 1);
+                                    }
+                                    living.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 20, 3));
+                                }
+                            }
+                        }, 0xCD5CAB, 64.0F)))
+                    .fireEffects(new PlaySound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.7F, 1.4F))
             );
 			registry.register(addWeapon("ender_rail_accelerator",
                 WeaponProperties.builder().minimumDamage(120).maximumDamage(150)
@@ -628,10 +726,36 @@ public class QuiverbowMain
                 .fireEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.6F, 0.9F)));
 
 			// Lightning Red and Redstone Magazine
-			/* TODO: Reimplement _AmmoBase redstoneMagazine = addAmmo(new
-			 * RedstoneMagazine(), "redstone_magazine");
-			 * registry.registerAll(redstoneMagazine, addWeapon(new
-			 * LightningRed(redstoneMagazine))); */
+			AmmoBase redstoneMagazine = addAmmo(new RedstoneMagazine(), "redstone_magazine");
+			registry.registerAll(redstoneMagazine, addWeapon("lightning_red",
+                    WeaponProperties.builder().minimumDamage(8).maximumDamage(16)
+                        .projectileSpeed(5.0F).kickback(3).cooldown(40).mobUsable()
+                        .intProperty(BeamFireShape.PIERCING, 5),
+                    new AutomaticTrigger(new MagazineAmmoSource(redstoneMagazine),
+                        new BeamFireShape((stack, world, user, target, properties) ->
+                        {
+                            if (target.typeOfHit == RayTraceResult.Type.ENTITY)
+                            {
+                                target.entityHit.attackEntityFrom(DamageSource.LIGHTNING_BOLT,
+                                    properties.generateDamage(world.rand));
+                                target.entityHit.hurtResistantTime = 0;
+                                if (world.rand.nextFloat() <= 0.2F)
+                                {
+                                    world.addWeatherEffect(new EntityLightningBolt(world,
+                                        target.hitVec.x, target.hitVec.y, target.hitVec.z, false));
+                                }
+                            }
+                            else if (target.typeOfHit == RayTraceResult.Type.BLOCK)
+                            {
+                                IBlockState toBreak = world.getBlockState(target.getBlockPos());
+                                if (toBreak.getBlock().getHarvestLevel(toBreak) <= 1)
+                                    Helper.breakBlock(world, user, target.getBlockPos());
+                            }
+                        }, 0xFF0000, 64.0F)))
+                    .fireEffects(new Knockback(), new PlaySound(SoundEvents.ENTITY_LIGHTNING_THUNDER, 1.0F, 0.5F),
+                        new PlaySound(SoundEvents.ENTITY_FIREWORK_BLAST, 2.0F, 0.1F),
+                        new SpawnParticle(EnumParticleTypes.REDSTONE, 0.5F))
+                    .cooldownEffects(new PlaySound(SoundEvents.ENTITY_GENERIC_EXTINGUISH_FIRE, 0.7F, 0.2F)));
 		}
 
 		private static Weapon addWeapon(String name, WeaponProperties.Builder propertiesBuilder, Trigger trigger)
@@ -689,9 +813,6 @@ public class QuiverbowMain
                 createEntry("osr_shot", 80, 1, true, OSRShot.class, OSRShot::new),
                 createEntry("owr_shot", 80, 1, true, OWRShot.class, OWRShot::new),
                 createEntry("fen_light", 80, 1, true, FenGoop.class, FenGoop::new),
-                createEntry("flint_dust", 80, 1, true, FlintDust.class, FlintDust::new),
-                createEntry("red_light", 80, 1, true, RedLight.class, RedLight::new),
-                createEntry("sunlight", 80, 1, true, SunLight.class, SunLight::new),
                 createEntry("nether_fire", 80, 1, true, NetherFire.class, NetherFire::new),
                 createEntry("red_spray", 80, 1, true, RedSpray.class, RedSpray::new),
                 createEntry("soul", 80, 1, true, SoulShot.class, SoulShot::new),

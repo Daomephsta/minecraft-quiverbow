@@ -46,6 +46,7 @@ public class Trigger
 
     public boolean weaponTick(World world, EntityLivingBase user, ItemStack stack, WeaponProperties properties)
     {
+        ammoSource.weaponTick(world, user, stack, properties);
         return false;
     }
 
