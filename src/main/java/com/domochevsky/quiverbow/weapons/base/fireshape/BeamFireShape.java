@@ -17,25 +17,24 @@ import net.minecraft.world.World;
 
 public class BeamFireShape implements FireShape
 {
-    public static final Pair<String, String> PIERCING =
-        Pair.of("piercing", "How many entities and blocks the beam can pierce through");
+    public static final Pair<String, String>
+        PIERCING = Pair.of("piercing", "How many entities and blocks the beam can pierce through"),
+        MAX_RANGE = Pair.of("maxRange", "Maximum beam length");
     // RGB color encoded as an integer
     private final int colour;
     // Applies the effect of the beam
     private final IBeamEffect effect;
-    // Maximum range of the beam in blocks
-    private final float maxRange;
 
-    public BeamFireShape(IBeamEffect effect, int colour, float maxRange)
+    public BeamFireShape(IBeamEffect effect, int colour)
     {
         this.colour = colour;
         this.effect = effect;
-        this.maxRange = maxRange;
     }
 
     @Override
     public boolean fire(World world, EntityLivingBase shooter, ItemStack stack, WeaponProperties properties)
     {
+        double maxRange = properties.getFloat(MAX_RANGE);
         Vec3d eyeVec = shooter.getPositionVector().addVector(0.0D, shooter.getEyeHeight(), 0.0D);
         Vec3d rayEndVec = eyeVec.add(shooter.getLookVec().scale(maxRange));
 

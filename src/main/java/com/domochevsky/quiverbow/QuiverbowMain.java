@@ -355,7 +355,8 @@ public class QuiverbowMain
                     .cooldownEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.8F, 2.0F)),
                 addWeapon("flint_duster",
                     WeaponProperties.builder().damage(1)
-                        .intProperty("maxRange", "The maximum range of this weapon in blocks", 7),
+                        .intProperty("maxRange", "The maximum range of this weapon in blocks", 7)
+                        .floatProperty(BeamFireShape.MAX_RANGE, 8),
                     new AutomaticTrigger(new InternalAmmoSource(256),
                         new BeamFireShape((stack, world, user, target, properties) ->
                         {
@@ -379,13 +380,14 @@ public class QuiverbowMain
                                     }
                                 }
                             }
-                        }, 0x000000, 8.0F)))
+                        }, 0x000000)))
                     .fireEffects(new PlaySound(SoundEvents.ENTITY_BAT_TAKEOFF, 0.5F, 0.6F),
                         new PlaySound(SoundType.GROUND.getBreakSound(), 1.0F, 1.0F)),
                 addWeapon("sunray",
                     WeaponProperties.builder().minimumDamage(14).maximumDamage(20).kickback(3)
                         .intProperty(CommonProperties.FIRE_DUR_ENTITY, 10)
                         .intProperty(BeamFireShape.PIERCING, 1)
+                        .floatProperty(BeamFireShape.MAX_RANGE, 64)
                         .intProperty("minLight", "The minimum light level needed to recharge", 12),
                     new AutomaticTrigger(new SolarAmmoSource(100),
                         new BeamFireShape((stack, world, user, target, properties) ->
@@ -424,7 +426,7 @@ public class QuiverbowMain
                                 else if (state.getMaterial() == Material.WATER)
                                     world.setBlockToAir(pos);
                             }
-                        }, 0xFFFFFF, 64.0F)))
+                        }, 0xFFFFFF)))
                     .fireEffects(new Knockback(), new PlaySound(SoundEvents.ENTITY_BLAZE_DEATH, 0.7F, 2.0F),
                         new PlaySound(SoundEvents.ENTITY_FIREWORK_BLAST, 2.0F, 0.1F),
                         new SpawnParticle(EnumParticleTypes.REDSTONE, 0.5F))
@@ -508,7 +510,7 @@ public class QuiverbowMain
                     .cooldownEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.7F, 0.2F),
                         new SpawnParticle(EnumParticleTypes.SMOKE_NORMAL, 0.0F)),
                 addWeapon("ray_of_hope",
-                    WeaponProperties.builder(),
+                    WeaponProperties.builder().floatProperty(BeamFireShape.MAX_RANGE, 64),
                     new AutomaticTrigger(new InternalAmmoSource(320),
                         new BeamFireShape((stack, world, user, target, properties) ->
                         {
@@ -527,7 +529,7 @@ public class QuiverbowMain
                                     living.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 20, 3));
                                 }
                             }
-                        }, 0xCD5CAB, 64.0F)))
+                        }, 0xCD5CAB)))
                     .fireEffects(new PlaySound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.7F, 1.4F))
             );
 			registry.register(addWeapon("ender_rail_accelerator",
@@ -740,7 +742,8 @@ public class QuiverbowMain
 			registry.registerAll(redstoneMagazine, addWeapon("lightning_red",
                     WeaponProperties.builder().minimumDamage(8).maximumDamage(16)
                         .projectileSpeed(5.0F).kickback(3).cooldown(40).mobUsable()
-                        .intProperty(BeamFireShape.PIERCING, 5),
+                        .intProperty(BeamFireShape.PIERCING, 5)
+                        .floatProperty(BeamFireShape.MAX_RANGE, 64),
                     new AutomaticTrigger(new MagazineAmmoSource(redstoneMagazine),
                         new BeamFireShape((stack, world, user, target, properties) ->
                         {
@@ -761,7 +764,7 @@ public class QuiverbowMain
                                 if (toBreak.getBlock().getHarvestLevel(toBreak) <= 1)
                                     Helper.breakBlock(world, user, target.getBlockPos());
                             }
-                        }, 0xFF0000, 64.0F)))
+                        }, 0xFF0000)))
                     .fireEffects(new Knockback(), new PlaySound(SoundEvents.ENTITY_LIGHTNING_THUNDER, 1.0F, 0.5F),
                         new PlaySound(SoundEvents.ENTITY_FIREWORK_BLAST, 2.0F, 0.1F),
                         new SpawnParticle(EnumParticleTypes.REDSTONE, 0.5F))
