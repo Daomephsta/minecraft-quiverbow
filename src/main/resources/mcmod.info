@@ -2,7 +2,7 @@
 {
   "modid": "quiverbow_restrung",
   "name": "QuiverBow: Restrung",
-  "description": "Ranged weaponry, as thought up by Steve.",
+  "description": "Ranged weaponry in a more vanilla style. Unofficial port of QuiverBow, made in accordance with the GPL v3 license applied to the source. Domochevsky is not affiliated with this project, any issues should be reported to this project's author using the linked issue tracker.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "https://github.com/Daomephsta/minecraft-quiverbow",
