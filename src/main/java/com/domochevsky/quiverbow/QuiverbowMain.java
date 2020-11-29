@@ -263,8 +263,9 @@ public class QuiverbowMain
             registry.register(addWeapon("seedling",
                     WeaponProperties.builder().minimumDamage(1)
                         .maximumDamage(1).projectileSpeed(1.3F).mobUsable()
-                        .floatProperty(CommonProperties.SPREAD, 5.0F),
-                    new AutomaticTrigger(new InternalAmmoSource(32), new SpreadFireShape(Seed::new, 1)))
+                        .floatProperty(CommonProperties.SPREAD, 5.0F)
+                        .intProperty(SpreadFireShape.PROJECTILES, 1),
+                    new AutomaticTrigger(new InternalAmmoSource(32), new SpreadFireShape(Seed::new)))
                     .fireEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.6F, 0.7F),
                         breakIfEmpty)
             );
@@ -279,13 +280,14 @@ public class QuiverbowMain
 					.fireEffects(new PlaySound(SoundEvents.ENTITY_FIREWORK_LAUNCH, 1.0F, 1.0F)),
 				addWeapon("quad_dragonbox",
                     WeaponProperties.builder().minimumDamage(4).maximumDamage(6)
-                    .projectileSpeed(1.3F).knockback(2).kickback(1).cooldown(10).mobUsable()
-                    .intProperty(CommonProperties.FIRE_DUR_ENTITY, 6)
-                    .floatProperty(CommonProperties.EXPLOSION_SIZE, 1.0F)
-                    .booleanProperty(CommonProperties.DAMAGE_TERRAIN, true)
-                    .floatProperty(CommonProperties.SPREAD, 6),
+                        .projectileSpeed(1.3F).knockback(2).kickback(1).cooldown(10).mobUsable()
+                        .intProperty(CommonProperties.FIRE_DUR_ENTITY, 6)
+                        .floatProperty(CommonProperties.EXPLOSION_SIZE, 1.0F)
+                        .booleanProperty(CommonProperties.DAMAGE_TERRAIN, true)
+                        .floatProperty(CommonProperties.SPREAD, 6)
+                        .intProperty(SpreadFireShape.PROJECTILES, 54),
                     new AutomaticTrigger(new InternalAmmoSource(64),
-                        new SpreadFireShape(SmallRocket::new, 4)))
+                        new SpreadFireShape(SmallRocket::new)))
                     .fireEffects(new PlaySound(SoundEvents.ENTITY_FIREWORK_LAUNCH, 1.0F, 1.0F)),
 				addWeapon("rocket_launcher",
 					WeaponProperties.builder().projectileSpeed(2.0F).kickback(3).cooldown(60).mobUsable()
@@ -329,8 +331,9 @@ public class QuiverbowMain
                         .projectileSpeed(1.5F).kickback(2).cooldown(15).mobUsable()
                         .floatProperty(CommonProperties.SPREAD, 10.0F)
                         .intProperty(CommonProperties.SLOWNESS_STRENGTH, 3)
-                        .intProperty(CommonProperties.SLOWNESS_DUR, 40),
-                    new AutomaticTrigger(new InternalAmmoSource(64), new SpreadFireShape(SnowShot::new, 4)))
+                        .intProperty(CommonProperties.SLOWNESS_DUR, 40)
+                        .intProperty(SpreadFireShape.PROJECTILES, 4),
+                    new AutomaticTrigger(new InternalAmmoSource(64), new SpreadFireShape(SnowShot::new)))
                     .fireEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F)),
 				addWeapon("ender_rifle",
                     WeaponProperties.builder().minimumDamage(4).maximumDamage(16)
@@ -572,10 +575,11 @@ public class QuiverbowMain
 			registry.registerAll(sugarMag, addWeapon("sugar_engine",
                 WeaponProperties.builder().minimumDamage(1).maximumDamage(3)
                     .projectileSpeed(2.0F).kickback(1).mobUsable()
-                    .floatProperty(CommonProperties.SPREAD, 5.0F),
+                    .floatProperty(CommonProperties.SPREAD, 5.0F)
+                    .intProperty(SpreadFireShape.PROJECTILES, 1),
                 new SpoolingTrigger(new MagazineAmmoSource(sugarMag)
                         .unloadEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F)),
-                    new SpreadFireShape(SugarRod::new, 1)))
+                    new SpreadFireShape(SugarRod::new)))
                 .fireEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.0F, 0.2F),
                     new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 0.6F, 3.0F), new Knockback()));
 
@@ -626,19 +630,21 @@ public class QuiverbowMain
                     WeaponProperties.builder().minimumDamage(1).maximumDamage(3)
                         .projectileSpeed(2.5F).kickback(1) .cooldown(15).mobUsable()
                         .booleanProperty(CommonProperties.SHOULD_DROP, true)
-                        .floatProperty(CommonProperties.SPREAD, 5),
+                        .floatProperty(CommonProperties.SPREAD, 5)
+                        .intProperty(SpreadFireShape.PROJECTILES, 9),
                     new AutomaticTrigger(new MagazineAmmoSource(goldMagazine)
                         .unloadEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F)),
-                        new SpreadFireShape(CoinShot::new, 9)))
+                        new SpreadFireShape(CoinShot::new)))
                     .fireEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 3.0F)),
 			    addWeapon("coin_tosser_mod",
                     WeaponProperties.builder().minimumDamage(1).maximumDamage(3)
-                    .projectileSpeed(2.5F).kickback(1) .cooldown(15).mobUsable()
-                    .booleanProperty(CommonProperties.SHOULD_DROP, true)
-                    .floatProperty(CommonProperties.SPREAD, 2),
+                        .projectileSpeed(2.5F).kickback(1) .cooldown(15).mobUsable()
+                        .booleanProperty(CommonProperties.SHOULD_DROP, true)
+                        .floatProperty(CommonProperties.SPREAD, 2)
+                        .intProperty(SpreadFireShape.PROJECTILES, 3),
                     new AutomaticTrigger(new MagazineAmmoSource(goldMagazine)
                             .unloadEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F)),
-                        new SpreadFireShape(CoinShot::new, 3)))
+                        new SpreadFireShape(CoinShot::new)))
                     .fireEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 3.0F)));
 
 			// Hidden Ender Pistol and Ender Quartz Magazine
@@ -675,10 +681,11 @@ public class QuiverbowMain
     			WeaponProperties.builder().minimumDamage(1).maximumDamage(1)
     			    .projectileSpeed(0.75F).mobUsable()
     			    .intProperty(CommonProperties.FIRE_DUR_ENTITY, 3)
-    			    .floatProperty(CommonProperties.SPREAD, 10),
+    			    .floatProperty(CommonProperties.SPREAD, 10)
+                    .intProperty(SpreadFireShape.PROJECTILES, 5),
                 new AutomaticTrigger(new MagazineAmmoSource(largeNetherrackMagazine)
                         .unloadEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F)),
-                    new SpreadFireShape(NetherFire::new, 5)))
+                    new SpreadFireShape(NetherFire::new)))
                 .fireEffects(new PlaySound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 1.0F, 0.3F)));
 
 			// Thorn Spitter, Proximity Thorn Thrower and Thorn Magazine
@@ -710,20 +717,22 @@ public class QuiverbowMain
                     .intProperty(CommonProperties.WITHER_STRENGTH, 2)
                     .intProperty(CommonProperties.WITHER_DUR, 20)
                     .intProperty(RedSpray.BLINDNESS_DUR, 20)
-                    .floatProperty(CommonProperties.SPREAD, 5),
+                    .floatProperty(CommonProperties.SPREAD, 5)
+                    .intProperty(SpreadFireShape.PROJECTILES, 10),
                 new AutomaticTrigger(new MagazineAmmoSource(largeRedstoneMagazine)
                         .unloadEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F)),
-                    new SpreadFireShape(RedSpray::new, 10)))
+                    new SpreadFireShape(RedSpray::new)))
                 .fireEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.6F, 0.9F)));
 
 			AmmoBase seedJar = addAmmo(new SeedJar(), "seed_jar");
 			registry.registerAll(seedJar, addWeapon("seed_sweeper",
                 WeaponProperties.builder().minimumDamage(1).maximumDamage(1)
                     .projectileSpeed(1.6F).mobUsable()
-                    .floatProperty(CommonProperties.SPREAD, 13.0F),
+                    .floatProperty(CommonProperties.SPREAD, 13.0F)
+                    .intProperty(SpreadFireShape.PROJECTILES, 8),
                 new AutomaticTrigger(new MagazineAmmoSource(seedJar)
                         .unloadEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.7F, 0.3F)),
-                    new SpreadFireShape(Seed::new, 8)))
+                    new SpreadFireShape(Seed::new)))
                 .fireEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.6F, 0.9F)));
 
 			// Lightning Red and Redstone Magazine

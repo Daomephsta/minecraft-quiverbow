@@ -1,5 +1,7 @@
 package com.domochevsky.quiverbow.weapons.base.fireshape;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 
@@ -11,13 +13,13 @@ import net.minecraft.world.World;
 
 public class SpreadFireShape implements FireShape
 {
+    public static final Pair<String, String> PROJECTILES =
+        Pair.of("projectiles", "How many projectiles are spawned when fired");
     private final SpreadProjectileFactory projectileFactory;
-    private final int projectiles;
 
-    public SpreadFireShape(SpreadProjectileFactory projectileFactory, int projectiles)
+    public SpreadFireShape(SpreadProjectileFactory projectileFactory)
     {
         this.projectileFactory = projectileFactory;
-        this.projectiles = projectiles;
     }
 
     @Override
@@ -26,7 +28,7 @@ public class SpreadFireShape implements FireShape
         if (!world.isRemote)
         {
             float spread = properties.getFloat(CommonProperties.SPREAD);
-            for (int i = 0; i < projectiles; i++)
+            for (int i = 0; i < properties.getInt(PROJECTILES); i++)
             {
                 // http://www.anderswallin.net/2009/05/uniform-random-points-in-a-circle-using-polar-coordinates/
                 float theta = world.rand.nextFloat() * 2 * (float) Math.PI;
