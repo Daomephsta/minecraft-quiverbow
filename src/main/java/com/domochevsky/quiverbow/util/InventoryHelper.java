@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 
 public class InventoryHelper
 {
@@ -22,6 +23,17 @@ public class InventoryHelper
 	{
 		return hasItem(player, Item.getItemFromBlock(block), amount);
 	}
+
+    public static boolean hasIngredient(EntityPlayer player, Ingredient ingredient, int amount)
+    {
+        for (int slot = 0; slot < player.inventory.getSizeInventory(); slot++)
+        {
+            ItemStack stack = player.inventory.getStackInSlot(slot);
+            if (ingredient.apply(stack) && stack.getCount() >= amount)
+                return true;
+        }
+        return false;
+    }
 
 	// Omnomnom
 	public static boolean consumeItem(EntityPlayer player, Item item, int amount)
@@ -51,6 +63,25 @@ public class InventoryHelper
 	{
 		return consumeItem(player, Item.getItemFromBlock(block), amount);
 	}
+
+    public static boolean consumeIngredient(EntityPlayer player, Ingredient ingredient, int amount)
+    {
+        for (int slot = 0; slot < player.inventory.getSizeInventory(); slot++)
+        {
+            ItemStack stack = player.inventory.getStackInSlot(slot);
+            if (ingredient.apply(stack))
+            {
+                if (stack.getCount() - amount < 0)
+                    return false;
+                else
+                {
+                    stack.shrink(amount);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 	// Utils for interacting with and checking both hands
 	public static ItemStack findItemInHands(EntityLivingBase entity, Item item)

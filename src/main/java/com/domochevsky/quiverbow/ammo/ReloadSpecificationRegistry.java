@@ -2,10 +2,12 @@ package com.domochevsky.quiverbow.ammo;
 
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.Map.Entry;
 
 import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.util.Resources;
 import com.domochevsky.quiverbow.weapons.base.Weapon;
+import com.google.common.collect.Iterables;
 import com.google.gson.*;
 
 import net.minecraft.item.Item;
@@ -20,13 +22,19 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 public class ReloadSpecificationRegistry
 {
     public static final ReloadSpecificationRegistry INSTANCE = new ReloadSpecificationRegistry();
-    private final Map<Item, ReloadSpecification> specsByWeapon = new HashMap<>();
+    private final Map<Weapon, ReloadSpecification> specsByWeapon = new HashMap<>();
+    private final Map<AmmoMagazine, ReloadSpecification> specsByMagazine = new HashMap<>();
 
     private ReloadSpecificationRegistry() {}
 
-    public ReloadSpecification getSpecification(Item targetWeapon)
+    public ReloadSpecification getSpecification(Weapon targetWeapon)
     {
         return specsByWeapon.get(targetWeapon);
+    }
+
+    public ReloadSpecification getSpecification(AmmoMagazine ammoMagazine)
+    {
+        return specsByMagazine.get(ammoMagazine);
     }
 
     public void loadData()
@@ -56,15 +64,17 @@ public class ReloadSpecificationRegistry
                         "ingredient"), jsonContext);
                     reloadSpecification.add(ingredient,
                         JsonUtils.getInt(object, "ammoValue"),
-                        JsonUtils.getInt(object, "min"),
-                        JsonUtils.getInt(object, "max"));
+                        JsonUtils.getInt(object, "min", 1),
+                        JsonUtils.getInt(object, "max", 1));
                 }
             }
             Item weapon = getWeapon(path);
             if (weapon instanceof Weapon)
-                specsByWeapon.put(weapon, reloadSpecification);
+                specsByWeapon.put((Weapon) weapon, reloadSpecification);
+            else if (weapon instanceof AmmoMagazine)
+                specsByMagazine.put((AmmoMagazine) weapon, reloadSpecification);
             else
-                throw new JsonSyntaxException(weapon + " is not a weapon");
+                throw new JsonSyntaxException(weapon + " is not a weapon or magazine");
         });
     }
 
@@ -76,9 +86,14 @@ public class ReloadSpecificationRegistry
         return ForgeRegistries.ITEMS.getValue(weaponId);
     }
 
-    public Set<Item> getRegisteredWeapons()
+    public Iterable<Weapon> getRegisteredWeapons()
     {
         return specsByWeapon.keySet();
+    }
+
+    public Iterable<Entry<? extends Item, ReloadSpecification>> getSpecifications()
+    {
+        return Iterables.concat(specsByWeapon.entrySet(), specsByMagazine.entrySet());
     }
 
     public static class ReloadSpecification

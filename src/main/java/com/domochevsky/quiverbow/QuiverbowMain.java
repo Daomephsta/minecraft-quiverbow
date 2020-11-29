@@ -599,7 +599,9 @@ public class QuiverbowMain
 		private static void registerWeaponsWithAmmo(IForgeRegistry<Item> registry)
 		{
 			// Sugar Engine and Sugar Magazine
-			AmmoBase sugarMag = addAmmo(new GatlingAmmo(), "sugar_magazine");
+			AmmoBase sugarMag = addAmmo("sugar_magazine", new AmmoMagazine(4, 4)
+			    .fillSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 1.50F)
+			    .setMaxDamage(200));
 			registry.registerAll(sugarMag, addWeapon("sugar_engine",
                 WeaponProperties.builder().minimumDamage(1).maximumDamage(3)
                     .projectileSpeed(2.0F).kickback(1).mobUsable()
@@ -613,7 +615,9 @@ public class QuiverbowMain
                     new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 0.6F, 3.0F), new Knockback()));
 
 			// Obsidian weapons and Obsidian Magazine
-			AmmoBase obsidianMag = addAmmo(new ObsidianMagazine(), "obsidian_magazine");
+			AmmoBase obsidianMag = addAmmo("obsidian_magazine", new AmmoMagazine(1, 1)
+                .fillSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 0.3F)
+                .setMaxDamage(32));
 			registry.registerAll(obsidianMag,
 			    addWeapon("splinter_rifle",
                     WeaponProperties.builder().minimumDamage(7).maximumDamage(13)
@@ -656,7 +660,9 @@ public class QuiverbowMain
                     .cooldownEffects(new SpawnParticle(EnumParticleTypes.SMOKE_NORMAL, 0.0F),
                         new PlaySound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 1.0F, 1.2F)));
 
-			AmmoBase goldMagazine = addAmmo(new GoldMagazine(), "gold_magazine");
+			AmmoBase goldMagazine = addAmmo("gold_magazine", new AmmoMagazine(1, 8)
+                .fillSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 0.3F)
+                .setMaxDamage(72));
 			registry.registerAll(goldMagazine,
                 addWeapon("coin_tosser",
                     WeaponProperties.builder().minimumDamage(1).maximumDamage(3)
@@ -682,7 +688,9 @@ public class QuiverbowMain
                     .fireEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 3.0F)));
 
 			// Hidden Ender Pistol and Ender Quartz Magazine
-			AmmoBase enderQuartzMagazine = addAmmo(new EnderQuartzClip(), "ender_quartz_magazine");
+			AmmoBase enderQuartzMagazine = addAmmo("ender_quartz_magazine", new AmmoMagazine(1, 1)
+                .fillSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 0.3F)
+                .setMaxDamage(8));
 			registry.registerAll(enderQuartzMagazine, addWeapon("hidden_ender_pistol",
                 WeaponProperties.builder().minimumDamage(16).maximumDamage(24)
                     .projectileSpeed(5.0F).kickback(1).cooldown(20)
@@ -695,7 +703,9 @@ public class QuiverbowMain
                     new SpawnParticle(EnumParticleTypes.PORTAL, 0.0F))
                 .cooldownEffects(new PlaySound(SoundEvents.BLOCK_GLASS_BREAK, 0.3F, 0.3F)));
 
-			AmmoBase lapisMagazine = addAmmo(new LapisMagazine(), "lapis_magazine");
+			AmmoBase lapisMagazine = addAmmo("lapis_magazine", new LapisMagazine()
+                .fillSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.0F, 0.2F)
+                .setMaxDamage(150));
 			registry.registerAll(lapisMagazine, addWeapon("lapis_coil",
                 WeaponProperties.builder().minimumDamage(1).maximumDamage(3)
                     .projectileSpeed(2.5F).cooldown(4).mobUsable()
@@ -712,7 +722,9 @@ public class QuiverbowMain
                 .fireEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.0F, 0.5F),
                     new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 3.0F)));
 
-			AmmoBase largeNetherrackMagazine = addAmmo(new LargeNetherrackMagazine(), "large_netherrack_magazine");
+			AmmoBase largeNetherrackMagazine = addAmmo("large_netherrack_magazine", new AmmoMagazine(1, 8)
+                .fillSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 0.3F)
+                .setMaxDamage(200));
 			registry.registerAll(largeNetherrackMagazine, addWeapon("nether_bellows",
     			WeaponProperties.builder().minimumDamage(1).maximumDamage(1)
     			    .projectileSpeed(0.75F).mobUsable()
@@ -726,7 +738,9 @@ public class QuiverbowMain
                 .fireEffects(new PlaySound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 1.0F, 0.3F)));
 
 			// Thorn Spitter, Proximity Thorn Thrower and Thorn Magazine
-			AmmoBase thornMagazine = addAmmo(new NeedleMagazine(), "thorn_magazine");
+			AmmoBase thornMagazine = addAmmo("thorn_magazine", new AmmoMagazine(1, 8)
+                .fillSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 1.3F)
+                .setMaxDamage(64));
 			registry.registerAll(thornMagazine,
 			        addWeapon("thorn_spitter",
     		            WeaponProperties.builder().minimumDamage(1).maximumDamage(2)
@@ -751,7 +765,9 @@ public class QuiverbowMain
                         .fireEffects(new PlaySound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.7F, 1.5F)));
 
 			// Redstone Sprayer and Large Redstone Magazine
-			AmmoBase largeRedstoneMagazine = addAmmo(new LargeRedstoneMagazine(), "large_redstone_magazine");
+			AmmoBase largeRedstoneMagazine = addAmmo("large_redstone_magazine", new AmmoMagazine(1, 8)
+                .fillSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 0.3F)
+                .setMaxDamage(200));
 			registry.registerAll(largeRedstoneMagazine, addWeapon("redstone_sprayer",
                 WeaponProperties.builder().projectileSpeed(0.5F).mobUsable()
                     .intProperty(CommonProperties.WITHER_STRENGTH, 2)
@@ -765,7 +781,9 @@ public class QuiverbowMain
                     new SpreadFireShape(RedSpray::new)))
                 .fireEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.6F, 0.9F)));
 
-			AmmoBase seedJar = addAmmo(new SeedJar(), "seed_jar");
+			AmmoBase seedJar = addAmmo("seed_jar", new AmmoMagazine(8, 8)
+                .fillSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.6F, 0.7F)
+                .setMaxDamage(512));
 			registry.registerAll(seedJar, addWeapon("seed_sweeper",
                 WeaponProperties.builder().minimumDamage(1).maximumDamage(1)
                     .projectileSpeed(1.6F).mobUsable()
@@ -778,7 +796,9 @@ public class QuiverbowMain
                 .fireEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.6F, 0.9F)));
 
 			// Lightning Red and Redstone Magazine
-			AmmoBase redstoneMagazine = addAmmo(new RedstoneMagazine(), "redstone_magazine");
+			AmmoBase redstoneMagazine = addAmmo("redstone_magazine", new AmmoMagazine(1, 8)
+                .fillSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 0.3F)
+                .setMaxDamage(64));
 			registry.registerAll(redstoneMagazine, addWeapon("lightning_red",
                     WeaponProperties.builder().minimumDamage(8).maximumDamage(16)
                         .projectileSpeed(5.0F).kickback(3).cooldown(40).mobUsable()
@@ -820,12 +840,12 @@ public class QuiverbowMain
 
 		private static void registerAmmo(IForgeRegistry<Item> registry)
 		{
-			registry.registerAll(addAmmo(new AmmoBase(), "arrow_bundle"), addAmmo(new AmmoBase(), "cold_iron_clip"),
-					addAmmo(new AmmoBase(), "rocket_bundle"), addAmmo(new AmmoBase(), "large_rocket"),
-					addAmmo(new BoxOfFlintDust(), "box_of_flint_dust"));
+			registry.registerAll(addAmmo("arrow_bundle", new AmmoBase()), addAmmo("cold_iron_clip", new AmmoBase()),
+					addAmmo("rocket_bundle", new AmmoBase()), addAmmo("large_rocket", new AmmoBase()),
+					addAmmo("box_of_flint_dust", new BoxOfFlintDust()));
 		}
 
-		private static AmmoBase addAmmo(AmmoBase ammoBase, String name)
+		private static AmmoBase addAmmo(String name, AmmoBase ammoBase)
 		{
 			QuiverbowMain.ammo.add(ammoBase);
 			ammoBase.setUnlocalizedName(QuiverbowMain.MODID + ".ammo." + name);
@@ -837,7 +857,7 @@ public class QuiverbowMain
 		public static void registerRecipes(RegistryEvent.Register<IRecipe> e)
 		{
 		    ReloadSpecificationRegistry.INSTANCE.loadData();
-		    for (Item weapon : ReloadSpecificationRegistry.INSTANCE.getRegisteredWeapons())
+		    for (Weapon weapon : ReloadSpecificationRegistry.INSTANCE.getRegisteredWeapons())
                 e.getRegistry().register(new RecipeLoadAmmo(weapon).setRegistryName(MODID, "load_" + weapon.getRegistryName().getResourcePath()));
 		}
 

@@ -3,6 +3,7 @@ package com.domochevsky.quiverbow.recipes;
 import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry;
 import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry.ComponentData;
 import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry.ReloadSpecification;
+import com.domochevsky.quiverbow.weapons.base.Weapon;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
@@ -18,7 +19,7 @@ public class RecipeLoadAmmo extends IForgeRegistryEntry.Impl<IRecipe> implements
 	private final Item targetWeapon;
 	private final ReloadSpecification specification;
 
-    public RecipeLoadAmmo(Item targetWeapon)
+    public RecipeLoadAmmo(Weapon targetWeapon)
 	{
 		this.targetWeapon = targetWeapon;
 		this.specification = ReloadSpecificationRegistry.INSTANCE.getSpecification(targetWeapon);

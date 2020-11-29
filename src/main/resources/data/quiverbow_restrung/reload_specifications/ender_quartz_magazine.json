@@ -1,0 +1,14 @@
+[
+    {
+        "ingredient": {
+            "item": "minecraft:ender_pearl"
+        },
+        "ammoValue": 0
+    },
+    {
+        "ingredient": {
+            "item": "minecraft:quartz"
+        },
+        "ammoValue": 0
+    }
+]

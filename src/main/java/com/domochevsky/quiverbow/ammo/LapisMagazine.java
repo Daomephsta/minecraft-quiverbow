@@ -1,28 +1,24 @@
 package com.domochevsky.quiverbow.ammo;
 
-import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.QuiverbowMain;
-import com.domochevsky.quiverbow.util.InventoryHelper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 public class LapisMagazine extends AmmoMagazine
 {
 	public LapisMagazine()
 	{
-		super();
-		this.setMaxDamage(150); // Filled with lapis
-		this.setCreativeTab(CreativeTabs.COMBAT); // On the combat tab by
-		// default, since this is
-		// amunition
+		super(1, 1);
+		this.setMaxDamage(150);
+		this.setCreativeTab(CreativeTabs.COMBAT);
 	}
 
 	@Override
@@ -30,44 +26,23 @@ public class LapisMagazine extends AmmoMagazine
 	{
 		ItemStack stack = player.getHeldItem(hand);
 		if (stack.getItemDamage() == 0)
-		{
-			return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
-		} // Already fully loaded
+         return ActionResult.newResult(EnumActionResult.FAIL, stack);
 		if (stack.getItemDamage() < 25)
-		{
-			return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
-		} // No room for another lapis block
-
+		    return ActionResult.newResult(EnumActionResult.FAIL, stack);
 		if (player.capabilities.isCreativeMode)
 		{
 			if (world.isRemote)
-				Minecraft.getMinecraft().ingameGUI.setOverlayMessage(I18n.format(QuiverbowMain.MODID + ".ammo.nocreative"),
+            {
+                Minecraft.getMinecraft().ingameGUI.setOverlayMessage(I18n.format(QuiverbowMain.MODID + ".ammo.nocreative"),
 						false);
-			return ActionResult.<ItemStack>newResult(EnumActionResult.FAIL, stack);
+            }
+			return ActionResult.newResult(EnumActionResult.FAIL, stack);
 		}
 		if (hasComponentItems(player, 1))
 		{
-			// We're just grabbing what we need from the inventory
-
-			int dmg = stack.getItemDamage() - 25;
-			stack.setItemDamage(dmg);
-
+			stack.setItemDamage(stack.getItemDamage() - 25);
 			consumeComponentItems(player, 1);
 		}
-
-		return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-	}
-
-	@Override
-	protected boolean hasComponentItems(EntityPlayer player, int amount)
-	{
-		return InventoryHelper.hasBlock(player, Blocks.LAPIS_BLOCK, amount);
-	}
-
-	@Override
-	protected boolean consumeComponentItems(EntityPlayer player, int amount)
-	{
-		Helper.playSoundAtEntityPos(player, SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.0F, 0.2F);
-		return InventoryHelper.consumeBlock(player, Blocks.LAPIS_BLOCK, amount);
+		return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
 	}
 }

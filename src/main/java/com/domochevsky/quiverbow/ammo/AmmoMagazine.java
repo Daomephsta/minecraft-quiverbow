@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.QuiverbowMain;
+import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry.ComponentData;
+import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry.ReloadSpecification;
+import com.domochevsky.quiverbow.util.InventoryHelper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
@@ -14,16 +17,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 
-public abstract class AmmoMagazine extends AmmoBase
+public class AmmoMagazine extends AmmoBase
 {
 	// How much should this magazine attempt to fill when sneak-clicked?
 	private int sneakFillQuantity;
 	// How much should this magazine attempt to fill when not sneak-clicked?
 	private int standardFillQuantity;
+	private SoundEvent fillSound;
+    private float fillSoundVolume;
+    private float fillSoundPitch;
 
-	public AmmoMagazine()
+	public AmmoMagazine(int useFillQuantity)
 	{
-		this(1, 1);
+		this(useFillQuantity, useFillQuantity);
 	}
 
 	public AmmoMagazine(int standardFillQuantity, int sneakFillQuantity)
@@ -57,17 +63,43 @@ public abstract class AmmoMagazine extends AmmoBase
 		return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
 	}
 
-	protected void fill(ItemStack stack, World world, EntityPlayer player, int amount)
+	private void fill(ItemStack stack, World world, EntityPlayer player, int amount)
 	{
 		if (!hasComponentItems(player, amount))
 		{
 			if (world.isRemote)
-				Minecraft.getMinecraft().ingameGUI.setOverlayMessage(I18n.format(QuiverbowMain.MODID + ".ammo.missingitems"),
-						false);
+            {
+                Minecraft.getMinecraft().ingameGUI.setOverlayMessage(
+				    I18n.format(QuiverbowMain.MODID + ".ammo.missingitems"), false);
+            }
 			return;
 		}
 		if (consumeComponentItems(player, amount)) stack.setItemDamage(stack.getItemDamage() - amount);
 	}
+
+    protected final boolean hasComponentItems(EntityPlayer player, int amount)
+    {
+        ReloadSpecification specification = ReloadSpecificationRegistry.INSTANCE.getSpecification(this);
+        for (ComponentData component : specification.getComponents())
+        {
+            if (!InventoryHelper.hasIngredient(player, component.getIngredient(), amount))
+                return false;
+        }
+        return true;
+    }
+
+    protected final boolean consumeComponentItems(EntityPlayer player, int amount)
+    {
+        if (fillSound != null)
+            Helper.playSoundAtEntityPos(player, fillSound, fillSoundVolume, fillSoundPitch);
+        ReloadSpecification specification = ReloadSpecificationRegistry.INSTANCE.getSpecification(this);
+        for (ComponentData component : specification.getComponents())
+        {
+            if (!InventoryHelper.consumeIngredient(player, component.getIngredient(), amount))
+                return false;
+        }
+        return true;
+    }
 
 	@Override
 	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags)
@@ -86,15 +118,23 @@ public abstract class AmmoMagazine extends AmmoBase
 		subItems.add(Helper.createEmptyWeaponOrAmmoStack(this, 1));
 	}
 
+	public AmmoMagazine fillSound(SoundEvent fillSound, float fillSoundVolume, float fillSoundPitch)
+	{
+	    this.fillSound = fillSound;
+	    this.fillSoundVolume = fillSoundVolume;
+	    this.fillSoundPitch = fillSoundPitch;
+	    return this;
+	}
+
 	@Override
 	public boolean showDurabilityBar(ItemStack stack)
 	{
 		return true;
 	}
 
-	// Does the player have all the items required to refill the magazine?
-	protected abstract boolean hasComponentItems(EntityPlayer player, int amount);
-
-	// Consume the items required to refill the magazine.
-	protected abstract boolean consumeComponentItems(EntityPlayer player, int amount);
+	@Override
+	public AmmoMagazine setMaxDamage(int maxDamageIn)
+	{
+	    return (AmmoMagazine) super.setMaxDamage(maxDamageIn);
+	}
 }

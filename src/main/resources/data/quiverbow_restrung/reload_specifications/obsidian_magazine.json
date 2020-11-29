@@ -1,0 +1,14 @@
+[
+    {
+        "ingredient": {
+            "item": "minecraft:gunpowder"
+        },
+        "ammoValue": 0
+    },
+    {
+        "ingredient": {
+            "item": "minecraft:obsidian"
+        },
+        "ammoValue": 0
+    }
+]

@@ -1,0 +1,14 @@
+[
+    {
+        "ingredient": {
+            "item": "minecraft:reeds"
+        },
+        "ammoValue": 0
+    },
+    {
+        "ingredient": {
+            "item": "minecraft:stick"
+        },
+        "ammoValue": 0
+    }
+]
