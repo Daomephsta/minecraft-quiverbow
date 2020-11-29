@@ -249,6 +249,7 @@ item.quiverbow_restrung.weapon.ender_rail_accelerator.ammostatus=§cBurns out af
 item.quiverbow_restrung.weapon.ender_rail_accelerator.loadtext=§cCannot be reloaded.
 item.quiverbow_restrung.weapon.ender_rail_accelerator.description=27 blocks worth of powered rail running through a single ender chest. So not safe for use.
 item.quiverbow_restrung.weapon.ender_rail_accelerator.reinforced_muzzle=Reinforced Muzzle
+item.quiverbow_restrung.weapon.ender_rail_accelerator.jei_description=Craft the Ender Rail Accelerator (Incomplete) and check its tooltip.
 
 item.quiverbow_restrung.weapon.auto_crossbow.name=Auto-Crossbow
 item.quiverbow_restrung.weapon.auto_crossbow.ammostatus=§9Bolts: %d / %d
