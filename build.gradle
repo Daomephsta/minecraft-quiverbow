@@ -14,7 +14,7 @@ buildscript {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "${project.mcVersion }-${project.modVersion}"
+version = "${project.modVersion}+MC${project.mcVersion}"
 group = 'com.domochevsky.quiverbow' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'QuiverBowRestrung'
 
