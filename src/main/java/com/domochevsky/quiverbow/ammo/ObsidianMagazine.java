@@ -12,7 +12,7 @@ public class ObsidianMagazine extends AmmoMagazine
 	public ObsidianMagazine()
 	{
 		super();
-		this.setMaxDamage(16);
+		this.setMaxDamage(32);
 		this.setCreativeTab(CreativeTabs.COMBAT); // On the combat tab by
 		// default, since this is
 		// amunition

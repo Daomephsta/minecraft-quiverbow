@@ -620,7 +620,7 @@ public class QuiverbowMain
                         .projectileSpeed(3.0F).knockback(2).kickback(4).cooldown(100).mobUsable()
                         .intProperty(CommonProperties.WITHER_STRENGTH, 3)
                         .intProperty(CommonProperties.WITHER_DUR, 61)
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 2),
                     new SemiAutomaticTrigger(new MagazineAmmoSource(obsidianMag)
                             .unloadEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.7F, 0.3F)),
                         new SingleShotFireShape(OSRShot::new)))
@@ -647,7 +647,7 @@ public class QuiverbowMain
                         .intProperty(OWRShot.MAX_MAGIC_DAMAGE, 14)
                         .intProperty(CommonProperties.WITHER_STRENGTH, 3)
                         .intProperty(CommonProperties.WITHER_DUR, 61)
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 2),
                     new SemiAutomaticTrigger(new MagazineAmmoSource(obsidianMag)
                             .unloadEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.7F, 0.3F)),
                         new SingleShotFireShape(OWRShot::new)))
@@ -744,7 +744,7 @@ public class QuiverbowMain
         	                .intProperty(ProxyThorn.PROX_CHECK_INTERVAL, 20)
         	                .intProperty(ProxyThorn.THORN_AMOUNT, 32)
         	                .floatProperty(ProxyThorn.TRIGGER_DISTANCE, 2.0F)
-                            .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
+                            .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 8),
                         new AutomaticTrigger(new MagazineAmmoSource(thornMagazine)
                                 .unloadEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.3F)),
                             new SingleShotFireShape(ProxyThorn::new)))
