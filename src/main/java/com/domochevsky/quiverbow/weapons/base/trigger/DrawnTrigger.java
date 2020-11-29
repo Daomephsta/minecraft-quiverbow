@@ -64,7 +64,10 @@ public class DrawnTrigger extends Trigger
         float seconds = charge / 20.0F;
         float velocity = Math.min(seconds * (seconds + 2.0F) / 3.0F, 1.0F);
         if (velocity >= 0.1F)
+        {
+            ammoSource.consumeAmmo(user, stack, properties);
             return shape.fire(world, user, stack, properties);
+        }
         return false;
     }
 

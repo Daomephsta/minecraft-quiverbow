@@ -62,7 +62,6 @@ public class EnderAccelerator extends ProjectileBase implements IEntityAdditiona
 	@Override
 	public void onImpact(RayTraceResult target)
 	{
-	    System.out.println(target);
 		if (target.entityHit != null) // We hit a living thing!
 		{
 			target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),

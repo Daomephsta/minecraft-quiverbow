@@ -121,10 +121,6 @@ public class ProxyThorn extends ProjectileBase
 
 			this.setEntityBoundingBox(new AxisAlignedBB(-0.2d, 0.0d, -0.2d, 0.2d, 0.2d, 0.2d)); // Attackable
 		}
-
-		// SFX
-
-		this.setDead(); // We've hit something, so begone with the projectile
 	}
 
 	@Override
