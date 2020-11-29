@@ -1,5 +1,7 @@
 package com.domochevsky.quiverbow.weapons.base.trigger;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.weapons.base.Weapon;
 import com.domochevsky.quiverbow.weapons.base.ammosource.AmmoSource;
@@ -16,13 +18,13 @@ import net.minecraft.world.World;
 
 public class BurstTrigger extends Trigger
 {
+    public static final Pair<String, String>
+        BURST_SIZE = Pair.of("burstSize", "How many times the weapon fires per trigger pull");
     private static final String BURST_FIRE = "burstFire";
-    private final int burstSize;
 
-    public BurstTrigger(int burstSize, AmmoSource ammoSource, FireShape shape)
+    public BurstTrigger(AmmoSource ammoSource, FireShape shape)
     {
         super(ammoSource, shape);
-        this.burstSize = burstSize;
     }
 
     @Override
@@ -36,7 +38,7 @@ public class BurstTrigger extends Trigger
             return ActionResult.newResult(EnumActionResult.FAIL, stack);
         if (!stack.hasTagCompound())
             stack.setTagCompound(new NBTTagCompound());
-        stack.getTagCompound().setInteger(BURST_FIRE, burstSize - 1);
+        stack.getTagCompound().setInteger(BURST_FIRE, properties.getInt(BURST_SIZE) - 1);
         user.setActiveHand(hand);
         return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
     }

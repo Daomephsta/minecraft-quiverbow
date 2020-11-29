@@ -695,8 +695,9 @@ public class QuiverbowMain
 			registry.registerAll(thornMagazine,
 			        addWeapon("thorn_spitter",
     		            WeaponProperties.builder().minimumDamage(1).maximumDamage(2)
-    		                .projectileSpeed(1.75F).cooldown(10).mobUsable(),
-    	                new BurstTrigger(4, new MagazineAmmoSource(largeNetherrackMagazine)
+    		                .projectileSpeed(1.75F).cooldown(10).mobUsable()
+                            .intProperty(BurstTrigger.BURST_SIZE, 4),
+    	                new BurstTrigger(new MagazineAmmoSource(largeNetherrackMagazine)
                                 .unloadEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.7F, 1.3F)),
     	                    new SingleShotFireShape(Thorn::new)))
     	                .fireEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.6F, 0.6F)),
