@@ -20,8 +20,8 @@ import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.IStackHelper;
-import mezz.jei.util.Translator;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -37,7 +37,7 @@ public class RecipeLoadAmmoCategory implements IRecipeCategory<RecipeLoadAmmoCat
 
     public RecipeLoadAmmoCategory(IGuiHelper guiHelper)
     {
-        this.translatedTitle = Translator.translateToLocal(LANG_PREFIX + ".title");
+        this.translatedTitle = I18n.format(LANG_PREFIX + ".title");
         this.background = guiHelper.createDrawable(new ResourceLocation(QuiverbowMain.MODID, "textures/gui/jei/ammo_loading.png"),
             0, 0, WIDTH, HEIGHT);
         this.icon = guiHelper.createDrawableIngredient(new ItemStack(ItemRegistry.ARROW_BUNDLE));
@@ -53,8 +53,7 @@ public class RecipeLoadAmmoCategory implements IRecipeCategory<RecipeLoadAmmoCat
             int ammoValue = recipeWrapper.components.get(slot - 1).getAmmoValue(stack);
             if (ammoValue == 0) // 0 means component is special (e.g potatosser coal)
                 return;
-            tooltip.add(Translator.translateToLocalFormatted(LANG_PREFIX + ".ammo_value",
-                ammoValue));
+            tooltip.add(I18n.format(LANG_PREFIX + ".ammo_value", ammoValue));
         });
 
         guiItemStacks.init(0, false, WIDTH - 22, HEIGHT / 2 - 9);
@@ -101,8 +100,8 @@ public class RecipeLoadAmmoCategory implements IRecipeCategory<RecipeLoadAmmoCat
             for (ComponentData component : components)
             {
                 String quantity = component.getMin() == component.getMax()
-                    ? Translator.translateToLocalFormatted(LANG_PREFIX + ".quantity", component.getMin())
-                    : Translator.translateToLocalFormatted(LANG_PREFIX + ".quantity_range", component.getMin(), component.getMax());
+                    ? I18n.format(LANG_PREFIX + ".quantity", component.getMin())
+                    : I18n.format(LANG_PREFIX + ".quantity_range", component.getMin(), component.getMax());
                 minecraft.fontRenderer.drawString(quantity, 20, inputIndex * 18 + yOffset, 0x000000);
                 inputIndex += 1;
             }

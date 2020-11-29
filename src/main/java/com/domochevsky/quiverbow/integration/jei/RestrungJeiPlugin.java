@@ -14,7 +14,6 @@ import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.IStackHelper;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 @JEIPlugin
