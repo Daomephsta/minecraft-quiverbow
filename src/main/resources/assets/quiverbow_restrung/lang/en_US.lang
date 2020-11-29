@@ -320,3 +320,8 @@ quiverbow_restrung.arms_assistant.messages.low_health=%s is below 30%% health
 quiverbow_restrung.arms_assistant.messages.death=%s has died
 
 item.quiverbow_restrung.misc.FlyingAASpawner.name=Packed Up BB (WIP) 
+
+quiverbow_restrung.jei.ammo_loading.title=Weapon Loading
+quiverbow_restrung.jei.ammo_loading.ammo_value=Ammo Value: %d
+quiverbow_restrung.jei.ammo_loading.quantity=%d
+quiverbow_restrung.jei.ammo_loading.quantity_range=%d - %d 
