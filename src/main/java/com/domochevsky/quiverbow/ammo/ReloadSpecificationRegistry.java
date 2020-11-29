@@ -33,7 +33,7 @@ public class ReloadSpecificationRegistry
     {
         JsonContext jsonContext = new JsonContext(QuiverbowMain.MODID);
         String reloadSpecsDir = "data/" + QuiverbowMain.MODID + "/reload_specifications";
-        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+        ClassLoader classLoader = this.getClass().getClassLoader();
         Resources.findFileResources(classLoader, reloadSpecsDir, path ->
         {
             ReloadSpecification reloadSpecification = new ReloadSpecification();
