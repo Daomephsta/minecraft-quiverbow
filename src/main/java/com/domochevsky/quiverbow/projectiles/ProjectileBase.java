@@ -23,36 +23,36 @@ public class ProjectileBase extends Entity implements IProjectile
 {
 	// Used by projectiles that care about the original position of the shooter,
 	// like beam weapons
-	public double ownerX;
-	public double ownerY;
-	public double ownerZ;
+	protected double ownerX;
+	protected double ownerY;
+	protected double ownerZ;
 
-	public int stuckBlockX = -1;
-	public int stuckBlockY = -1;
-	public int stuckBlockZ = -1;
+	protected int stuckBlockX = -1;
+	protected int stuckBlockY = -1;
+	protected int stuckBlockZ = -1;
 
-	public Block stuckBlock;
+	protected Block stuckBlock;
 
 	public EntityLivingBase shootingEntity;
 
-	public int ticksInGround;
-	public int ticksInGroundMax;
-	public int ticksInAir;
-	public int ticksInAirMax;
+	protected int ticksInGround;
+	protected int ticksInGroundMax;
+	private int ticksInAir;
+	protected int ticksInAirMax;
 
-	public boolean inGround; // Turns true if we hit a block and are stuck in
+	protected boolean inGround; // Turns true if we hit a block and are stuck in
 	// them
 
-	public int damage;
-	public int knockbackStrength;
-	public int fireDuration;
-	public double explosionSize;
+	protected int damage;
+	protected int knockbackStrength;
+	protected int fireDuration;
+	protected float explosionSize;
 
 	public boolean canBePickedUp;
 
-	public int arrowShake;
+	protected int arrowShake;
 
-	public int targetsHit; // The number of targets we've hit so far. Relevant
+	protected int targetsHit; // The number of targets we've hit so far. Relevant
 	// for breaking through glass
 
 	private int netCooldown; // This decreases until it has reached 0, after

@@ -15,8 +15,6 @@ import net.minecraft.world.World;
 
 public class OSRShot extends ProjectilePotionEffect
 {
-	public int entitiesHit;
-
 	public OSRShot(World world)
 	{
 		super(world);
@@ -50,9 +48,9 @@ public class OSRShot extends ProjectilePotionEffect
 		else // Hit the terrain
 		{
 			// Glass breaking
-			if (Helper.tryBlockBreak(this.world, this, movPos.getBlockPos(), 2) && this.entitiesHit < 2)
+			if (Helper.tryBlockBreak(this.world, this, movPos.getBlockPos(), 2) && this.targetsHit < 2)
 			{
-				this.entitiesHit += 1;
+				this.targetsHit += 1;
 			}
 			else
 			{

@@ -19,8 +19,8 @@ public class BigRocket extends ProjectileBase
 {
     public static final Pair<String, String> TRAVEL_TIME = Pair.of("maxFlightTime", "The maximum flight time of the rocket. It will explode after this.");
 
-	public int travelTicksMax;
-	public boolean dmgTerrain;
+	private int travelTicksMax;
+	private boolean dmgTerrain;
 
 	public BigRocket(World world)
 	{

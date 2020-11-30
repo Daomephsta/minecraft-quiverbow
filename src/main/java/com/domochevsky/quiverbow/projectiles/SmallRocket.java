@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 
 public class SmallRocket extends ProjectileBase
 {
-	public boolean dmgTerrain;
+	private boolean dmgTerrain;
 
 	public SmallRocket(World world)
 	{

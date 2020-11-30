@@ -21,11 +21,7 @@ public class OWRShot extends ProjectilePotionEffect
     public static final Pair<String, String>
         MIN_MAGIC_DAMAGE = Pair.of("minDamageMagic", "The minimum magic damage this weapon does"),
         MAX_MAGIC_DAMAGE = Pair.of("maxDamageMagic", "The maximum magic damage this weapon does");
-
-	public int entitiesHit;
-	public int damageMagic;
-
-	private int blocksHit;
+	private int damageMagic;
 
 	public OWRShot(World world)
 	{
@@ -65,7 +61,7 @@ public class OWRShot extends ProjectilePotionEffect
 		}
 		else // Hit the terrain
 		{
-			this.blocksHit += 1;
+			this.targetsHit += 1;
 
 			// Glass breaking
 			if (!Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 3))
@@ -73,7 +69,7 @@ public class OWRShot extends ProjectilePotionEffect
 				this.setDead();
 			} // Punching through anything without restriction
 
-			if (this.blocksHit > 5)
+			if (this.targetsHit > 5)
 			{
 				this.setDead();
 			} // Put an actual limit on that

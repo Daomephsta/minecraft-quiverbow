@@ -18,8 +18,7 @@ public class EnderAccelerator extends ProjectileBase implements IEntityAdditiona
 {
     public static final Pair<String, String> SELF_EXPLOSION_SIZE = Pair.of("selfExplosionSize",
         "How large the explosion at the user location is in blocks. A TNT explosion is 4.0 blocks");
-	public boolean damageTerrain;
-	public float explosionSize;
+	private boolean damageTerrain;
 
 	public EnderAccelerator(World world)
 	{

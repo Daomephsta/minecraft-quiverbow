@@ -15,8 +15,6 @@ import net.minecraft.world.World;
 
 public class OSPShot extends ProjectilePotionEffect
 {
-	public int entitiesHit;
-
 	public OSPShot(World world)
 	{
 		super(world);

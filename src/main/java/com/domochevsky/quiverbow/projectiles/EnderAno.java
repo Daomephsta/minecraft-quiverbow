@@ -16,9 +16,6 @@ import net.minecraft.world.World;
 
 public class EnderAno extends ProjectileBase
 {
-	public int travelTicksMax;
-	public int targetsHitMax;
-
 	public EnderAno(World world)
 	{
 		super(world);

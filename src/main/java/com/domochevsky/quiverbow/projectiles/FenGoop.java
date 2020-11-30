@@ -31,7 +31,7 @@ public class FenGoop extends ProjectileBase
         this.lightTick = properties.getInt(CommonProperties.DESPAWN_TIME);
 	}
 
-	public int lightTick;
+	private int lightTick;
 
 	@Override
 	public void onImpact(RayTraceResult target)

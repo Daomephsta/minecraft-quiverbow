@@ -893,7 +893,6 @@ public class QuiverbowMain
                 createEntry("soul", 80, 1, true, SoulShot.class, SoulShot::new),
                 createEntry("water", 80, 1, true, WaterShot.class, WaterShot::new),
                 createEntry("web", 80, 1, true, WebShot.class, WebShot::new),
-                createEntry("health", 80, 1, true, HealthBeam.class, HealthBeam::new),
                 createEntry("era_shot", 80, 1, true, EnderAccelerator.class, EnderAccelerator::new),
                 createEntry("ano", 80, 1, true, EnderAno.class, EnderAno::new));
 		}
