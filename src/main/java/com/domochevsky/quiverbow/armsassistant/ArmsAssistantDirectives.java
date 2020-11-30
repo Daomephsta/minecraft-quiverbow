@@ -5,9 +5,13 @@ import static com.domochevsky.quiverbow.util.brigadier.ListArgumentType.list;
 import static com.domochevsky.quiverbow.util.brigadier.ResourceLocationArgumentType.getResourceLocation;
 import static com.domochevsky.quiverbow.util.brigadier.ResourceLocationArgumentType.resourceLocation;
 import static com.google.common.collect.Streams.stream;
+import static com.mojang.brigadier.arguments.IntegerArgumentType.getInteger;
+import static com.mojang.brigadier.arguments.IntegerArgumentType.integer;
 import static com.mojang.brigadier.arguments.StringArgumentType.string;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
@@ -58,7 +62,8 @@ public class ArmsAssistantDirectives
     private final BiPredicate<EntityArmsAssistant, EntityLiving> targetSelector,
                                                                  targetBlacklist;
     private final MovementAI movementAI;
-    private final Set<Notification> notifications;
+    boolean notifyLowHealth, notifyDeath;
+    int notifyLowAmmoThreshold = -1;
     private final boolean remoteFire, staggerFire, safetyRange;
     private final Collection<EntityAIBase> aiTasks = new ArrayList<>();
 
@@ -68,7 +73,8 @@ public class ArmsAssistantDirectives
         this.targetSelector = (directedEntity, target) -> IMob.MOB_SELECTOR.apply(target);
         this.targetBlacklist = (directedEntity, target) -> false;
         this.movementAI = MovementAI.NONE;
-        this.notifications = EnumSet.noneOf(Notification.class);
+        this.notifyLowHealth = this.notifyDeath = false;
+        this.notifyLowAmmoThreshold = -1;
         this.remoteFire = this.staggerFire = this.safetyRange = false;
     }
 
@@ -78,7 +84,9 @@ public class ArmsAssistantDirectives
         this.targetSelector = builder.targetSelectors.stream().reduce(BiPredicate::or).orElse((directedEntity, target) -> false);
         this.targetBlacklist = builder.targetBlacklist.stream().reduce(BiPredicate::or).orElse((directedEntity, target) -> false);
         this.movementAI = builder.movementAI;
-        this.notifications = builder.notifications;
+        this.notifyLowHealth = builder.notifyLowHealth;
+        this.notifyDeath = builder.notifyDeath;
+        this.notifyLowAmmoThreshold = builder.notifyLowAmmoThreshold;
         this.remoteFire = builder.remoteFire;
         this.staggerFire = builder.staggerFire;
         this.safetyRange = builder.safetyRange;
@@ -268,7 +276,7 @@ public class ArmsAssistantDirectives
             (
                 literal("HEALTH").then(literal("LOW").executes(ctx ->
                 {
-                    ctx.getSource().notifications.add(Notification.LOW_HEALTH);
+                    ctx.getSource().notifyLowHealth = true;
                     return Command.SINGLE_SUCCESS;
                 }))
             )
@@ -276,19 +284,21 @@ public class ArmsAssistantDirectives
             (
                 literal("DEATH").executes(ctx ->
                 {
-                    ctx.getSource().notifications.add(Notification.DEATH);
+                    ctx.getSource().notifyDeath = true;
                     return Command.SINGLE_SUCCESS;
                 })
-            );
-            /*.then
+            )
+            .then
             (
-                literal("AMMO").executes(ctx ->
-                {
-                    //TODO Implement no ammo notifications
-                    ctx.getSource().notifications.add(Notification.NO_AMMO);
-                    return Command.SINGLE_SUCCESS;
-                })
-            );*/
+                literal("AMMO").then
+                (
+                    argument("threshold", integer(0)).executes(ctx ->
+                    {
+                        ctx.getSource().notifyLowAmmoThreshold = getInteger(ctx, "threshold");
+                        return Command.SINGLE_SUCCESS;
+                    })
+                )
+            );
     }
 
 
@@ -359,7 +369,7 @@ public class ArmsAssistantDirectives
 
     public void onDamage(DamageSource source, float amount)
     {
-        if (notifications.contains(Notification.LOW_HEALTH) && armsAssistant.getOwner() != null
+        if (notifyLowHealth && armsAssistant.getOwner() != null
             && armsAssistant.getHealth() < armsAssistant.getMaxHealth() / 3.0F)
         {
             armsAssistant.getOwner().sendMessage(
@@ -369,10 +379,19 @@ public class ArmsAssistantDirectives
 
     public void onDeath(DamageSource source)
     {
-        if (notifications.contains(Notification.DEATH) && armsAssistant.getOwner() != null)
+        if (notifyDeath && armsAssistant.getOwner() != null)
         {
             armsAssistant.getOwner().sendMessage(
                 new TextComponentTranslation(QuiverbowMain.MODID + ".arms_assistant.messages.death", armsAssistant.getName()));
+        }
+    }
+
+    public void onReload(int reloadsRemaining)
+    {
+        if (notifyLowAmmoThreshold == reloadsRemaining && armsAssistant.getOwner() != null)
+        {
+            armsAssistant.getOwner().sendMessage(new TextComponentTranslation(
+                QuiverbowMain.MODID + ".arms_assistant.messages.low_ammo", armsAssistant.getName(), reloadsRemaining));
         }
     }
 
@@ -393,20 +412,15 @@ public class ArmsAssistantDirectives
         NONE;
     }
 
-    private static enum Notification
-    {
-        LOW_HEALTH,
-        NO_AMMO,
-        DEATH
-    }
-
     private static class Builder
     {
         private final EntityArmsAssistant armsAssistant;
         Collection<BiPredicate<EntityArmsAssistant, EntityLiving>> targetSelectors = new ArrayList<>(),
                                                                    targetBlacklist = new ArrayList<>();
         MovementAI movementAI = MovementAI.NONE;
-        Set<Notification> notifications;
+        boolean notifyLowHealth = false,
+                notifyDeath = false;
+        int notifyLowAmmoThreshold = -1;
         boolean remoteFire = false,
                 staggerFire = false,
                 safetyRange = false;
@@ -414,7 +428,6 @@ public class ArmsAssistantDirectives
         Builder(EntityArmsAssistant armsAssistant)
         {
             this.armsAssistant = armsAssistant;
-            this.notifications = EnumSet.noneOf(Notification.class);
         }
     }
 }

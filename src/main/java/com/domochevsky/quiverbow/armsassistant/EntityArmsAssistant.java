@@ -402,21 +402,23 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
             Weapon weapon = (Weapon) weaponStack.getItem();
             Trigger trigger = weapon.getTrigger();
             if (weaponStack.getItemDamage() == weaponStack.getMaxDamage())
-                tryReload(weaponStack, weapon);
+                directives.onReload(tryReload(weaponStack, weapon));
             int cooldown = Weapon.getCooldown(weaponStack);
-            if (cooldown == 0 && trigger.attackPressed(world, this, weaponStack, weapon.getProperties()))
-            {
+            ActionResult<ItemStack> useResult =
+                trigger.usePressed(world, this, weaponStack, hand, weapon.getProperties());
+            if (cooldown == 0 && useResult.getType() == EnumActionResult.FAIL)
                 return 0.0F;
-            }
             return (float) cooldown / weapon.getProperties().getMaxCooldown();
         }
         return 1.0F;
 	}
 
-    private void tryReload(ItemStack weaponStack, Weapon weapon)
+    private int tryReload(ItemStack weaponStack, Weapon weapon)
     {
         ReloadSpecification specification = ReloadSpecificationRegistry.INSTANCE.getSpecification(weapon);
-        if (specification == null) return;
+        if (specification == null)
+            return 0;
+        int remainingReloads = Integer.MAX_VALUE;
         int ammoValue = 0;
         Object2IntMap<ItemStack> toConsume = new Object2IntArrayMap<>();
         for (ComponentData component : specification.getComponents())
@@ -428,12 +430,13 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
                 if (component.getIngredient().apply(stack))
                 {
                     componentCount = Math.min(stack.getCount() - componentCount, component.getMax());
+                    remainingReloads = Math.min(remainingReloads, stack.getCount() / component.getMax());
                     ammoValue += componentCount * component.getAmmoValue(stack);
                     toConsume.put(stack, componentCount);
                 }
             }
             if (componentCount < component.getMin() || componentCount == 0)
-                return;
+                return 0;
         }
         for (Object2IntMap.Entry<ItemStack> entry : toConsume.object2IntEntrySet())
         {
@@ -448,6 +451,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
             stack.shrink(componentCount);
         }
         weaponStack.setItemDamage(weaponStack.getItemDamage() - ammoValue);
+        return remainingReloads;
     }
 
 	@Override

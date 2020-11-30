@@ -319,6 +319,7 @@ quiverbow_restrung.aa_upgrade.heavy_plating.locname=Heavy Plating
 quiverbow_restrung.arms_assistant.directives.errorPrefix=Line %s:
 quiverbow_restrung.arms_assistant.messages.low_health=%s is below 30%% health
 quiverbow_restrung.arms_assistant.messages.death=%s has died
+quiverbow_restrung.arms_assistant.messages.low_ammo=%s has %s reloads in inventory
 
 item.quiverbow_restrung.misc.FlyingAASpawner.name=Packed Up BB (WIP) 
 
