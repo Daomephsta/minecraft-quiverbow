@@ -2,19 +2,19 @@
   "pattern": [
     "x x",
     "x x",
-    "xox"
+    "xrx"
   ],
   "key": {
     "x": {
       "item": "minecraft:iron_ingot"
     },
-    "o": {
-      "item": "minecraft:obsidian"
+    "r": {
+      "item": "minecraft:redstone"
     }
   },
   "type": "minecraft:crafting_shaped",
   "result": {
-    "item": "quiverbow_restrung:obsidian_magazine",
-    "data": 32
+    "item": "quiverbow_restrung:redstone_magazine",
+    "data": 64
   }
 }

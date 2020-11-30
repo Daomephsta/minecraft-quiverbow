@@ -1,0 +1,35 @@
+{
+  "conditions": [
+    {
+      "type": "quiverbow_restrung:weapon_enabled",
+      "id": "quiverbow_restrung:ray_of_hope"
+    }
+  ],
+  "pattern": [
+    "bi ",
+    "ico",
+    " ot"
+  ],
+  "key": {
+    "b": {
+      "item": "minecraft:beacon"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "c": {
+      "item": "minecraft:cauldron"
+    },
+    "o": {
+      "item": "minecraft:obsidian"
+    },
+    "t": {
+      "item": "minecraft:tripwire_hook"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:ray_of_hope",
+    "data": 320
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "pattern": [
+    "ewe",
+    "iIi",
+    "sss"
+  ],
+  "key": {
+    "e": {
+      "item": "minecraft:ender_eye"
+    },
+    "w": {
+	  "item": "minecraft:skull",
+      "data": 1
+    },
+    "i": {
+	  "item": "minecraft:iron_ingot"
+    },
+    "I": {
+	  "item": "minecraft:iron_block"
+    },
+    "s": {
+	  "item": "minecraft:sticky_piston"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:arms_assistant"
+  }
+}

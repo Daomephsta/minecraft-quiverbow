@@ -1,0 +1,32 @@
+[
+    {
+        "ingredient": {
+			"type": "minecraft:item_nbt",
+            "item": "minecraft:potion",
+			"nbt": {"Potion": "minecraft:regeneration"}
+        },
+        "ammoValue": 16,
+        "min": 0,
+        "max": 8
+    },
+	{
+        "ingredient": {
+			"type": "minecraft:item_nbt",
+            "item": "minecraft:potion",
+			"nbt": {"Potion": "minecraft:long_regeneration"}
+        },
+        "ammoValue": 32,
+        "min": 0,
+        "max": 4
+    },
+	{
+        "ingredient": {
+			"type": "minecraft:item_nbt",
+            "item": "minecraft:potion",
+			"nbt": {"Potion": "minecraft:strong_regeneration"}
+        },
+        "ammoValue": 16,
+        "min": 0,
+        "max": 8
+    }
+]

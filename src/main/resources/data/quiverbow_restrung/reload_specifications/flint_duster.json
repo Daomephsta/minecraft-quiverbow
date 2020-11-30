@@ -1,0 +1,10 @@
+[
+    {
+        "ingredient": {
+            "item": "quiverbow_restrung:box_of_flint_dust"
+        },
+        "ammoValue": 16,
+        "min": 1,
+        "max": 8
+    }
+]

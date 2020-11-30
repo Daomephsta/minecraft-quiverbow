@@ -1,0 +1,29 @@
+{
+  "conditions": [
+    {
+      "type": "quiverbow_restrung:weapon_enabled",
+      "id": "quiverbow_restrung:lightning_red"
+    }
+  ],
+  "pattern": [
+    "q q",
+    "qiq",
+    "iti"
+  ],
+  "key": {
+    "q": {
+      "item": "minecraft:quartz"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    },
+    "t": {
+      "item": "minecraft:tripwire_hook"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:lightning_red",
+    "data": 64
+  }
+}

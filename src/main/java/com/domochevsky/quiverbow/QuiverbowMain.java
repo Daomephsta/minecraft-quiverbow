@@ -408,7 +408,7 @@ public class QuiverbowMain
                         .floatProperty(BeamFireShape.MAX_RANGE, 64)
                         .intProperty("minLight", "The minimum light level needed to recharge", 12)
                         .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 10),
-                    new AutomaticTrigger(new SolarAmmoSource(100),
+                    new AutomaticTrigger(new SolarAmmoSource(128),
                         new BeamFireShape((stack, world, user, target, properties) ->
                         {
                             if (target.typeOfHit == RayTraceResult.Type.ENTITY)
@@ -844,7 +844,7 @@ public class QuiverbowMain
 		{
 			registry.registerAll(addAmmo("arrow_bundle", new AmmoBase()), addAmmo("cold_iron_clip", new AmmoBase()),
 					addAmmo("rocket_bundle", new AmmoBase()), addAmmo("large_rocket", new AmmoBase()),
-					addAmmo("box_of_flint_dust", new BoxOfFlintDust()));
+					addAmmo("box_of_flint_dust", new AmmoBase()));
 		}
 
 		private static AmmoBase addAmmo(String name, AmmoBase ammoBase)

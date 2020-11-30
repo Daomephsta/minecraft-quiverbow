@@ -1,0 +1,39 @@
+{
+  "conditions": [
+    {
+      "type": "quiverbow_restrung:weapon_enabled",
+      "id": "quiverbow_restrung:flint_duster"
+    }
+  ],
+  "pattern": [
+    "qhq",
+    "qpq",
+    "tsi"
+  ],
+  "key": {
+    "q": {
+      "item": "minecraft:quartz_block",
+	  "data": 0
+    },
+    "h": {
+      "item": "minecraft:hopper"
+    },
+    "p": {
+      "item": "minecraft:piston"
+    },
+    "t": {
+      "item": "minecraft:tripwire_hook"
+    },
+    "s": {
+      "item": "minecraft:sticky_piston"
+    },
+    "i": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:flint_duster",
+    "data": 256
+  }
+}

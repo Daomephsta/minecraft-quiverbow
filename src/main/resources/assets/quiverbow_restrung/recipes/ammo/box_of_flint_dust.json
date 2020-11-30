@@ -1,0 +1,20 @@
+{
+  "pattern": [
+    "xxx",
+    "xyx",
+    "xxx"
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:flint"
+    },
+    "y": {
+	  "type":"forge:ore_dict",
+      "ore": "plankWood"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:box_of_flint_dust"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "conditions": [
+    {
+      "type": "quiverbow_restrung:weapon_enabled",
+      "id": "quiverbow_restrung:sunray"
+    }
+  ],
+  "pattern": [
+    "bd ",
+    "ood",
+    " rt"
+  ],
+  "key": {
+    "b": {
+      "item": "minecraft:beacon"
+    },
+    "d": {
+      "item": "minecraft:daylight_detector"
+    },
+    "o": {
+      "item": "minecraft:obsidian"
+    },
+    "r": {
+      "item": "minecraft:repeater"
+    },
+    "t": {
+      "item": "minecraft:tripwire_hook"
+    }
+  },
+  "type": "minecraft:crafting_shaped",
+  "result": {
+    "item": "quiverbow_restrung:sunray",
+    "data": 128
+  }
+}

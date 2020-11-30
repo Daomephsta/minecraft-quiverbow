@@ -25,7 +25,7 @@
   ],
   "type": "minecraft:crafting_shapeless",
   "result": {
-    "item": "quiverbow_restrung:coin_tosser",
+    "item": "quiverbow_restrung:coin_tosser_mod",
     "data": 72
   }
 }
