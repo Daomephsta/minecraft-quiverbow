@@ -85,6 +85,11 @@ public class RecipeArmsAssistantUpgrade extends IForgeRegistryEntry.Impl<IRecipe
 		return QuiverbowMain.MODID + ":arms_assistant_upgrades";
 	}
 
+	public boolean isShaped()
+	{
+	    return baseRecipe instanceof IShapedRecipe;
+	}
+
 	public static class Factory implements IRecipeFactory
 	{
 		@Override
