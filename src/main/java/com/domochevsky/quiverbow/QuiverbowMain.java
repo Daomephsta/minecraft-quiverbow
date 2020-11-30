@@ -803,7 +803,9 @@ public class QuiverbowMain
                     WeaponProperties.builder().minimumDamage(8).maximumDamage(16)
                         .projectileSpeed(5.0F).kickback(3).cooldown(40).mobUsable()
                         .intProperty(BeamFireShape.PIERCING, 5)
-                        .floatProperty(BeamFireShape.MAX_RANGE, 64),
+                        .floatProperty(BeamFireShape.MAX_RANGE, 64)
+                        .floatProperty("lightningChance", "Chance for hit entities "
+                            + "to be struck by lightning. 1.0 == 100%.", 0.2F),
                     new AutomaticTrigger(new MagazineAmmoSource(redstoneMagazine),
                         new BeamFireShape((stack, world, user, target, properties) ->
                         {
@@ -812,7 +814,7 @@ public class QuiverbowMain
                                 target.entityHit.attackEntityFrom(DamageSource.LIGHTNING_BOLT,
                                     properties.generateDamage(world.rand));
                                 target.entityHit.hurtResistantTime = 0;
-                                if (world.rand.nextFloat() <= 0.2F)
+                                if (world.rand.nextFloat() <= properties.getFloat("lightningChance"))
                                 {
                                     world.addWeatherEffect(new EntityLightningBolt(world,
                                         target.hitVec.x, target.hitVec.y, target.hitVec.z, false));
