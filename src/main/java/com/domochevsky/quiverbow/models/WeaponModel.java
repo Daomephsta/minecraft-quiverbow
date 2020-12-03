@@ -1,8 +1,11 @@
 package com.domochevsky.quiverbow.models;
 
+import static java.util.stream.Collectors.toCollection;
+
 import java.io.IOException;
 import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import javax.vecmath.Matrix4f;
 
@@ -25,31 +28,44 @@ import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.model.*;
+import net.minecraftforge.client.model.ICustomModelLoader;
+import net.minecraftforge.client.model.IModel;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.model.IModelState;
 
 public class WeaponModel implements IModel
 {
+    public static final Set<ResourceLocation> PORTED = Stream.of("coin_tosser", "coin_tosser_mod")
+        .map(s -> new ResourceLocation(QuiverbowMain.MODID, "models/item/weapons/" + s + "_internal"))
+        .collect(toCollection(HashSet::new));
 	private static final Logger LOGGER = LogManager.getLogger();
-	private final ResourceLocation 
-		baseModelIdentifier, 
-		baseModelLocation;
-	private IModel baseModel;
-	
+	private final ResourceLocation threedIdentifier, inventoryIdentifier;
+	private IModel threed, inventory;
+
 	private WeaponModel(ResourceLocation baseModelIdentifier)
 	{
-		this.baseModelIdentifier = ResourceLocationExt.subPath(baseModelIdentifier, 1);
-		this.baseModelLocation = ResourceLocationExt.suffixPath(baseModelIdentifier, ".json");
+		this.inventoryIdentifier = ResourceLocationExt.subPath(baseModelIdentifier, 1);
+		this.threedIdentifier = ResourceLocationExt.suffixPath(inventoryIdentifier, "_3d");
 	}
-	
-	private IModel getBaseModel()
+
+	private IModel get3dModel()
 	{
-		if (baseModel == null)
+	    if (threed == null)
+	    {
+	        threed = ModelLoaderRegistry.getModelOrLogError(threedIdentifier, String.format(
+	            "Could not load vanilla 3d model %s", threedIdentifier));
+	    }
+	    return threed;
+	}
+
+	private IModel getInventoryModel()
+	{
+		if (inventory == null)
 		{
-			baseModel = ModelLoaderRegistry.getModelOrLogError(baseModelIdentifier, String.format(
-				"Could not load vanilla base model %s", baseModelIdentifier));
+			inventory = ModelLoaderRegistry.getModelOrLogError(inventoryIdentifier, String.format(
+				"Could not load vanilla inventory model %s", inventoryIdentifier));
 		}
-		return baseModel;
+		return inventory;
 	}
 
 	@Override
@@ -57,26 +73,29 @@ public class WeaponModel implements IModel
 	{
 		try
 		{
-			IBakedModel baseModelBaked = getBaseModel().bake(state, format, bakedTextureGetter);
+            IBakedModel threedBaked = get3dModel().bake(state, format, bakedTextureGetter);
+			IBakedModel inventoryBaked = getInventoryModel().bake(state, format, bakedTextureGetter);
 			AATransforms aaTransforms = getAATransforms(Minecraft.getMinecraft().getResourceManager());
-			return new BakedWeaponModel(baseModelBaked, aaTransforms);
+			return new Baked(threedBaked, inventoryBaked, aaTransforms);
 		}
 		catch (Exception e)
 		{
-			throw new RuntimeException("An exception was thrown while baking a weapon model from " + baseModelIdentifier, e);
+			throw new RuntimeException("An exception was thrown while baking a weapon model from " + inventoryIdentifier, e);
 		}
 	}
-	
+
 	private AATransforms getAATransforms(IResourceManager resourceManager) throws IOException
 	{
-		AATransforms transforms = resourceManager.getResource(baseModelLocation).getMetadata(AATransformsMetadataSerialiser.SECTION_NAME);
+	    AATransforms transforms = resourceManager.getResource(
+            ResourceLocationExt.addToPath(inventoryIdentifier, "models/", ".json"))
+                .getMetadata(AATransformsMetadataSerialiser.SECTION_NAME);
 		//Fallback to parent transforms
 		if (transforms == null)
 		{
-			Optional<ModelBlock> vanillaModelOptional = getVanillaModel(baseModelIdentifier);
+			Optional<ModelBlock> vanillaModelOptional = getVanillaModel(inventoryIdentifier);
 			if (!vanillaModelOptional.isPresent())
 			{
-				LOGGER.debug("No AA transforms found for {} or any of its parents, falling back to defaults.", baseModelIdentifier);
+				LOGGER.debug("No AA transforms found for {} or any of its parents, falling back to defaults.", inventoryIdentifier);
 				return AATransforms.NONE;
 			}
 			ResourceLocation parentLocation = vanillaModelOptional.get().getParentLocation();
@@ -86,7 +105,7 @@ public class WeaponModel implements IModel
 				vanillaModelOptional = getVanillaModel(parentLocation);
 				if (!vanillaModelOptional.isPresent())
 				{
-					LOGGER.debug("No AA transforms found for {} or any of its parents, falling back to defaults.", baseModelIdentifier);
+					LOGGER.debug("No AA transforms found for {} or any of its parents, falling back to defaults.", inventoryIdentifier);
 					return AATransforms.NONE;
 				}
 				resource.close();
@@ -113,27 +132,28 @@ public class WeaponModel implements IModel
 		IResource resource = resourceManager.getResource(ResourceLocationExt.withPath(parentLocation, filePath));
 		return resource;
 	}
-	
+
 	@Override
 	public Collection<ResourceLocation> getDependencies()
 	{
-		return ImmutableSet.of(baseModelIdentifier);
+		return ImmutableSet.of(threedIdentifier, inventoryIdentifier);
 	}
-	
+
 	@Override
 	public Optional<ModelBlock> asVanillaModel()
 	{
-		return getBaseModel().asVanillaModel();
+		return getInventoryModel().asVanillaModel();
 	}
 
-	public class BakedWeaponModel implements IBakedModel
+	public class Baked implements IBakedModel
 	{
-		private final IBakedModel baseModel;
+		private final IBakedModel threed, inventory;
 		private final AATransforms aaTransforms;
-		
-		public BakedWeaponModel(IBakedModel baseModel, AATransforms aaTransforms)
+
+		public Baked(IBakedModel threed, IBakedModel inventory, AATransforms aaTransforms)
 		{
-			this.baseModel = baseModel;
+		    this.threed = threed;
+			this.inventory = inventory;
 			this.aaTransforms = aaTransforms;
 		}
 
@@ -141,41 +161,43 @@ public class WeaponModel implements IModel
 		{
 			return aaTransforms;
 		}
-		
+
 		@Override
 		public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand)
 		{
-			return baseModel.getQuads(state, side, rand);
+			return inventory.getQuads(state, side, rand);
 		}
 
 		@Override
 		public boolean isAmbientOcclusion()
 		{
-			return baseModel.isAmbientOcclusion();
+			return true;//inventory.isAmbientOcclusion();
 		}
 
 		@Override
 		public boolean isGui3d()
 		{
-			return baseModel.isGui3d();
+			return true;//inventory.isGui3d();
 		}
 
 		@Override
 		public TextureAtlasSprite getParticleTexture()
 		{
-			return baseModel.getParticleTexture();
+			return inventory.getParticleTexture();
 		}
 
 		@Override
 		public ItemOverrideList getOverrides()
 		{
-			return baseModel.getOverrides();
+			return inventory.getOverrides();
 		}
 
 		@Override
-		public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType)
+		public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransform)
 		{
-			return baseModel.handlePerspective(cameraTransformType);
+		    if (cameraTransform == TransformType.GUI)
+		        return inventory.handlePerspective(cameraTransform);
+			return threed.handlePerspective(cameraTransform);
 		}
 
 		@Override
@@ -184,18 +206,19 @@ public class WeaponModel implements IModel
 			return false;
 		}
 	}
-	
+
 	public static enum Loader implements ICustomModelLoader
 	{
 		INSTANCE;
-		
+
 		@Override
 		public boolean accepts(ResourceLocation modelLocation)
 		{
 			if (modelLocation instanceof ModelResourceLocation) return false;
 			return modelLocation.getResourceDomain().equals(QuiverbowMain.MODID)
-				&& modelLocation.getResourcePath().contains("weapons")
-				&& modelLocation.getResourcePath().endsWith("_internal");
+                && modelLocation.getResourcePath().contains("weapons")
+                && modelLocation.getResourcePath().endsWith("_internal")
+                && PORTED.contains(modelLocation);
 		}
 
 		@Override
@@ -206,7 +229,7 @@ public class WeaponModel implements IModel
 			ResourceLocation baseModel = new ResourceLocation(modelLocation.getResourceDomain(), resourcePath);
 			return new WeaponModel(baseModel);
 		}
-		
+
 		@Override
 		public void onResourceManagerReload(IResourceManager resourceManager) {}
 	}

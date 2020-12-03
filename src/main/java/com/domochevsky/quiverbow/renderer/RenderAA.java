@@ -10,7 +10,8 @@ import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.armsassistant.EntityArmsAssistant;
 import com.domochevsky.quiverbow.armsassistant.UpgradeRegistry;
 import com.domochevsky.quiverbow.client.render.ModelArmsAssistant;
-import com.domochevsky.quiverbow.models.WeaponModel.BakedWeaponModel;
+import com.domochevsky.quiverbow.models.WeaponModelOld;
+import com.domochevsky.quiverbow.models.WeaponModelOld.BakedWeaponModel;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -111,7 +112,7 @@ public class RenderAA extends RenderLiving<EntityArmsAssistant>
 	private static final FloatBuffer multBuffer = BufferUtils.createFloatBuffer(16);
 	private void handleTransform(IBakedModel model, EnumHand rail)
 	{
-		if (model instanceof BakedWeaponModel)
+		if (model instanceof WeaponModelOld.BakedWeaponModel)
 		{
 			multBuffer.clear();
 			Matrix4f transform = ((BakedWeaponModel) model).getAATransforms().forRail(rail);

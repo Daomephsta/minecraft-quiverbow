@@ -4,6 +4,7 @@ import com.domochevsky.quiverbow.armsassistant.EntityArmsAssistant;
 import com.domochevsky.quiverbow.client.render.EnderBowPredictionRenderer;
 import com.domochevsky.quiverbow.models.AATransformsMetadataSerialiser;
 import com.domochevsky.quiverbow.models.WeaponModel;
+import com.domochevsky.quiverbow.models.WeaponModelOld;
 import com.domochevsky.quiverbow.projectiles.*;
 import com.domochevsky.quiverbow.renderer.RenderAA;
 import com.domochevsky.quiverbow.renderer.RenderCross;
@@ -28,6 +29,7 @@ public class ClientProxy extends CommonProxy
 	{
 	    MinecraftForge.EVENT_BUS.register(new ListenerClient());
 		registerRenderers();
+		ModelLoaderRegistry.registerLoader(WeaponModelOld.Loader.INSTANCE);
 		ModelLoaderRegistry.registerLoader(WeaponModel.Loader.INSTANCE);
 		((MetadataSerializer) SRGReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), "field_110452_an"))
 		.registerMetadataSectionType(AATransformsMetadataSerialiser.INSTANCE, AATransformsMetadataSerialiser.AATransforms.class);
