@@ -14,8 +14,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.domochevsky.quiverbow.QuiverbowMain;
+import com.domochevsky.quiverbow.config.QuiverbowConfig;
 import com.domochevsky.quiverbow.models.AATransformsMetadataSerialiser.AATransforms;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableSet.Builder;
 
 import daomephsta.umbra.resources.ResourceLocationExt;
 import net.minecraft.block.state.IBlockState;
@@ -50,6 +52,8 @@ public class WeaponModel implements IModel
 
 	private IModel get3dModel()
 	{
+	    if (!QuiverbowConfig.use3dModels)
+	        return getInventoryModel();
 	    if (threed == null)
 	    {
 	        threed = ModelLoaderRegistry.getModelOrLogError(threedIdentifier, String.format(
@@ -136,7 +140,11 @@ public class WeaponModel implements IModel
 	@Override
 	public Collection<ResourceLocation> getDependencies()
 	{
-		return ImmutableSet.of(threedIdentifier, inventoryIdentifier);
+		Builder<ResourceLocation> builder = ImmutableSet.builder();
+		builder.add(inventoryIdentifier);
+		if (QuiverbowConfig.use3dModels)
+		    builder.add(threedIdentifier);
+        return builder.build();
 	}
 
 	@Override

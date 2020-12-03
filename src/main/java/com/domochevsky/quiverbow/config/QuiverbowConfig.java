@@ -21,7 +21,7 @@ public class QuiverbowConfig
 	 * TNT) */
 	public static boolean breakGlass;
 	// If this is false inventory sprites are used in hand too.
-	public static boolean useModels;
+	public static boolean use3dModels;
 	// If this is true then disabled weapons won't show up in the creative menu
 	public static boolean noCreative;
 	// If this is false then the Arms Assistant will not be available
@@ -47,7 +47,8 @@ public class QuiverbowConfig
 		//Load general config properties. The # makes the sorter put it at the top
 		breakGlass = config.getBoolean("breakGlass", "#general", true,
 				"Can we break glass and other fragile things with our projectiles?");
-		useModels = config.getBoolean("useModels", "#general", true, "Are we using models or icons for held weapons?");
+		use3dModels = config.getBoolean("Use 3D Models", "#general", true,
+		    "(true) Use sprites in inventories, but 3D models everywhere else.\n(false) Always use sprites. Reduces RAM usage significantly.");
 		noCreative = config.getBoolean("noCreative", "#general", false,
 				"Are we removing disabled weapons from the creative menu too?");
 		allowTurret = config.getBoolean("allowTurret", "#general", true, "Disables AA crafting if false");
