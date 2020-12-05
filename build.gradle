@@ -22,6 +22,8 @@ minecraft {
     version = "${project.mcVersion}-${project.forgeVersion}"
     runDir = "run"
     mappings = project.mappingsVer
+
+    replace 'GRADLE:VERSION', project.modVersion
 }
 
 configurations {

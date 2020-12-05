@@ -83,7 +83,7 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.registries.IForgeRegistry;
 
-@Mod(modid = QuiverbowMain.MODID, name = QuiverbowMain.NAME, version = "b102")
+@Mod(modid = QuiverbowMain.MODID, name = QuiverbowMain.NAME, version = "GRADLE:VERSION")
 public class QuiverbowMain
 {
 	public static final String NAME = "QuiverBow: Restrung";
