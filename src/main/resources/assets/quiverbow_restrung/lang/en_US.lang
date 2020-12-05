@@ -326,4 +326,6 @@ item.quiverbow_restrung.misc.FlyingAASpawner.name=Packed Up BB (WIP)
 quiverbow_restrung.jei.ammo_loading.title=Weapon Loading
 quiverbow_restrung.jei.ammo_loading.ammo_value=Ammo Value: %d
 quiverbow_restrung.jei.ammo_loading.quantity=%d
-quiverbow_restrung.jei.ammo_loading.quantity_range=%d - %d 
+quiverbow_restrung.jei.ammo_loading.quantity_range=%d - %d
+quiverbow_restrung.jei.ammo_loading.craft=Craft with weapon
+quiverbow_restrung.jei.ammo_loading.use_magazine=Use magazine

@@ -20,15 +20,13 @@ import net.minecraftforge.common.crafting.IShapedRecipe;
 @JEIPlugin
 public class RestrungJeiPlugin implements IModPlugin
 {
-    private IJeiHelpers jeiHelpers;
-
     @Override
     public void register(IModRegistry registry)
     {
-        this.jeiHelpers = registry.getJeiHelpers();
+        IJeiHelpers jeiHelpers = registry.getJeiHelpers();
         IStackHelper stackHelper = jeiHelpers.getStackHelper();
         Collection<?> reloadRecipes = Streams.stream(ReloadSpecificationRegistry.INSTANCE.getSpecifications())
-            .map(entry -> new RecipeLoadAmmoCategory.Wrapper(entry.getKey(), entry.getValue(), stackHelper))
+            .map(entry -> new RecipeLoadAmmoCategory.Wrapper(entry.getKey(), entry.getValue(), jeiHelpers))
             .collect(Collectors.toList());
         registry.addRecipes(reloadRecipes, RecipeLoadAmmoCategory.ID);
         registry.handleRecipes(RecipeArmsAssistantUpgrade.class,

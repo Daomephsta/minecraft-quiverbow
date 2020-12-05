@@ -1,13 +1,11 @@
 package com.domochevsky.quiverbow.ammo;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.Map.Entry;
 
-import org.apache.commons.compress.compressors.FileNameUtil;
 import org.apache.commons.io.FilenameUtils;
 
 import com.domochevsky.quiverbow.QuiverbowMain;
