@@ -1,8 +1,14 @@
 package com.domochevsky.quiverbow.ammo;
 
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.Map.Entry;
+
+import org.apache.commons.compress.compressors.FileNameUtil;
+import org.apache.commons.io.FilenameUtils;
 
 import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.util.Resources;
@@ -41,48 +47,53 @@ public class ReloadSpecificationRegistry
     {
         JsonContext jsonContext = new JsonContext(QuiverbowMain.MODID);
         String reloadSpecsDir = "data/" + QuiverbowMain.MODID + "/reload_specifications";
-        ClassLoader classLoader = this.getClass().getClassLoader();
-        Resources.findFileResources(classLoader, reloadSpecsDir, path ->
+        Resources.findFileResources(reloadSpecsDir, path ->
         {
-            ReloadSpecification reloadSpecification = new ReloadSpecification();
-            JsonElement root = new JsonParser().parse(new InputStreamReader(classLoader.getResourceAsStream(path)));
-            JsonArray components = JsonUtils.getJsonArray(root, "components");
-            for (JsonElement component : components)
+            try
             {
-                if (JsonUtils.isString(component))
+                ReloadSpecification reloadSpecification = new ReloadSpecification();
+                JsonElement root = new JsonParser().parse(Files.newBufferedReader(path));
+                JsonArray components = JsonUtils.getJsonArray(root, "components");
+                for (JsonElement component : components)
                 {
-                    Item magazine = JsonUtils.getItem(component, "magazine");
-                    if (magazine instanceof AmmoMagazine)
-                        reloadSpecification.add((AmmoMagazine) magazine);
-                    else
-                        throw new JsonSyntaxException(magazine + " is not an ammo magazine");
+                    if (JsonUtils.isString(component))
+                    {
+                        Item magazine = JsonUtils.getItem(component, "magazine");
+                        if (magazine instanceof AmmoMagazine)
+                            reloadSpecification.add((AmmoMagazine) magazine);
+                        else
+                            throw new JsonSyntaxException(magazine + " is not an ammo magazine");
+                    }
+                    else if (component.isJsonObject())
+                    {
+                        JsonObject object = component.getAsJsonObject();
+                        Ingredient ingredient = CraftingHelper.getIngredient(JsonUtils.getJsonObject(object,
+                            "ingredient"), jsonContext);
+                        reloadSpecification.add(ingredient,
+                            JsonUtils.getInt(object, "ammoValue"),
+                            JsonUtils.getInt(object, "min", 1),
+                            JsonUtils.getInt(object, "max", 1));
+                    }
                 }
-                else if (component.isJsonObject())
-                {
-                    JsonObject object = component.getAsJsonObject();
-                    Ingredient ingredient = CraftingHelper.getIngredient(JsonUtils.getJsonObject(object,
-                        "ingredient"), jsonContext);
-                    reloadSpecification.add(ingredient,
-                        JsonUtils.getInt(object, "ammoValue"),
-                        JsonUtils.getInt(object, "min", 1),
-                        JsonUtils.getInt(object, "max", 1));
-                }
+                Item weapon = getWeapon(path);
+                if (weapon instanceof Weapon)
+                    specsByWeapon.put((Weapon) weapon, reloadSpecification);
+                else if (weapon instanceof AmmoMagazine)
+                    specsByMagazine.put((AmmoMagazine) weapon, reloadSpecification);
+                else
+                    throw new JsonSyntaxException(weapon + " is not a weapon or magazine");
             }
-            Item weapon = getWeapon(path);
-            if (weapon instanceof Weapon)
-                specsByWeapon.put((Weapon) weapon, reloadSpecification);
-            else if (weapon instanceof AmmoMagazine)
-                specsByMagazine.put((AmmoMagazine) weapon, reloadSpecification);
-            else
-                throw new JsonSyntaxException(weapon + " is not a weapon or magazine");
+            catch (JsonIOException | JsonSyntaxException | IOException e)
+            {
+                e.printStackTrace();
+            }
         });
     }
 
-    private Item getWeapon(String path)
+    private Item getWeapon(Path path)
     {
-        int fileNameEnd = path.lastIndexOf('/') + 1;
-        int extensionStart = path.lastIndexOf('.');
-        ResourceLocation weaponId = new ResourceLocation(QuiverbowMain.MODID, path.substring(fileNameEnd, extensionStart));
+        String fileName = FilenameUtils.removeExtension(path.getFileName().toString());
+        ResourceLocation weaponId = new ResourceLocation(QuiverbowMain.MODID, fileName);
         return ForgeRegistries.ITEMS.getValue(weaponId);
     }
 
