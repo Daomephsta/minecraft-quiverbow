@@ -90,6 +90,11 @@ public class RecipeArmsAssistantUpgrade extends IForgeRegistryEntry.Impl<IRecipe
 	    return baseRecipe instanceof IShapedRecipe;
 	}
 
+	public IRecipe getBaseRecipe()
+    {
+        return baseRecipe;
+    }
+
 	public static class Factory implements IRecipeFactory
 	{
 		@Override

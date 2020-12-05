@@ -9,16 +9,13 @@ import com.domochevsky.quiverbow.recipes.RecipeArmsAssistantUpgrade;
 import com.google.common.collect.Streams;
 
 import mezz.jei.api.*;
-import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.IStackHelper;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
-import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper;
-import mezz.jei.plugins.vanilla.crafting.ShapelessRecipeWrapper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.common.crafting.IShapedRecipe;
 
 @JEIPlugin
 public class RestrungJeiPlugin implements IModPlugin
@@ -42,9 +39,13 @@ public class RestrungJeiPlugin implements IModPlugin
 
     private IRecipeWrapper wrapAAUpgradeRecipe(RecipeArmsAssistantUpgrade recipe, IStackHelper stackHelper)
     {
-        return recipe.isShaped()
-            ? new ShapedRecipeWrapper(recipe, stackHelper)
-            : new ShapelessRecipeWrapper<>(jeiHelpers, recipe);
+        if (recipe.isShaped())
+        {
+            IShapedRecipe baseRecipe = (IShapedRecipe) recipe.getBaseRecipe();
+            return new ShapedRecipeWrapper(recipe, stackHelper,
+                baseRecipe.getRecipeWidth(), baseRecipe.getRecipeHeight());
+        }
+        return new ShapelessRecipeWrapper(recipe, stackHelper);
     }
 
     @Override
@@ -52,36 +53,5 @@ public class RestrungJeiPlugin implements IModPlugin
     {
         IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
         registry.addRecipeCategories(new RecipeLoadAmmoCategory(guiHelper));
-    }
-
-    private static class ShapedRecipeWrapper implements IShapedCraftingRecipeWrapper
-    {
-        private final IRecipe wrapped;
-        private final IStackHelper stackHelper;
-
-        public ShapedRecipeWrapper(IRecipe wrapped, IStackHelper stackHelper)
-        {
-            this.wrapped = wrapped;
-            this.stackHelper = stackHelper;
-        }
-
-        @Override
-        public void getIngredients(IIngredients ingredients)
-        {
-            ingredients.setInputLists(VanillaTypes.ITEM, stackHelper.expandRecipeItemStackInputs(wrapped.getIngredients()));
-            ingredients.setOutput(VanillaTypes.ITEM, wrapped.getRecipeOutput());
-        }
-
-        @Override
-        public int getWidth()
-        {
-            return 0;
-        }
-
-        @Override
-        public int getHeight()
-        {
-            return 0;
-        }
     }
 }
