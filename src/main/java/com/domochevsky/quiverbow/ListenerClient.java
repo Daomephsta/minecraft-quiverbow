@@ -23,7 +23,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 
 public class ListenerClient
 {
-	private float defaultFOVModifier = 0;
+	private float defaultFOVModifier;
 	private boolean wasZoomedLastTick = false;
 	private float currentZoomFovModifier;
 	private float fovModifierHand, fovModifierHandLastTick;
@@ -44,7 +44,8 @@ public class ListenerClient
 	@SubscribeEvent
 	public void onFovModifierEvent(EntityViewRenderEvent.FOVModifier event)
 	{
-		if (wasZoomedLastTick) event.setFOV(currentZoomFovModifier);
+		if (wasZoomedLastTick)
+            event.setFOV(currentZoomFovModifier);
 	}
 
 	private void handleZoom()
@@ -95,7 +96,8 @@ public class ListenerClient
 
 	private void startZooming()
 	{
-		this.defaultFOVModifier = getFOVModifier(Minecraft.getMinecraft().gameSettings.fovSetting); // Recording default FOV modifier
+	    this.currentZoomFovModifier = this.defaultFOVModifier =
+	        getFOVModifier(Minecraft.getMinecraft().gameSettings.fovSetting); // Recording default FOV modifier
 		this.wasZoomedLastTick = true;
 	}
 
@@ -110,6 +112,7 @@ public class ListenerClient
 		if (currentZoomFovModifier >= defaultFOVModifier)
 		{
 			currentZoomFovModifier = defaultFOVModifier;
+			this.wasZoomedLastTick = false;
 			//Move the camera a tiny bit to get MC/LWJGL to render any chunks culled while zoomed in
 			Minecraft.getMinecraft().player.turn(0.1F, 0.0F);
 		}
