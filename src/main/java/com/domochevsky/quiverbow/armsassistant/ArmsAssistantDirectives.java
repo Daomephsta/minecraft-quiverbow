@@ -8,6 +8,7 @@ import static com.google.common.collect.Streams.stream;
 import static com.mojang.brigadier.arguments.IntegerArgumentType.getInteger;
 import static com.mojang.brigadier.arguments.IntegerArgumentType.integer;
 import static com.mojang.brigadier.arguments.StringArgumentType.string;
+import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,7 +16,6 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.armsassistant.ai.ArmsAssistantAITargeterControlled;
@@ -55,7 +55,8 @@ import net.minecraftforge.common.util.Constants.NBT;
 
 public class ArmsAssistantDirectives
 {
-    private static final Splitter ON_NEWLINE = Splitter.onPattern("\\n").omitEmptyStrings().trimResults();
+    private static final String LANG_PREFIX = QuiverbowMain.MODID + ".arms_assistant";
+    private static final Splitter ON_NEWLINE = Splitter.onPattern("\\n").trimResults();
     private static final CommandDispatcher<Builder> PARSER = buildParser();
 
     private EntityArmsAssistant armsAssistant;
@@ -110,53 +111,60 @@ public class ArmsAssistantDirectives
             throw new IllegalArgumentException("Directives can only be parsed from Writable or Written Books");
         if (!book.hasTagCompound())
             return new ArmsAssistantDirectives(armsAssistant);
-        NBTTagList pages = book.getTagCompound().getTagList("pages", NBT.TAG_STRING);
+        NBTTagList pagesTag = book.getTagCompound().getTagList("pages", NBT.TAG_STRING);
         if (book.getItem() == Items.WRITABLE_BOOK)
         {
-            List<String> lines = NBTPrimitiveStreams.toStringStream(pages)
-                .flatMap(pageText -> ON_NEWLINE.splitToList(pageText).stream())
-                .collect(Collectors.toList());
+            List<List<String>> lines = NBTPrimitiveStreams.toStringStream(pagesTag)
+                .map(pageText -> ON_NEWLINE.splitToList(pageText))
+                .collect(toList());
             return fromLines(armsAssistant, lines, errorHandler);
         }
         else if (book.getItem() == Items.WRITTEN_BOOK)
         {
-            List<String> lines = new ArrayList<>();
-            for (int i = 0; i < pages.tagCount(); i++)
+            List<List<String>> pages = new ArrayList<>(pagesTag.tagCount());
+            for (int i = 0; i < pagesTag.tagCount(); i++)
             {
-                String page = pages.getStringTagAt(i);
+                String page = pagesTag.getStringTagAt(i);
                 try
                 {
                     String pageText = ITextComponent.Serializer.jsonToComponent(page).getUnformattedText();
-                    lines.addAll(ON_NEWLINE.splitToList(pageText));
+                    pages.add(ON_NEWLINE.splitToList(pageText));
                 }
                 catch (JsonParseException e)
                 {
                     e.printStackTrace();
                 }
             }
-            return fromLines(armsAssistant, lines, errorHandler);
+            return fromLines(armsAssistant, pages, errorHandler);
         }
         throw new RuntimeException("Unreachable");
     }
 
-    private static ArmsAssistantDirectives fromLines(EntityArmsAssistant armsAssistant, Iterable<String> lines, Consumer<ITextComponent> errorHandler)
+    private static ArmsAssistantDirectives fromLines(EntityArmsAssistant armsAssistant,
+        Iterable<? extends Iterable<String>> pages, Consumer<ITextComponent> errorHandler)
     {
         Builder builder = new Builder(armsAssistant);
-        int lineNumber = 1;
-        for (String line : lines)
+        int pageNumber = 0;
+        for (Iterable<String> lines : pages)
         {
-            try
+            pageNumber += 1;
+            int lineNumber = 0;
+            for (String line : lines)
             {
-                ParseResults<Builder> parse = PARSER.parse(line, builder);
-                PARSER.execute(parse);
+                lineNumber += 1;
+                if (line.isEmpty()) continue;
+                try
+                {
+                    ParseResults<Builder> parse = PARSER.parse(line, builder);
+                    PARSER.execute(parse);
+                }
+                catch (CommandSyntaxException e)
+                {
+                    errorHandler.accept(new TextComponentTranslation(
+                        LANG_PREFIX + ".directives.errorPrefix", pageNumber, lineNumber)
+                        .appendText(e.getMessage()));
+                }
             }
-            catch (CommandSyntaxException e)
-            {
-                errorHandler.accept(new TextComponentTranslation(
-                    QuiverbowMain.MODID + ".arms_assistant.directives.errorPrefix", lineNumber).appendText(e.getMessage()));
-            }
-            //TODO Revisit line counting, it doesn't handle empty lines well
-            lineNumber += 1;
         }
         return new ArmsAssistantDirectives(builder);
     }
@@ -373,7 +381,7 @@ public class ArmsAssistantDirectives
             && armsAssistant.getHealth() < armsAssistant.getMaxHealth() / 3.0F)
         {
             armsAssistant.getOwner().sendMessage(
-                new TextComponentTranslation(QuiverbowMain.MODID + ".arms_assistant.messages.low_health", armsAssistant.getName()));
+                new TextComponentTranslation(LANG_PREFIX + ".messages.low_health", armsAssistant.getName()));
         }
     }
 
@@ -382,7 +390,7 @@ public class ArmsAssistantDirectives
         if (notifyDeath && armsAssistant.getOwner() != null)
         {
             armsAssistant.getOwner().sendMessage(
-                new TextComponentTranslation(QuiverbowMain.MODID + ".arms_assistant.messages.death", armsAssistant.getName()));
+                new TextComponentTranslation(LANG_PREFIX + ".messages.death", armsAssistant.getName()));
         }
     }
 
@@ -391,7 +399,7 @@ public class ArmsAssistantDirectives
         if (notifyLowAmmoThreshold == reloadsRemaining && armsAssistant.getOwner() != null)
         {
             armsAssistant.getOwner().sendMessage(new TextComponentTranslation(
-                QuiverbowMain.MODID + ".arms_assistant.messages.low_ammo", armsAssistant.getName(), reloadsRemaining));
+                LANG_PREFIX + ".messages.low_ammo", armsAssistant.getName(), reloadsRemaining));
         }
     }
 
