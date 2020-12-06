@@ -37,7 +37,7 @@ import net.minecraftforge.common.model.IModelState;
 
 public class WeaponModel implements IModel
 {
-    public static final Set<ResourceLocation> PORTED = Stream.of("coin_tosser", "coin_tosser_mod")
+    public static final Set<ResourceLocation> PORTED = Stream.of("coin_tosser", "coin_tosser_empty", "coin_tosser_mod", "coin_tosser_mod_empty")
         .map(s -> new ResourceLocation(QuiverbowMain.MODID, "models/item/weapons/" + s + "_internal"))
         .collect(toCollection(HashSet::new));
 	private static final Logger LOGGER = LogManager.getLogger();

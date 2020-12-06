@@ -1,0 +1,114 @@
+{
+	"credit": "Made with Blockbench",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "quiverbow_restrung:items/weapons/3d/coin_tosser_mod",
+		"particle": "quiverbow_restrung:items/weapons/3d/coin_tosser_mod"
+	},
+	"elements": [
+		{
+			"name": "Barrel",
+			"from": [5.48, 3, -4.52],
+			"to": [9.48, 7, 13.48],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7.5, 3, 10.98]},
+			"faces": {
+				"north": {"uv": [9, 0, 11, 2], "texture": "#0"},
+				"east": {"uv": [0, 2, 9, 4], "texture": "#0"},
+				"south": {"uv": [9, 2, 11, 4], "texture": "#0"},
+				"west": {"uv": [0, 6, 9, 8], "texture": "#0"},
+				"up": {"uv": [9, 2, 0, 0], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [9, 4, 0, 6], "rotation": 270, "texture": "#0"}
+			}
+		},
+		{
+			"name": "Stock1",
+			"from": [6.48, 2, 11.23],
+			"to": [8.48, 5, 18.23],
+			"shade": false,
+			"rotation": {"angle": 0, "axis": "y", "origin": [7.5, 3, 10.98]},
+			"faces": {
+				"north": {"uv": [10.5, 10, 9.5, 11.5], "texture": "#0"},
+				"east": {"uv": [13, 10, 9.5, 11.5], "texture": "#0"},
+				"south": {"uv": [10.5, 10, 9.5, 11.5], "texture": "#0"},
+				"west": {"uv": [13, 10, 9.5, 11.5], "texture": "#0"},
+				"up": {"uv": [9.5, 11, 13, 10], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [9.5, 10, 13, 11], "rotation": 90, "texture": "#0"}
+			}
+		},
+		{
+			"name": "Stock2",
+			"from": [6.58, 1, 16.23],
+			"to": [8.58, 4, 23.23],
+			"shade": false,
+			"rotation": {"angle": 0, "axis": "y", "origin": [7.5, 3, 10.98]},
+			"faces": {
+				"north": {"uv": [10.5, 10, 9.5, 11.5], "texture": "#0"},
+				"east": {"uv": [13, 10, 9.5, 11.5], "texture": "#0"},
+				"south": {"uv": [10.5, 10, 9.5, 11.5], "texture": "#0"},
+				"west": {"uv": [13, 10, 9.5, 11.5], "texture": "#0"},
+				"up": {"uv": [9.5, 11, 13, 10], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [9.5, 10, 13, 11], "rotation": 90, "texture": "#0"}
+			}
+		},
+		{
+			"name": "Ammo",
+			"from": [5.98, 1, -2.52],
+			"to": [8.98, 3, 9.48],
+			"shade": false,
+			"rotation": {"angle": 0, "axis": "y", "origin": [7.5, 3, 10.98]},
+			"faces": {
+				"north": {"uv": [12.5, 6, 11, 7], "texture": "#0"},
+				"east": {"uv": [15.5, 6, 9.5, 7], "texture": "#0"},
+				"south": {"uv": [12.5, 6, 11, 7], "texture": "#0"},
+				"west": {"uv": [15.5, 6, 9.5, 7], "texture": "#0"},
+				"up": {"uv": [9.5, 7.5, 15.5, 6], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [9.5, 6, 15.5, 7.5], "rotation": 90, "texture": "#0"}
+			}
+		},
+		{
+			"name": "Trigger",
+			"from": [6.98, 1, 9.98],
+			"to": [7.98, 3, 14.98],
+			"shade": false,
+			"rotation": {"angle": 0, "axis": "y", "origin": [7.5, 3, 10.98]},
+			"faces": {
+				"north": {"uv": [10, 9, 9.5, 10], "texture": "#0"},
+				"east": {"uv": [12, 9, 9.5, 10], "texture": "#0"},
+				"south": {"uv": [10, 9, 9.5, 10], "texture": "#0"},
+				"west": {"uv": [12, 9, 9.5, 10], "texture": "#0"},
+				"up": {"uv": [9.5, 9.5, 12, 9], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [9.5, 9, 12, 9.5], "rotation": 90, "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [67.5, 0, 0],
+			"translation": [0, 4.6, 1],
+			"scale": [0.7, 0.7, 0.7]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [67.5, 0, 0],
+			"translation": [0, 4.6, 1],
+			"scale": [0.7, 0.7, 0.7]
+		},
+		"firstperson_righthand": {
+			"translation": [0, 3, 0],
+			"scale": [0.7, 0.7, 0.7]
+		},
+		"firstperson_lefthand": {
+			"translation": [0, 3, 0],
+			"scale": [0.7, 0.7, 0.7]
+		},
+		"ground": {
+			"rotation": [0, 0, 90],
+			"translation": [-3, 0, 0],
+			"scale": [0.7, 0.7, 0.7]
+		},
+		"fixed": {
+			"rotation": [0, -90, 0],
+			"translation": [1, 3, 0],
+			"scale": [0.7, 0.7, 0.7]
+		}
+	}
+}
