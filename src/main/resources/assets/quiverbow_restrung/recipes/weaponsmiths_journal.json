@@ -1,0 +1,13 @@
+{
+  "ingredients": [
+	{"item": "minecraft:book"},
+    {"item": "quiverbow_restrung:arrow_bundle"}
+  ],
+  "type": "minecraft:crafting_shapeless",
+  "result": {
+    "item": "patchouli:guide_book",
+	"nbt": {
+		"patchouli:book": "quiverbow_restrung:weaponsmiths_journal"
+	}
+  }
+}

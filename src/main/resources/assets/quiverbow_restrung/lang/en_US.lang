@@ -305,6 +305,8 @@ item.quiverbow_restrung.misc.incomplete_ender_rail_accelerator.completeFail=27 P
 item.quiverbow_restrung.misc.aa_target_assistant.name=AA Target Designator
 item.quiverbow_restrung.misc.aa_target_assistant.description=§9Used to set AA targets, and fire weapons of ridden AAs\nOver there!
 
+item.quiverbow_restrung.weaponsmiths_journal.name=Weaponsmith's Journal
+
 item.quiverbow_restrung.misc.arms_assistant.name=Packed Up Arms Assistant
 item.quiverbow_restrung.misc.arms_assistant.description=It's sizing you up
 item.quiverbow_restrung.misc.arms_assistant.tooltip.health=Health: %.1f / %.1f

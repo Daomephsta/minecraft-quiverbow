@@ -36,14 +36,12 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 
 import daomephsta.umbra.streams.NBTPrimitiveStreams;
-import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAITasks;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagList;
@@ -272,7 +270,7 @@ public class ArmsAssistantDirectives
         else if (condition.equals("INJURED"))
             return (directedEntity, target) -> target.getHealth() < target.getMaxHealth();
         else if (condition.equals("FLYING"))
-            return (directedEntity, target) -> target instanceof EntityFlying || target instanceof EntityBat;
+            return (directedEntity, target) -> !target.onGround;
         else
             throw UNKNOWN_ENTITY_CONDITION.create(condition);
     }

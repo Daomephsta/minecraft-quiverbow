@@ -1,0 +1,12 @@
+{
+    "name": "AA Target Designator",
+    "icon": "quiverbow_restrung:aa_target_assistant",
+    "category": "quiverbow_restrung:arms_assistant",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:arms_assistant/aa_target_assistant",
+            "text": "Primarily used to control Arms Assistants directed to $(l:arms_assistant/directives#remote_fire)REMOTE FIRE$(/l). Also used to determine entity IDs by looking at them while within player reach distance."
+        }
+    ]
+}

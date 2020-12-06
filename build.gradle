@@ -36,12 +36,17 @@ configurations {
 
 repositories 
 {  
+    mavenLocal()
 	maven 
 	{
 		name 'JEI'
-        url 'http://dvs1.progwml6.com/files/maven'
+        url 'https://dvs1.progwml6.com/files/maven'
     }
-	mavenLocal()
+    maven 
+    { 
+        name 'Patchouli'
+    	url 'https://maven.blamejared.com/' 
+    }
 }
 
 dependencies 
@@ -57,6 +62,7 @@ dependencies
     def brigadier = 'com.mojang:brigadier:1.0.17'
 	implementation brigadier
 	shade brigadier
+    deobfCompile "vazkii.patchouli:Patchouli:${project.patchouliVersion}"
 }
 
 processResources

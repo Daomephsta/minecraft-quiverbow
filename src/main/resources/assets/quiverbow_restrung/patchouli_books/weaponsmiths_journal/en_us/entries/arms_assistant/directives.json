@@ -1,0 +1,59 @@
+{
+    "name": "Directives",
+    "icon": "minecraft:writable_book",
+    "category": "quiverbow_restrung:arms_assistant",
+    "pages": [
+        {
+            "type": "text",
+            "text": "By default Arms Assistants will attack any hostile entity, but will not move. Writing special phrases, called directives, in a book and using it on an AA will override its default behaviour. Directives are case-sensitive. Only one directive may be written on each line."
+        },
+		{
+            "type": "text",
+			"title": "TARGET",
+            "text": "Attack targets matching the conditions. Conditions of the same directive are anded, separate directives are ored.$(br)$(bold)Usage:$() TARGET <conditions>$(br)$(bold)Conditions:$()$(li)HOSTILE - hostile mobs$(li)FRIENDLY - on the same team$(li)INJURED - not at max health$(li)FLYING - not on the ground$(li)<entity ID> - with $(l:arms_assistant/targeter)this ID$(/l)$(br)$(bold)Examples:$()$(li)TARGET minecraft:creeper$(li)TARGET FRIENDLY INJURED",
+			"anchor": "target"
+        },
+		{
+            "type": "text",
+			"title": "IGNORE",
+            "text": "Ignore targets matching the conditions. Conditions of the same directive are anded, separate directives are ored.$(br)$(bold)Usage:$() IGNORE <conditions>$(br)$(bold)Conditions:$()$(li)HOSTILE - hostile mobs$(li)FRIENDLY - on the same team$(li)INJURED - not at max health$(li)FLYING - not on the ground$(li)<entity ID> - with $(l:arms_assistant/targeter)this ID$(/l)$(br)$(bold)Examples:$()$(li)IGNORE minecraft:creeper$(li)IGNORE FLYING",
+			"anchor": "ignore"
+        },
+		{
+			"type": "text",
+			"title": "STAY",
+			"text": "Attempt to remain at the current position. Requires mobility upgrade.$(br)$(bold)Usage:$() STAY",
+			"anchor": "stay"
+		},
+		{
+			"type": "text",
+			"title": "FOLLOW",
+			"text": "Follow owner. Requires mobility upgrade.$(br)$(bold)Usage:$() FOLLOW",
+			"anchor": "follow"
+		},
+		{
+			"type": "text",
+			"title": "TELL",
+			"text": "Informs the owner in chat when certain events occur. Requires communications upgrade.$(br)$(bold)Usage:$() TELL <event>$(br)$(bold)Events:$()$(li)HEALTH LOW - health less than 1/3$(li)DEATH - death$(li)AMMO <reloads> - can reload either weapon only <reloads> more times.$(br)$(bold)Examples:$()$(li)TELL HEALTH LOW$(li)TELL DEATH$(li)TELL AMMO 2",
+			"anchor": "tell"
+		},
+		{
+			"type": "text",
+			"title": "REMOTE FIRE",
+			"text": "While the owner is holding an $(l:arms_assistant/targeter)AA Target Designator$(/l), look at their target, firing when the designator is used.$(br)$(bold)Usage:$() REMOTE FIRE",
+			"anchor": "remote_fire"
+		},
+		{
+			"type": "text",
+			"title": "STAGGER FIRE",
+			"text": "Secondary weapon will only fire while the primary is less than half cooled down.$(br)$(bold)Usage:$() STAGGER FIRE",
+			"anchor": "stagger_fire"
+		},
+		{
+			"type": "text",
+			"title": "SAFETY RANGE",
+			"text": "Area-of-effect weapons will not be fired if the AoE would harm the AA.$(br)$(bold)Usage:$() SAFETY RANGE",
+			"anchor": "safety_range"
+		}
+    ]
+}

@@ -1,0 +1,49 @@
+{
+    "name": "Upgrades",
+    "icon": "minecraft:crafting_table",
+    "category": "quiverbow_restrung:arms_assistant",
+    "pages": [
+		{
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:arms_assistant/upgrade_armour",
+			"title": "Armour Upgrade",
+            "text": "Increases health to 40 points"
+        },
+		{
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:arms_assistant/upgrade_mobility",
+			"title": "Mobility Upgrade",
+            "text": "Enables $(l:arms_assistant/directives#follow)FOLLOW$(/l) & $(l:arms_assistant/directives#stay)STAY$(/l) directives"
+        },
+		{
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:arms_assistant/upgrade_storage",
+			"title": "Inventory Upgrade",
+            "text": "Increases inventory size to 8 slots"
+        },
+		{
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:arms_assistant/upgrade_extra_weapon",
+			"title": "Secondary Rail",
+            "text": "Adds a secondary weapon rail"
+        },
+		{
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:arms_assistant/upgrade_riding",
+			"title": "Riding Upgrade",
+            "text": "Allows the Arms Assistant to be controlled by riding it. The AA will fire when the rider uses an $(l:arms_assistant/targeter)AA Target Designator$(/l)."
+        },
+		{
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:arms_assistant/upgrade_heavy_plating",
+			"title": "Heavy Plating Upgrade",
+            "text": "Gives 50% knockback resistance and 3 armour"
+        },
+		{
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:arms_assistant/upgrade_communications",
+			"title": "Communications Upgrade",
+            "text": "Enables $(l:arms_assistant/directives#tell)TELL$(/l) directives."
+        }
+    ]
+}

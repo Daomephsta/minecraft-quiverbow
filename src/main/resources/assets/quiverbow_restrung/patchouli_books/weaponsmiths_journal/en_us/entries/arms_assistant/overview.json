@@ -1,0 +1,13 @@
+{
+    "name": "Overview",
+    "icon": "quiverbow_restrung:arms_assistant",
+    "category": "quiverbow_restrung:arms_assistant",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:arms_assistant/arms_assistant",
+			"title": "Arms Assistant",
+            "text": "A combat automaton driven by the aggression of a wither skull. Equipped with weapon rails capable of using most QuiverBow: Restrung weapons, and a 4 slot inventory. Equip items by using them on it. Repair with iron blocks."
+        }
+    ]
+}

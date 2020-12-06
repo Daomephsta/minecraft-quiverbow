@@ -22,7 +22,7 @@ public class RecipeArmsAssistantUpgrade extends IForgeRegistryEntry.Impl<IRecipe
 	private final IRecipe baseRecipe;
 	private final IArmsAssistantUpgrade upgrade;
 
-	private RecipeArmsAssistantUpgrade(IRecipe baseRecipe, IArmsAssistantUpgrade upgrade)
+	protected RecipeArmsAssistantUpgrade(IRecipe baseRecipe, IArmsAssistantUpgrade upgrade)
 	{
 		this.baseRecipe = baseRecipe;
 		this.upgrade = upgrade;
@@ -95,6 +95,26 @@ public class RecipeArmsAssistantUpgrade extends IForgeRegistryEntry.Impl<IRecipe
         return baseRecipe;
     }
 
+	private static class Shaped extends RecipeArmsAssistantUpgrade implements IShapedRecipe
+	{
+        protected Shaped(IRecipe baseRecipe, IArmsAssistantUpgrade upgrade)
+        {
+            super(baseRecipe, upgrade);
+        }
+
+        @Override
+        public int getRecipeWidth()
+        {
+            return ((IShapedRecipe) getBaseRecipe()).getRecipeWidth();
+        }
+
+        @Override
+        public int getRecipeHeight()
+        {
+            return ((IShapedRecipe) getBaseRecipe()).getRecipeHeight();
+        }
+	}
+
 	public static class Factory implements IRecipeFactory
 	{
 		@Override
@@ -110,7 +130,10 @@ public class RecipeArmsAssistantUpgrade extends IForgeRegistryEntry.Impl<IRecipe
 			IArmsAssistantUpgrade upgrade = UpgradeRegistry.getUpgradeInstance(upgradeID);
 			if(upgrade == null) throw new JsonSyntaxException("Unknown upgrade ID: " + upgrade);
 
-			return new RecipeArmsAssistantUpgrade(CraftingHelper.getRecipe(baseRecipeJSON, context), upgrade);
+			IRecipe recipe = CraftingHelper.getRecipe(baseRecipeJSON, context);
+			if (recipe instanceof IShapedRecipe)
+			    return new Shaped(recipe, upgrade);
+            return new RecipeArmsAssistantUpgrade(recipe, upgrade);
 		}
 	}
 }
