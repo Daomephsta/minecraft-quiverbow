@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
+import java.util.stream.Collector;
 
 import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.armsassistant.ai.ArmsAssistantAITargeterControlled;
@@ -25,13 +26,11 @@ import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 import com.domochevsky.quiverbow.weapons.base.Weapon;
 import com.google.common.base.Splitter;
 import com.google.gson.JsonParseException;
-import com.mojang.brigadier.Command;
-import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.LiteralMessage;
-import com.mojang.brigadier.ParseResults;
+import com.mojang.brigadier.*;
 import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
+import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 
@@ -56,6 +55,7 @@ public class ArmsAssistantDirectives
     private static final String LANG_PREFIX = QuiverbowMain.MODID + ".arms_assistant";
     private static final Splitter ON_NEWLINE = Splitter.onPattern("\\n").trimResults();
     private static final CommandDispatcher<Builder> PARSER = buildParser();
+    private static final DynamicCommandExceptionType MISSING_UPGRADE = new DynamicCommandExceptionType(arg -> translated(LANG_PREFIX + ".messages.missing_upgrade", arg));
 
     private EntityArmsAssistant armsAssistant;
     private final BiPredicate<EntityArmsAssistant, EntityLiving> targetSelector,
@@ -172,13 +172,18 @@ public class ArmsAssistantDirectives
         CommandDispatcher<Builder> dispatcher = new CommandDispatcher<>();
         dispatcher.register(targetingDirective("TARGET", (builder, selector) -> builder.targetSelectors.add(selector)));
         dispatcher.register(targetingDirective("IGNORE", (builder, selector) -> builder.targetBlacklist.add(selector)));
-        dispatcher.register(literal("STAY").executes(ctx ->
-        {
-            ctx.getSource().movementAI = MovementAI.STAY;
-            return Command.SINGLE_SUCCESS;
-        }));
+        dispatcher.register(literal("STAY")
+            .executes(ctx ->
+            {
+                if (!requireUpgrade(ctx, UpgradeRegistry.MOBILITY))
+                    return 0;
+                ctx.getSource().movementAI = MovementAI.STAY;
+                return Command.SINGLE_SUCCESS;
+            }));
         dispatcher.register(literal("FOLLOW").executes(ctx ->
         {
+            if (!requireUpgrade(ctx, UpgradeRegistry.MOBILITY))
+                return 0;
             ctx.getSource().movementAI = MovementAI.FOLLOW_OWNER;
             return Command.SINGLE_SUCCESS;
         }));
@@ -186,6 +191,8 @@ public class ArmsAssistantDirectives
         dispatcher.register(literal("REMOTE").then(literal("FIRE")
             .executes(ctx ->
             {
+                if (!requireUpgrade(ctx, UpgradeRegistry.COMMUNICATIONS))
+                    return 0;
                 ctx.getSource().remoteFire = true;
                 return Command.SINGLE_SUCCESS;
             }))
@@ -205,6 +212,13 @@ public class ArmsAssistantDirectives
             }))
         );
         return dispatcher;
+    }
+
+    private static Message translated(String translationKey, Object... args)
+    {
+        return () -> stream(new TextComponentTranslation(translationKey, args))
+            .map(ITextComponent::getUnformattedComponentText)
+            .collect(Collector.of(StringBuilder::new, StringBuilder::append, StringBuilder::append, StringBuilder::toString));
     }
 
     private static final DynamicCommandExceptionType UNKNOWN_ENTITY
@@ -282,6 +296,8 @@ public class ArmsAssistantDirectives
             (
                 literal("HEALTH").then(literal("LOW").executes(ctx ->
                 {
+                    if (!requireUpgrade(ctx, UpgradeRegistry.COMMUNICATIONS))
+                        return 0;
                     ctx.getSource().notifyLowHealth = true;
                     return Command.SINGLE_SUCCESS;
                 }))
@@ -290,6 +306,8 @@ public class ArmsAssistantDirectives
             (
                 literal("DEATH").executes(ctx ->
                 {
+                    if (!requireUpgrade(ctx, UpgradeRegistry.COMMUNICATIONS))
+                        return 0;
                     ctx.getSource().notifyDeath = true;
                     return Command.SINGLE_SUCCESS;
                 })
@@ -300,6 +318,8 @@ public class ArmsAssistantDirectives
                 (
                     argument("threshold", integer(0)).executes(ctx ->
                     {
+                        if (!requireUpgrade(ctx, UpgradeRegistry.COMMUNICATIONS))
+                            return 0;
                         ctx.getSource().notifyLowAmmoThreshold = getInteger(ctx, "threshold");
                         return Command.SINGLE_SUCCESS;
                     })
@@ -307,6 +327,12 @@ public class ArmsAssistantDirectives
             );
     }
 
+    private static boolean requireUpgrade(CommandContext<Builder> ctx, IArmsAssistantUpgrade upgrade) throws CommandSyntaxException
+    {
+        if (!ctx.getSource().armsAssistant.hasUpgrade(upgrade))
+            throw MISSING_UPGRADE.create(new TextComponentTranslation(upgrade.getTranslationKey()));
+        return true;
+    }
 
     private static LiteralArgumentBuilder<Builder> literal(String name)
     {

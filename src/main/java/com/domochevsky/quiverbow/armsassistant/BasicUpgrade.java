@@ -8,11 +8,13 @@ import net.minecraft.util.ResourceLocation;
 public class BasicUpgrade implements IArmsAssistantUpgrade
 {
 	private final ResourceLocation registryId, lootTable;
+	private final String translationKey;
 
     public BasicUpgrade(ResourceLocation registryId)
     {
         this.registryId = registryId;
         this.lootTable = new ResourceLocation(registryId.getResourceDomain(), "entities/arms_assistant/upgrade_" + registryId.getResourcePath());
+        this.translationKey = registryId.getResourceDomain() + ".arms_assistant.upgrade." + registryId.getResourcePath();
     }
 
     @Override
@@ -22,6 +24,12 @@ public class BasicUpgrade implements IArmsAssistantUpgrade
     public ResourceLocation getRegistryId()
     {
         return registryId;
+    }
+
+    @Override
+    public String getTranslationKey()
+    {
+        return translationKey;
     }
 
     @Override

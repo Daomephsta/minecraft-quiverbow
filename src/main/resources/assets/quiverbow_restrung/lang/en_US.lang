@@ -311,17 +311,18 @@ item.quiverbow_restrung.misc.arms_assistant.name=Packed Up Arms Assistant
 item.quiverbow_restrung.misc.arms_assistant.description=It's sizing you up
 item.quiverbow_restrung.misc.arms_assistant.tooltip.health=Health: %.1f / %.1f
 item.quiverbow_restrung.misc.arms_assistant.tooltip.upgrades=Upgrades: %s
-quiverbow_restrung.aa_upgrade.extra_weapon.locname=2nd Weapon Rail
-quiverbow_restrung.aa_upgrade.riding.locname=Saddle
-quiverbow_restrung.aa_upgrade.communications.locname=Communications
-quiverbow_restrung.aa_upgrade.storage.locname=Storage
-quiverbow_restrung.aa_upgrade.mobility.locname=Mobility
-quiverbow_restrung.aa_upgrade.armour.locname=Armour
-quiverbow_restrung.aa_upgrade.heavy_plating.locname=Heavy Plating
+quiverbow_restrung.arms_assistant.upgrade.extra_weapon=2nd Weapon Rail
+quiverbow_restrung.arms_assistant.upgrade.riding=Saddle
+quiverbow_restrung.arms_assistant.upgrade.communications=Communications
+quiverbow_restrung.arms_assistant.upgrade.storage=Storage
+quiverbow_restrung.arms_assistant.upgrade.mobility=Mobility
+quiverbow_restrung.arms_assistant.upgrade.armour=Armour
+quiverbow_restrung.arms_assistant.upgrade.heavy_plating=Heavy Plating
 quiverbow_restrung.arms_assistant.directives.errorPrefix=Page %s, Line %s: 
 quiverbow_restrung.arms_assistant.messages.low_health=%s is below 30%% health
 quiverbow_restrung.arms_assistant.messages.death=%s has died
 quiverbow_restrung.arms_assistant.messages.low_ammo=%s has %s reloads in inventory
+quiverbow_restrung.arms_assistant.messages.missing_upgrade=Requires upgrade: %s 
 
 item.quiverbow_restrung.misc.FlyingAASpawner.name=Packed Up BB (WIP) 
 

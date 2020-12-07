@@ -90,8 +90,8 @@ public class PackedUpAA extends QuiverBowItem
 						NBTTagList upgradeList = stackTag.getTagList(TAG_UPGRADES, NBT.TAG_STRING);
 						for (int i = 0; i < upgradeList.tagCount(); i++)
 						{
-							String upgradeID = upgradeList.getStringTagAt(i).replace(":", ".aa_upgrade.");
-							list.add(I18n.format(upgradeID + ".locname"));
+							ResourceLocation id = new ResourceLocation(upgradeList.getStringTagAt(i));
+							list.add(I18n.format(UpgradeRegistry.getUpgradeInstance(id).getTranslationKey()));
 						}
 					}
 				}

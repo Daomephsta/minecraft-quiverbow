@@ -9,6 +9,7 @@ public interface IArmsAssistantUpgrade
 {
     public void submitAttributeModifiers(BiConsumer<String, AttributeModifier> out);
     public ResourceLocation getRegistryId();
+    public String getTranslationKey();
     /**@return the id of a loot table that specifies what should be dropped when an AA with this upgrade dies*/
     public ResourceLocation getLootTable();
 }
