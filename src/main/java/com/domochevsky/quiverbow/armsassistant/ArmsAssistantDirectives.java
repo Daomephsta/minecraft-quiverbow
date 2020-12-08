@@ -386,13 +386,13 @@ public class ArmsAssistantDirectives
     {
         if (safetyRange)
         {
-            float maxDamageRange = stream(armsAssistant.getHeldEquipment())
+            double maxDamageRange = stream(armsAssistant.getHeldEquipment())
                 .filter(stack -> stack.getItem() instanceof Weapon)
                 .map(stack -> ((Weapon) stack.getItem()).getProperties())
                 .filter(props -> props.has(CommonProperties.EXPLOSION_SIZE))
-                .map(props -> props.getFloat(CommonProperties.EXPLOSION_SIZE))
-                .max(Float::compareTo)
-                .orElse(0.0F) + 2.0F; // Extra distance, to be safe
+                .mapToDouble(props -> props.getFloat(CommonProperties.EXPLOSION_SIZE))
+                .max()
+                .orElse(0.0D) + 2.0D; // Extra distance, to be safe
             if (armsAssistant.getDistance(candidate) <= maxDamageRange)
                 return false;
         }
