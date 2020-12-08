@@ -18,6 +18,8 @@ version = "${project.modVersion}+MC${project.mcVersion}"
 group = 'com.domochevsky.quiverbow' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'QuiverBowRestrung'
 
+sourceCompatibility = targetCompatibility = 8;
+
 minecraft {
     version = "${project.mcVersion}-${project.forgeVersion}"
     runDir = "run"
@@ -135,4 +137,26 @@ jar {
 	}
 	
 	dependsOn generateDependencyMetaFiles
+}
+
+compileJava {
+	options.fork = true
+	file(System.env.JAVA_HOME).parentFile.eachDir { dir ->
+		def releaseFile = new File(dir, 'release')
+		if (releaseFile.exists())
+		{
+			releaseFile.withInputStream { input->
+				def releaseProps = new Properties()
+				releaseProps.load(input)
+				if (releaseProps.JAVA_VERSION.startsWith('"1.8'))
+				{
+					options.forkOptions.javaHome = dir
+					println("Compiling with $dir")
+				}
+			}
+		}
+	}
+	// Java 8 is required for compilation because compiling with JDK 9 breaks code using NIO buffers
+	if (!options.forkOptions.javaHome)
+		ant.fail('Could not find Java 8 JDK')
 }
