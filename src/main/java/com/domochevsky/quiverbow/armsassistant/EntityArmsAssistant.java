@@ -14,6 +14,7 @@ import com.domochevsky.quiverbow.miscitems.PackedUpAA;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.weapons.base.Weapon;
 import com.domochevsky.quiverbow.weapons.base.trigger.Trigger;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 
@@ -41,16 +42,21 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants.NBT;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 
+@Mod.EventBusSubscriber(modid = QuiverbowMain.MODID)
 public class EntityArmsAssistant extends EntityCreature implements IEntityAdditionalSpawnData, IEntityOwnable, IRangedAttackMob
 {
     public static final ResourceLocation LOOT_TABLE_ID = new ResourceLocation(QuiverbowMain.MODID, "entities/arms_assistant");
@@ -66,6 +72,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 	{
 		super(world);
 		this.setSize(1.0F, 1.2F);
+		this.stepHeight = 1.0F;
         updateDirectives(ItemStack.EMPTY);
 	}
 
@@ -85,8 +92,8 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
         for (IArmsAssistantUpgrade upgrade : upgrades)
             upgrade.submitAttributeModifiers(modifiers::put);
         getAttributeMap().applyAttributeModifiers(modifiers);
-        //Set home pos for use by STAY AI, home distance is ignored and thus arbitrary
-        setHomePosAndDistance(getPosition(), 8);
+        //Set home pos for use by STAY AI, -1 means unlimited distance
+        setHomePosAndDistance(getPosition(), -1);
 		return livingDataSuper;
 	}
 
@@ -256,8 +263,6 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 
 	private void updateDirectives(ItemStack directivesBook)
 	{
-	    if (world.isRemote)
-	        return;
 	    this.directivesBook = directivesBook;
 	    if (this.directives != null)
 	        this.directives.revertAI();
@@ -482,15 +487,63 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 	}
 
 	@Override
+	public Entity getControllingPassenger()
+	{
+	    return Iterables.getFirst(getPassengers(), null);
+	}
+
+	@Override
 	public boolean canBeSteered()
 	{
-		return upgrades.contains(UpgradeRegistry.RIDING); // Can be steered if we have this upgrade
+		return upgrades.contains(UpgradeRegistry.RIDING);
+	}
+
+	@Override
+	public void travel(float strafe, float vertical, float forward)
+	{
+	    if (this.isBeingRidden() && this.canBeSteered())
+	    {
+	        EntityLivingBase rider = (EntityLivingBase) getControllingPassenger();
+	        this.rotationYaw = rider.rotationYaw;
+	        this.prevRotationYaw = this.rotationYaw;
+	        this.rotationPitch = rider.rotationPitch * 0.5F;
+	        this.setRotation(this.rotationYaw, this.rotationPitch);
+	        this.renderYawOffset = this.rotationYaw;
+	        this.rotationYawHead = this.rotationYaw;
+	        strafe = 0.0F;
+	        forward = rider.moveForward;
+
+	        if (canPassengerSteer())
+            {
+                double speed = this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue();
+                setAIMoveSpeed((float)speed);
+            }
+            else if (rider instanceof EntityPlayer)
+                motionX = motionY = motionZ = 0.0D;
+
+	        this.prevLimbSwingAmount = this.limbSwingAmount;
+	        double deltaX = this.posX - this.prevPosX;
+	        double deltaZ = this.posZ - this.prevPosZ;
+	        float deltaXZ = MathHelper.sqrt(deltaX * deltaX + deltaZ * deltaZ);
+	        float maxLimbSwing = Math.min(1.0F, deltaXZ * 4.0F);
+
+	        this.limbSwingAmount += (maxLimbSwing - this.limbSwingAmount) * 0.4F;
+	        this.limbSwing += this.limbSwingAmount;
+	    }
+	    super.travel(strafe, vertical, forward);
+	}
+
+	@SubscribeEvent
+	public static void onUseItem(PlayerInteractEvent.RightClickItem event)
+	{
+	    if (event.getEntity().getRidingEntity() instanceof EntityArmsAssistant)
+	        ((EntityArmsAssistant) event.getEntity().getRidingEntity()).tryFire();
 	}
 
 	@Override
 	public double getMountedYOffset()
 	{
-		return this.height * 0.8;
+		return this.height * 0.7;
 	}
 
 	@Override

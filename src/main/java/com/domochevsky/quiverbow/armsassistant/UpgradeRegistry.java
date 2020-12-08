@@ -33,7 +33,7 @@ public class UpgradeRegistry
 	        public void submitAttributeModifiers(BiConsumer<String, AttributeModifier> out)
 	        {
 	            out.accept(SharedMonsterAttributes.MOVEMENT_SPEED.getName(),
-	                AttributeHelper.createModifier("Mobility upgrade", 0.5D, AttributeModifierOperation.ADDITIVE));
+	                AttributeHelper.createModifier("Mobility upgrade", 0.1D, AttributeModifierOperation.ADDITIVE));
 	        }
 	    });
 	public static final IArmsAssistantUpgrade ARMOUR = register(new BasicUpgrade(new ResourceLocation(QuiverbowMain.MODID, "armour"))
