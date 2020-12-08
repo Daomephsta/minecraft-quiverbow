@@ -177,6 +177,9 @@ public class QuiverbowMain
 		{
 	        ProjectileFactory crossbowBolt = (world, shooter, properties) ->
 	        {
+                // Use rider if being ridden to prevent arrows hitting rider upon firing
+                if (shooter.getControllingPassenger() instanceof EntityLivingBase)
+                    shooter = (EntityLivingBase) shooter.getControllingPassenger();
 	            EntityArrow entityarrow = Helper.createArrow(world, shooter);
 	            entityarrow.shoot(shooter, shooter.rotationPitch, shooter.rotationYaw, 0.0F,
 	                properties.getProjectileSpeed(), 0.5F);
