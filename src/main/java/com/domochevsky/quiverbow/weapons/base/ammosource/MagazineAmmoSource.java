@@ -1,6 +1,7 @@
 package com.domochevsky.quiverbow.weapons.base.ammosource;
 
 import com.domochevsky.quiverbow.config.WeaponProperties;
+import com.domochevsky.quiverbow.util.NBTags;
 import com.domochevsky.quiverbow.weapons.base.Weapon.Effect;
 
 import net.minecraft.entity.EntityLivingBase;
@@ -22,7 +23,7 @@ public class MagazineAmmoSource extends SimpleAmmoSource
     @Override
     public boolean consumeAmmo(EntityLivingBase shooter, ItemStack stack, WeaponProperties properties)
     {
-        if (shooter.isSneaking())
+        if (shooter.isSneaking() && !NBTags.getOrCreate(stack).getBoolean("magazineless"))
         {
             dropMagazine(shooter.getEntityWorld(), stack, shooter, properties);
             return false;
@@ -36,6 +37,7 @@ public class MagazineAmmoSource extends SimpleAmmoSource
         if (!world.isRemote)
             entity.entityDropItem(new ItemStack(magazine, 1, stack.getItemDamage()), 0.5F);
         stack.setItemDamage(stack.getMaxDamage()); // Empty weapon
+        NBTags.getOrCreate(stack).setBoolean("magazineless", true);
         if (unloadEffects != null)
         {
             for (Effect effect : unloadEffects)
