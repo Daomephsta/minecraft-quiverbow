@@ -1,20 +1,11 @@
 [
     {
-        "ingredient": {
-            "item": "minecraft:wheat_seeds"
-        },
-        "ammoValue": 0
-    },
-    {
-        "ingredient": {
-            "item": "minecraft:melon_seeds"
-        },
-        "ammoValue": 0
-    },
-    {
-        "ingredient": {
-            "item": "minecraft:pumpkin_seeds"
-        },
+        "ingredient": 
+		[
+			{"item": "minecraft:wheat_seeds"},
+			{"item": "minecraft:melon_seeds"},
+			{"item": "minecraft:pumpkin_seeds"}
+		],
         "ammoValue": 0
     }
 ]

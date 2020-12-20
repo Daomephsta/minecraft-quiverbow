@@ -65,8 +65,8 @@ public class ReloadSpecificationRegistry
                     else if (component.isJsonObject())
                     {
                         JsonObject object = component.getAsJsonObject();
-                        Ingredient ingredient = CraftingHelper.getIngredient(JsonUtils.getJsonObject(object,
-                            "ingredient"), jsonContext);
+                        Ingredient ingredient = CraftingHelper.getIngredient(
+                            object.get("ingredient"), jsonContext);
                         reloadSpecification.add(ingredient,
                             JsonUtils.getInt(object, "ammoValue"),
                             JsonUtils.getInt(object, "min", 1),
