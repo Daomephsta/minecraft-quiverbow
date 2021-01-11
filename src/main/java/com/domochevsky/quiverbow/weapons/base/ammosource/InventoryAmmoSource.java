@@ -39,9 +39,9 @@ public class InventoryAmmoSource implements AmmoSource
             return true;
         for (ItemStack invStack : inventoryIterable(user))
         {
-            if (ammo.test(invStack))
+            if (ammo.test(invStack) && stack.getCount() >= 1)
             {
-                invStack.setCount(0);
+                invStack.shrink(1);
                 return true;
             }
         }
