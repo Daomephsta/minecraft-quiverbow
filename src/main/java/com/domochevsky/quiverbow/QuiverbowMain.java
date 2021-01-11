@@ -296,8 +296,8 @@ public class QuiverbowMain
                         .floatProperty(CommonProperties.EXPLOSION_SIZE, 1.0F)
                         .booleanProperty(CommonProperties.DAMAGE_TERRAIN, true)
                         .floatProperty(CommonProperties.SPREAD, 6)
-                        .intProperty(SpreadFireShape.PROJECTILES, 54)
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
+                        .intProperty(SpreadFireShape.PROJECTILES, 4)
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 4),
                     new AutomaticTrigger(new SimpleAmmoSource(64),
                         new SpreadFireShape(SmallRocket::new)))
                     .fireEffects(new PlaySound(SoundEvents.ENTITY_FIREWORK_LAUNCH, 1.0F, 1.0F)),
