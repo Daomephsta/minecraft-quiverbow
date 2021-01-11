@@ -411,7 +411,7 @@ public class QuiverbowMain
                     .fireEffects(new PlaySound(SoundEvents.ENTITY_BAT_TAKEOFF, 0.5F, 0.6F),
                         new PlaySound(SoundType.GROUND.getBreakSound(), 1.0F, 1.0F)),
                 addWeapon("sunray",
-                    WeaponProperties.builder().minimumDamage(14).maximumDamage(20).kickback(3)
+                    WeaponProperties.builder().damage(4).kickback(3)
                         .intProperty(CommonProperties.FIRE_DUR_ENTITY, 10)
                         .intProperty(BeamFireShape.PIERCING, 1)
                         .floatProperty(BeamFireShape.MAX_RANGE, 64)
