@@ -7,7 +7,10 @@ import java.util.function.Function;
 import org.apache.logging.log4j.Logger;
 
 import com.domochevsky.quiverbow.accessor.BlockAccessors;
-import com.domochevsky.quiverbow.ammo.*;
+import com.domochevsky.quiverbow.ammo.AmmoBase;
+import com.domochevsky.quiverbow.ammo.AmmoMagazine;
+import com.domochevsky.quiverbow.ammo.LapisMagazine;
+import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry;
 import com.domochevsky.quiverbow.armsassistant.EntityArmsAssistant;
 import com.domochevsky.quiverbow.blocks.FenLight;
 import com.domochevsky.quiverbow.config.QuiverbowConfig;
@@ -183,7 +186,10 @@ public class QuiverbowMain
 	            EntityArrow entityarrow = Helper.createArrow(world, shooter);
 	            entityarrow.shoot(shooter, shooter.rotationPitch, shooter.rotationYaw, 0.0F,
 	                properties.getProjectileSpeed(), 0.5F);
-	            entityarrow.setDamage(properties.generateDamage(world.rand));
+	            //TODO Make actual crossbow bolt projectile, with appropriate render
+	            // Divide by speed because this base damage will be multiplied by the speed
+	            entityarrow.setDamage(Math.round(properties.generateDamage(world.rand) /
+	                properties.getProjectileSpeed()));
 	            entityarrow.setKnockbackStrength(properties.getKnockback());
 	            return entityarrow;
 	        };
