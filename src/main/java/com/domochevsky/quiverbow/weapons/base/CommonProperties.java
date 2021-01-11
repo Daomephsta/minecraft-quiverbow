@@ -16,4 +16,5 @@ public class CommonProperties
 	public static final Pair<String, String> SLOWNESS_STRENGTH = Pair.of("slownessStrength", "The strength of the Slowness effect applied");
 	public static final Pair<String, String> SLOWNESS_DUR = Pair.of("slownessDur", "The duration of the Slowness effect applied");
 	public static final Pair<String, String> MAX_ZOOM = Pair.of("maxZoom", "How far this weapon can zoom in. Larger numbers mean lower maximum zoom");
+    public static final Pair<String, String> SELF_DAMAGE = Pair.of("selfDamage", "Damage (half-hearts) done to the user when fired");
 }
