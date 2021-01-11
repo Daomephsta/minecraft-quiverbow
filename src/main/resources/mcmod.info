@@ -9,7 +9,7 @@
   "updateUrl": "",
   "authorList": ["Daomephsta"],
   "credits": "Domochevsky, for creating the original QuiverBow, which this mod is based on",
-  "logoFile": "",
+  "logoFile": "logo.png",
   "screenshots": [],
   "dependencies": []
 }
