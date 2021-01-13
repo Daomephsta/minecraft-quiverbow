@@ -3,6 +3,8 @@ package com.domochevsky.quiverbow.config;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -16,26 +18,22 @@ import net.minecraftforge.common.config.ConfigCategory;
 
 public class WeaponProperties
 {
-	private BooleanProperty enabled = new BooleanProperty("enabled", "Enables crafting this weapon if true", true);
-	private IntProperty damageMin, damageMax;
-	private FloatProperty projectileSpeed;
-	private IntProperty knockback;
-	private IntProperty kickback;
-	private IntProperty cooldown;
-	private BooleanProperty isMobUsable;
-	private Map<String, WeaponProperty> usedProperties;
+	public static final Pair<String, String>
+	    ENABLED = Pair.of("enabled", "Enables crafting this weapon if true"),
+	    DAMAGE_MIN = Pair.of("minDamage", "The minimum damage this weapon does"),
+	    DAMAGE_MAX = Pair.of("maxDamage", "The maximum damage this weapon does"),
+	    PROJECTILE_SPEED = Pair.of("projectileSpeed", "The speed of the projectile, in blocks per tick"),
+	    KNOCKBACK = Pair.of("knockback", "The amount of knockback the projectile applies to entities it hits"),
+	    KICKBACK = Pair.of("kickback", "The amount of knockback the projectile applies to the user"),
+	    COOLDOWN = Pair.of("cooldown", "How many ticks it takes for this weapon to be able to fire again"),
+	    MOB_USABLE = Pair.of("isMobUsable", "QuiverMobs can spawn with this weapon if true");
+	private Map<String, WeaponProperty> properties;
+	private WeaponProperties subProjectileProperties;
 
 	public WeaponProperties(Builder builder)
 	{
-		this.damageMin = builder.damageMin;
-		this.damageMax = builder.damageMax;
-		this.projectileSpeed = builder.projectileSpeed;
-		this.knockback = builder.knockback;
-		this.kickback = builder.kickback;
-		this.cooldown = builder.cooldown;
-		this.isMobUsable = builder.isMobUsable;
-		this.usedProperties = builder.usedProperties;
-		usedProperties.put(enabled.getPropertyName(), enabled);
+		this.properties = builder.properties;
+		this.subProjectileProperties = builder.subProjectileProperties;
 	}
 
 	public static Builder builder()
@@ -43,65 +41,74 @@ public class WeaponProperties
 		return new Builder();
 	}
 
-	public void loadFromConfig(ConfigCategory configCategory)
+	public void loadFromConfig(ConfigCategory configCategory, Function<String, ConfigCategory> subCategoryGetter)
 	{
-		for (WeaponProperty property : usedProperties.values())
+		for (WeaponProperty property : properties.values())
 		{
 			if (configCategory.containsKey(property.getPropertyName()))
 				property.loadFromConfig(configCategory.get(property.getPropertyName()));
 			else
 				configCategory.put(property.getPropertyName(), property.createDefaultForgeConfigProperty());
 		}
+		if (subProjectileProperties != null)
+		    subProjectileProperties.loadFromConfig(subCategoryGetter.apply("sub_projectile"), subCategoryGetter);
 	}
 
 	public boolean isEnabled()
 	{
-		return enabled.getValue();
+		return getBoolean(ENABLED);
 	}
 
 	public int getDamageMin()
 	{
-		return damageMin.getValue();
+		return getInt(DAMAGE_MIN);
 	}
 
 	public int getDamageMax()
 	{
-		return damageMax.getValue();
+		return getInt(DAMAGE_MAX);
 	}
 
 	public float getProjectileSpeed()
 	{
-		return projectileSpeed.getValue();
+	    return has(PROJECTILE_SPEED) ? getFloat(PROJECTILE_SPEED) : Float.POSITIVE_INFINITY;
 	}
 
 	public int getKnockback()
 	{
-		return knockback.getValue();
+	    return has(KNOCKBACK) ? getInt(KNOCKBACK) : 0;
 	}
 
 	public int getKickback()
 	{
-		return kickback.getValue();
+	    return has(KICKBACK) ? getInt(KICKBACK) : 0;
 	}
 
 	public int getMaxCooldown()
 	{
-		return cooldown.getValue();
+		return has(COOLDOWN) ? getInt(COOLDOWN) : 0;
 	}
 
 	public boolean isMobUsable()
 	{
-		return isMobUsable.getValue();
+		return getBoolean(MOB_USABLE);
 	}
+
+	public WeaponProperties getSubProjectileProperties()
+    {
+	    if (subProjectileProperties == null)
+	        throw new IllegalArgumentException("No subprojectile properties exist");
+        return subProjectileProperties;
+    }
 
 	public boolean has(Pair<String, String> property)
 	{
-	    return usedProperties.containsKey(property.getLeft());
+	    return properties.containsKey(property.getLeft());
 	}
 
 	public boolean has(String name)
 	{
-		return usedProperties.containsKey(name);
+		return properties.containsKey(name);
 	}
 
     public boolean getBoolean(Pair<String, String> property)
@@ -137,7 +144,7 @@ public class WeaponProperties
 	@SuppressWarnings("unchecked")
 	private <T extends WeaponProperty> T getPropertyAndCheck(String name, Class<T> expectedClass)
 	{
-		WeaponProperty property = usedProperties.get(name);
+		WeaponProperty property = properties.get(name);
 		if (property == null) throw new IllegalArgumentException("No property named " + name + " exists");
 		if (!expectedClass.isInstance(property))
 			throw new IllegalArgumentException(String.format("Expected %s named %s, not %s",
@@ -147,20 +154,8 @@ public class WeaponProperties
 
 	public static class Builder
 	{
-		private IntProperty damageMin, damageMax;
-		private FloatProperty projectileSpeed;
-		private IntProperty knockback;
-		private IntProperty kickback;
-		private IntProperty cooldown;
-		private BooleanProperty isMobUsable = new BooleanProperty("isMobUsable",
-				"QuiverMobs can spawn with this weapon if true", false);
-		private Map<String, WeaponProperty> usedProperties = new HashMap<>();
-
-		private Builder()
-		{
-			//This property is always used
-			usedProperties.put(isMobUsable.getPropertyName(), isMobUsable);
-		}
+		private Map<String, WeaponProperty> properties = new HashMap<>();
+	    private WeaponProperties subProjectileProperties;
 
 		public Builder damage(int defaultValue)
 		{
@@ -171,57 +166,37 @@ public class WeaponProperties
 
 		public Builder minimumDamage(int defaultValue)
 		{
-			damageMin = new IntProperty("minDamage", "The minimum damage this weapon does", defaultValue,
-					Integer.MIN_VALUE, Integer.MAX_VALUE);
-			usedProperties.put(damageMin.getPropertyName(), damageMin);
-			return this;
+		    return intProperty(DAMAGE_MIN, defaultValue);
 		}
 
 		public Builder maximumDamage(int defaultValue)
 		{
-			damageMax = new IntProperty("maxDamage", "The maximum damage this weapon does", defaultValue,
-					Integer.MIN_VALUE, Integer.MAX_VALUE);
-			usedProperties.put(damageMax.getPropertyName(), damageMax);
-			return this;
+			return intProperty(DAMAGE_MAX, defaultValue);
 		}
 
 		public Builder projectileSpeed(float defaultValue)
 		{
-			projectileSpeed = new FloatProperty("projectileSpeed", "The speed of the projectile, in blocks per tick",
-					defaultValue, Float.MIN_VALUE, Float.MAX_VALUE);
-			usedProperties.put(projectileSpeed.getPropertyName(), projectileSpeed);
-			return this;
+			return floatProperty(PROJECTILE_SPEED, defaultValue);
 		}
 
 		public Builder knockback(int defaultValue)
 		{
-			knockback = new IntProperty("knockback",
-					"The amount of knockback the projectile applies to entities it hits", defaultValue,
-					Integer.MIN_VALUE, Integer.MAX_VALUE);
-			usedProperties.put(knockback.getPropertyName(), knockback);
-			return this;
+			return intProperty(KNOCKBACK, defaultValue);
 		}
 
 		public Builder cooldown(int defaultValue)
 		{
-			cooldown = new IntProperty("cooldown", "How many ticks it takes for this weapon to be able to fire again",
-					defaultValue, Integer.MIN_VALUE, Integer.MAX_VALUE);
-			usedProperties.put(cooldown.getPropertyName(), cooldown);
-			return this;
+			return intProperty(COOLDOWN, defaultValue);
 		}
 
 		public Builder kickback(int defaultValue)
 		{
-			kickback = new IntProperty("kickback", "The amount of knockback the projectile applies to the user",
-					defaultValue, Integer.MIN_VALUE, Integer.MAX_VALUE);
-			usedProperties.put(kickback.getPropertyName(), kickback);
-			return this;
+			return intProperty(KICKBACK, defaultValue);
 		}
 
 		public Builder mobUsable()
 		{
-			isMobUsable = new BooleanProperty("isMobUsable", "QuiverMobs can spawn with this weapon if true", true);
-			return this;
+			return booleanProperty(MOB_USABLE, true);
 		}
 
 		public Builder booleanProperty(Pair<String, String> property, boolean defaultValue)
@@ -231,7 +206,7 @@ public class WeaponProperties
 
 		public Builder booleanProperty(String name, String comment, boolean defaultValue)
 		{
-			usedProperties.put(name, new BooleanProperty(name, comment, defaultValue));
+			properties.put(name, new BooleanProperty(name, comment, defaultValue));
 			return this;
 		}
 
@@ -242,7 +217,7 @@ public class WeaponProperties
 
 		public Builder intProperty(String name, String comment, int defaultValue)
 		{
-			usedProperties.put(name,
+			properties.put(name,
 					new IntProperty(name, comment, defaultValue, Integer.MIN_VALUE, Integer.MAX_VALUE));
 			return this;
 		}
@@ -254,18 +229,20 @@ public class WeaponProperties
 
 		public Builder floatProperty(String name, String comment, float defaultValue)
 		{
-			usedProperties.put(name, new FloatProperty(name, comment, defaultValue, Float.MIN_VALUE, Float.MAX_VALUE));
+			properties.put(name, new FloatProperty(name, comment, defaultValue, Float.MIN_VALUE, Float.MAX_VALUE));
 			return this;
 		}
 
+		public Builder withSubProjectileProperties(Consumer<Builder> subProjectileProperties)
+        {
+            Builder builder = WeaponProperties.builder();
+            subProjectileProperties.accept(builder);
+            this.subProjectileProperties = builder.build();
+            return this;
+        }
+
 		public WeaponProperties build()
 		{
-			if (damageMin == null) damageMin = IntProperty.createIgnored("damageMin");
-			if (damageMax == null) damageMax = IntProperty.createIgnored("damageMax");
-			if (projectileSpeed == null) projectileSpeed = FloatProperty.createIgnored("projectileSpeed");
-			if (knockback == null) knockback = IntProperty.createIgnored("knockback");
-			if (kickback == null) kickback = IntProperty.createIgnored("kickback");
-			if (cooldown == null) cooldown = IntProperty.createIgnored("cooldown");
 			return new WeaponProperties(this);
 		}
 	}

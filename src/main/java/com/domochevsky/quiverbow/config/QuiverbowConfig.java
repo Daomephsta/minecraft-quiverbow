@@ -70,7 +70,11 @@ public class QuiverbowConfig
 	public static void loadWeaponProperties()
 	{
 		for (Weapon weapon : QuiverbowMain.weapons)
-            weapon.getProperties().loadFromConfig(config.getCategory(weapon.getRegistryName().getResourcePath()));
+        {
+            String categoryName = weapon.getRegistryName().getResourcePath();
+            weapon.getProperties().loadFromConfig(config.getCategory(categoryName),
+                subName -> config.getCategory(categoryName + '.' + subName));
+        }
 		config.save();
 	}
 
