@@ -16,6 +16,8 @@ import net.minecraft.world.World;
 
 public class SabotArrow extends ProjectileBase
 {
+    private WeaponProperties subArrowProperties;
+
 	public SabotArrow(World world)
 	{
 		super(world);
@@ -24,8 +26,8 @@ public class SabotArrow extends ProjectileBase
 	public SabotArrow(World world, Entity entity, WeaponProperties properties)
 	{
 		super(world);
+		this.subArrowProperties = properties.getSubProjectileProperties();
 		this.doSetup(entity, properties.getProjectileSpeed());
-		this.damage = properties.generateDamage(rand);
 	}
 
 	@Override
@@ -60,8 +62,8 @@ public class SabotArrow extends ProjectileBase
 	{
 		EntityArrow arrow = Helper.createArrow(world, shootingEntity);
 		arrow.setPosition(posX, posY + 1.0F, posZ);
-		arrow.setDamage(this.damage);
-		arrow.shoot(this, pitch, yaw, 0.0F, 1.0F, 0.5F);
+		arrow.setDamage(subArrowProperties.generateDamage(rand));
+		arrow.shoot(this, pitch, yaw, 0.0F, subArrowProperties.getProjectileSpeed(), 0.5F);
 
 		this.world.spawnEntity(arrow);
 	}
