@@ -10,16 +10,16 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class TurretInventoryMessageHandler implements ISidedMessageHandler<TurretInventoryMessage, IMessage>
 {
-	@Override
-	public void processMessage(TurretInventoryMessage message, MessageContext ctx)
-	{
-		HelperClient.setTurretInventory((EntityArmsAssistant) Minecraft.getMinecraft().world.getEntityByID(message.turretID),
-			message.stack, message.itemSlot);
-	}
-	
-	@Override
-	public Side getSide()
-	{
-		return Side.CLIENT;
-	}
+    @Override
+    public void processMessage(TurretInventoryMessage message, MessageContext ctx)
+    {
+        HelperClient.setTurretInventory((EntityArmsAssistant) Minecraft.getMinecraft().world.getEntityByID(message.turretID),
+            message.stack, message.itemSlot);
+    }
+    
+    @Override
+    public Side getSide()
+    {
+        return Side.CLIENT;
+    }
 }

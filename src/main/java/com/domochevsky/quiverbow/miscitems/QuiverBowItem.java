@@ -13,18 +13,18 @@ import net.minecraft.world.World;
 
 public class QuiverBowItem extends Item
 {
-	@Override
-	public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn)
-	{
-		tooltip.add(I18n.format(getUnlocalizedName() + ".description"));
-	}
+    @Override
+    public void addInformation(ItemStack stack, World worldIn, List<String> tooltip, ITooltipFlag flagIn)
+    {
+        tooltip.add(I18n.format(getUnlocalizedName() + ".description"));
+    }
 
-	public void addRecipes()
-	{} // Called once after all items have been registered and initialized
+    public void addRecipes()
+    {} // Called once after all items have been registered and initialized
 
-	@Override
-	public CreativeTabs getCreativeTab()
-	{
-		return QuiverbowMain.QUIVERBOW_TAB;
-	}
+    @Override
+    public CreativeTabs getCreativeTab()
+    {
+        return QuiverbowMain.QUIVERBOW_TAB;
+    }
 }

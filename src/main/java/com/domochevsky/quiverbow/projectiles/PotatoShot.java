@@ -17,65 +17,65 @@ import net.minecraft.world.World;
 
 public class PotatoShot extends ProjectileBase
 {
-	private boolean shouldDrop;
+    private boolean shouldDrop;
 
-	public PotatoShot(World world)
-	{
-		super(world);
-	}
+    public PotatoShot(World world)
+    {
+        super(world);
+    }
 
-	public PotatoShot(World world, Entity entity, WeaponProperties properties)
-	{
-		super(world);
-		this.doSetup(entity, properties.getProjectileSpeed());
-		this.damage = properties.generateDamage(rand);
+    public PotatoShot(World world, Entity entity, WeaponProperties properties)
+    {
+        super(world);
+        this.doSetup(entity, properties.getProjectileSpeed());
+        this.damage = properties.generateDamage(rand);
         this.setDrop(properties.getBoolean(CommonProperties.SHOULD_DROP));
-	}
+    }
 
-	public void setDrop(boolean set)
-	{
-		this.shouldDrop = set;
-	}
+    public void setDrop(boolean set)
+    {
+        this.shouldDrop = set;
+    }
 
-	@Override
-	public void onImpact(RayTraceResult target)
-	{
-		if (target.entityHit != null)
-		{
-			// Damage
-			target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
-					this.damage);
-		}
-		else
-		{
-			// Glass breaking
-			Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 1);
+    @Override
+    public void onImpact(RayTraceResult target)
+    {
+        if (target.entityHit != null)
+        {
+            // Damage
+            target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
+                    this.damage);
+        }
+        else
+        {
+            // Glass breaking
+            Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 1);
 
-			if (this.shouldDrop && this.canBePickedUp) // If we can be picked up
-			// then we're dropping
-			// now
-			{
-				ItemStack nuggetStack = new ItemStack(Items.BAKED_POTATO);
-				EntityItem entityitem = new EntityItem(this.world, target.getBlockPos().getX(),
-						target.getBlockPos().getY() + 0.5d, target.getBlockPos().getZ(), nuggetStack);
-				entityitem.setDefaultPickupDelay();
+            if (this.shouldDrop && this.canBePickedUp) // If we can be picked up
+            // then we're dropping
+            // now
+            {
+                ItemStack nuggetStack = new ItemStack(Items.BAKED_POTATO);
+                EntityItem entityitem = new EntityItem(this.world, target.getBlockPos().getX(),
+                        target.getBlockPos().getY() + 0.5d, target.getBlockPos().getZ(), nuggetStack);
+                entityitem.setDefaultPickupDelay();
 
-				if (captureDrops)
-				{
-					capturedDrops.add(entityitem);
-				}
-				else
-				{
-					this.world.spawnEntity(entityitem);
-				}
-			}
-		}
+                if (captureDrops)
+                {
+                    capturedDrops.add(entityitem);
+                }
+                else
+                {
+                    this.world.spawnEntity(entityitem);
+                }
+            }
+        }
 
-		// SFX
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SMOKE_NORMAL,
-				(byte) 2);
-		this.playSound(SoundEvents.ENTITY_GENERIC_EAT, 0.6F, 0.7F);
+        // SFX
+        NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SMOKE_NORMAL,
+                (byte) 2);
+        this.playSound(SoundEvents.ENTITY_GENERIC_EAT, 0.6F, 0.7F);
 
-		this.setDead(); // We've hit something, so begone with the projectile
-	}
+        this.setDead(); // We've hit something, so begone with the projectile
+    }
 }

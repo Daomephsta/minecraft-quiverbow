@@ -7,8 +7,8 @@ import net.minecraft.util.ResourceLocation;
 
 public class BasicUpgrade implements IArmsAssistantUpgrade
 {
-	private final ResourceLocation registryId, lootTable;
-	private final String translationKey;
+    private final ResourceLocation registryId, lootTable;
+    private final String translationKey;
 
     public BasicUpgrade(ResourceLocation registryId)
     {
@@ -18,7 +18,7 @@ public class BasicUpgrade implements IArmsAssistantUpgrade
     }
 
     @Override
-	public void submitAttributeModifiers(BiConsumer<String, AttributeModifier> out) {}
+    public void submitAttributeModifiers(BiConsumer<String, AttributeModifier> out) {}
 
     @Override
     public ResourceLocation getRegistryId()

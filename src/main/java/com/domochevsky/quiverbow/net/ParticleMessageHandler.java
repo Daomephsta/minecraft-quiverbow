@@ -10,21 +10,21 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class ParticleMessageHandler implements ISidedMessageHandler<ParticleMessage, IMessage>
 {
-	@Override
-	public void processMessage(ParticleMessage message, MessageContext ctx)
-	{
-		Entity entity = Minecraft.getMinecraft().world.getEntityByID(message.entityID);
-		/* It's possible for the entity to be null on the client world if it
-		 * moves out of the client's loading range after this packet has been
-		 * sent */
-		if(entity == null) return;
-		HelperClient.displayParticles(entity ,
-			message.particleType, message.strength);
-	}
-	
-	@Override
-	public Side getSide()
-	{
-		return Side.CLIENT;
-	}
+    @Override
+    public void processMessage(ParticleMessage message, MessageContext ctx)
+    {
+        Entity entity = Minecraft.getMinecraft().world.getEntityByID(message.entityID);
+        /* It's possible for the entity to be null on the client world if it
+         * moves out of the client's loading range after this packet has been
+         * sent */
+        if(entity == null) return;
+        HelperClient.displayParticles(entity ,
+            message.particleType, message.strength);
+    }
+    
+    @Override
+    public Side getSide()
+    {
+        return Side.CLIENT;
+    }
 }

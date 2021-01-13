@@ -15,38 +15,38 @@ import net.minecraft.world.World;
 
 public class WebShot extends ProjectileBase
 {
-	public WebShot(World world)
-	{
-		super(world);
-	}
+    public WebShot(World world)
+    {
+        super(world);
+    }
 
-	public WebShot(World world, Entity entity, WeaponProperties properties)
-	{
-		super(world);
-		this.doSetup(entity, properties.getProjectileSpeed());
-	}
+    public WebShot(World world, Entity entity, WeaponProperties properties)
+    {
+        super(world);
+        this.doSetup(entity, properties.getProjectileSpeed());
+    }
 
-	@Override
-	public void onImpact(RayTraceResult target)
-	{
-		BlockPos pos;
-		if (target.entityHit != null) // hit a entity
-			pos = new BlockPos(target.entityHit.posX, target.entityHit.posY, target.entityHit.posZ);
-		else
-			pos = target.getBlockPos().offset(target.sideHit);
+    @Override
+    public void onImpact(RayTraceResult target)
+    {
+        BlockPos pos;
+        if (target.entityHit != null) // hit a entity
+            pos = new BlockPos(target.entityHit.posX, target.entityHit.posY, target.entityHit.posZ);
+        else
+            pos = target.getBlockPos().offset(target.sideHit);
 
-		// Is the space free?
-		IBlockState hitState = this.world.getBlockState(pos);
-		if (hitState.getBlock().isReplaceable(world, pos) || hitState.getMaterial() == Material.PLANTS)
-		{
-			// Putting a web there!
-			this.world.setBlockState(pos, Blocks.WEB.getDefaultState(), 3);
-		}
+        // Is the space free?
+        IBlockState hitState = this.world.getBlockState(pos);
+        if (hitState.getBlock().isReplaceable(world, pos) || hitState.getMaterial() == Material.PLANTS)
+        {
+            // Putting a web there!
+            this.world.setBlockState(pos, Blocks.WEB.getDefaultState(), 3);
+        }
 
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SNOWBALL,
-				(byte) 4);
-		this.playSound(SoundEvents.ENTITY_GENERIC_SPLASH, 0.4F, 2.0F);
+        NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SNOWBALL,
+                (byte) 4);
+        this.playSound(SoundEvents.ENTITY_GENERIC_SPLASH, 0.4F, 2.0F);
 
-		this.setDead(); // We've hit something, so begone with the projectile
-	}
+        this.setDead(); // We've hit something, so begone with the projectile
+    }
 }

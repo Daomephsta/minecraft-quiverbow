@@ -61,31 +61,31 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
 {
     public static final ResourceLocation LOOT_TABLE_ID = new ResourceLocation(QuiverbowMain.MODID, "entities/arms_assistant");
     private static final DataParameter<Boolean> HAS_CUSTOM_DIRECTIVES = EntityDataManager.createKey(EntityArmsAssistant.class, DataSerializers.BOOLEAN);
-	private UUID ownerUUID;
-	private IItemHandlerModifiable inventory = new ItemStackHandler(4);
-	private Collection<IArmsAssistantUpgrade> upgrades = new HashSet<>();
-	private ArmsAssistantDirectives directives;
-	@SuppressWarnings("unused") //Will be useful later
+    private UUID ownerUUID;
+    private IItemHandlerModifiable inventory = new ItemStackHandler(4);
+    private Collection<IArmsAssistantUpgrade> upgrades = new HashSet<>();
+    private ArmsAssistantDirectives directives;
+    @SuppressWarnings("unused") //Will be useful later
     private ItemStack directivesBook;
 
-	public EntityArmsAssistant(World world)
-	{
-		super(world);
-		this.setSize(1.0F, 1.2F);
-		this.stepHeight = 1.0F;
+    public EntityArmsAssistant(World world)
+    {
+        super(world);
+        this.setSize(1.0F, 1.2F);
+        this.stepHeight = 1.0F;
         updateDirectives(ItemStack.EMPTY);
-	}
+    }
 
-	public EntityArmsAssistant(World world, EntityPlayer player)
-	{
-		this(world);
-		this.ownerUUID = player.getPersistentID();
+    public EntityArmsAssistant(World world, EntityPlayer player)
+    {
+        this(world);
+        this.ownerUUID = player.getPersistentID();
         updateDirectives(ItemStack.EMPTY);
-	}
+    }
 
-	@Override
-	public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata)
-	{
+    @Override
+    public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, IEntityLivingData livingdata)
+    {
         IEntityLivingData livingDataSuper = super.onInitialSpawn(difficulty, livingdata);
         //Apply upgrade attribute modifiers
         Multimap<String, AttributeModifier> modifiers = MultimapBuilder.hashKeys().arrayListValues().build();
@@ -94,315 +94,315 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
         getAttributeMap().applyAttributeModifiers(modifiers);
         //Set home pos for use by STAY AI, -1 means unlimited distance
         setHomePosAndDistance(getPosition(), -1);
-		return livingDataSuper;
-	}
+        return livingDataSuper;
+    }
 
-	@Override
-	protected void initEntityAI()
-	{
-	    targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
-	    double moveSpeed = getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue();
-	    tasks.addTask(2, new EntityAIAttackRanged(this, moveSpeed, 20, 16.0F));
-	}
+    @Override
+    protected void initEntityAI()
+    {
+        targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+        double moveSpeed = getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue();
+        tasks.addTask(2, new EntityAIAttackRanged(this, moveSpeed, 20, 16.0F));
+    }
 
-	@Override
-	protected void applyEntityAttributes()
-	{
-		super.applyEntityAttributes();
-		this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.0D);
-	}
+    @Override
+    protected void applyEntityAttributes()
+    {
+        super.applyEntityAttributes();
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.0D);
+    }
 
-	@Override
-	protected void entityInit()
-	{
-	    super.entityInit();
-	    this.dataManager.register(HAS_CUSTOM_DIRECTIVES, false);
-	}
+    @Override
+    protected void entityInit()
+    {
+        super.entityInit();
+        this.dataManager.register(HAS_CUSTOM_DIRECTIVES, false);
+    }
 
-	@Override
-	public void onUpdate()
-	{
-		super.onUpdate();
-		int slot = 0;
-		for (ItemStack stack : getHeldEquipment())
-		{
-			stack.updateAnimation(world, this, slot++, true);
-		}
-	}
+    @Override
+    public void onUpdate()
+    {
+        super.onUpdate();
+        int slot = 0;
+        for (ItemStack stack : getHeldEquipment())
+        {
+            stack.updateAnimation(world, this, slot++, true);
+        }
+    }
 
-	@Override
-	protected boolean processInteract(EntityPlayer player, EnumHand hand)
-	{
-		if (!player.getPersistentID().equals(ownerUUID)) return false;
-		ItemStack playerHandStack = player.getHeldItem(hand);
-		if (playerHandStack.isEmpty())
-		{
-			// Drop weapons or fold up
-			if (player.isSneaking())
-			{
-				// Not holding anything, so fold up
-				if (getHeldItemMainhand().isEmpty() && getHeldItemOffhand().isEmpty())
-				{
-					dropSelf();
-					setDead();
-				}
-				else dropEquipment();
-				return true;
-			}
-			else if (upgrades.contains(UpgradeRegistry.RIDING))
-			{
-				player.startRiding(this);
-				return true;
-			}
+    @Override
+    protected boolean processInteract(EntityPlayer player, EnumHand hand)
+    {
+        if (!player.getPersistentID().equals(ownerUUID)) return false;
+        ItemStack playerHandStack = player.getHeldItem(hand);
+        if (playerHandStack.isEmpty())
+        {
+            // Drop weapons or fold up
+            if (player.isSneaking())
+            {
+                // Not holding anything, so fold up
+                if (getHeldItemMainhand().isEmpty() && getHeldItemOffhand().isEmpty())
+                {
+                    dropSelf();
+                    setDead();
+                }
+                else dropEquipment();
+                return true;
+            }
+            else if (upgrades.contains(UpgradeRegistry.RIDING))
+            {
+                player.startRiding(this);
+                return true;
+            }
 
-			return false;
-		}
-		// Equip weapon
-		else if (playerHandStack.getItem() instanceof Weapon)
-		{
-			// Take weapon from player
-			if (!player.capabilities.isCreativeMode) player.setHeldItem(hand, ItemStack.EMPTY);
+            return false;
+        }
+        // Equip weapon
+        else if (playerHandStack.getItem() instanceof Weapon)
+        {
+            // Take weapon from player
+            if (!player.capabilities.isCreativeMode) player.setHeldItem(hand, ItemStack.EMPTY);
 
-			// Put it on the first rail, unless the player is sneaking and the
-			// turret has a second rail
-			if (player.isSneaking() && upgrades.contains(UpgradeRegistry.EXTRA_WEAPON))
-				replaceWeapon(EnumHand.OFF_HAND, playerHandStack);
-			else
-				replaceWeapon(EnumHand.MAIN_HAND, playerHandStack);
+            // Put it on the first rail, unless the player is sneaking and the
+            // turret has a second rail
+            if (player.isSneaking() && upgrades.contains(UpgradeRegistry.EXTRA_WEAPON))
+                replaceWeapon(EnumHand.OFF_HAND, playerHandStack);
+            else
+                replaceWeapon(EnumHand.MAIN_HAND, playerHandStack);
 
-			return true;
-		}
-		// Repair if damaged
-		else if (playerHandStack.getItem() == Item.getItemFromBlock(Blocks.IRON_BLOCK) && getHealth() < getMaxHealth())
-		{
-			heal(20);
-			NetHelper.sendParticleMessage(player, this, EnumParticleTypes.FIREWORKS_SPARK, (byte) 4);
-			playSound(SoundEvents.BLOCK_ANVIL_USE, 0.7f, 1.0f);
+            return true;
+        }
+        // Repair if damaged
+        else if (playerHandStack.getItem() == Item.getItemFromBlock(Blocks.IRON_BLOCK) && getHealth() < getMaxHealth())
+        {
+            heal(20);
+            NetHelper.sendParticleMessage(player, this, EnumParticleTypes.FIREWORKS_SPARK, (byte) 4);
+            playSound(SoundEvents.BLOCK_ANVIL_USE, 0.7f, 1.0f);
 
-			if (!player.capabilities.isCreativeMode) playerHandStack.shrink(1);
-		}
-		else if (playerHandStack.getItem() == Items.NAME_TAG)
-		{
-			//NO OP to let the name tag do its thing
-		}
-		// Add to inventory
-		else
-		{
-			ItemStack resultStack = playerHandStack;
-			for (int slot = 0; slot < inventory.getSlots(); slot++)
-			{
-				ItemStack insertionRemainder = inventory.insertItem(slot, playerHandStack, false);
-				if (insertionRemainder.isEmpty())
-				{
-					resultStack = insertionRemainder;
-					if ((playerHandStack.getItem() == Items.WRITTEN_BOOK || playerHandStack.getItem() == Items.WRITABLE_BOOK)
-					    && !hasCustomDirectives())
-			        {
-					    updateDirectives(playerHandStack);
-			        }
-					NetHelper.sendTurretInventoryMessageToPlayersInRange(world, this, insertionRemainder, slot);
-					break;
-				}
-			}
-			player.setHeldItem(hand, player.capabilities.isCreativeMode ? playerHandStack.copy() : resultStack);
+            if (!player.capabilities.isCreativeMode) playerHandStack.shrink(1);
+        }
+        else if (playerHandStack.getItem() == Items.NAME_TAG)
+        {
+            //NO OP to let the name tag do its thing
+        }
+        // Add to inventory
+        else
+        {
+            ItemStack resultStack = playerHandStack;
+            for (int slot = 0; slot < inventory.getSlots(); slot++)
+            {
+                ItemStack insertionRemainder = inventory.insertItem(slot, playerHandStack, false);
+                if (insertionRemainder.isEmpty())
+                {
+                    resultStack = insertionRemainder;
+                    if ((playerHandStack.getItem() == Items.WRITTEN_BOOK || playerHandStack.getItem() == Items.WRITABLE_BOOK)
+                        && !hasCustomDirectives())
+                    {
+                        updateDirectives(playerHandStack);
+                    }
+                    NetHelper.sendTurretInventoryMessageToPlayersInRange(world, this, insertionRemainder, slot);
+                    break;
+                }
+            }
+            player.setHeldItem(hand, player.capabilities.isCreativeMode ? playerHandStack.copy() : resultStack);
 
-			return true;
-		}
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	private void dropSelf()
-	{
-		if (world.isRemote) return;
-		dropEquipment();
-		ItemStack selfStack = PackedUpAA.createPackedArmsAssistant(this);
-		EntityItem self = new EntityItem(world, posX, posY, posZ, selfStack);
-		world.spawnEntity(self);
-	}
+    private void dropSelf()
+    {
+        if (world.isRemote) return;
+        dropEquipment();
+        ItemStack selfStack = PackedUpAA.createPackedArmsAssistant(this);
+        EntityItem self = new EntityItem(world, posX, posY, posZ, selfStack);
+        world.spawnEntity(self);
+    }
 
-	private void dropEquipment()
-	{
-		if (world.isRemote) return;
+    private void dropEquipment()
+    {
+        if (world.isRemote) return;
 
-		// Drop weapons
-		for (EnumHand handValue : EnumHand.values())
-		{
-			ItemStack handStack = getHeldItem(handValue);
-			if (!handStack.isEmpty())
-			{
-				setHeldItem(handValue, ItemStack.EMPTY);
-				entityDropItem(handStack, 0.0F);
-			}
-		}
-		// Drop inventory
-		for (int slot = 0; slot < inventory.getSlots(); slot++)
-		{
-			ItemStack stack = inventory.getStackInSlot(slot);
-			if (!stack.isEmpty())
-			{
-				inventory.extractItem(slot, stack.getCount(), false);
-				NetHelper.sendTurretInventoryMessageToPlayersInRange(world, this, stack, slot);
-				entityDropItem(stack, 0.0F);
-			}
-		}
-		updateDirectives(ItemStack.EMPTY);
-	}
+        // Drop weapons
+        for (EnumHand handValue : EnumHand.values())
+        {
+            ItemStack handStack = getHeldItem(handValue);
+            if (!handStack.isEmpty())
+            {
+                setHeldItem(handValue, ItemStack.EMPTY);
+                entityDropItem(handStack, 0.0F);
+            }
+        }
+        // Drop inventory
+        for (int slot = 0; slot < inventory.getSlots(); slot++)
+        {
+            ItemStack stack = inventory.getStackInSlot(slot);
+            if (!stack.isEmpty())
+            {
+                inventory.extractItem(slot, stack.getCount(), false);
+                NetHelper.sendTurretInventoryMessageToPlayersInRange(world, this, stack, slot);
+                entityDropItem(stack, 0.0F);
+            }
+        }
+        updateDirectives(ItemStack.EMPTY);
+    }
 
-	private void replaceWeapon(EnumHand hand, ItemStack replacement)
-	{
-		ItemStack previousWeapon = getHeldItem(hand);
-		setHeldItem(hand, replacement.copy());
-		if (!world.isRemote)
-		{
-			EntityItem droppedWeapon = new EntityItem(world, posX, posY, posZ, previousWeapon);
-			droppedWeapon.setDefaultPickupDelay();
-			world.spawnEntity(droppedWeapon);
-		}
-	}
+    private void replaceWeapon(EnumHand hand, ItemStack replacement)
+    {
+        ItemStack previousWeapon = getHeldItem(hand);
+        setHeldItem(hand, replacement.copy());
+        if (!world.isRemote)
+        {
+            EntityItem droppedWeapon = new EntityItem(world, posX, posY, posZ, previousWeapon);
+            droppedWeapon.setDefaultPickupDelay();
+            world.spawnEntity(droppedWeapon);
+        }
+    }
 
-	private void updateDirectives(ItemStack directivesBook)
-	{
-	    this.directivesBook = directivesBook;
-	    if (this.directives != null)
-	        this.directives.revertAI();
-	    ArmsAssistantDirectives newDirectives = directivesBook.isEmpty()
-	    ? ArmsAssistantDirectives.defaultDirectives(this)
-	    : ArmsAssistantDirectives.from(this, directivesBook, error ->
+    private void updateDirectives(ItemStack directivesBook)
+    {
+        this.directivesBook = directivesBook;
+        if (this.directives != null)
+            this.directives.revertAI();
+        ArmsAssistantDirectives newDirectives = directivesBook.isEmpty()
+        ? ArmsAssistantDirectives.defaultDirectives(this)
+        : ArmsAssistantDirectives.from(this, directivesBook, error ->
         {
             if (!world.isRemote && getOwner() != null)
                 getOwner().sendMessage(error);
         });
-	    newDirectives.applyAI();
-	    this.directives = newDirectives;
-	    getDataManager().set(HAS_CUSTOM_DIRECTIVES, directives.areCustom());
-	}
+        newDirectives.applyAI();
+        this.directives = newDirectives;
+        getDataManager().set(HAS_CUSTOM_DIRECTIVES, directives.areCustom());
+    }
 
-	public boolean hasCustomDirectives()
-	{
-	    return getDataManager().get(HAS_CUSTOM_DIRECTIVES);
-	}
+    public boolean hasCustomDirectives()
+    {
+        return getDataManager().get(HAS_CUSTOM_DIRECTIVES);
+    }
 
-	@Override
-	public void onDeath(DamageSource source)
-	{
-		super.onDeath(source);
-		this.playSound(SoundEvents.BLOCK_METAL_BREAK, 0.8f, 0.3f);
+    @Override
+    public void onDeath(DamageSource source)
+    {
+        super.onDeath(source);
+        this.playSound(SoundEvents.BLOCK_METAL_BREAK, 0.8f, 0.3f);
 
-		if (!this.world.isRemote) // Spill it all (server-side)
-		{
-			// Drop weapons
-			for (EnumHand handValue : EnumHand.values())
-			{
-				ItemStack handStack = getHeldItem(handValue);
-				if (!handStack.isEmpty())
-				{
-					setHeldItem(handValue, ItemStack.EMPTY);
-					entityDropItem(getHeldItem(handValue), 0.0F);
-				}
-			}
-			// Drop inventory
-			for (int slot = 0; slot < inventory.getSlots(); slot++)
-			{
-				ItemStack stack = inventory.getStackInSlot(slot);
-				if (!stack.isEmpty())
-				{
-					inventory.extractItem(slot, stack.getCount(), false);
-					entityDropItem(stack, 0.0F);
-				}
-			}
-			directives.onDeath(source);
-		}
-	}
+        if (!this.world.isRemote) // Spill it all (server-side)
+        {
+            // Drop weapons
+            for (EnumHand handValue : EnumHand.values())
+            {
+                ItemStack handStack = getHeldItem(handValue);
+                if (!handStack.isEmpty())
+                {
+                    setHeldItem(handValue, ItemStack.EMPTY);
+                    entityDropItem(getHeldItem(handValue), 0.0F);
+                }
+            }
+            // Drop inventory
+            for (int slot = 0; slot < inventory.getSlots(); slot++)
+            {
+                ItemStack stack = inventory.getStackInSlot(slot);
+                if (!stack.isEmpty())
+                {
+                    inventory.extractItem(slot, stack.getCount(), false);
+                    entityDropItem(stack, 0.0F);
+                }
+            }
+            directives.onDeath(source);
+        }
+    }
 
-	@Override
-	protected ResourceLocation getLootTable()
-	{
-	    return LootHandler.ARMS_ASSISTANT_TABLE;
-	}
+    @Override
+    protected ResourceLocation getLootTable()
+    {
+        return LootHandler.ARMS_ASSISTANT_TABLE;
+    }
 
-	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
-	{
-		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) return true;
-		return super.hasCapability(capability, facing);
-	}
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+    {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) return true;
+        return super.hasCapability(capability, facing);
+    }
 
-	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
-	{
-		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
-			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
-		return super.getCapability(capability, facing);
-	}
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+    {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(inventory);
+        return super.getCapability(capability, facing);
+    }
 
     public Collection<IArmsAssistantUpgrade> getUpgrades()
     {
         return upgrades;
     }
 
-	public boolean hasUpgrade(IArmsAssistantUpgrade upgrade)
-	{
-		return upgrades.contains(upgrade);
-	}
+    public boolean hasUpgrade(IArmsAssistantUpgrade upgrade)
+    {
+        return upgrades.contains(upgrade);
+    }
 
-	public boolean applyUpgrade(IArmsAssistantUpgrade upgrade)
-	{
-		return upgrades.add(upgrade);
-	}
+    public boolean applyUpgrade(IArmsAssistantUpgrade upgrade)
+    {
+        return upgrades.add(upgrade);
+    }
 
-	@Override
-	public UUID getOwnerId()
-	{
-		return ownerUUID;
-	}
+    @Override
+    public UUID getOwnerId()
+    {
+        return ownerUUID;
+    }
 
-	@Override
-	public Entity getOwner()
-	{
-		return ownerUUID != null
-			? world.getPlayerEntityByUUID(ownerUUID)
-			: null;
-	}
+    @Override
+    public Entity getOwner()
+    {
+        return ownerUUID != null
+            ? world.getPlayerEntityByUUID(ownerUUID)
+            : null;
+    }
 
-	@Override
-	public boolean isEntityInvulnerable(DamageSource source)
-	{
-		return super.isEntityInvulnerable(source) || source == DamageSource.IN_WALL || source == DamageSource.STARVE;
-	}
+    @Override
+    public boolean isEntityInvulnerable(DamageSource source)
+    {
+        return super.isEntityInvulnerable(source) || source == DamageSource.IN_WALL || source == DamageSource.STARVE;
+    }
 
-	@Override
-	protected void damageEntity(DamageSource source, float amount)
-	{
-	    super.damageEntity(source, amount);
-	    directives.onDamage(source, amount);
-	}
+    @Override
+    protected void damageEntity(DamageSource source, float amount)
+    {
+        super.damageEntity(source, amount);
+        directives.onDamage(source, amount);
+    }
 
-	@Override
-	public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor)
-	{
-		tryFire();
-	}
+    @Override
+    public void attackEntityWithRangedAttack(EntityLivingBase target, float distanceFactor)
+    {
+        tryFire();
+    }
 
-	public void tryFire()
-	{
-	    if (directives.shouldStaggerFire())
-	    {
-	        float mainCooldown = tryFireWeapon(EnumHand.MAIN_HAND);
+    public void tryFire()
+    {
+        if (directives.shouldStaggerFire())
+        {
+            float mainCooldown = tryFireWeapon(EnumHand.MAIN_HAND);
             if (mainCooldown >= 0.5F)
-	            tryFireWeapon(EnumHand.OFF_HAND);
-	    }
-	    else //Simultaneous fire
-	    {
-	        tryFireWeapon(EnumHand.MAIN_HAND);
-	        tryFireWeapon(EnumHand.OFF_HAND);
-	    }
-	}
+                tryFireWeapon(EnumHand.OFF_HAND);
+        }
+        else //Simultaneous fire
+        {
+            tryFireWeapon(EnumHand.MAIN_HAND);
+            tryFireWeapon(EnumHand.OFF_HAND);
+        }
+    }
 
-	private float tryFireWeapon(EnumHand hand)
-	{
-	    ItemStack weaponStack = getHeldItem(hand);
-	    if (!weaponStack.isEmpty() && weaponStack.getItem() instanceof Weapon)
+    private float tryFireWeapon(EnumHand hand)
+    {
+        ItemStack weaponStack = getHeldItem(hand);
+        if (!weaponStack.isEmpty() && weaponStack.getItem() instanceof Weapon)
         {
             Weapon weapon = (Weapon) weaponStack.getItem();
             Trigger trigger = weapon.getTrigger();
@@ -416,7 +416,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
             return (float) cooldown / weapon.getProperties().getMaxCooldown();
         }
         return 1.0F;
-	}
+    }
 
     private int tryReload(ItemStack weaponStack, Weapon weapon)
     {
@@ -459,61 +459,61 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
         return remainingReloads;
     }
 
-	@Override
-	protected SoundEvent getHurtSound(DamageSource damageSourceIn)
-	{
-		return SoundEvents.BLOCK_ANVIL_LAND;
-	}
+    @Override
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn)
+    {
+        return SoundEvents.BLOCK_ANVIL_LAND;
+    }
 
-	@Override
-	public String getName()
-	{
-		if (this.hasCustomName())
-		{
-			return this.getCustomNameTag();
-		}
-		return "ARMS ASSISTANT " + getEntityId();
-	}
+    @Override
+    public String getName()
+    {
+        if (this.hasCustomName())
+        {
+            return this.getCustomNameTag();
+        }
+        return "ARMS ASSISTANT " + getEntityId();
+    }
 
 
-	@Override
-	protected EntityBodyHelper createBodyHelper()
-	{
-		return new EntityBodyHelper(this)
-		{
-			@Override
-			public void updateRenderAngles() {}
-		};
-	}
+    @Override
+    protected EntityBodyHelper createBodyHelper()
+    {
+        return new EntityBodyHelper(this)
+        {
+            @Override
+            public void updateRenderAngles() {}
+        };
+    }
 
-	@Override
-	public Entity getControllingPassenger()
-	{
-	    return Iterables.getFirst(getPassengers(), null);
-	}
+    @Override
+    public Entity getControllingPassenger()
+    {
+        return Iterables.getFirst(getPassengers(), null);
+    }
 
-	@Override
-	public boolean canBeSteered()
-	{
-		return upgrades.contains(UpgradeRegistry.RIDING);
-	}
+    @Override
+    public boolean canBeSteered()
+    {
+        return upgrades.contains(UpgradeRegistry.RIDING);
+    }
 
-	@Override
-	public void travel(float strafe, float vertical, float forward)
-	{
-	    if (this.isBeingRidden() && this.canBeSteered())
-	    {
-	        EntityLivingBase rider = (EntityLivingBase) getControllingPassenger();
-	        this.rotationYaw = rider.rotationYaw;
-	        this.prevRotationYaw = this.rotationYaw;
-	        this.rotationPitch = rider.rotationPitch * 0.5F;
-	        this.setRotation(this.rotationYaw, this.rotationPitch);
-	        this.renderYawOffset = this.rotationYaw;
-	        this.rotationYawHead = this.rotationYaw;
-	        strafe = 0.0F;
-	        forward = rider.moveForward;
+    @Override
+    public void travel(float strafe, float vertical, float forward)
+    {
+        if (this.isBeingRidden() && this.canBeSteered())
+        {
+            EntityLivingBase rider = (EntityLivingBase) getControllingPassenger();
+            this.rotationYaw = rider.rotationYaw;
+            this.prevRotationYaw = this.rotationYaw;
+            this.rotationPitch = rider.rotationPitch * 0.5F;
+            this.setRotation(this.rotationYaw, this.rotationPitch);
+            this.renderYawOffset = this.rotationYaw;
+            this.rotationYawHead = this.rotationYaw;
+            strafe = 0.0F;
+            forward = rider.moveForward;
 
-	        if (canPassengerSteer())
+            if (canPassengerSteer())
             {
                 double speed = this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue();
                 setAIMoveSpeed((float)speed);
@@ -521,131 +521,131 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
             else if (rider instanceof EntityPlayer)
                 motionX = motionY = motionZ = 0.0D;
 
-	        this.prevLimbSwingAmount = this.limbSwingAmount;
-	        double deltaX = this.posX - this.prevPosX;
-	        double deltaZ = this.posZ - this.prevPosZ;
-	        float deltaXZ = MathHelper.sqrt(deltaX * deltaX + deltaZ * deltaZ);
-	        float maxLimbSwing = Math.min(1.0F, deltaXZ * 4.0F);
+            this.prevLimbSwingAmount = this.limbSwingAmount;
+            double deltaX = this.posX - this.prevPosX;
+            double deltaZ = this.posZ - this.prevPosZ;
+            float deltaXZ = MathHelper.sqrt(deltaX * deltaX + deltaZ * deltaZ);
+            float maxLimbSwing = Math.min(1.0F, deltaXZ * 4.0F);
 
-	        this.limbSwingAmount += (maxLimbSwing - this.limbSwingAmount) * 0.4F;
-	        this.limbSwing += this.limbSwingAmount;
-	    }
-	    super.travel(strafe, vertical, forward);
-	}
+            this.limbSwingAmount += (maxLimbSwing - this.limbSwingAmount) * 0.4F;
+            this.limbSwing += this.limbSwingAmount;
+        }
+        super.travel(strafe, vertical, forward);
+    }
 
-	@SubscribeEvent
-	public static void onUseItem(PlayerInteractEvent.RightClickItem event)
-	{
-	    if (event.getEntity().getRidingEntity() instanceof EntityArmsAssistant)
-	        ((EntityArmsAssistant) event.getEntity().getRidingEntity()).tryFire();
-	}
+    @SubscribeEvent
+    public static void onUseItem(PlayerInteractEvent.RightClickItem event)
+    {
+        if (event.getEntity().getRidingEntity() instanceof EntityArmsAssistant)
+            ((EntityArmsAssistant) event.getEntity().getRidingEntity()).tryFire();
+    }
 
-	@Override
-	public double getMountedYOffset()
-	{
-		return this.height * 0.7;
-	}
+    @Override
+    public double getMountedYOffset()
+    {
+        return this.height * 0.7;
+    }
 
-	@Override
-	public AxisAlignedBB getCollisionBox(Entity entity)
-	{
-		return this.getEntityBoundingBox();
-	}
+    @Override
+    public AxisAlignedBB getCollisionBox(Entity entity)
+    {
+        return this.getEntityBoundingBox();
+    }
 
-	@Override
-	protected boolean canDespawn()
-	{
-		return false;
-	}
+    @Override
+    protected boolean canDespawn()
+    {
+        return false;
+    }
 
-	@Override
-	public boolean canBreatheUnderwater()
-	{
-		return true;
-	}
+    @Override
+    public boolean canBreatheUnderwater()
+    {
+        return true;
+    }
 
-	@Override
-	public void setSwingingArms(boolean swingingArms) {}
+    @Override
+    public void setSwingingArms(boolean swingingArms) {}
 
-	private static final String TAG_OWNER = "ownerUUID", TAG_INV = "inventory", TAG_UPGRADES = "upgrades";
+    private static final String TAG_OWNER = "ownerUUID", TAG_INV = "inventory", TAG_UPGRADES = "upgrades";
 
-	@Override
-	public void writeEntityToNBT(NBTTagCompound compound)
-	{
-		super.writeEntityToNBT(compound);
-		if (ownerUUID != null) compound.setTag(TAG_OWNER, NBTUtil.createUUIDTag(ownerUUID));
-		compound.setTag(TAG_INV, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.writeNBT(inventory, null));
-		compound.setTag(TAG_UPGRADES,
-			upgrades.stream()
-			.map(upgrade -> new NBTTagString(UpgradeRegistry.getUpgradeID(upgrade).toString()))
-			.collect(NBTCollectors.toNBTList(NBTTagString.class)));
-	}
+    @Override
+    public void writeEntityToNBT(NBTTagCompound compound)
+    {
+        super.writeEntityToNBT(compound);
+        if (ownerUUID != null) compound.setTag(TAG_OWNER, NBTUtil.createUUIDTag(ownerUUID));
+        compound.setTag(TAG_INV, CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.writeNBT(inventory, null));
+        compound.setTag(TAG_UPGRADES,
+            upgrades.stream()
+            .map(upgrade -> new NBTTagString(UpgradeRegistry.getUpgradeID(upgrade).toString()))
+            .collect(NBTCollectors.toNBTList(NBTTagString.class)));
+    }
 
-	@Override
-	public void readEntityFromNBT(NBTTagCompound compound)
-	{
-		super.readEntityFromNBT(compound);
-		if (compound.hasKey(TAG_OWNER)) ownerUUID = NBTUtil.getUUIDFromTag(compound.getCompoundTag(TAG_OWNER));
-		CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.readNBT(inventory, null, compound.getTag(TAG_INV));
-		//Find directives book
-		for (int s = 0; s < inventory.getSlots(); s++)
-		{
-		    ItemStack stack = inventory.getStackInSlot(s);
-		    if (stack.getItem() == Items.WRITTEN_BOOK || stack.getItem() == Items.WRITABLE_BOOK)
-		    {
-		        updateDirectives(stack);
-		        break;
-		    }
-		}
-		NBTTagList upgradesTag = compound.getTagList(TAG_UPGRADES, NBT.TAG_STRING);
-		for (int t = 0; t < upgradesTag.tagCount(); t++)
-		{
-			upgrades.add(UpgradeRegistry.getUpgradeInstance(new ResourceLocation(upgradesTag.getStringTagAt(t))));
-		}
-	}
+    @Override
+    public void readEntityFromNBT(NBTTagCompound compound)
+    {
+        super.readEntityFromNBT(compound);
+        if (compound.hasKey(TAG_OWNER)) ownerUUID = NBTUtil.getUUIDFromTag(compound.getCompoundTag(TAG_OWNER));
+        CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.readNBT(inventory, null, compound.getTag(TAG_INV));
+        //Find directives book
+        for (int s = 0; s < inventory.getSlots(); s++)
+        {
+            ItemStack stack = inventory.getStackInSlot(s);
+            if (stack.getItem() == Items.WRITTEN_BOOK || stack.getItem() == Items.WRITABLE_BOOK)
+            {
+                updateDirectives(stack);
+                break;
+            }
+        }
+        NBTTagList upgradesTag = compound.getTagList(TAG_UPGRADES, NBT.TAG_STRING);
+        for (int t = 0; t < upgradesTag.tagCount(); t++)
+        {
+            upgrades.add(UpgradeRegistry.getUpgradeInstance(new ResourceLocation(upgradesTag.getStringTagAt(t))));
+        }
+    }
 
-	private static final int HAS_UUID = 0;
+    private static final int HAS_UUID = 0;
 
-	@Override
-	public void writeSpawnData(ByteBuf buffer)
-	{
-		BitSet flags = new BitSet();
-		flags.set(HAS_UUID, ownerUUID != null);
-		NetHelper.writeBitSet(buffer, flags);
-		buffer.writeInt(upgrades.size());
-		for (IArmsAssistantUpgrade upgrade : upgrades)
-		{
-			buffer.writeInt(UpgradeRegistry.getUpgradeIntegerID(upgrade));
-		}
-		for (int slot = 0; slot < inventory.getSlots(); slot++)
-		{
-			ByteBufUtils.writeItemStack(buffer, inventory.getStackInSlot(slot));
-		}
-		if (ownerUUID != null)
-		{
-			buffer.writeLong(ownerUUID.getMostSignificantBits());
-			buffer.writeLong(ownerUUID.getLeastSignificantBits());
-		}
-	}
+    @Override
+    public void writeSpawnData(ByteBuf buffer)
+    {
+        BitSet flags = new BitSet();
+        flags.set(HAS_UUID, ownerUUID != null);
+        NetHelper.writeBitSet(buffer, flags);
+        buffer.writeInt(upgrades.size());
+        for (IArmsAssistantUpgrade upgrade : upgrades)
+        {
+            buffer.writeInt(UpgradeRegistry.getUpgradeIntegerID(upgrade));
+        }
+        for (int slot = 0; slot < inventory.getSlots(); slot++)
+        {
+            ByteBufUtils.writeItemStack(buffer, inventory.getStackInSlot(slot));
+        }
+        if (ownerUUID != null)
+        {
+            buffer.writeLong(ownerUUID.getMostSignificantBits());
+            buffer.writeLong(ownerUUID.getLeastSignificantBits());
+        }
+    }
 
-	@Override
-	public void readSpawnData(ByteBuf buffer)
-	{
-		BitSet flags = NetHelper.readBitSet(buffer);
-		int upgradeCount = buffer.readInt();
-		for (int i = 0; i < upgradeCount; i++)
-		{
-			upgrades.add(UpgradeRegistry.getUpgradeInstance(buffer.readInt()));
-		}
-		for (int slot = 0; slot < inventory.getSlots(); slot++)
-		{
-			inventory.setStackInSlot(slot, ByteBufUtils.readItemStack(buffer));
-		}
-		if (flags.get(HAS_UUID))
-		{
-			long uuidMost = buffer.readLong();
-			long uuidLeast = buffer.readLong();
-			ownerUUID = new UUID(uuidMost, uuidLeast);
-		}
-	}
+    @Override
+    public void readSpawnData(ByteBuf buffer)
+    {
+        BitSet flags = NetHelper.readBitSet(buffer);
+        int upgradeCount = buffer.readInt();
+        for (int i = 0; i < upgradeCount; i++)
+        {
+            upgrades.add(UpgradeRegistry.getUpgradeInstance(buffer.readInt()));
+        }
+        for (int slot = 0; slot < inventory.getSlots(); slot++)
+        {
+            inventory.setStackInSlot(slot, ByteBufUtils.readItemStack(buffer));
+        }
+        if (flags.get(HAS_UUID))
+        {
+            long uuidMost = buffer.readLong();
+            long uuidLeast = buffer.readLong();
+            ownerUUID = new UUID(uuidMost, uuidLeast);
+        }
+    }
 }

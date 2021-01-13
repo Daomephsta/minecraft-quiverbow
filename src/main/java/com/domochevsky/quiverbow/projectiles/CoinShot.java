@@ -18,71 +18,71 @@ import net.minecraft.world.World;
 
 public class CoinShot extends ProjectileBase
 {
-	private boolean shouldDrop;
+    private boolean shouldDrop;
 
-	public CoinShot(World world)
-	{
-		super(world);
-	}
+    public CoinShot(World world)
+    {
+        super(world);
+    }
 
-	public CoinShot(World world, Entity entity, WeaponProperties properties, float accHor, float accVert)
-	{
-		super(world);
-		this.doSetup(entity, properties.getProjectileSpeed(), accHor, accVert);
+    public CoinShot(World world, Entity entity, WeaponProperties properties, float accHor, float accVert)
+    {
+        super(world);
+        this.doSetup(entity, properties.getProjectileSpeed(), accHor, accVert);
         this.damage = properties.generateDamage(world.rand);
         this.setDrop(properties.getBoolean(CommonProperties.SHOULD_DROP));
-	}
+    }
 
-	public void setDrop(boolean set)
-	{
-		this.shouldDrop = set;
-	}
+    public void setDrop(boolean set)
+    {
+        this.shouldDrop = set;
+    }
 
-	@Override
-	public void onImpact(RayTraceResult hitPos) // Server-side
-	{
-		if (hitPos.entityHit != null)
-		{
-			// Firing
-			hitPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
-					this.damage); // Damage gets applied here
+    @Override
+    public void onImpact(RayTraceResult hitPos) // Server-side
+    {
+        if (hitPos.entityHit != null)
+        {
+            // Firing
+            hitPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
+                    this.damage); // Damage gets applied here
 
-			hitPos.entityHit.hurtResistantTime = 0;
-		}
-		else
-		{
-			// Glass breaking
-			Helper.tryBlockBreak(this.world, this, hitPos.getBlockPos(), 1);
+            hitPos.entityHit.hurtResistantTime = 0;
+        }
+        else
+        {
+            // Glass breaking
+            Helper.tryBlockBreak(this.world, this, hitPos.getBlockPos(), 1);
 
-			if (this.shootingEntity != null && this.shootingEntity instanceof EntityPlayer)
-			{
-				EntityPlayer player = (EntityPlayer) this.shootingEntity;
+            if (this.shootingEntity != null && this.shootingEntity instanceof EntityPlayer)
+            {
+                EntityPlayer player = (EntityPlayer) this.shootingEntity;
 
-				if (this.shouldDrop && !player.capabilities.isCreativeMode)
-				{
-					ItemStack nuggetStack = new ItemStack(Items.GOLD_NUGGET);
-					EntityItem entityitem = new EntityItem(this.world, hitPos.getBlockPos().getX(),
-							hitPos.getBlockPos().getY() + (double) 0.5F, hitPos.getBlockPos().getZ(), nuggetStack);
-					entityitem.setDefaultPickupDelay();
+                if (this.shouldDrop && !player.capabilities.isCreativeMode)
+                {
+                    ItemStack nuggetStack = new ItemStack(Items.GOLD_NUGGET);
+                    EntityItem entityitem = new EntityItem(this.world, hitPos.getBlockPos().getX(),
+                            hitPos.getBlockPos().getY() + (double) 0.5F, hitPos.getBlockPos().getZ(), nuggetStack);
+                    entityitem.setDefaultPickupDelay();
 
-					if (captureDrops)
-					{
-						capturedDrops.add(entityitem);
-					}
-					else
-					{
-						this.world.spawnEntity(entityitem);
-					}
-				}
-				// else, they're in creative mode, so no dropping nuggets
-			}
-			// else, either we don't have a shooter or they're not a player
-		}
+                    if (captureDrops)
+                    {
+                        capturedDrops.add(entityitem);
+                    }
+                    else
+                    {
+                        this.world.spawnEntity(entityitem);
+                    }
+                }
+                // else, they're in creative mode, so no dropping nuggets
+            }
+            // else, either we don't have a shooter or they're not a player
+        }
 
-		// SFX
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.CRIT, (byte) 1);
-		this.playSound(SoundEvents.BLOCK_METAL_BREAK, 1.0F, 3.0F);
+        // SFX
+        NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.CRIT, (byte) 1);
+        this.playSound(SoundEvents.BLOCK_METAL_BREAK, 1.0F, 3.0F);
 
-		this.setDead(); // We've hit something, so begone with the projectile
-	}
+        this.setDead(); // We've hit something, so begone with the projectile
+    }
 }

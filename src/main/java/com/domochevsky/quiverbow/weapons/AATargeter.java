@@ -20,34 +20,34 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class AATargeter extends QuiverBowItem
 {
-	public AATargeter()
-	{
-		this.setCreativeTab(CreativeTabs.TOOLS);
-	}
+    public AATargeter()
+    {
+        this.setCreativeTab(CreativeTabs.TOOLS);
+    }
 
-	public static final double TARGETING_DISTANCE = 64;
+    public static final double TARGETING_DISTANCE = 64;
 
-	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
-	{
-		ItemStack stack = player.getHeldItem(hand);
-		player.setActiveHand(hand);
-		world.playSound(null, player.posX, player.posY, player.posZ,
-		    SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.PLAYERS, 0.3F, 2.0F);
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
+    {
+        ItemStack stack = player.getHeldItem(hand);
+        player.setActiveHand(hand);
+        world.playSound(null, player.posX, player.posY, player.posZ,
+            SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, SoundCategory.PLAYERS, 0.3F, 2.0F);
 
-		return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
-	}
+        return ActionResult.<ItemStack>newResult(EnumActionResult.SUCCESS, stack);
+    }
 
-	@Override
-	public int getMaxItemUseDuration(ItemStack stack)
-	{
-	    return 72000;
-	}
+    @Override
+    public int getMaxItemUseDuration(ItemStack stack)
+    {
+        return 72000;
+    }
 
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags)
-	{
-		list.add(I18n.format(getUnlocalizedName() + ".description"));
-	}
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags)
+    {
+        list.add(I18n.format(getUnlocalizedName() + ".description"));
+    }
 }

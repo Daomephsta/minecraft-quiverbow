@@ -19,35 +19,35 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
 @Mod.EventBusSubscriber(modid = QuiverbowMain.MODID)
 public class RenderBeam
 {
-	private static final Map<EntityLivingBase, Beam> beams = new MapMaker().weakKeys().makeMap();
+    private static final Map<EntityLivingBase, Beam> beams = new MapMaker().weakKeys().makeMap();
 
-	public static class Beam
-	{
-		/**RGB color encoded as an integer*/
-		private int colour;
-		/**The remaining time till the beam despawns*/
-		private int timeTillDespawn;
-		/**The length of the beam*/
-		private double length;
+    public static class Beam
+    {
+        /**RGB color encoded as an integer*/
+        private int colour;
+        /**The remaining time till the beam despawns*/
+        private int timeTillDespawn;
+        /**The length of the beam*/
+        private double length;
 
-		public Beam(int beamColour, double length)
-		{
-			this.colour = beamColour;
-			this.length = length;
+        public Beam(int beamColour, double length)
+        {
+            this.colour = beamColour;
+            this.length = length;
             resetDespawnTimer();
-		}
+        }
 
-		public void resetDespawnTimer()
-		{
-			this.timeTillDespawn = 10;
-		}
-	}
+        public void resetDespawnTimer()
+        {
+            this.timeTillDespawn = 10;
+        }
+    }
 
-	// Cleanup unused beams on client tick so beam despawn rate is not dependent on FPS
-	@SubscribeEvent
+    // Cleanup unused beams on client tick so beam despawn rate is not dependent on FPS
+    @SubscribeEvent
     public static void cleanupBeams(ClientTickEvent event)
     {
-	    for (Iterator<Entry<EntityLivingBase, Beam>> iter = beams.entrySet().iterator(); iter.hasNext();)
+        for (Iterator<Entry<EntityLivingBase, Beam>> iter = beams.entrySet().iterator(); iter.hasNext();)
         {
             Entry<EntityLivingBase, Beam> next = iter.next();
             EntityLivingBase owner = next.getKey();
@@ -62,24 +62,24 @@ public class RenderBeam
         }
     }
 
-	@SubscribeEvent
-	public static void renderBeam(RenderWorldLastEvent event)
-	{
+    @SubscribeEvent
+    public static void renderBeam(RenderWorldLastEvent event)
+    {
         Minecraft mc = Minecraft.getMinecraft();
         float partialTicks = event.getPartialTicks();
         EntityLivingBase client = mc.player;
-		for (Entry<EntityLivingBase, Beam> beamEntry : beams.entrySet())
-		{
-			EntityLivingBase owner = beamEntry.getKey();
+        for (Entry<EntityLivingBase, Beam> beamEntry : beams.entrySet())
+        {
+            EntityLivingBase owner = beamEntry.getKey();
             Beam beam = beamEntry.getValue();
             // Null owner means owner has been garbage collected
-			if (owner == null)
-				continue;
+            if (owner == null)
+                continue;
 
-			GlStateManager.pushMatrix();
-	        mc.getTextureManager().bindTexture(TileEntityBeaconRenderer.TEXTURE_BEACON_BEAM);
+            GlStateManager.pushMatrix();
+            mc.getTextureManager().bindTexture(TileEntityBeaconRenderer.TEXTURE_BEACON_BEAM);
             double x = lerp(owner.prevPosX, owner.posX, partialTicks)
-	            - lerp(client.prevPosX, client.posX, partialTicks) - 0.5;
+                - lerp(client.prevPosX, client.posX, partialTicks) - 0.5;
             double y = lerp(owner.prevPosY, owner.posY, partialTicks)
                 - lerp(client.prevPosY, client.posY, partialTicks);
             double z = lerp(owner.prevPosZ, owner.posZ, partialTicks)
@@ -96,26 +96,26 @@ public class RenderBeam
             TileEntityBeaconRenderer.renderBeamSegment(x, y, z, mc.getRenderPartialTicks(),
                 1.0F, mc.world.getTotalWorldTime(), 0, (int) Math.ceil(beam.length), colours);
             GlStateManager.popMatrix();
-		}
-	}
+        }
+    }
 
     private static double lerp(double previous, double current, float partialTicks)
     {
         return current * partialTicks + previous * (1.0F - partialTicks);
     }
 
-	public static boolean updateOrCreateBeam(EntityLivingBase owner, double length, int colour)
-	{
-		Beam beam = beams.get(owner);
+    public static boolean updateOrCreateBeam(EntityLivingBase owner, double length, int colour)
+    {
+        Beam beam = beams.get(owner);
         boolean createBeam = beam == null;
-		if (beam == null)
-		{
-		    beam = new Beam(colour, length);
-		    beams.put(owner, beam);
-		}
+        if (beam == null)
+        {
+            beam = new Beam(colour, length);
+            beams.put(owner, beam);
+        }
         beam.length = length;
         beam.colour = colour;
-		beam.resetDespawnTimer();
-		return createBeam;
-	}
+        beam.resetDespawnTimer();
+        return createBeam;
+    }
 }

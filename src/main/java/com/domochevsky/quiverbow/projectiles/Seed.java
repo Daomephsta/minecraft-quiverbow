@@ -14,47 +14,47 @@ import net.minecraft.world.World;
 
 public class Seed extends ProjectileBase
 {
-	public Seed(World world)
-	{
-		super(world);
-	}
+    public Seed(World world)
+    {
+        super(world);
+    }
 
-	public Seed(World world, Entity entity, WeaponProperties properties, float accHor, float accVert)
-	{
-		super(world);
-		this.doSetup(entity, properties.getProjectileSpeed(), accHor, accVert);
-		this.damage = properties.generateDamage(rand);
-	}
+    public Seed(World world, Entity entity, WeaponProperties properties, float accHor, float accVert)
+    {
+        super(world);
+        this.doSetup(entity, properties.getProjectileSpeed(), accHor, accVert);
+        this.damage = properties.generateDamage(rand);
+    }
 
-	@Override
-	public void onImpact(RayTraceResult target)
-	{
-		if (target.entityHit != null)
-		{
-			target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
-					this.damage);
+    @Override
+    public void onImpact(RayTraceResult target)
+    {
+        if (target.entityHit != null)
+        {
+            target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
+                    this.damage);
 
-			target.entityHit.hurtResistantTime = 0; // No rest for the wicked
+            target.entityHit.hurtResistantTime = 0; // No rest for the wicked
 
-		}
-		else
-		{
+        }
+        else
+        {
 
-			IBlockState state = this.world.getBlockState(target.getBlockPos());
-			IBlockState stateAbove = this.world.getBlockState(target.getBlockPos().up());
+            IBlockState state = this.world.getBlockState(target.getBlockPos());
+            IBlockState stateAbove = this.world.getBlockState(target.getBlockPos().up());
 
-			// Glass breaking
-			Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 0);
+            // Glass breaking
+            Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 0);
 
-			if (state.getBlock() == Blocks.FARMLAND && stateAbove.getMaterial() == Material.AIR)
-			{
-				// Hit a farmland block and the block above is free. Planting a
-				// melon seed now
-				this.world.setBlockState(target.getBlockPos().up(), Blocks.MELON_STEM.getDefaultState(), 3);
-			}
-		}
+            if (state.getBlock() == Blocks.FARMLAND && stateAbove.getMaterial() == Material.AIR)
+            {
+                // Hit a farmland block and the block above is free. Planting a
+                // melon seed now
+                this.world.setBlockState(target.getBlockPos().up(), Blocks.MELON_STEM.getDefaultState(), 3);
+            }
+        }
 
-		this.playSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.2F, 3.0F);
-		this.setDead(); // We've hit something, so begone with the projectile
-	}
+        this.playSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.2F, 3.0F);
+        this.setDead(); // We've hit something, so begone with the projectile
+    }
 }

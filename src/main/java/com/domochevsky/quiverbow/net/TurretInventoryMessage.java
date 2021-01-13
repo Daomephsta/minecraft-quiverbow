@@ -9,35 +9,35 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class TurretInventoryMessage implements IMessage
 {
-	// this constructor is required otherwise you'll get errors (used
-	// somewhere in fml through reflection)
-	public TurretInventoryMessage() {} 
+    // this constructor is required otherwise you'll get errors (used
+    // somewhere in fml through reflection)
+    public TurretInventoryMessage() {} 
 
-	int turretID;
-	ItemStack stack;
-	int itemSlot;
+    int turretID;
+    ItemStack stack;
+    int itemSlot;
 
-	public TurretInventoryMessage(EntityArmsAssistant turret, ItemStack stack, int slot)
-	{
-		this.turretID = turret.getEntityId();
-		this.stack = stack;
-		this.itemSlot = slot;
-	}
+    public TurretInventoryMessage(EntityArmsAssistant turret, ItemStack stack, int slot)
+    {
+        this.turretID = turret.getEntityId();
+        this.stack = stack;
+        this.itemSlot = slot;
+    }
 
-	@Override
-	public void fromBytes(ByteBuf buf)
-	{
-		// the order is important
-		this.turretID = buf.readInt();
-		this.stack = ByteBufUtils.readItemStack(buf);
-		this.itemSlot = buf.readInt();
-	}
+    @Override
+    public void fromBytes(ByteBuf buf)
+    {
+        // the order is important
+        this.turretID = buf.readInt();
+        this.stack = ByteBufUtils.readItemStack(buf);
+        this.itemSlot = buf.readInt();
+    }
 
-	@Override
-	public void toBytes(ByteBuf buf)
-	{
-		buf.writeInt(turretID);
-		ByteBufUtils.writeItemStack(buf, stack);
-		buf.writeInt(this.itemSlot);
-	}
+    @Override
+    public void toBytes(ByteBuf buf)
+    {
+        buf.writeInt(turretID);
+        ByteBufUtils.writeItemStack(buf, stack);
+        buf.writeInt(this.itemSlot);
+    }
 }

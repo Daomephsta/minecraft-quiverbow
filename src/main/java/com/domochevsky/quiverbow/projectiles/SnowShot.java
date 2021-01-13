@@ -20,59 +20,59 @@ import net.minecraft.world.World;
 
 public class SnowShot extends ProjectilePotionEffect
 {
-	public SnowShot(World world)
-	{
-		super(world);
-	}
+    public SnowShot(World world)
+    {
+        super(world);
+    }
 
-	public SnowShot(World world, Entity entity, WeaponProperties properties, float accHor, float accVert)
-	{
-		super(world, new PotionEffect(MobEffects.SLOWNESS, properties.getInt(CommonProperties.SLOWNESS_DUR),
-		    properties.getInt(CommonProperties.SLOWNESS_STRENGTH)));
-		this.doSetup(entity, properties.getProjectileSpeed(), accHor, accVert);
-		this.damage = properties.generateDamage(rand);
-	}
+    public SnowShot(World world, Entity entity, WeaponProperties properties, float accHor, float accVert)
+    {
+        super(world, new PotionEffect(MobEffects.SLOWNESS, properties.getInt(CommonProperties.SLOWNESS_DUR),
+            properties.getInt(CommonProperties.SLOWNESS_STRENGTH)));
+        this.doSetup(entity, properties.getProjectileSpeed(), accHor, accVert);
+        this.damage = properties.generateDamage(rand);
+    }
 
-	@Override
-	public void onImpact(RayTraceResult target) // Server-side
-	{
-		if (target.entityHit != null)
-		{
-			super.onImpact(target);
+    @Override
+    public void onImpact(RayTraceResult target) // Server-side
+    {
+        if (target.entityHit != null)
+        {
+            super.onImpact(target);
 
-			// Triple DMG vs Blazes, so applying twice more
-			if (target.entityHit instanceof EntityBlaze)
-			{
-				target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
-						this.damage * 2);
-				target.entityHit.hurtResistantTime = 0;
-			}
-		}
-		else
-		{
-			// Glass breaking
-			Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 1);
-		}
+            // Triple DMG vs Blazes, so applying twice more
+            if (target.entityHit instanceof EntityBlaze)
+            {
+                target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
+                        this.damage * 2);
+                target.entityHit.hurtResistantTime = 0;
+            }
+        }
+        else
+        {
+            // Glass breaking
+            Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 1);
+        }
 
-		// SFX
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SNOWBALL, (byte) 2);
-		this.playSound(SoundEvents.BLOCK_LAVA_POP, 1.0F, 0.5F);
+        // SFX
+        NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SNOWBALL, (byte) 2);
+        this.playSound(SoundEvents.BLOCK_LAVA_POP, 1.0F, 0.5F);
 
-		this.setDead(); // We've hit something, so begone with the projectile
-	}
+        this.setDead(); // We've hit something, so begone with the projectile
+    }
 
-	@Override
-	public void doWaterEffect() // Called when this entity moves through water
-	{
-		// Checking for water here and turning it into ice
-		BlockPos pos = new BlockPos(this.posX, this.posY, this.posZ);
+    @Override
+    public void doWaterEffect() // Called when this entity moves through water
+    {
+        // Checking for water here and turning it into ice
+        BlockPos pos = new BlockPos(this.posX, this.posY, this.posZ);
 
-		IBlockState state = this.world.getBlockState(pos);
+        IBlockState state = this.world.getBlockState(pos);
 
-		if (state.getBlock() == Blocks.WATER || state.getBlock() == Blocks.FLOWING_WATER)
-		{
-			// Hit a (flowing) water block, so turning that into ice now
-			this.world.setBlockState(pos, Blocks.ICE.getDefaultState(), 3);
-		}
-	}
+        if (state.getBlock() == Blocks.WATER || state.getBlock() == Blocks.FLOWING_WATER)
+        {
+            // Hit a (flowing) water block, so turning that into ice now
+            this.world.setBlockState(pos, Blocks.ICE.getDefaultState(), 3);
+        }
+    }
 }

@@ -13,32 +13,32 @@ import net.minecraft.entity.Entity;
  */
 public class ModelArmsAssistant extends ModelBase
 {
-	public ModelRenderer body,
-						 sprocketsL,
-						 sprocketsR,
-						 lowerTurntable,
-						 linkFL,
-						 linkBL,
-						 linkFR,
-						 linkBR,
-						 upperTurntable,
-						 turret,
-						 chest,
-						 ammoHopper1,
-						 ammoHopper2,
-						 rightRail,
-						 leftRail,
-						 ammoFeed1R,
-						 eye,
-						 seat,
-						 bookSpine,
-						 ammoFeed1L,
-						 aerial,
-						 ammoFeed2R,
-						 bookPages,
-						 bookCoverF,
-						 bookCoverB,
-						 ammoFeed2L;
+    public ModelRenderer body,
+                         sprocketsL,
+                         sprocketsR,
+                         lowerTurntable,
+                         linkFL,
+                         linkBL,
+                         linkFR,
+                         linkBR,
+                         upperTurntable,
+                         turret,
+                         chest,
+                         ammoHopper1,
+                         ammoHopper2,
+                         rightRail,
+                         leftRail,
+                         ammoFeed1R,
+                         eye,
+                         seat,
+                         bookSpine,
+                         ammoFeed1L,
+                         aerial,
+                         ammoFeed2R,
+                         bookPages,
+                         bookCoverF,
+                         bookCoverB,
+                         ammoFeed2L;
 
     public ModelArmsAssistant()
     {
@@ -154,29 +154,29 @@ public class ModelArmsAssistant extends ModelBase
     @Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
     {
-    	EntityArmsAssistant armsAssistant = (EntityArmsAssistant) entity;
-    	setVisibility(armsAssistant.hasCustomDirectives(), bookSpine);
-    	setVisibility(armsAssistant.hasUpgrade(UpgradeRegistry.EXTRA_WEAPON), rightRail, ammoFeed1R);
-    	setVisibility(armsAssistant.hasUpgrade(UpgradeRegistry.MOBILITY), sprocketsL, sprocketsR);
-    	setVisibility(armsAssistant.hasUpgrade(UpgradeRegistry.COMMUNICATIONS), aerial);
-    	setVisibility(armsAssistant.hasUpgrade(UpgradeRegistry.STORAGE), chest);
-    	setVisibility(armsAssistant.hasUpgrade(UpgradeRegistry.RIDING), seat);
+        EntityArmsAssistant armsAssistant = (EntityArmsAssistant) entity;
+        setVisibility(armsAssistant.hasCustomDirectives(), bookSpine);
+        setVisibility(armsAssistant.hasUpgrade(UpgradeRegistry.EXTRA_WEAPON), rightRail, ammoFeed1R);
+        setVisibility(armsAssistant.hasUpgrade(UpgradeRegistry.MOBILITY), sprocketsL, sprocketsR);
+        setVisibility(armsAssistant.hasUpgrade(UpgradeRegistry.COMMUNICATIONS), aerial);
+        setVisibility(armsAssistant.hasUpgrade(UpgradeRegistry.STORAGE), chest);
+        setVisibility(armsAssistant.hasUpgrade(UpgradeRegistry.RIDING), seat);
         this.body.render(f5);
     }
 
     @Override
     public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scaleFactor, Entity entityIn)
     {
-    	upperTurntable.rotateAngleY = netHeadYaw * (float) (Math.PI / 180.0F);
-    	rightRail.rotateAngleX = leftRail.rotateAngleX = headPitch * (float) (Math.PI / 180.0F);
+        upperTurntable.rotateAngleY = netHeadYaw * (float) (Math.PI / 180.0F);
+        rightRail.rotateAngleX = leftRail.rotateAngleX = headPitch * (float) (Math.PI / 180.0F);
     }
 
     private void setVisibility(boolean visibility, ModelRenderer... modelRenderers)
     {
-    	for (ModelRenderer renderer : modelRenderers)
-    	{
-    		renderer.showModel = visibility;
-    	}
+        for (ModelRenderer renderer : modelRenderers)
+        {
+            renderer.showModel = visibility;
+        }
     }
 
     /**

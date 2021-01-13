@@ -12,41 +12,41 @@ import net.minecraft.world.World;
 
 public class Thorn extends ProjectileBase
 {
-	public Thorn(World world)
-	{
-		super(world);
-	}
+    public Thorn(World world)
+    {
+        super(world);
+    }
 
-	public Thorn(World world, Entity entity, WeaponProperties properties)
-	{
-		super(world);
-		this.doSetup(entity, properties.getProjectileSpeed());
-		this.damage = properties.generateDamage(rand);
-	}
+    public Thorn(World world, Entity entity, WeaponProperties properties)
+    {
+        super(world);
+        this.doSetup(entity, properties.getProjectileSpeed());
+        this.damage = properties.generateDamage(rand);
+    }
 
-	public Thorn(World world, Entity entity, float speed, float yaw, float pitch)
-	{
-		super(world);
-		this.doSetup(entity, speed, 0, 0, yaw, pitch);
-	}
+    public Thorn(World world, Entity entity, float speed, float yaw, float pitch)
+    {
+        super(world);
+        this.doSetup(entity, speed, 0, 0, yaw, pitch);
+    }
 
-	@Override
-	public void onImpact(RayTraceResult movPos) // Server-side
-	{
-		if (movPos.entityHit != null)
-		{
-			movPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
-					this.damage);
-			movPos.entityHit.hurtResistantTime = 0; // No rest for the wicked
-		}
-		else // Hit the terrain
-		{
-			Helper.tryBlockBreak(this.world, this, movPos.getBlockPos(), 1);
-		}
+    @Override
+    public void onImpact(RayTraceResult movPos) // Server-side
+    {
+        if (movPos.entityHit != null)
+        {
+            movPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
+                    this.damage);
+            movPos.entityHit.hurtResistantTime = 0; // No rest for the wicked
+        }
+        else // Hit the terrain
+        {
+            Helper.tryBlockBreak(this.world, this, movPos.getBlockPos(), 1);
+        }
 
-		// SFX
-		NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.CRIT, (byte) 1);
+        // SFX
+        NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.CRIT, (byte) 1);
 
-		this.setDead(); // We've hit something, so begone with the projectile
-	}
+        this.setDead(); // We've hit something, so begone with the projectile
+    }
 }

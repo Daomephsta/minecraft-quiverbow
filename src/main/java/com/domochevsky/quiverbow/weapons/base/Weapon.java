@@ -30,7 +30,7 @@ public final class Weapon extends Item
     private EnumAction useAction = EnumAction.NONE;
     private int maxUseTicks = 0;
 
-	public Weapon(String name, WeaponProperties.Builder propertiesBuilder, Trigger trigger)
+    public Weapon(String name, WeaponProperties.Builder propertiesBuilder, Trigger trigger)
     {
         this.properties = propertiesBuilder.build();
         this.trigger = trigger;
@@ -41,29 +41,29 @@ public final class Weapon extends Item
         trigger.adjustItemProperties(this);
     }
 
-	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
-	{
-		ItemStack stack = player.getHeldItem(hand);
-		ActionResult<ItemStack> triggerResult = trigger.usePressed(world, player, stack, hand, properties);
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
+    {
+        ItemStack stack = player.getHeldItem(hand);
+        ActionResult<ItemStack> triggerResult = trigger.usePressed(world, player, stack, hand, properties);
         if (triggerResult.getType() == EnumActionResult.SUCCESS)
-		    applyEffects(fireEffects, world, player, stack);
-		return triggerResult;
-	}
+            applyEffects(fireEffects, world, player, stack);
+        return triggerResult;
+    }
 
-	@Override
-	public void onUsingTick(ItemStack stack, EntityLivingBase player, int count)
-	{
-	    if (trigger.useTick(player.getEntityWorld(), stack, player, properties, count))
-	        applyEffects(fireEffects, player.getEntityWorld(), player, stack);
-	}
+    @Override
+    public void onUsingTick(ItemStack stack, EntityLivingBase player, int count)
+    {
+        if (trigger.useTick(player.getEntityWorld(), stack, player, properties, count))
+            applyEffects(fireEffects, player.getEntityWorld(), player, stack);
+    }
 
-	@Override
-	public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft)
-	{
-	    if(trigger.useReleased(world, entityLiving, stack, properties))
-	        applyEffects(fireEffects, world, entityLiving, stack);
-	}
+    @Override
+    public void onPlayerStoppedUsing(ItemStack stack, World world, EntityLivingBase entityLiving, int timeLeft)
+    {
+        if(trigger.useReleased(world, entityLiving, stack, properties))
+            applyEffects(fireEffects, world, entityLiving, stack);
+    }
 
     @Override
     public boolean onEntitySwing(EntityLivingBase living, ItemStack stack)
@@ -110,35 +110,35 @@ public final class Weapon extends Item
         super.addInformation(stack, world, list, flags);
     }
 
-	@Override
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems)
-	{
-		super.getSubItems(tab, subItems);
-	}
+    @Override
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems)
+    {
+        super.getSubItems(tab, subItems);
+    }
 
-	@Override
-	public boolean isBookEnchantable(ItemStack stack, ItemStack book)
-	{
-		return false;
-	}
+    @Override
+    public boolean isBookEnchantable(ItemStack stack, ItemStack book)
+    {
+        return false;
+    }
 
-	@Override
-	public boolean showDurabilityBar(ItemStack stack)
-	{
-	    return true;
-	}
+    @Override
+    public boolean showDurabilityBar(ItemStack stack)
+    {
+        return true;
+    }
 
-	@Override
-	public EnumAction getItemUseAction(ItemStack stack)
-	{
-		return useAction;
-	}
+    @Override
+    public EnumAction getItemUseAction(ItemStack stack)
+    {
+        return useAction;
+    }
 
-	@Override
-	public int getMaxItemUseDuration(ItemStack stack)
-	{
-		return maxUseTicks;
-	}
+    @Override
+    public int getMaxItemUseDuration(ItemStack stack)
+    {
+        return maxUseTicks;
+    }
 
     public WeaponProperties getProperties()
     {

@@ -14,16 +14,16 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class RecipeConditionWeaponEnabledFactory implements IConditionFactory
 {
-	@Override
-	public BooleanSupplier parse(JsonContext context, JsonObject jsonObj)
-	{
-		String regName = JsonUtils.getString(jsonObj, "id");
-		Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(regName));
-		if(item == null) throw new IllegalArgumentException(regName + " is not a registered item");
-		if(item instanceof Weapon)
-		    return () -> ((Weapon) item).getProperties().isEnabled();
-		if(item instanceof Weapon)
-		    return () -> ((Weapon) item).getProperties().isEnabled();
-		throw new IllegalArgumentException(regName + " is not an instance of Weapon/WeaponBase");
-	}
+    @Override
+    public BooleanSupplier parse(JsonContext context, JsonObject jsonObj)
+    {
+        String regName = JsonUtils.getString(jsonObj, "id");
+        Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(regName));
+        if(item == null) throw new IllegalArgumentException(regName + " is not a registered item");
+        if(item instanceof Weapon)
+            return () -> ((Weapon) item).getProperties().isEnabled();
+        if(item instanceof Weapon)
+            return () -> ((Weapon) item).getProperties().isEnabled();
+        throw new IllegalArgumentException(regName + " is not an instance of Weapon/WeaponBase");
+    }
 }
