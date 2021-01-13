@@ -471,37 +471,54 @@ public class QuiverbowMain
                         .floatProperty(CommonProperties.EXPLOSION_SIZE, 1.5F)
                         .booleanProperty(CommonProperties.DAMAGE_TERRAIN, true)
                         .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
-                        .intProperty(CommonProperties.SELF_DAMAGE, 1),
-                    new PunchTrigger(new SimpleAmmoSource(8), new HitscanFireShape((world, user, properties, x, y, z) ->
+                        .intProperty(CommonProperties.SELF_DAMAGE, 1)
+                        .intProperty(CommonProperties.FIRE_DUR_ENTITY, 2),
+                    new PunchTrigger(new SimpleAmmoSource(8), new HitscanFireShape((world, user, properties, hit) ->
                     {
+                        if (hit.entityHit != null)
+                            hit.entityHit.setFire(properties.getInt(CommonProperties.FIRE_DUR_ENTITY));
                         if (!world.isRemote)
-                            world.createExplosion(user, x, y, z, properties.getFloat(CommonProperties.EXPLOSION_SIZE), properties.getBoolean(CommonProperties.DAMAGE_TERRAIN));
+                        {
+                            world.createExplosion(user, hit.hitVec.x, hit.hitVec.y, hit.hitVec.z,
+                                properties.getFloat(CommonProperties.EXPLOSION_SIZE),
+                                properties.getBoolean(CommonProperties.DAMAGE_TERRAIN));
+                        }
                         NetHelper.sendParticleMessageToAllPlayers(world, user, EnumParticleTypes.SMOKE_NORMAL, (byte) 0);
                     })))
 				    .fireEffects((world, user, stack, properties) -> Helper.causeSelfDamage(user, ((Weapon) stack.getItem()).getProperties().getInt(CommonProperties.SELF_DAMAGE))),
 				addWeapon("powder_knuckles_mod",
                     builder -> builder
                         .floatProperty(CommonProperties.EXPLOSION_SIZE, 1.5F)
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
-                    new PunchTrigger(new SimpleAmmoSource(8), new HitscanFireShape((world, user, properties, x, y, z) ->
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
+                        .intProperty(CommonProperties.FIRE_DUR_ENTITY, 2),
+                    new PunchTrigger(new SimpleAmmoSource(8), new HitscanFireShape((world, user, properties, hit) ->
                     {
+                        if (hit.entityHit != null)
+                            hit.entityHit.setFire(properties.getInt(CommonProperties.FIRE_DUR_ENTITY));
                         for (int deltaX = -1; deltaX <= 1; deltaX++)
                         {
                             for (int deltaY = -1; deltaY <= 1; deltaY++)
                             {
                                 for (int deltaZ = -1; deltaZ <= 1; deltaZ++)
                                 {
-                                    BlockPos pos = new BlockPos(x + deltaX, y + deltaY, z + deltaZ);
+                                    BlockPos pos = new BlockPos(
+                                        hit.hitVec.x + deltaX,
+                                        hit.hitVec.y + deltaY,
+                                        hit.hitVec.z + deltaZ);
                                     IBlockState toBreak = world.getBlockState(pos);
                                     float hardness = toBreak.getBlockHardness(world, pos);
                                     // hardness 100 means resistant to all but the strongest explosions
-                                    if (hardness == -1 || hardness >= 100 || toBreak.getBlock().getHarvestLevel(toBreak) > 1)
+                                    if (hardness == -1 || hardness >= 100 ||
+                                        toBreak.getBlock().getHarvestLevel(toBreak) > 1)
+                                    {
                                         continue;
+                                    }
                                     if (user instanceof EntityPlayer && toBreak.getBlock()
                                         .canSilkHarvest(world, pos, toBreak, (EntityPlayer) user))
                                     {
                                         List<ItemStack> items = Lists.newArrayList(BlockAccessors.getSilkTouchDrop(toBreak));
-                                        ForgeEventFactory.fireBlockHarvesting(items, world, pos, toBreak, 0, 1.0f, true, (EntityPlayer) user);
+                                        ForgeEventFactory.fireBlockHarvesting(items, world, pos, toBreak,
+                                            0, 1.0f, true, (EntityPlayer) user);
                                         world.destroyBlock(pos, false);
                                         for (ItemStack stack : items)
                                             Block.spawnAsEntity(world, pos, stack);
@@ -514,7 +531,8 @@ public class QuiverbowMain
                         if (!world.isRemote)
                         {
                             // Explosion ignores terrain, block destruction handled above
-                            world.createExplosion(user, x, y, z, properties.getFloat(CommonProperties.EXPLOSION_SIZE), false);
+                            world.createExplosion(user, hit.hitVec.x, hit.hitVec.y, hit.hitVec.z,
+                                properties.getFloat(CommonProperties.EXPLOSION_SIZE), false);
                         }
                         NetHelper.sendParticleMessageToAllPlayers(world, user, EnumParticleTypes.SMOKE_NORMAL, (byte) 0);
                     }))),

@@ -8,7 +8,6 @@ import com.domochevsky.quiverbow.config.WeaponProperties;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -51,23 +50,16 @@ public class HitscanFireShape implements FireShape
     {
         if (result == null)
             return false;
-        switch (result.typeOfHit)
+        if (result.typeOfHit != RayTraceResult.Type.MISS)
         {
-        case BLOCK:
-            BlockPos pos = result.getBlockPos();
-            hitEffect.apply(world, shooter, properties, pos.getX(), pos.getY(), pos.getZ());
-            break;
-        case ENTITY:
-            hitEffect.apply(world, shooter, properties, result.entityHit.posX, result.entityHit.posY, result.entityHit.posZ);
-            break;
-        default:
-            return false;
+            hitEffect.apply(world, shooter, properties, result);
+            return true;
         }
-        return true;
+        return false;
     }
 
     public interface HitEffect
     {
-        public void apply(World world, EntityLivingBase user, WeaponProperties properties, double x, double y, double z);
+        public void apply(World world, EntityLivingBase user, WeaponProperties properties, RayTraceResult hit);
     }
 }
