@@ -30,6 +30,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.*;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
@@ -345,5 +346,15 @@ public class Helper
             self.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) self), amount);
         else
             self.attackEntityFrom(DamageSource.causeMobDamage(self), amount);
+    }
+
+    public static boolean trySendActionBarMessage(EntityLivingBase recipient, String translationKey)
+    {
+        if (recipient instanceof EntityPlayer)
+        {
+            ((EntityPlayer) recipient).sendStatusMessage(new TextComponentTranslation(translationKey), true);
+            return true;
+        }
+        return false;
     }
 }
