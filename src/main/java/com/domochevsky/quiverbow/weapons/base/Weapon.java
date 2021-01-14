@@ -112,6 +112,13 @@ public final class Weapon extends Item
     }
 
     @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged)
+    {
+        // QB:R weapons are not differentiated by damage or NBT
+        return !oldStack.isItemEqualIgnoreDurability(newStack);
+    }
+
+    @Override
     public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags)
     {
         super.addInformation(stack, world, list, flags);
