@@ -9,7 +9,6 @@ import com.domochevsky.quiverbow.projectiles.*;
 import com.domochevsky.quiverbow.renderer.RenderAA;
 import com.domochevsky.quiverbow.renderer.RenderCross;
 
-import daomephsta.umbra.reflection.SRGReflectionHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderSnowball;
@@ -21,6 +20,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 
 public class ClientProxy extends CommonProxy
 {
@@ -31,7 +31,7 @@ public class ClientProxy extends CommonProxy
         registerRenderers();
         ModelLoaderRegistry.registerLoader(WeaponModelOld.Loader.INSTANCE);
         ModelLoaderRegistry.registerLoader(WeaponModel.Loader.INSTANCE);
-        ((MetadataSerializer) SRGReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), "field_110452_an"))
+        ((MetadataSerializer) ObfuscationReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), "field_110452_an"))
         .registerMetadataSectionType(AATransformsMetadataSerialiser.INSTANCE, AATransformsMetadataSerialiser.AATransforms.class);
     }
 

@@ -12,13 +12,13 @@ import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry.ReloadSpecific
 import com.domochevsky.quiverbow.loot.LootHandler;
 import com.domochevsky.quiverbow.miscitems.PackedUpAA;
 import com.domochevsky.quiverbow.net.NetHelper;
+import com.domochevsky.quiverbow.util.NBTCollectors;
 import com.domochevsky.quiverbow.weapons.base.Weapon;
 import com.domochevsky.quiverbow.weapons.base.trigger.Trigger;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 
-import daomephsta.umbra.streams.NBTCollectors;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;

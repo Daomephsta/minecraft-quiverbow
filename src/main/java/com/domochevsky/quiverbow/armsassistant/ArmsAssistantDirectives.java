@@ -22,6 +22,7 @@ import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.armsassistant.ai.ArmsAssistantAITargeterControlled;
 import com.domochevsky.quiverbow.armsassistant.ai.EntityAIFollowOwner;
 import com.domochevsky.quiverbow.armsassistant.ai.EntityAIMaintainPosition;
+import com.domochevsky.quiverbow.util.NBTPrimitiveStreams;
 import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 import com.domochevsky.quiverbow.weapons.base.Weapon;
 import com.google.common.base.Splitter;
@@ -34,7 +35,6 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 
-import daomephsta.umbra.streams.NBTPrimitiveStreams;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;

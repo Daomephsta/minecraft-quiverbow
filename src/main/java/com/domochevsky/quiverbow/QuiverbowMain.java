@@ -26,6 +26,7 @@ import com.domochevsky.quiverbow.net.PacketHandler;
 import com.domochevsky.quiverbow.projectiles.*;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 import com.domochevsky.quiverbow.util.RegistryHelper;
+import com.domochevsky.quiverbow.util.ResourceLocationExt;
 import com.domochevsky.quiverbow.weapons.AATargeter;
 import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 import com.domochevsky.quiverbow.weapons.base.Weapon;
@@ -39,7 +40,6 @@ import com.domochevsky.quiverbow.weapons.base.fireshape.*;
 import com.domochevsky.quiverbow.weapons.base.trigger.*;
 import com.google.common.collect.Lists;
 
-import daomephsta.umbra.resources.ResourceLocationExt;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSnow;
 import net.minecraft.block.SoundType;

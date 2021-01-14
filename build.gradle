@@ -29,16 +29,11 @@ minecraft {
 }
 
 configurations {
-	//Jars to package using ContainedDeps
-	containedDep {
-		transitive = false
-	}
     shade
 }
 
 repositories 
 {  
-    mavenLocal()
 	maven 
 	{
 		name 'JEI'
@@ -53,10 +48,6 @@ repositories
 
 dependencies 
 {
-    compile "daomephsta.umbra:umbra-java:${project.umbraJavaVersion}"
-	deobfCompile "daomephsta.umbra:umbra-minecraft:${project.umbraMCVersion}"
-	containedDep "daomephsta.umbra:umbra-java:${project.umbraJavaVersion}"
-	containedDep "daomephsta.umbra:umbra-minecraft:${project.umbraMCVersion}"
 	// compile against the JEI API
 	deobfCompile "mezz.jei:jei_${project.jeiVersion}:api"
 	// at runtime, use the full JEI jar
@@ -86,39 +77,11 @@ processResources
     }
 }
 
-import java.util.jar.*
-boolean hasContainedDepMetadata(File file) 
-{
-    def jar = new JarFile(file)
-    if (jar.manifest == null) return;
-    def hasMetadata = jar.manifest.mainAttributes.containsKey(new Attributes.Name('Maven-Artifact'))
-    jar.close()
-    return hasMetadata
-}
-
-task generateDependencyMetaFiles {doLast{
-	//Delete any previous meta files
-	file("${buildDir}/dependencyMeta").deleteDir()
-	//Generate new meta files
-	configurations.containedDep.resolvedConfiguration.resolvedArtifacts.each {
-        //Ignore files that define the dependency metadata themselves
-        if (hasContainedDepMetadata(it.file)) return;
-		def metaFile = file("${buildDir}/dependencyMeta/${it.file.name}.meta")
-		metaFile.parentFile.mkdirs()
-		//The newline is very important
-		metaFile.text = "Maven-Artifact: ${it.moduleVersion.id}\n"
-	}
-}}
-
 reobfJar {
     addExtraSrgLine 'PK: com/mojang/brigadier com/domochevsky/quiverbow/shadow/com/mojang/brigadier'
 }
 
 jar {
-    //Package contained dependencies
-	into('/META-INF/libraries') {
-		from configurations.containedDep, file("${buildDir}/dependencyMeta")
-	}
 	configurations.shade.each { dep ->
         from(project.zipTree(dep)){
             exclude 'META-INF', 'META-INF/**'
@@ -131,12 +94,6 @@ jar {
 		include 'NOTICE.txt'
 		include 'licenses/**'
     }
-	//Add contained dependencies to the manifest
-	manifest {
-		attributes 'ContainedDeps': configurations.containedDep.collect {it.name}.join(' ')
-	}
-	
-	dependsOn generateDependencyMetaFiles
 }
 
 compileJava {

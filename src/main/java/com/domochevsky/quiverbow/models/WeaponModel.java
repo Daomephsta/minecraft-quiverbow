@@ -16,10 +16,10 @@ import org.apache.logging.log4j.Logger;
 import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.config.QuiverbowConfig;
 import com.domochevsky.quiverbow.models.AATransformsMetadataSerialiser.AATransforms;
+import com.domochevsky.quiverbow.util.ResourceLocationExt;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.ImmutableSet.Builder;
 
-import daomephsta.umbra.resources.ResourceLocationExt;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.*;

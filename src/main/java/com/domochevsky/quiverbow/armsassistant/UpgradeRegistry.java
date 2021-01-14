@@ -6,8 +6,6 @@ import com.domochevsky.quiverbow.QuiverbowMain;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
-import daomephsta.umbra.entity.attributes.AttributeHelper;
-import daomephsta.umbra.entity.attributes.AttributeHelper.AttributeModifierOperation;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -15,6 +13,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.Constants.AttributeModifierOperation;
 
 public class UpgradeRegistry
 {
@@ -33,7 +32,7 @@ public class UpgradeRegistry
             public void submitAttributeModifiers(BiConsumer<String, AttributeModifier> out)
             {
                 out.accept(SharedMonsterAttributes.MOVEMENT_SPEED.getName(),
-                    AttributeHelper.createModifier("Mobility upgrade", 0.1D, AttributeModifierOperation.ADDITIVE));
+                    new AttributeModifier("Mobility upgrade", 0.1D, AttributeModifierOperation.ADD));
             }
         });
     public static final IArmsAssistantUpgrade ARMOUR = register(new BasicUpgrade(new ResourceLocation(QuiverbowMain.MODID, "armour"))
@@ -42,7 +41,7 @@ public class UpgradeRegistry
             public void submitAttributeModifiers(BiConsumer<String,AttributeModifier> out)
             {
                 out.accept(SharedMonsterAttributes.MAX_HEALTH.getName(),
-                    AttributeHelper.createModifier("Health upgrade", 20.0D, AttributeModifierOperation.ADDITIVE));
+                    new AttributeModifier("Health upgrade", 20.0D, AttributeModifierOperation.ADD));
             };
         });
     public static final IArmsAssistantUpgrade HEAVY_PLATING = register(new BasicUpgrade(new ResourceLocation(QuiverbowMain.MODID, "heavy_plating"))
@@ -51,9 +50,9 @@ public class UpgradeRegistry
             public void submitAttributeModifiers(BiConsumer<String,AttributeModifier> out)
             {
                 out.accept(SharedMonsterAttributes.ARMOR.getName(),
-                    AttributeHelper.createModifier("Armour upgrade", 3.0D, AttributeModifierOperation.ADDITIVE));
+                    new AttributeModifier("Armour upgrade", 3.0D, AttributeModifierOperation.ADD));
                 out.accept(SharedMonsterAttributes.KNOCKBACK_RESISTANCE.getName(),
-                    AttributeHelper.createModifier("Armour upgrade", 0.5D, AttributeModifierOperation.ADDITIVE));
+                    new AttributeModifier("Armour upgrade", 0.5D, AttributeModifierOperation.ADD));
             };
         });
 
