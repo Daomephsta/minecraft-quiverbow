@@ -704,7 +704,7 @@ public class QuiverbowMain
                         .booleanProperty(CommonProperties.SHOULD_DROP, true)
                         .floatProperty(CommonProperties.SPREAD, 5)
                         .intProperty(SpreadFireShape.PROJECTILES, 9)
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 9),
                     new AutomaticTrigger(new MagazineAmmoSource(goldMagazine)
                         .unloadEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F)),
                         new SpreadFireShape(CoinShot::new)))
@@ -714,8 +714,8 @@ public class QuiverbowMain
                         .projectileSpeed(2.5F).kickback(1) .cooldown(15).mobUsable()
                         .booleanProperty(CommonProperties.SHOULD_DROP, true)
                         .floatProperty(CommonProperties.SPREAD, 2)
-                        .intProperty(SpreadFireShape.PROJECTILES, 3)
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
+                        .intProperty(SpreadFireShape.PROJECTILES, 4)
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 4),
                     new AutomaticTrigger(new MagazineAmmoSource(goldMagazine)
                             .unloadEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F)),
                         new SpreadFireShape(CoinShot::new)))
