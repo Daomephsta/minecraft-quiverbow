@@ -28,7 +28,11 @@ public class MagazineAmmoSource extends SimpleAmmoSource
             dropMagazine(shooter.getEntityWorld(), stack, shooter, properties);
             return false;
         }
-        return super.consumeAmmo(shooter, stack, properties);
+        boolean consumed = super.consumeAmmo(shooter, stack, properties);
+        // Eject if no more ammo after firing
+        if (!hasAmmo(shooter, stack, properties) && !NBTags.getOrCreate(stack).getBoolean("magazineless"))
+            dropMagazine(shooter.getEntityWorld(), stack, shooter, properties);
+        return consumed;
     }
 
     public void dropMagazine(World world, ItemStack stack,
