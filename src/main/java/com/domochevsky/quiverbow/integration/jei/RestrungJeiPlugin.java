@@ -3,12 +3,15 @@ package com.domochevsky.quiverbow.integration.jei;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry;
 import com.domochevsky.quiverbow.items.ItemRegistry;
 import com.domochevsky.quiverbow.recipes.RecipeArmsAssistantUpgrade;
+import com.domochevsky.quiverbow.weapons.base.Weapon;
 import com.google.common.collect.Streams;
 
 import mezz.jei.api.*;
+import mezz.jei.api.ingredients.IIngredientBlacklist;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.IRecipeWrapper;
@@ -16,6 +19,7 @@ import mezz.jei.api.recipe.IStackHelper;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.crafting.IShapedRecipe;
+import net.minecraftforge.oredict.OreDictionary;
 
 @JEIPlugin
 public class RestrungJeiPlugin implements IModPlugin
@@ -33,6 +37,13 @@ public class RestrungJeiPlugin implements IModPlugin
             recipe -> wrapAAUpgradeRecipe(recipe, stackHelper), VanillaRecipeCategoryUid.CRAFTING);
         registry.addIngredientInfo(new ItemStack(ItemRegistry.ENDER_RAIL_ACCELERATOR), VanillaTypes.ITEM,
             ItemRegistry.ENDER_RAIL_ACCELERATOR.getUnlocalizedName() + ".jei_description");
+
+        IIngredientBlacklist blacklist = registry.getJeiHelpers().getIngredientBlacklist();
+        for (Weapon weapon : QuiverbowMain.weapons)
+        {
+            if (!weapon.getProperties().isEnabled())
+                blacklist.addIngredientToBlacklist(new ItemStack(weapon, 1, OreDictionary.WILDCARD_VALUE));
+        }
     }
 
     private IRecipeWrapper wrapAAUpgradeRecipe(RecipeArmsAssistantUpgrade recipe, IStackHelper stackHelper)

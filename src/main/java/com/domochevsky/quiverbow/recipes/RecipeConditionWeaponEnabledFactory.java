@@ -22,8 +22,6 @@ public class RecipeConditionWeaponEnabledFactory implements IConditionFactory
         if(item == null) throw new IllegalArgumentException(regName + " is not a registered item");
         if(item instanceof Weapon)
             return () -> ((Weapon) item).getProperties().isEnabled();
-        if(item instanceof Weapon)
-            return () -> ((Weapon) item).getProperties().isEnabled();
         throw new IllegalArgumentException(regName + " is not an instance of Weapon/WeaponBase");
     }
 }

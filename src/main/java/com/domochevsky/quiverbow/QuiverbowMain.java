@@ -76,7 +76,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCMessage;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -129,12 +128,6 @@ public class QuiverbowMain
     }
 
     @EventHandler
-    public void init(FMLInitializationEvent event)
-    {
-        QuiverbowConfig.loadWeaponProperties();
-    }
-
-    @EventHandler
     public void recieveIMCMessages(FMLInterModComms.IMCEvent event)
     {
         for(IMCMessage message : event.getMessages())
@@ -164,6 +157,7 @@ public class QuiverbowMain
         {
             registerMiscItems(e.getRegistry());
             registerWeapons(e.getRegistry());
+            QuiverbowConfig.loadWeaponProperties();
             registerAmmo(e.getRegistry());
         }
 

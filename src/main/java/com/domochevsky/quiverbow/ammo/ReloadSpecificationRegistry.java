@@ -73,13 +73,17 @@ public class ReloadSpecificationRegistry
                             JsonUtils.getInt(object, "max", 1));
                     }
                 }
-                Item weapon = getWeapon(path);
-                if (weapon instanceof Weapon)
-                    specsByWeapon.put((Weapon) weapon, reloadSpecification);
-                else if (weapon instanceof AmmoMagazine)
-                    specsByMagazine.put((AmmoMagazine) weapon, reloadSpecification);
+                Item item = getItem(path);
+                if (item instanceof Weapon)
+                {
+                    Weapon weapon = (Weapon) item;
+                    if (weapon.getProperties().isEnabled())
+                        specsByWeapon.put(weapon, reloadSpecification);
+                }
+                else if (item instanceof AmmoMagazine)
+                    specsByMagazine.put((AmmoMagazine) item, reloadSpecification);
                 else
-                    throw new JsonSyntaxException(weapon + " is not a weapon or magazine");
+                    throw new JsonSyntaxException(item + " is not a weapon or magazine");
             }
             catch (JsonIOException | JsonSyntaxException | IOException e)
             {
@@ -88,7 +92,7 @@ public class ReloadSpecificationRegistry
         });
     }
 
-    private Item getWeapon(Path path)
+    private Item getItem(Path path)
     {
         String fileName = FilenameUtils.removeExtension(path.getFileName().toString());
         ResourceLocation weaponId = new ResourceLocation(QuiverbowMain.MODID, fileName);

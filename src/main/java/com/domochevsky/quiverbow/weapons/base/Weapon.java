@@ -18,7 +18,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
 public final class Weapon extends Item
@@ -125,9 +124,11 @@ public final class Weapon extends Item
     }
 
     @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems)
+    public CreativeTabs getCreativeTab()
     {
-        super.getSubItems(tab, subItems);
+        if (!properties.isEnabled())
+            return null;
+        return super.getCreativeTab();
     }
 
     @Override
