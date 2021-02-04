@@ -30,6 +30,7 @@ public class SpoolingTrigger extends Trigger
     @Override
     public ActionResult<ItemStack> usePressed(World world, EntityLivingBase user, ItemStack stack, EnumHand hand, WeaponProperties properties)
     {
+        ammoSource.alternateUse(user, stack, properties);
         user.setActiveHand(hand);
         return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
     }

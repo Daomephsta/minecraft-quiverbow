@@ -27,6 +27,8 @@ public class AutoLoadingTrigger extends Trigger
     public ActionResult<ItemStack> usePressed(World world, EntityLivingBase shooter,
         ItemStack stack, EnumHand hand, WeaponProperties properties)
     {
+        if (ammoSource.alternateUse(shooter, stack, properties))
+            return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
         if (Weapon.getCooldown(stack) > 0)
             return ActionResult.newResult(EnumActionResult.FAIL, stack);
         if (!isLoaded(stack))

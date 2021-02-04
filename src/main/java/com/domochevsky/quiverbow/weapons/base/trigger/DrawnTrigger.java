@@ -29,6 +29,8 @@ public class DrawnTrigger extends Trigger
     public ActionResult<ItemStack> usePressed(World world, EntityLivingBase user,
         ItemStack stack, EnumHand hand, WeaponProperties properties)
     {
+        if (ammoSource.alternateUse(user, stack, properties))
+            return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
         boolean hasAmmo = ammoSource.hasAmmo(user, stack, properties);
         if (user instanceof EntityPlayer)
         {

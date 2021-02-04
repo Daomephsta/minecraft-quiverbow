@@ -17,4 +17,15 @@ public interface AmmoSource
 
     public default void weaponTick(World world, EntityLivingBase user,
         ItemStack stack, WeaponProperties properties) {}
+
+    /** Allows ammo sources to take over the weapon use action
+     * @param shooter the entity using the weapon
+     * @param stack the itemstack of the weapon
+     * @param properties properties of the weapon
+     * @return if an alternate action was performed
+     */
+    public default boolean alternateUse(EntityLivingBase shooter, ItemStack stack, WeaponProperties properties)
+    {
+        return false;
+    }
 }

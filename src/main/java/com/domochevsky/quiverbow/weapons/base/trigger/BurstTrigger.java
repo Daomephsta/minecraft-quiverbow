@@ -30,6 +30,8 @@ public class BurstTrigger extends Trigger
     @Override
     public ActionResult<ItemStack> usePressed(World world, EntityLivingBase user, ItemStack stack, EnumHand hand, WeaponProperties properties)
     {
+        if (ammoSource.alternateUse(user, stack, properties))
+            return ActionResult.newResult(EnumActionResult.SUCCESS, stack);
         if (Weapon.getCooldown(stack) > 0)
             return ActionResult.newResult(EnumActionResult.PASS, stack);
         if (!ammoSource.consumeAmmo(user, stack, properties))

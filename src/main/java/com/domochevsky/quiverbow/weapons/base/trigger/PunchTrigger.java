@@ -20,6 +20,8 @@ public class PunchTrigger extends Trigger
     public boolean attackPressed(World world, EntityLivingBase user,
         ItemStack stack, WeaponProperties properties)
     {
+        if (ammoSource.alternateUse(user, stack, properties))
+            return false;
         if (Weapon.getCooldown(stack) > 0)
             return false;
         if (!ammoSource.hasAmmo(user, stack, properties))

@@ -29,19 +29,23 @@ public class WaterAmmoSource implements AmmoSource
     }
 
     @Override
-    public boolean consumeAmmo(EntityLivingBase shooter, ItemStack stack, WeaponProperties properties)
+    public boolean consumeAmmo(EntityLivingBase user, ItemStack stack, WeaponProperties properties)
     {
-        // No has ammo check, because the same checks have to be done here for other reasons
-        if (shooter instanceof EntityPlayer && ((EntityPlayer) shooter).capabilities.isCreativeMode)
-            return true;
-        if (stack.getItemDamage() + 1 > stack.getMaxDamage())
-        {
-            if (shooter instanceof EntityPlayer) //Mobs aren't smart enough to reload from blocks
-                tryReload(shooter.getEntityWorld(), (EntityPlayer) shooter, stack);
+        if (!hasAmmo(user, stack, properties))
             return false;
-        }
         stack.setItemDamage(stack.getItemDamage() + 1);
         return true;
+    }
+
+    @Override
+    public boolean alternateUse(EntityLivingBase user, ItemStack stack, WeaponProperties properties)
+    {
+        if (user instanceof EntityPlayer && stack.getItemDamage() == stack.getMaxDamage())
+        {
+            tryReload(user.getEntityWorld(), (EntityPlayer) user, stack);
+            return true;
+        }
+        return false;
     }
 
     private void tryReload(World world, EntityPlayer user, ItemStack stack)

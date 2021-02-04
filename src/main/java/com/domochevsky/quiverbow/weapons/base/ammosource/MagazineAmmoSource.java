@@ -23,16 +23,22 @@ public class MagazineAmmoSource extends SimpleAmmoSource
     @Override
     public boolean consumeAmmo(EntityLivingBase shooter, ItemStack stack, WeaponProperties properties)
     {
-        if (shooter.isSneaking() && !NBTags.getOrCreate(stack).getBoolean("magazineless"))
-        {
-            dropMagazine(shooter.getEntityWorld(), stack, shooter, properties);
-            return false;
-        }
         boolean consumed = super.consumeAmmo(shooter, stack, properties);
         // Eject if no more ammo after firing
         if (!hasAmmo(shooter, stack, properties) && !NBTags.getOrCreate(stack).getBoolean("magazineless"))
             dropMagazine(shooter.getEntityWorld(), stack, shooter, properties);
         return consumed;
+    }
+
+    @Override
+    public boolean alternateUse(EntityLivingBase shooter, ItemStack stack, WeaponProperties properties)
+    {
+        if (shooter.isSneaking() && !NBTags.getOrCreate(stack).getBoolean("magazineless"))
+        {
+            dropMagazine(shooter.getEntityWorld(), stack, shooter, properties);
+            return true;
+        }
+        return false;
     }
 
     public void dropMagazine(World world, ItemStack stack,
