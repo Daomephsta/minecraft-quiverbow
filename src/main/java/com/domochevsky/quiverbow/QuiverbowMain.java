@@ -91,6 +91,7 @@ public class QuiverbowMain
 {
     public static final String NAME = "QuiverBow: Restrung";
     public static final String MODID = "quiverbow_restrung";
+    public static final String VERSION = "GRADLE:VERSION";
 
     @Instance(QuiverbowMain.MODID)
     public static QuiverbowMain instance;

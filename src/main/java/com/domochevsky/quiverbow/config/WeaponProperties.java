@@ -9,12 +9,14 @@ import java.util.function.Function;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.domochevsky.quiverbow.Helper;
+import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.config.properties.BooleanProperty;
 import com.domochevsky.quiverbow.config.properties.FloatProperty;
 import com.domochevsky.quiverbow.config.properties.IntProperty;
 import com.domochevsky.quiverbow.config.properties.WeaponProperty;
 
 import net.minecraftforge.common.config.ConfigCategory;
+import net.minecraftforge.common.config.Property;
 
 public class WeaponProperties
 {
@@ -27,6 +29,7 @@ public class WeaponProperties
         KICKBACK = Pair.of("kickback", "The amount of knockback the projectile applies to the user"),
         COOLDOWN = Pair.of("cooldown", "How many ticks it takes for this weapon to be able to fire again"),
         MOB_USABLE = Pair.of("isMobUsable", "QuiverMobs can spawn with this weapon if true");
+    private static final String VERSION_KEY = "version";
     private Map<String, WeaponProperty> properties;
     private WeaponProperties subProjectileProperties;
 
@@ -43,15 +46,37 @@ public class WeaponProperties
 
     public void loadFromConfig(ConfigCategory configCategory, Function<String, ConfigCategory> subCategoryGetter)
     {
+        boolean outdated = isOutdated(configCategory);
         for (WeaponProperty property : properties.values())
         {
-            if (configCategory.containsKey(property.getPropertyName()))
+            if (!outdated && configCategory.containsKey(property.getPropertyName()))
                 property.loadFromConfig(configCategory.get(property.getPropertyName()));
             else
                 configCategory.put(property.getPropertyName(), property.createDefaultForgeConfigProperty());
         }
         if (subProjectileProperties != null)
             subProjectileProperties.loadFromConfig(subCategoryGetter.apply("sub_projectile"), subCategoryGetter);
+    }
+
+    private boolean isOutdated(ConfigCategory configCategory)
+    {
+        if (configCategory.containsKey(VERSION_KEY))
+        {
+            String version = configCategory.get(VERSION_KEY).getString();
+            if (!version.equals("NORESET") && !version.equals(QuiverbowMain.VERSION))
+            {
+                configCategory.get(VERSION_KEY).set(QuiverbowMain.VERSION);
+                return true;
+            }
+        }
+        else
+        {
+            Property version = new Property(VERSION_KEY, QuiverbowMain.VERSION, Property.Type.STRING);
+            version.setComment("If non-empty & different from the current version, "
+                + "this weapon will be reset to defaults. Set value to NORESET to disable.");
+            configCategory.put(VERSION_KEY, version);
+        }
+        return false;
     }
 
     public boolean isEnabled()
