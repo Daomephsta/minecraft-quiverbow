@@ -37,11 +37,12 @@ public class QuiverbowConfig
     // How fast scoped weapons zoom in and out. Smaller numbers zoom faster.
     public static float zoomSpeed;
 
-    private static Configuration config;
+    private static Configuration config, weaponsConfig;
 
-    public static void load(File suggestedFile)
+    public static void load(File configDir)
     {
-        config = new Configuration(suggestedFile);
+        config = new Configuration(new File(configDir, QuiverbowMain.MODID + "/misc.cfg"));
+        weaponsConfig = new Configuration(new File(configDir, QuiverbowMain.MODID + "/weapons.cfg"));
 
         config.load();
         //Load general config properties. The # makes the sorter put it at the top
@@ -72,15 +73,16 @@ public class QuiverbowConfig
         for (Weapon weapon : QuiverbowMain.weapons)
         {
             String categoryName = weapon.getRegistryName().getResourcePath();
-            weapon.getProperties().loadFromConfig(config.getCategory(categoryName),
-                subName -> config.getCategory(categoryName + '.' + subName));
+            weapon.getProperties().loadFromConfig(weaponsConfig.getCategory(categoryName),
+                subName -> weaponsConfig.getCategory(categoryName + '.' + subName));
         }
-        config.save();
+        weaponsConfig.save();
     }
 
     @SubscribeEvent
     public static void syncConfig(ConfigChangedEvent e)
     {
-        if (e.getModID().equals(QuiverbowMain.MODID)) ConfigManager.sync(QuiverbowMain.MODID, Config.Type.INSTANCE);
+        if (e.getModID().equals(QuiverbowMain.MODID))
+            ConfigManager.sync(QuiverbowMain.MODID, Config.Type.INSTANCE);
     }
 }

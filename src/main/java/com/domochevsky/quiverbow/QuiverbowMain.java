@@ -116,7 +116,7 @@ public class QuiverbowMain
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-        QuiverbowConfig.load(event.getSuggestedConfigurationFile());
+        QuiverbowConfig.load(event.getModConfigurationDirectory());
         logger = event.getModLog();
         PacketHandler.initPackets();
         if (QuiverbowConfig.allowTurret)
