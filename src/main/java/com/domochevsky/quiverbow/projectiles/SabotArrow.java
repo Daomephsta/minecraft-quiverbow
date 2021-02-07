@@ -62,6 +62,9 @@ public class SabotArrow extends ProjectileBase
     {
         EntityArrow arrow = Helper.createArrow(world, shootingEntity);
         arrow.setPosition(posX, posY + 1.0F, posZ);
+        // Divide by speed because this base damage will be multiplied by the speed
+        arrow.setDamage(Math.round(
+            subArrowProperties.generateDamage(world.rand) / subArrowProperties.getProjectileSpeed()));
         arrow.setDamage(subArrowProperties.generateDamage(rand));
         arrow.shoot(this, pitch, yaw, 0.0F, subArrowProperties.getProjectileSpeed(), 0.5F);
 
