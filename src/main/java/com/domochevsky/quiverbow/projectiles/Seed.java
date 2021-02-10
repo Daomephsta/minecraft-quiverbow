@@ -31,7 +31,7 @@ public class Seed extends ProjectileBase
     {
         if (target.entityHit != null)
         {
-            target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
+            target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getShooter()),
                     this.damage);
 
             target.entityHit.hurtResistantTime = 0; // No rest for the wicked

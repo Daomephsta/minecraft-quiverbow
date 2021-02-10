@@ -38,7 +38,7 @@ public class FenGoop extends ProjectileBase
     {
         if (target.entityHit != null) // hit a entity
         {
-            target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity), 0); // No
+            target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getShooter()), 0); // No
             // dmg,
             // but
             // knockback

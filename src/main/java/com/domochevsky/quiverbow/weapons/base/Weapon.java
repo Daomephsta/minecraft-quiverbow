@@ -18,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 public final class Weapon extends Item
@@ -31,6 +32,7 @@ public final class Weapon extends Item
 
     public Weapon(String name, WeaponProperties.Builder propertiesBuilder, Trigger trigger)
     {
+        propertiesBuilder.setId(new ResourceLocation(QuiverbowMain.MODID, name));
         this.properties = propertiesBuilder.build();
         this.trigger = trigger;
         setRegistryName(QuiverbowMain.MODID, name);

@@ -55,7 +55,7 @@ public class SmallRocket extends ProjectileBase
         if (target.entityHit != null) // Hit a entity
         {
             // Damage
-            target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
+            target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getShooter()),
                     this.damage);
             target.entityHit.hurtResistantTime = 0; // No immunity frames
 
@@ -100,7 +100,7 @@ public class SmallRocket extends ProjectileBase
                 EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(this.world,
                         target.getBlockPos().getX() + 0.5F,
                         target.getBlockPos().getY() + 0.5F,
-                        target.getBlockPos().getZ() + 0.5F, this.shootingEntity);
+                        target.getBlockPos().getZ() + 0.5F, getShooter());
 
                 this.world.spawnEntity(entitytntprimed); // This is TNT, so
                 // begone with that
@@ -116,7 +116,7 @@ public class SmallRocket extends ProjectileBase
         {
             boolean griefing = true; // Allowed by default
 
-            if (this.shootingEntity instanceof EntityPlayer)
+            if (getShooter() instanceof EntityPlayer)
             {
                 griefing = this.dmgTerrain; // It's up to player settings to
                 // allow/forbid this
@@ -132,7 +132,7 @@ public class SmallRocket extends ProjectileBase
             }
 
             if (!world.isRemote)
-                this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float) this.explosionSize, griefing);
+                this.world.createExplosion(this, this.posX, this.posY, this.posZ, this.explosionSize, griefing);
             // 4.0F is TNT, false is for "not flaming"
             // Editchevsky: Actually, false is double-used for "don't damage
             // terrain"

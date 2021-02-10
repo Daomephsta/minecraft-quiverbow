@@ -7,6 +7,7 @@ import com.domochevsky.quiverbow.net.NetHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
@@ -32,9 +33,16 @@ public class SabotRocket extends ProjectileBase
     @Override
     public void onImpact(RayTraceResult target) // Server-side
     {
+        // Shooter can be null if shooter is offline
+        if (getShooter() == null)
+        {
+            setDead();
+            return;
+        }
+
         if (target.entityHit != null) // Hit a entity
         {
-            target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity), 3);
+            target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getShooter()), 3);
             target.entityHit.hurtResistantTime = 0; // No immunity frames
         }
         else // Hit the terrain
@@ -63,9 +71,9 @@ public class SabotRocket extends ProjectileBase
 
     private void fireRocket(float accHor, float accVert)
     {
-        SmallRocket smallRocket = new SmallRocket(this.world, this, smallRocketProperties, accHor, accVert);
-        smallRocket.shootingEntity = this.shootingEntity;
-        this.world.spawnEntity(smallRocket);
+        SmallRocket rocket = new SmallRocket(world, this, smallRocketProperties, accHor, accVert);
+        rocket.setShooter(getShooter());
+        this.world.spawnEntity(rocket);
     }
 
 
@@ -95,9 +103,7 @@ public class SabotRocket extends ProjectileBase
                 }
 
                 if (source.getTrueSource() instanceof EntityLivingBase)
-                {
-                    this.shootingEntity = (EntityLivingBase) source.getTrueSource();
-                }
+                    setShooter((EntityLivingBase) source.getTrueSource());
 
                 return true;
             }
@@ -105,5 +111,20 @@ public class SabotRocket extends ProjectileBase
         }
 
         return false;
+    }
+
+    @Override
+    protected void readEntityFromNBT(NBTTagCompound tag)
+    {
+        super.readEntityFromNBT(tag);
+        this.smallRocketProperties = WeaponProperties.readFromNBT(tag, "subProjectileProperties");
+    }
+
+
+    @Override
+    protected void writeEntityToNBT(NBTTagCompound tag)
+    {
+        super.writeEntityToNBT(tag);
+        this.smallRocketProperties.writeToNBT(tag, "subProjectileProperties");
     }
 }

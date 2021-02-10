@@ -8,6 +8,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.RayTraceResult;
@@ -33,9 +34,16 @@ public class SabotArrow extends ProjectileBase
     @Override
     public void onImpact(RayTraceResult target) // Server-side
     {
+        // Shooter can be null if shooter is offline
+        if (getShooter() == null)
+        {
+            setDead();
+            return;
+        }
+
         if (target.entityHit != null) // Hit a entity
         {
-            target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity), 3);
+            target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getShooter()), 3);
             target.entityHit.hurtResistantTime = 0; // No immunity frames
         }
         else // Hit the terrain
@@ -60,12 +68,11 @@ public class SabotArrow extends ProjectileBase
 
     private void fireArrow(float pitch, float yaw)
     {
-        EntityArrow arrow = Helper.createArrow(world, shootingEntity);
+        EntityArrow arrow = Helper.createArrow(world, getShooter());
         arrow.setPosition(posX, posY + 1.0F, posZ);
         // Divide by speed because this base damage will be multiplied by the speed
         arrow.setDamage(Math.round(
             subArrowProperties.generateDamage(world.rand) / subArrowProperties.getProjectileSpeed()));
-        arrow.setDamage(subArrowProperties.generateDamage(rand));
         arrow.shoot(this, pitch, yaw, 0.0F, subArrowProperties.getProjectileSpeed(), 0.5F);
 
         this.world.spawnEntity(arrow);
@@ -105,7 +112,7 @@ public class SabotArrow extends ProjectileBase
 
                 if (source.getTrueSource() instanceof EntityLivingBase)
                 {
-                    this.shootingEntity = (EntityLivingBase) source.getTrueSource();
+                    setShooter((EntityLivingBase) source.getTrueSource());
                 }
 
                 return true;
@@ -114,5 +121,20 @@ public class SabotArrow extends ProjectileBase
         }
 
         return false;
+    }
+
+    @Override
+    protected void readEntityFromNBT(NBTTagCompound tag)
+    {
+        super.readEntityFromNBT(tag);
+        this.subArrowProperties = WeaponProperties.readFromNBT(tag, "subProjectileProperties");
+    }
+
+
+    @Override
+    protected void writeEntityToNBT(NBTTagCompound tag)
+    {
+        super.writeEntityToNBT(tag);
+        this.subArrowProperties.writeToNBT(tag, "subProjectileProperties");
     }
 }

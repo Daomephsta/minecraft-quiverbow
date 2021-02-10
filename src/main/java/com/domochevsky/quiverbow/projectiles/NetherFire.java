@@ -43,7 +43,7 @@ public class NetherFire extends ProjectileBase
         if (target.entityHit != null) // We hit a living thing!
         {
             // Damage
-            target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
+            target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getShooter()),
                     this.damage);
             target.entityHit.hurtResistantTime = 0;
 

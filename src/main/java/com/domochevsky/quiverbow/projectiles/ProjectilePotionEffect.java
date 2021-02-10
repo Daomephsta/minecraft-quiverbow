@@ -21,8 +21,8 @@ public abstract class ProjectilePotionEffect extends ProjectileBase
     @Override
     public void onImpact(RayTraceResult hitPos)
     {
-        hitPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
-                (float) this.damage);
+        hitPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getShooter()),
+                this.damage);
         hitPos.entityHit.hurtResistantTime = 0; // No immunity frames
         if (hitPos.entityHit instanceof EntityLivingBase) // We hit a LIVING
         // living thing!

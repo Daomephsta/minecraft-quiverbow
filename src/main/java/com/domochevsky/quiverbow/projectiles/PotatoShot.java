@@ -43,7 +43,7 @@ public class PotatoShot extends ProjectileBase
         if (target.entityHit != null)
         {
             // Damage
-            target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
+            target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getShooter()),
                     this.damage);
         }
         else

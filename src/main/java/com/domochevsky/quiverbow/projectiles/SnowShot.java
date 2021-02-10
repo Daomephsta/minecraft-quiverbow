@@ -43,7 +43,7 @@ public class SnowShot extends ProjectilePotionEffect
             // Triple DMG vs Blazes, so applying twice more
             if (target.entityHit instanceof EntityBlaze)
             {
-                target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
+                target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getShooter()),
                         this.damage * 2);
                 target.entityHit.hurtResistantTime = 0;
             }

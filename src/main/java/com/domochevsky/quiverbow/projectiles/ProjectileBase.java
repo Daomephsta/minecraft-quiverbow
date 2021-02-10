@@ -1,10 +1,12 @@
 package com.domochevsky.quiverbow.projectiles;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.net.NetHelper;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -16,10 +18,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class ProjectileBase extends Entity implements IProjectile
+public class ProjectileBase extends Entity implements IProjectile, IEntityAdditionalSpawnData
 {
     // Used by projectiles that care about the original position of the shooter,
     // like beam weapons
@@ -33,7 +37,8 @@ public class ProjectileBase extends Entity implements IProjectile
 
     protected Block stuckBlock;
 
-    public EntityLivingBase shootingEntity;
+    private EntityLivingBase shooter;
+    private UUID shooterUuid;
 
     protected int ticksInGround;
     protected int ticksInGroundMax;
@@ -79,11 +84,9 @@ public class ProjectileBase extends Entity implements IProjectile
     public void doSetup(Entity entity, float speed, float accHor, float accVert, float setYaw, float setPitch)
     {
         if (entity instanceof EntityLivingBase)
-        {
-            this.shootingEntity = (EntityLivingBase) entity;
-        }
+            setShooter((EntityLivingBase) entity);
 
-        Helper.setThrownPickup(this.shootingEntity, this); // Taking care of
+        Helper.setThrownPickup(getShooter(), this); // Taking care of
         // pickupability
 
         this.setSize(0.5F, 0.5F);
@@ -273,7 +276,7 @@ public class ProjectileBase extends Entity implements IProjectile
                 Entity potentialEntity = (Entity) candidateList.get(iteratori);
 
                 if (potentialEntity.canBeCollidedWith()
-                        && (potentialEntity != this.shootingEntity || this.ticksInAir >= 5)
+                        && (potentialEntity != getShooter() || this.ticksInAir >= 5)
                         && !(potentialEntity instanceof EntityPlayer))
                 {
                     AxisAlignedBB axisalignedbb1 = potentialEntity.getEntityBoundingBox().expand(gravity,
@@ -302,8 +305,8 @@ public class ProjectileBase extends Entity implements IProjectile
             {
                 EntityPlayer entityplayer = (EntityPlayer) hitPos.entityHit;
 
-                if (entityplayer.capabilities.disableDamage || this.shootingEntity instanceof EntityPlayer
-                        && !((EntityPlayer) this.shootingEntity).canAttackPlayer(entityplayer))
+                if (entityplayer.capabilities.disableDamage || getShooter() instanceof EntityPlayer
+                        && !((EntityPlayer) getShooter()).canAttackPlayer(entityplayer))
                 {
                     hitPos = null; // Either his entity can't be damaged in
                     // general or we can't attack them
@@ -391,6 +394,19 @@ public class ProjectileBase extends Entity implements IProjectile
         }
     }
 
+    public EntityLivingBase getShooter()
+    {
+        if (this.shooter == null && world instanceof WorldServer)
+            this.shooter = (EntityLivingBase) ((WorldServer) world).getEntityFromUuid(shooterUuid);
+        return this.shooter;
+    }
+
+    public void setShooter(EntityLivingBase shooter)
+    {
+        this.shooter = shooter;
+        this.shooterUuid = shooter.getUniqueID();
+    }
+
     public void doWaterEffect()
     {} // Called when this entity moves through water
 
@@ -436,6 +452,9 @@ public class ProjectileBase extends Entity implements IProjectile
         {
             this.canBePickedUp = tag.getBoolean("player") ? true : false;
         }
+        // Client is handled by spawn data
+        if (tag.hasUniqueId("shooterUuid") && world instanceof WorldServer)
+            this.shooterUuid = tag.getUniqueId("shooterUuid");
     }
 
     @Override
@@ -458,11 +477,19 @@ public class ProjectileBase extends Entity implements IProjectile
         tag.setBoolean("pickup", this.canBePickedUp);
 
         tag.setDouble("damage", this.damage);
+        tag.setUniqueId("shooterUuid", shooterUuid);
     }
 
-    public Entity getShooter()
+    @Override
+    public void readSpawnData(ByteBuf spawnData)
     {
-        return this.shootingEntity;
+        setShooter((EntityLivingBase) world.getEntityByID(spawnData.readInt()));
+    }
+
+    @Override
+    public void writeSpawnData(ByteBuf spawnData)
+    {
+        spawnData.writeInt(getShooter().getEntityId());
     }
 
     @Override

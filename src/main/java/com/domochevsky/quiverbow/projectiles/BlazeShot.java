@@ -49,7 +49,7 @@ public class BlazeShot extends ProjectileBase
             }
 
             // Damage
-            hitPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity), this.damage);
+            hitPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getShooter()), this.damage);
             hitPos.entityHit.hurtResistantTime = 0; // No rest for the wicked
 
             // Knockback

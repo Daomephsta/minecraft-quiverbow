@@ -35,7 +35,7 @@ public class Thorn extends ProjectileBase
     {
         if (movPos.entityHit != null)
         {
-            movPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
+            movPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getShooter()),
                     this.damage);
             movPos.entityHit.hurtResistantTime = 0; // No rest for the wicked
         }

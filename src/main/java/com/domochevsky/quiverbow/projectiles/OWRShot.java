@@ -51,7 +51,7 @@ public class OWRShot extends ProjectilePotionEffect
     {
         if (target.entityHit != null) // We hit a living thing!
         {
-            target.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.shootingEntity),
+            target.entityHit.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, getShooter()),
                     this.damageMagic);
             target.entityHit.hurtResistantTime = 0; // No immunity frames
 

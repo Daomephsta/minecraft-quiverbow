@@ -117,7 +117,7 @@ public class Helper
         {
             ProjectileBase projectile = (ProjectileBase) entity;
 
-            if (projectile.shootingEntity != null && !(projectile.shootingEntity instanceof EntityPlayer))
+            if (projectile.getShooter() != null && !(projectile.getShooter() instanceof EntityPlayer))
             {
                 // Not shot by a player, so checking for mob griefing
                 if (!world.getGameRules().getBoolean("mobGriefing"))

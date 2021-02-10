@@ -45,7 +45,7 @@ public class SoulShot extends ProjectileBase
             // Can't catch players or bosses
             if (target.entityHit instanceof EntityPlayer)
             {
-                DamageSource magicDamage = DamageSource.causeIndirectMagicDamage(this, this.shootingEntity);
+                DamageSource magicDamage = DamageSource.causeIndirectMagicDamage(this, getShooter());
                 target.entityHit.attackEntityFrom(magicDamage, 10);
                 this.damageShooter();
                 return;
@@ -53,16 +53,16 @@ public class SoulShot extends ProjectileBase
             if (!target.entityHit.isNonBoss())
             {
                 this.damageShooter();
-                Helper.trySendActionBarMessage(shootingEntity, QuiverbowMain.MODID + ".soul_cairn.boss");
+                Helper.trySendActionBarMessage(getShooter(), QuiverbowMain.MODID + ".soul_cairn.boss");
                 return;
             }
             ResourceLocation entityKey = EntityList.getKey(target.entityHit);
             if(BLACKLIST.contains(entityKey) || !EntityList.ENTITY_EGGS.containsKey(entityKey))
             {
-                Helper.trySendActionBarMessage(shootingEntity, QuiverbowMain.MODID + ".soul_cairn.blacklisted");
+                Helper.trySendActionBarMessage(getShooter(), QuiverbowMain.MODID + ".soul_cairn.blacklisted");
                 return;
             }
-            shootingEntity.entityDropItem(eggFor(target.entityHit), 0);
+            getShooter().entityDropItem(eggFor(target.entityHit), 0);
             target.entityHit.setDead();
 
             NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SMOKE_LARGE,
@@ -119,12 +119,9 @@ public class SoulShot extends ProjectileBase
 
     void damageShooter()
     {
-        if (this.shootingEntity == null)
-        {
+        if (getShooter() == null)
             return;
-        } // Owner doesn't exist
 
-        this.shootingEntity.attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, this.shootingEntity),
-                10);
+        getShooter().attackEntityFrom(DamageSource.causeIndirectMagicDamage(this, getShooter()), 10);
     }
 }

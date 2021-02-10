@@ -14,9 +14,16 @@ import com.domochevsky.quiverbow.config.properties.BooleanProperty;
 import com.domochevsky.quiverbow.config.properties.FloatProperty;
 import com.domochevsky.quiverbow.config.properties.IntProperty;
 import com.domochevsky.quiverbow.config.properties.WeaponProperty;
+import com.domochevsky.quiverbow.util.ResourceLocationExt;
+import com.domochevsky.quiverbow.weapons.base.Weapon;
 
+import net.minecraft.item.Item;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StringUtils;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Property;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class WeaponProperties
 {
@@ -30,11 +37,13 @@ public class WeaponProperties
         COOLDOWN = Pair.of("cooldown", "How many ticks it takes for this weapon to be able to fire again"),
         MOB_USABLE = Pair.of("isMobUsable", "QuiverMobs can spawn with this weapon if true");
     private static final String VERSION_KEY = "version";
+    private ResourceLocation id;
     private Map<String, WeaponProperty> properties;
     private WeaponProperties subProjectileProperties;
 
     public WeaponProperties(Builder builder)
     {
+        this.id = builder.id;
         this.properties = builder.properties;
         this.subProjectileProperties = builder.subProjectileProperties;
     }
@@ -50,7 +59,12 @@ public class WeaponProperties
         for (WeaponProperty property : properties.values())
         {
             if (!outdated && configCategory.containsKey(property.getPropertyName()))
-                property.loadFromConfig(configCategory.get(property.getPropertyName()));
+            {
+                Property configProperty = configCategory.get(property.getPropertyName());
+                if (StringUtils.isNullOrEmpty(configProperty.getComment()))
+                    configProperty.setComment(property.getComment());
+                property.loadFromConfig(configProperty);
+            }
             else
                 configCategory.put(property.getPropertyName(), property.createDefaultForgeConfigProperty());
         }
@@ -77,6 +91,33 @@ public class WeaponProperties
             configCategory.put(VERSION_KEY, version);
         }
         return false;
+    }
+
+    public static WeaponProperties readFromNBT(NBTTagCompound tag, String key)
+    {
+        return WeaponProperties.getById(new ResourceLocation(tag.getString(key)));
+    }
+
+    public void writeToNBT(NBTTagCompound tag, String key)
+    {
+        tag.setString(key, getId().toString());
+    }
+
+    public static WeaponProperties getById(ResourceLocation id)
+    {
+        if (id.getResourcePath().startsWith("subprojectile/"))
+            return getById(ResourceLocationExt.subPath(id, 1)).getSubProjectileProperties();
+
+        Item value = ForgeRegistries.ITEMS.getValue(id);
+        if (value instanceof Weapon)
+            return ((Weapon) value).getProperties();
+        else
+            throw new IllegalArgumentException("No properties found for " + id);
+    }
+
+    public ResourceLocation getId()
+    {
+        return id;
     }
 
     public boolean isEnabled()
@@ -179,8 +220,17 @@ public class WeaponProperties
 
     public static class Builder
     {
+        private ResourceLocation id;
         private Map<String, WeaponProperty> properties = new HashMap<>();
         private WeaponProperties subProjectileProperties;
+
+        public Builder setId(ResourceLocation id)
+        {
+            this.id = id;
+            if (subProjectileProperties != null)
+                subProjectileProperties.id = ResourceLocationExt.prefixPath(id, "subprojectile/");
+            return this;
+        }
 
         public Builder damage(int defaultValue)
         {

@@ -63,9 +63,9 @@ public class WaterShot extends ProjectileBase
         if (hitState.getBlock().isReplaceable(world, pos) || hitState.getMaterial() == Material.PLANTS)
         {
             // Can we edit this block at all?
-            if (this.shootingEntity instanceof EntityPlayer)
+            if (getShooter() instanceof EntityPlayer)
             {
-                EntityPlayer player = (EntityPlayer) this.shootingEntity;
+                EntityPlayer player = (EntityPlayer) getShooter();
                 if (!player.canPlayerEdit(pos, target.sideHit, ItemStack.EMPTY))
                 {
                     return;

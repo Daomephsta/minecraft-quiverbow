@@ -63,7 +63,7 @@ public class EnderAccelerator extends ProjectileBase implements IEntityAdditiona
     {
         if (target.entityHit != null) // We hit a living thing!
         {
-            target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
+            target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getShooter()),
                     this.damage);
             target.entityHit.hurtResistantTime = 0; // No immunity frames
         }

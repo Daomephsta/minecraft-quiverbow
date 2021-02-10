@@ -49,9 +49,9 @@ public class EnderAno extends ProjectileBase
     {
         if (target.entityHit != null) // We hit a living thing!
         {
-            if (target.entityHit instanceof EntityEnderman && this.shootingEntity instanceof EntityPlayer)
+            if (target.entityHit instanceof EntityEnderman && getShooter() instanceof EntityPlayer)
             {
-                target.entityHit.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) this.shootingEntity),
+                target.entityHit.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) getShooter()),
                         this.damage); // Capable of hurting endermen
             }
             else

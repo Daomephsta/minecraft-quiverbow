@@ -59,7 +59,7 @@ public class ProxyThorn extends ProjectileBase
     {
         if (movPos.entityHit != null) // We hit a living thing!
         {
-            movPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
+            movPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getShooter()),
                     this.damage); // Damage gets applied here
             movPos.entityHit.hurtResistantTime = 0; // No immunity frames
 
@@ -253,10 +253,8 @@ public class ProxyThorn extends ProjectileBase
 
         // Firing
         Thorn projectile = new Thorn(this.world, this, (float) this.thornSpeed, thornYaw, thornPitch);
+        projectile.setShooter(getShooter());
         projectile.damage = dmg;
-
-        projectile.shootingEntity = this.shootingEntity; // Keeping that chain
-        // alive
 
         this.world.spawnEntity(projectile);
     }

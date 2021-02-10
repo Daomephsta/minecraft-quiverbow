@@ -44,7 +44,7 @@ public class CoinShot extends ProjectileBase
         if (hitPos.entityHit != null)
         {
             // Firing
-            hitPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
+            hitPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getShooter()),
                     this.damage); // Damage gets applied here
 
             hitPos.entityHit.hurtResistantTime = 0;
@@ -54,9 +54,9 @@ public class CoinShot extends ProjectileBase
             // Glass breaking
             Helper.tryBlockBreak(this.world, this, hitPos.getBlockPos(), 1);
 
-            if (this.shootingEntity != null && this.shootingEntity instanceof EntityPlayer)
+            if (getShooter() instanceof EntityPlayer)
             {
-                EntityPlayer player = (EntityPlayer) this.shootingEntity;
+                EntityPlayer player = (EntityPlayer) getShooter();
 
                 if (this.shouldDrop && !player.capabilities.isCreativeMode)
                 {

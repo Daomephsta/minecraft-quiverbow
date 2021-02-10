@@ -61,7 +61,7 @@ public class EnderShot extends ProjectileBase
     {
         if (target.entityHit != null) // We hit a living thing!
         {
-            target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.shootingEntity),
+            target.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getShooter()),
                     this.damage); // Damage gets applied here
             target.entityHit.hurtResistantTime = 0; // No immunity frames
 

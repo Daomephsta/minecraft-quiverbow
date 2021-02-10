@@ -41,7 +41,7 @@ public class BigRocket extends ProjectileBase
     {
         boolean griefing = true; // Allowed by default
 
-        if (this.shootingEntity instanceof EntityPlayer)
+        if (getShooter() instanceof EntityPlayer)
         {
             griefing = this.dmgTerrain; // It's up to player settings to
             // allow/forbid this
@@ -57,7 +57,7 @@ public class BigRocket extends ProjectileBase
         }
 
         if (!world.isRemote)
-            this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float) this.explosionSize, griefing); // Bewm
+            this.world.createExplosion(this, this.posX, this.posY, this.posZ, this.explosionSize, griefing); // Bewm
 
         this.setDead(); // We've hit something, so begone with the projectile
     }
@@ -71,7 +71,7 @@ public class BigRocket extends ProjectileBase
             {
                 boolean griefing = true; // Allowed by default
 
-                if (this.shootingEntity instanceof EntityPlayer)
+                if (getShooter() instanceof EntityPlayer)
                 {
                     griefing = this.dmgTerrain; // It's up to player settings to
                     // allow/forbid this
@@ -87,7 +87,7 @@ public class BigRocket extends ProjectileBase
                 }
 
                 if (!world.isRemote)
-                    this.world.createExplosion(this, this.posX, this.posY, this.posZ, (float) this.explosionSize, griefing); // Bewm
+                    this.world.createExplosion(this, this.posX, this.posY, this.posZ, this.explosionSize, griefing); // Bewm
 
                 this.setDead(); // We've hit something, so begone with the
                 // projectile
@@ -129,9 +129,7 @@ public class BigRocket extends ProjectileBase
                 }
 
                 if (source.getTrueSource() instanceof EntityLivingBase)
-                {
-                    this.shootingEntity = (EntityLivingBase) source.getTrueSource();
-                }
+                    setShooter((EntityLivingBase) source.getTrueSource());
 
                 return true;
             }
