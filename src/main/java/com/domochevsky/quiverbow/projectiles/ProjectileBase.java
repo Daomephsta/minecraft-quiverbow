@@ -84,10 +84,11 @@ public class ProjectileBase extends Entity implements IProjectile, IEntityAdditi
     public void doSetup(Entity entity, float speed, float accHor, float accVert, float setYaw, float setPitch)
     {
         if (entity instanceof EntityLivingBase)
-            setShooter((EntityLivingBase) entity);
-
-        Helper.setThrownPickup(getShooter(), this); // Taking care of
-        // pickupability
+        {
+            EntityLivingBase living = (EntityLivingBase) entity;
+            setShooter(living);
+            Helper.setThrownPickup(living, this);
+        }
 
         this.setSize(0.5F, 0.5F);
         this.setLocationAndAngles(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ, setYaw,
@@ -401,6 +402,11 @@ public class ProjectileBase extends Entity implements IProjectile, IEntityAdditi
         return this.shooter;
     }
 
+    public boolean hasShooter()
+    {
+        return getShooter() != null;
+    }
+
     public void setShooter(EntityLivingBase shooter)
     {
         this.shooter = shooter;
@@ -483,13 +489,15 @@ public class ProjectileBase extends Entity implements IProjectile, IEntityAdditi
     @Override
     public void readSpawnData(ByteBuf spawnData)
     {
-        setShooter((EntityLivingBase) world.getEntityByID(spawnData.readInt()));
+        if (spawnData.isReadable())
+            setShooter((EntityLivingBase) world.getEntityByID(spawnData.readInt()));
     }
 
     @Override
     public void writeSpawnData(ByteBuf spawnData)
     {
-        spawnData.writeInt(getShooter().getEntityId());
+        if (hasShooter())
+            spawnData.writeInt(getShooter().getEntityId());
     }
 
     @Override

@@ -253,7 +253,8 @@ public class ProxyThorn extends ProjectileBase
 
         // Firing
         Thorn projectile = new Thorn(this.world, this, (float) this.thornSpeed, thornYaw, thornPitch);
-        projectile.setShooter(getShooter());
+        if (hasShooter())
+            projectile.setShooter(getShooter());
         projectile.damage = dmg;
 
         this.world.spawnEntity(projectile);

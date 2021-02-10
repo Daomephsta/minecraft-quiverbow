@@ -35,7 +35,7 @@ public class SabotArrow extends ProjectileBase
     public void onImpact(RayTraceResult target) // Server-side
     {
         // Shooter can be null if shooter is offline
-        if (getShooter() == null)
+        if (!hasShooter())
         {
             setDead();
             return;
