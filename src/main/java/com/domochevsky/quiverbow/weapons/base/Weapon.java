@@ -121,7 +121,9 @@ public final class Weapon extends Item
     @Override
     public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags)
     {
-        super.addInformation(stack, world, list, flags);
+        AmmoSource ammoSource = getTrigger().getAmmoSource();
+        list.add(I18n.format(getUnlocalizedName() + ".ammostatus",
+            ammoSource.getAmmo(stack), ammoSource.getAmmoCapacity(stack)));
     }
 
     @Override
