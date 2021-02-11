@@ -17,7 +17,6 @@ public class LapisMagazine extends AmmoMagazine
     public LapisMagazine()
     {
         super(1, 1);
-        this.setMaxDamage(150);
         this.setCreativeTab(CreativeTabs.COMBAT);
     }
 
@@ -25,22 +24,22 @@ public class LapisMagazine extends AmmoMagazine
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
         ItemStack stack = player.getHeldItem(hand);
-        if (stack.getItemDamage() == 0)
-         return ActionResult.newResult(EnumActionResult.FAIL, stack);
-        if (stack.getItemDamage() < 25)
+        if (getAmmo(stack) >= getAmmoCapacity())
+            return ActionResult.newResult(EnumActionResult.FAIL, stack);
+        if (getAmmo(stack) > getAmmoCapacity() - 25)
             return ActionResult.newResult(EnumActionResult.FAIL, stack);
         if (player.capabilities.isCreativeMode)
         {
             if (world.isRemote)
             {
-                Minecraft.getMinecraft().ingameGUI.setOverlayMessage(I18n.format(QuiverbowMain.MODID + ".ammo.nocreative"),
-                        false);
+                Minecraft.getMinecraft().ingameGUI.setOverlayMessage(
+                    I18n.format(QuiverbowMain.MODID + ".ammo.nocreative"), false);
             }
             return ActionResult.newResult(EnumActionResult.FAIL, stack);
         }
         if (hasComponentItems(player, 1))
         {
-            stack.setItemDamage(stack.getItemDamage() - 25);
+            addAmmo(stack, 25);
             consumeComponentItems(player, 1);
         }
         return ActionResult.newResult(EnumActionResult.SUCCESS, stack);

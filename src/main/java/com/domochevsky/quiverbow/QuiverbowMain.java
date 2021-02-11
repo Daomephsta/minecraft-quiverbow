@@ -109,7 +109,10 @@ public class QuiverbowMain
         @Override
         public ItemStack getTabIconItem()
         {
-            return new ItemStack(ItemRegistry.QUIVERBOW);
+            ItemStack icon = new ItemStack(ItemRegistry.QUIVERBOW);
+            AmmoSource ammoSource = ((Weapon) icon.getItem()).getTrigger().getAmmoSource();
+            ammoSource.addAmmo(icon, ammoSource.getAmmoCapacity(icon));
+            return icon;
         }
     };
 
@@ -193,36 +196,41 @@ public class QuiverbowMain
                 addWeapon("compact_crossbow",
                     builder -> builder.minimumDamage(14).maximumDamage(20)
                         .projectileSpeed(2.5F).knockback(2).cooldown(25).mobUsable()
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
-                    new SemiAutomaticTrigger(new SimpleAmmoSource(1), new SingleShotFireShape(crossbowBolt)))
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 1),
+                    new SemiAutomaticTrigger(new SimpleAmmoSource(), new SingleShotFireShape(crossbowBolt)))
                     .fireEffects(new PlaySound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 0.5F)),
                 addWeapon("double_crossbow",
                     builder -> builder.minimumDamage(14).maximumDamage(20)
                         .projectileSpeed(2.5F).knockback(2).cooldown(25).mobUsable()
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
-                    new SemiAutomaticTrigger(new SimpleAmmoSource(2), new SingleShotFireShape(crossbowBolt)))
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 2),
+                    new SemiAutomaticTrigger(new SimpleAmmoSource(), new SingleShotFireShape(crossbowBolt)))
                     .fireEffects(new PlaySound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 0.5F))
                     .cooldownEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 0.4F)),
                 addWeapon("blaze_crossbow",
                     builder -> builder.minimumDamage(20).maximumDamage(30)
                         .projectileSpeed(3.0F).knockback(2).cooldown(10).mobUsable()
                         .intProperty(CommonProperties.FIRE_DUR_ENTITY, 15)
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
-                    new SemiAutomaticTrigger(new SimpleAmmoSource(1), new SingleShotFireShape(BlazeShot::new)))
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 1),
+                    new SemiAutomaticTrigger(new SimpleAmmoSource(), new SingleShotFireShape(BlazeShot::new)))
                     .fireEffects(new PlaySound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 0.5F),
                     new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.0F, 0.5F),
                     new SpawnParticle(EnumParticleTypes.SMOKE_NORMAL, 0.5D)),
                 addWeapon("autoloader_crossbow",
                     builder -> builder.minimumDamage(10).maximumDamage(16)
                         .projectileSpeed(2.5F).knockback(1).cooldown(8).mobUsable()
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
-                    new AutoLoadingTrigger(new SimpleAmmoSource(8), new SingleShotFireShape(crossbowBolt)))
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 8),
+                    new AutoLoadingTrigger(new SimpleAmmoSource(), new SingleShotFireShape(crossbowBolt)))
                     .fireEffects(new PlaySound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 0.5F)),
                 addWeapon("auto_crossbow",
                     builder -> builder.minimumDamage(10).maximumDamage(16)
                         .projectileSpeed(2.5F).knockback(1).cooldown(8).mobUsable()
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
-                    new AutomaticTrigger(new SimpleAmmoSource(16), new SingleShotFireShape(crossbowBolt)))
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 16),
+                    new AutomaticTrigger(new SimpleAmmoSource(), new SingleShotFireShape(crossbowBolt)))
                     .fireEffects(new PlaySound(SoundEvents.ENTITY_ARROW_SHOOT, 1.0F, 0.5F)));
             ProjectileFactory arrow = (world, user, properties) ->
             {
@@ -248,8 +256,9 @@ public class QuiverbowMain
             registry.registerAll(
                 addWeapon("quiverbow",
                     builder -> builder
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
-                    new DrawnTrigger(new SimpleAmmoSource(256), new SingleShotFireShape(arrow)))
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 256),
+                    new DrawnTrigger(new SimpleAmmoSource(), new SingleShotFireShape(arrow)))
                     .fireEffects(arrowSound),
                 addWeapon("ender_bow",
                     builder -> builder.floatProperty(CommonProperties.MAX_ZOOM, 30),
@@ -259,7 +268,8 @@ public class QuiverbowMain
             );
             Effect breakIfEmpty = (world, shooter, stack, properties) ->
             {
-                if (stack.getItemDamage() >= stack.getMaxDamage())
+                AmmoSource ammoSource = ((Weapon) stack.getItem()).getTrigger().getAmmoSource();
+                if (!ammoSource.hasAmmo(shooter, stack, properties))
                 {
                     shooter.renderBrokenItemStack(stack);
                     stack.setCount(0);
@@ -276,8 +286,9 @@ public class QuiverbowMain
                         .maximumDamage(1).projectileSpeed(1.3F).mobUsable()
                         .floatProperty(CommonProperties.SPREAD, 5.0F)
                         .intProperty(SpreadFireShape.PROJECTILES, 1)
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
-                    new AutomaticTrigger(new SimpleAmmoSource(32), new SpreadFireShape(Seed::new)))
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 32),
+                    new AutomaticTrigger(new SimpleAmmoSource(), new SpreadFireShape(Seed::new)))
                     .fireEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.6F, 0.7F),
                         breakIfEmpty)
             );
@@ -288,8 +299,9 @@ public class QuiverbowMain
                         .intProperty(CommonProperties.FIRE_DUR_ENTITY, 6)
                         .floatProperty(CommonProperties.EXPLOSION_SIZE, 1.0F)
                         .booleanProperty(CommonProperties.DAMAGE_TERRAIN, true)
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
-                    new AutomaticTrigger(new SimpleAmmoSource(64), new SingleShotFireShape(SmallRocket::new)))
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 64),
+                    new AutomaticTrigger(new SimpleAmmoSource(), new SingleShotFireShape(SmallRocket::new)))
                     .fireEffects(new PlaySound(SoundEvents.ENTITY_FIREWORK_LAUNCH, 1.0F, 1.0F)),
                 addWeapon("quad_dragonbox",
                     builder -> builder.minimumDamage(4).maximumDamage(6)
@@ -299,8 +311,9 @@ public class QuiverbowMain
                         .booleanProperty(CommonProperties.DAMAGE_TERRAIN, true)
                         .floatProperty(CommonProperties.SPREAD, 6)
                         .intProperty(SpreadFireShape.PROJECTILES, 4)
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 4),
-                    new AutomaticTrigger(new SimpleAmmoSource(64),
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 4)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 64),
+                    new AutomaticTrigger(new SimpleAmmoSource(),
                         new SpreadFireShape(SmallRocket::new)))
                     .fireEffects(new PlaySound(SoundEvents.ENTITY_FIREWORK_LAUNCH, 1.0F, 1.0F)),
                 addWeapon("rocket_launcher",
@@ -308,24 +321,27 @@ public class QuiverbowMain
                         .floatProperty(CommonProperties.EXPLOSION_SIZE, 4.0F)
                         .intProperty(BigRocket.TRAVEL_TIME, 20)
                         .booleanProperty(CommonProperties.DAMAGE_TERRAIN, true)
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
-                    new AutomaticTrigger(new SimpleAmmoSource(1), new SingleShotFireShape(BigRocket::new)))
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 1),
+                    new AutomaticTrigger(new SimpleAmmoSource(), new SingleShotFireShape(BigRocket::new)))
                     .fireEffects(new PlaySound(SoundEvents.ENTITY_FIREWORK_LAUNCH, 2.0F, 0.6F)),
                 addWeapon("rocket_launcher_imp",
                     builder -> builder.projectileSpeed(2.0F).kickback(3).cooldown(60).mobUsable()
                         .floatProperty(CommonProperties.EXPLOSION_SIZE, 4.0F)
                         .intProperty(BigRocket.TRAVEL_TIME, 20)
                         .booleanProperty(CommonProperties.DAMAGE_TERRAIN, true)
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
-                    new AutomaticTrigger(new SimpleAmmoSource(1), new SingleShotFireShape(BigRocket::new)))
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 1),
+                    new AutomaticTrigger(new SimpleAmmoSource(), new SingleShotFireShape(BigRocket::new)))
                     .fireEffects(new PlaySound(SoundEvents.ENTITY_FIREWORK_LAUNCH, 2.0F, 0.6F)),
                 addWeapon("arrow_mortar",
                     builder -> builder
                         .projectileSpeed(1.5F).kickback(3).cooldown(20).mobUsable()
                         .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 8)
                         .withSubProjectileProperties(subBuilder -> subBuilder
                             .minimumDamage(2).maximumDamage(10).projectileSpeed(1.0F)),
-                    new SemiAutomaticTrigger(new SimpleAmmoSource(8), new SingleShotFireShape(SabotArrow::new)))
+                    new SemiAutomaticTrigger(new SimpleAmmoSource(), new SingleShotFireShape(SabotArrow::new)))
                     .fireEffects(new PlaySound(SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 2.0F),
                         new SpawnParticle(EnumParticleTypes.SMOKE_LARGE, 0))
                     .cooldownEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.6F, 2.0F)),
@@ -333,12 +349,13 @@ public class QuiverbowMain
                     builder -> builder
                         .projectileSpeed(3.0F).cooldown(20).mobUsable()
                         .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 8)
                         .withSubProjectileProperties(subBuilder -> subBuilder
                             .minimumDamage(4).maximumDamage(6).projectileSpeed(1.0F)
                             .intProperty(CommonProperties.FIRE_DUR_ENTITY, 6)
                             .floatProperty(CommonProperties.EXPLOSION_SIZE, 1.0F)
                             .booleanProperty(CommonProperties.DAMAGE_TERRAIN, true)),
-                    new SemiAutomaticTrigger(new SimpleAmmoSource(8), new SingleShotFireShape(SabotRocket::new)))
+                    new SemiAutomaticTrigger(new SimpleAmmoSource(), new SingleShotFireShape(SabotRocket::new)))
                     .fireEffects(new PlaySound(SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 2.0F),
                         new SpawnParticle(EnumParticleTypes.SMOKE_LARGE, 0))
                     .cooldownEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.6F, 2.0F)),
@@ -346,8 +363,9 @@ public class QuiverbowMain
                     builder -> builder.minimumDamage(2).maximumDamage(5)
                         .projectileSpeed(1.5F).cooldown(15).mobUsable()
                         .booleanProperty(CommonProperties.SHOULD_DROP, true)
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
-                    new AutomaticTrigger(new SimpleAmmoSource(14), new SingleShotFireShape(PotatoShot::new)))
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 14),
+                    new AutomaticTrigger(new SimpleAmmoSource(), new SingleShotFireShape(PotatoShot::new)))
                     .fireEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 0.7F, 0.4F))
                     .cooldownEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.3F, 3.0F)),
                 addWeapon("snow_cannon",
@@ -357,16 +375,18 @@ public class QuiverbowMain
                         .intProperty(CommonProperties.SLOWNESS_STRENGTH, 3)
                         .intProperty(CommonProperties.SLOWNESS_DUR, 40)
                         .intProperty(SpreadFireShape.PROJECTILES, 4)
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 4),
-                    new AutomaticTrigger(new SimpleAmmoSource(64), new SpreadFireShape(SnowShot::new)))
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 4)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 64),
+                    new AutomaticTrigger(new SimpleAmmoSource(), new SpreadFireShape(SnowShot::new)))
                     .fireEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F)),
                 addWeapon("ender_rifle",
                     builder -> builder.minimumDamage(4).maximumDamage(16)
                         .projectileSpeed(3.0F).knockback(1).kickback(3).cooldown(25).mobUsable()
                         .floatProperty(EnderShot.BONUS_DAMAGE, 1.0F)
                         .floatProperty(CommonProperties.MAX_ZOOM, 30)
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
-                    new SemiAutomaticTrigger(new SimpleAmmoSource(8), new SingleShotFireShape(EnderShot::new)))
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 8),
+                    new SemiAutomaticTrigger(new SimpleAmmoSource(), new SingleShotFireShape(EnderShot::new)))
                     .fireEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 0.5F),
                         new SpawnParticle(EnumParticleTypes.SMOKE_NORMAL, 0.0F))
                     .cooldownEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.7F, 0.2F),
@@ -376,16 +396,18 @@ public class QuiverbowMain
                         .intProperty(CommonProperties.FIRE_DUR_ENTITY, 1)
                         .intProperty(CommonProperties.DESPAWN_TIME.getLeft(),
                             "How long fen lights stay lit in ticks. Set to 0 for infinite time", 0)
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
-                    new SemiAutomaticTrigger(new SimpleAmmoSource(32), new SingleShotFireShape(FenGoop::new)))
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 32),
+                    new SemiAutomaticTrigger(new SimpleAmmoSource(), new SingleShotFireShape(FenGoop::new)))
                     .fireEffects(new PlaySound(SoundEvents.ENTITY_ARROW_SHOOT, 0.7F, 0.3F))
                     .cooldownEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.8F, 2.0F)),
                 addWeapon("flint_duster",
                     builder -> builder.damage(1)
                         .intProperty("maxRange", "The maximum range of this weapon in blocks", 7)
                         .floatProperty(BeamFireShape.MAX_RANGE, 8)
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
-                    new AutomaticTrigger(new SimpleAmmoSource(256),
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 256),
+                    new AutomaticTrigger(new SimpleAmmoSource(),
                         new BeamFireShape((stack, world, user, target, properties) ->
                         {
                             if (target.typeOfHit == RayTraceResult.Type.ENTITY)
@@ -417,8 +439,9 @@ public class QuiverbowMain
                         .intProperty(BeamFireShape.PIERCING, 1)
                         .floatProperty(BeamFireShape.MAX_RANGE, 64)
                         .intProperty("minLight", "The minimum light level needed to recharge", 12)
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 10),
-                    new AutomaticTrigger(new SolarAmmoSource(128),
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 10)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 128),
+                    new AutomaticTrigger(new SolarAmmoSource(),
                         new BeamFireShape((stack, world, user, target, properties) ->
                         {
                             if (target.typeOfHit == RayTraceResult.Type.ENTITY)
@@ -466,9 +489,10 @@ public class QuiverbowMain
                         .floatProperty(CommonProperties.EXPLOSION_SIZE, 1.5F)
                         .booleanProperty(CommonProperties.DAMAGE_TERRAIN, true)
                         .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 8)
                         .intProperty(CommonProperties.SELF_DAMAGE, 1)
                         .intProperty(CommonProperties.FIRE_DUR_ENTITY, 2),
-                    new PunchTrigger(new SimpleAmmoSource(8), new HitscanFireShape((world, user, properties, hit) ->
+                    new PunchTrigger(new SimpleAmmoSource(), new HitscanFireShape((world, user, properties, hit) ->
                     {
                         if (hit.entityHit != null)
                             hit.entityHit.setFire(properties.getInt(CommonProperties.FIRE_DUR_ENTITY));
@@ -485,8 +509,9 @@ public class QuiverbowMain
                     builder -> builder
                         .floatProperty(CommonProperties.EXPLOSION_SIZE, 1.5F)
                         .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 8)
                         .intProperty(CommonProperties.FIRE_DUR_ENTITY, 2),
-                    new PunchTrigger(new SimpleAmmoSource(8), new HitscanFireShape((world, user, properties, hit) ->
+                    new PunchTrigger(new SimpleAmmoSource(), new HitscanFireShape((world, user, properties, hit) ->
                     {
                         if (hit.entityHit != null)
                             hit.entityHit.setFire(properties.getInt(CommonProperties.FIRE_DUR_ENTITY));
@@ -534,19 +559,23 @@ public class QuiverbowMain
                 addWeapon("soul_cairn",
                     builder -> builder.projectileSpeed(3.0F).kickback(4).cooldown(20)
                         .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 1)
                         .intProperty(CommonProperties.SELF_DAMAGE, 2),
-                    new AutomaticTrigger(new SimpleAmmoSource(1), new SingleShotFireShape(SoulShot::new)))
+                    new AutomaticTrigger(new SimpleAmmoSource(), new SingleShotFireShape(SoulShot::new)))
                     .fireEffects(new PlaySound(SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 2.0F),
                         new PlaySound(SoundEvents.BLOCK_NOTE_BASS, 1.0F, 0.4F),
                         (world, user, stack, properties) -> Helper.causeSelfDamage(user, ((Weapon) stack.getItem()).getProperties().getInt(CommonProperties.SELF_DAMAGE))),
                 addWeapon("aqua_accelerator",
-                    builder -> builder.projectileSpeed(1.5F),
+                    builder -> builder.projectileSpeed(1.5F)
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 1),
                     new AutomaticTrigger(new WaterAmmoSource(), new SingleShotFireShape(WaterShot::new)))
                     .fireEffects(new PlaySound(SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 2.0F)),
                 addWeapon("silken_spinner",
                     builder -> builder.projectileSpeed(1.5F).cooldown(20)
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
-                    new SemiAutomaticTrigger(new SimpleAmmoSource(8), new SingleShotFireShape(WebShot::new)))
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 8),
+                    new SemiAutomaticTrigger(new SimpleAmmoSource(), new SingleShotFireShape(WebShot::new)))
                     .fireEffects(new PlaySound(SoundEvents.BLOCK_PISTON_EXTEND, 1.0F, 2.0F)),
                 addWeapon("frost_lancer",
                     builder -> builder.minimumDamage(9).maximumDamage(18)
@@ -555,8 +584,9 @@ public class QuiverbowMain
                         .intProperty(CommonProperties.SLOWNESS_DUR, 120)
                         .intProperty(CommonProperties.NAUSEA_DUR, 120)
                         .floatProperty(CommonProperties.MAX_ZOOM, 20)
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
-                    new SemiAutomaticTrigger(new SimpleAmmoSource(4),
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 4),
+                    new SemiAutomaticTrigger(new SimpleAmmoSource(),
                         new SingleShotFireShape(ColdIron::new)))
                     .fireEffects(new PlaySound(SoundEvents.ENTITY_GENERIC_EXPLODE, 0.8F, 1.5F),
                         new SpawnParticle(EnumParticleTypes.SMOKE_NORMAL, 0.0F))
@@ -564,8 +594,9 @@ public class QuiverbowMain
                         new SpawnParticle(EnumParticleTypes.SMOKE_NORMAL, 0.0F)),
                 addWeapon("ray_of_hope",
                     builder -> builder.floatProperty(BeamFireShape.MAX_RANGE, 64)
-                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
-                    new AutomaticTrigger(new SimpleAmmoSource(320),
+                        .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
+                        .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 320),
+                    new AutomaticTrigger(new SimpleAmmoSource(),
                         new BeamFireShape((stack, world, user, target, properties) ->
                         {
                             if (target.entityHit instanceof EntityLivingBase)
@@ -592,8 +623,9 @@ public class QuiverbowMain
                     .floatProperty(EnderAccelerator.SELF_EXPLOSION_SIZE,4.0F)
                     .floatProperty(CommonProperties.EXPLOSION_SIZE, 8.0F)
                     .booleanProperty(CommonProperties.DAMAGE_TERRAIN, true)
-                    .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
-                new ERATrigger(new SimpleAmmoSource(1),
+                    .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
+                    .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 1),
+                new ERATrigger(new SimpleAmmoSource(),
                     new SingleShotFireShape(EnderAccelerator::new)))
                 .fireEffects(new Knockback(),
                     (world, user, stack, properties) ->
@@ -628,9 +660,9 @@ public class QuiverbowMain
         private static void registerWeaponsWithAmmo(IForgeRegistry<Item> registry)
         {
             // Sugar Engine and Sugar Magazine
-            AmmoBase sugarMag = addAmmo("sugar_magazine", new AmmoMagazine(4, 4)
+            AmmoMagazine sugarMag = addAmmo("sugar_magazine", new AmmoMagazine(4, 4)
                 .fillSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 1.50F)
-                .setMaxDamage(200));
+                .setAmmoCapacity(200));
             registry.registerAll(sugarMag, addWeapon("sugar_engine",
                 builder -> builder.minimumDamage(1).maximumDamage(3)
                     .projectileSpeed(2.0F).kickback(1).mobUsable()
@@ -644,9 +676,9 @@ public class QuiverbowMain
                     new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 0.6F, 3.0F), new Knockback()));
 
             // Obsidian weapons and Obsidian Magazine
-            AmmoBase obsidianMag = addAmmo("obsidian_magazine", new AmmoMagazine(1, 1)
+            AmmoMagazine obsidianMag = addAmmo("obsidian_magazine", new AmmoMagazine(1, 1)
                 .fillSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 0.3F)
-                .setMaxDamage(32));
+                .setAmmoCapacity(32));
             registry.registerAll(obsidianMag,
                 addWeapon("splinter_rifle",
                     builder -> builder.minimumDamage(7).maximumDamage(13)
@@ -689,9 +721,9 @@ public class QuiverbowMain
                     .cooldownEffects(new SpawnParticle(EnumParticleTypes.SMOKE_NORMAL, 0.0F),
                         new PlaySound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 1.0F, 1.2F)));
 
-            AmmoBase goldMagazine = addAmmo("gold_magazine", new AmmoMagazine(1, 8)
+            AmmoMagazine goldMagazine = addAmmo("gold_magazine", new AmmoMagazine(1, 8)
                 .fillSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 0.3F)
-                .setMaxDamage(72));
+                .setAmmoCapacity(72));
             registry.registerAll(goldMagazine,
                 addWeapon("coin_tosser",
                     builder -> builder.minimumDamage(1).maximumDamage(3)
@@ -717,9 +749,9 @@ public class QuiverbowMain
                     .fireEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 3.0F)));
 
             // Hidden Ender Pistol and Ender Quartz Magazine
-            AmmoBase enderQuartzMagazine = addAmmo("ender_quartz_magazine", new AmmoMagazine(1, 1)
+            AmmoMagazine enderQuartzMagazine = addAmmo("ender_quartz_magazine", new AmmoMagazine(1, 1)
                 .fillSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 0.3F)
-                .setMaxDamage(8));
+                .setAmmoCapacity(8));
             registry.registerAll(enderQuartzMagazine, addWeapon("hidden_ender_pistol",
                 builder -> builder.minimumDamage(16).maximumDamage(24)
                     .projectileSpeed(5.0F).kickback(1).cooldown(20)
@@ -732,9 +764,9 @@ public class QuiverbowMain
                     new SpawnParticle(EnumParticleTypes.PORTAL, 0.0F))
                 .cooldownEffects(new PlaySound(SoundEvents.BLOCK_GLASS_BREAK, 0.3F, 0.3F)));
 
-            AmmoBase lapisMagazine = addAmmo("lapis_magazine", new LapisMagazine()
+            AmmoMagazine lapisMagazine = addAmmo("lapis_magazine", new LapisMagazine()
                 .fillSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.0F, 0.2F)
-                .setMaxDamage(150));
+                .setAmmoCapacity(150));
             registry.registerAll(lapisMagazine, addWeapon("lapis_coil",
                 builder -> builder.minimumDamage(1).maximumDamage(3)
                     .projectileSpeed(2.5F).cooldown(4).mobUsable()
@@ -751,9 +783,9 @@ public class QuiverbowMain
                 .fireEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.0F, 0.5F),
                     new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.0F, 3.0F)));
 
-            AmmoBase largeNetherrackMagazine = addAmmo("large_netherrack_magazine", new AmmoMagazine(1, 8)
+            AmmoMagazine largeNetherrackMagazine = addAmmo("large_netherrack_magazine", new AmmoMagazine(1, 8)
                 .fillSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 0.3F)
-                .setMaxDamage(200));
+                .setAmmoCapacity(200));
             registry.registerAll(largeNetherrackMagazine, addWeapon("nether_bellows",
                 builder -> builder.minimumDamage(1).maximumDamage(1)
                     .projectileSpeed(0.75F).mobUsable()
@@ -767,16 +799,16 @@ public class QuiverbowMain
                 .fireEffects(new PlaySound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 1.0F, 0.3F)));
 
             // Thorn Spitter, Proximity Thorn Thrower and Thorn Magazine
-            AmmoBase thornMagazine = addAmmo("thorn_magazine", new AmmoMagazine(1, 8)
+            AmmoMagazine thornMagazine = addAmmo("thorn_magazine", new AmmoMagazine(1, 8)
                 .fillSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 1.3F)
-                .setMaxDamage(64));
+                .setAmmoCapacity(64));
             registry.registerAll(thornMagazine,
                     addWeapon("thorn_spitter",
                         builder -> builder.minimumDamage(1).maximumDamage(2)
                             .projectileSpeed(1.75F).cooldown(10).mobUsable()
                             .intProperty(BurstTrigger.BURST_SIZE, 4)
                             .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1),
-                        new BurstTrigger(new MagazineAmmoSource(largeNetherrackMagazine)
+                        new BurstTrigger(new MagazineAmmoSource(thornMagazine)
                                 .unloadEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 1.7F, 1.3F)),
                             new SingleShotFireShape(Thorn::new)))
                         .fireEffects(new PlaySound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.6F, 0.6F)),
@@ -794,9 +826,9 @@ public class QuiverbowMain
                         .fireEffects(new PlaySound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.7F, 1.5F)));
 
             // Redstone Sprayer and Large Redstone Magazine
-            AmmoBase largeRedstoneMagazine = addAmmo("large_redstone_magazine", new AmmoMagazine(1, 8)
+            AmmoMagazine largeRedstoneMagazine = addAmmo("large_redstone_magazine", new AmmoMagazine(1, 8)
                 .fillSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 0.3F)
-                .setMaxDamage(200));
+                .setAmmoCapacity(200));
             registry.registerAll(largeRedstoneMagazine, addWeapon("redstone_sprayer",
                 builder -> builder.projectileSpeed(0.5F).mobUsable()
                     .intProperty(CommonProperties.WITHER_STRENGTH, 2)
@@ -810,9 +842,9 @@ public class QuiverbowMain
                     new SpreadFireShape(RedSpray::new)))
                 .fireEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.6F, 0.9F)));
 
-            AmmoBase seedJar = addAmmo("seed_jar", new AmmoMagazine(8, 8)
+            AmmoMagazine seedJar = addAmmo("seed_jar", new AmmoMagazine(8, 8)
                 .fillSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.6F, 0.7F)
-                .setMaxDamage(512));
+                .setAmmoCapacity(512));
             registry.registerAll(seedJar, addWeapon("seed_sweeper",
                 builder -> builder.minimumDamage(1).maximumDamage(1)
                     .cooldown(15).projectileSpeed(1.6F).mobUsable()
@@ -825,9 +857,9 @@ public class QuiverbowMain
                 .fireEffects(new PlaySound(SoundEvents.ENTITY_ITEM_BREAK, 1.6F, 0.9F)));
 
             // Lightning Red and Redstone Magazine
-            AmmoBase redstoneMagazine = addAmmo("redstone_magazine", new AmmoMagazine(1, 8)
+            AmmoMagazine redstoneMagazine = addAmmo("redstone_magazine", new AmmoMagazine(1, 8)
                 .fillSound(SoundEvents.BLOCK_WOOD_BUTTON_CLICK_ON, 0.5F, 0.3F)
-                .setMaxDamage(64));
+                .setAmmoCapacity(64));
             registry.registerAll(redstoneMagazine, addWeapon("lightning_red",
                     builder -> builder.minimumDamage(8).maximumDamage(16)
                         .projectileSpeed(5.0F).kickback(3).cooldown(40).mobUsable()
@@ -880,12 +912,12 @@ public class QuiverbowMain
                     addAmmo("box_of_flint_dust", new AmmoBase()));
         }
 
-        private static AmmoBase addAmmo(String name, AmmoBase ammoBase)
+        private static <A extends AmmoBase> A addAmmo(String name, A ammo)
         {
-            QuiverbowMain.ammo.add(ammoBase);
-            ammoBase.setUnlocalizedName(QuiverbowMain.MODID + ".ammo." + name);
-            ammoBase.setRegistryName(QuiverbowMain.MODID + ":" + name);
-            return ammoBase;
+            QuiverbowMain.ammo.add(ammo);
+            ammo.setUnlocalizedName(QuiverbowMain.MODID + ".ammo." + name);
+            ammo.setRegistryName(QuiverbowMain.MODID + ":" + name);
+            return ammo;
         }
 
         @SubscribeEvent
@@ -991,7 +1023,8 @@ public class QuiverbowMain
            ModelBakery.registerItemVariants(crossbow, empty, unchambered, chambered);
            ModelLoader.setCustomMeshDefinition(crossbow, stack ->
            {
-               if (stack.getItemDamage() >= stack.getMaxDamage()) return empty;
+               AmmoSource ammoSource = ((Weapon) stack.getItem()).getTrigger().getAmmoSource();
+               if (ammoSource.getAmmo(stack) >= 0) return empty;
                if (!AutoLoadingTrigger.isLoaded(stack)) return unchambered;
                return chambered;
            });

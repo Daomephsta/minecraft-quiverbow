@@ -54,4 +54,9 @@ public class Trigger
     {
         return false;
     }
+
+    public AmmoSource getAmmoSource()
+    {
+        return ammoSource;
+    }
 }

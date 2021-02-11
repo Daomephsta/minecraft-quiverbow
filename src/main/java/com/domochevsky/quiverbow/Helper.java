@@ -21,7 +21,6 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -261,13 +260,6 @@ public class Helper
         return world.rayTraceBlocks(
                 new Vec3d(observer.posX, observer.posY + observer.getEyeHeight(), observer.posZ),
                 new Vec3d(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ)) == null;
-    }
-
-    public static ItemStack createEmptyWeaponOrAmmoStack(Item item, int count)
-    {
-        ItemStack stack = new ItemStack(item, count);
-        stack.setItemDamage(stack.getMaxDamage());
-        return stack;
     }
 
     public static void playSoundAtEntityPos(Entity entity, SoundEvent sound, float volume, float pitch)

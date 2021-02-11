@@ -209,7 +209,7 @@ public class ReloadSpecificationRegistry
         @Override
         public int getAmmoValue(ItemStack stack)
         {
-            return stack.getMaxDamage() - stack.getItemDamage();
+            return ((AmmoMagazine) stack.getItem()).getAmmo(stack);
         }
 
         @Override

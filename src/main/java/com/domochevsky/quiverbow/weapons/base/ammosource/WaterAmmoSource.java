@@ -2,7 +2,6 @@ package com.domochevsky.quiverbow.weapons.base.ammosource;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.config.WeaponProperties;
-import com.domochevsky.quiverbow.weapons.base.Weapon;
 
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -18,29 +17,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 
-public class WaterAmmoSource implements AmmoSource
+public class WaterAmmoSource extends SimpleAmmoSource
 {
-    @Override
-    public boolean hasAmmo(EntityLivingBase shooter, ItemStack stack, WeaponProperties properties)
-    {
-        if (shooter instanceof EntityPlayer && ((EntityPlayer) shooter).capabilities.isCreativeMode)
-            return true;
-        return stack.getItemDamage() < stack.getMaxDamage();
-    }
-
-    @Override
-    public boolean consumeAmmo(EntityLivingBase user, ItemStack stack, WeaponProperties properties)
-    {
-        if (!hasAmmo(user, stack, properties))
-            return false;
-        stack.setItemDamage(stack.getItemDamage() + 1);
-        return true;
-    }
-
     @Override
     public boolean alternateUse(EntityLivingBase user, ItemStack stack, WeaponProperties properties)
     {
-        if (user instanceof EntityPlayer && stack.getItemDamage() == stack.getMaxDamage())
+        if (user instanceof EntityPlayer && getAmmo(stack) == 0)
         {
             tryReload(user.getEntityWorld(), (EntityPlayer) user, stack);
             return true;
@@ -65,14 +47,8 @@ public class WaterAmmoSource implements AmmoSource
             {
                 world.setBlockToAir(target.getBlockPos());
                 Helper.playSoundAtEntityPos(user, SoundEvents.ITEM_BUCKET_FILL, 1.0F, 1.0F);
-                stack.setItemDamage(0);
+                addAmmo(stack, 1);
             }
         }
-    }
-
-    @Override
-    public void adjustItemProperties(Weapon weapon)
-    {
-        weapon.setMaxDamage(1);
     }
 }

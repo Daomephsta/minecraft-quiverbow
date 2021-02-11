@@ -80,7 +80,7 @@
 	"overrides": [
 		{
 			"predicate": {
-				"damage": 1
+				"quiverbow_restrung:ammo": 1
 			},
 			"model": "quiverbow_restrung:item/weapons/coin_tosser_empty_internal"
 		}

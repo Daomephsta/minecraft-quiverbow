@@ -1,22 +1,21 @@
 package com.domochevsky.quiverbow.weapons.base.ammosource;
 
+import com.domochevsky.quiverbow.ammo.AmmoMagazine;
 import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.util.NBTags;
 import com.domochevsky.quiverbow.weapons.base.Weapon.Effect;
 
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class MagazineAmmoSource extends SimpleAmmoSource
 {
-    private final Item magazine;
+    private final AmmoMagazine magazine;
     private Effect[] unloadEffects;
 
-    public MagazineAmmoSource(Item magazine)
+    public MagazineAmmoSource(AmmoMagazine magazine)
     {
-        super(new ItemStack(magazine).getMaxDamage());
         this.magazine = magazine;
     }
 
@@ -45,7 +44,8 @@ public class MagazineAmmoSource extends SimpleAmmoSource
         EntityLivingBase entity, WeaponProperties properties)
     {
         if (!world.isRemote)
-            entity.entityDropItem(new ItemStack(magazine, 1, stack.getItemDamage()), 0.5F);
+            entity.entityDropItem(magazine.withAmmo(new ItemStack(magazine), getAmmo(stack)), 0.5F);
+        removeAmmo(stack, getAmmo(stack));
         stack.setItemDamage(stack.getMaxDamage()); // Empty weapon
         NBTags.getOrCreate(stack).setBoolean("magazineless", true);
         if (unloadEffects != null)
@@ -59,5 +59,11 @@ public class MagazineAmmoSource extends SimpleAmmoSource
     {
         this.unloadEffects = unloadEffects;
         return this;
+    }
+
+    @Override
+    public int getAmmoCapacity(ItemStack stack)
+    {
+        return magazine.getAmmoCapacity();
     }
 }

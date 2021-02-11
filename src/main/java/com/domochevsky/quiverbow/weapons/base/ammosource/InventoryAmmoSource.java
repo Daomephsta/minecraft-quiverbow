@@ -55,4 +55,24 @@ public class InventoryAmmoSource implements AmmoSource
             equipment = Iterables.concat(equipment, ((EntityPlayer) user).inventory.mainInventory);
         return equipment;
     }
+
+    @Override
+    public int getAmmo(ItemStack stack)
+    {
+        // Closest thing such a weapon has to ammo
+        return stack.getMaxDamage() - stack.getItemDamage();
+    }
+
+    @Override
+    public int getAmmoCapacity(ItemStack stack)
+    {
+        // Closest thing such a weapon has to a capacity
+        return stack.getMaxDamage();
+    }
+
+    @Override
+    public void addAmmo(ItemStack stack, int increment) {/* NO OP*/}
+
+    @Override
+    public void removeAmmo(ItemStack stack, int increment) {/* NO OP*/}
 }

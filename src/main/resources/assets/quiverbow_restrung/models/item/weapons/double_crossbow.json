@@ -6,13 +6,13 @@
     "overrides": [
         {
             "predicate": {
-                "damage": 0.5
+                "quiverbow_restrung:ammo": 0.5
             },
             "model": "quiverbow_restrung:item/weapons/double_crossbow_half_internal"
         },
         {
             "predicate": {
-                "damage": 1.0
+                "quiverbow_restrung:ammo": 1.0
             },
             "model": "quiverbow_restrung:item/weapons/double_crossbow_empty_internal"
         }

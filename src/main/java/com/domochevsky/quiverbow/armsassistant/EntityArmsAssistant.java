@@ -14,6 +14,7 @@ import com.domochevsky.quiverbow.miscitems.PackedUpAA;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.util.NBTCollectors;
 import com.domochevsky.quiverbow.weapons.base.Weapon;
+import com.domochevsky.quiverbow.weapons.base.ammosource.AmmoSource;
 import com.domochevsky.quiverbow.weapons.base.trigger.Trigger;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
@@ -406,7 +407,7 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
         {
             Weapon weapon = (Weapon) weaponStack.getItem();
             Trigger trigger = weapon.getTrigger();
-            if (weaponStack.getItemDamage() == weaponStack.getMaxDamage())
+            if (trigger.getAmmoSource().getAmmo(weaponStack) == 0)
                 directives.onReload(tryReload(weaponStack, weapon));
             int cooldown = Weapon.getCooldown(weaponStack);
             ActionResult<ItemStack> useResult =
@@ -455,7 +456,8 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
             }
             stack.shrink(componentCount);
         }
-        weaponStack.setItemDamage(weaponStack.getItemDamage() - ammoValue);
+        AmmoSource ammoSource = ((Weapon) weaponStack.getItem()).getTrigger().getAmmoSource();
+        ammoSource.addAmmo(weaponStack, ammoValue);
         return remainingReloads;
     }
 

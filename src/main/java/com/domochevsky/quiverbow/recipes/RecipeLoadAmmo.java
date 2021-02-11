@@ -1,12 +1,14 @@
 package com.domochevsky.quiverbow.recipes;
 
+import com.domochevsky.quiverbow.ammo.AmmoMagazine;
 import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry;
 import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry.ComponentData;
 import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry.ReloadSpecification;
+import com.domochevsky.quiverbow.util.NBTags;
 import com.domochevsky.quiverbow.weapons.base.Weapon;
+import com.domochevsky.quiverbow.weapons.base.ammosource.AmmoSource;
 
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
@@ -16,7 +18,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 public class RecipeLoadAmmo extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe
 {
-    private final Item targetWeapon;
+    private final Weapon targetWeapon;
     private final ReloadSpecification specification;
 
     public RecipeLoadAmmo(Weapon targetWeapon)
@@ -28,16 +30,18 @@ public class RecipeLoadAmmo extends IForgeRegistryEntry.Impl<IRecipe> implements
     @Override
     public boolean matches(InventoryCrafting invCrafting, World world)
     {
-        boolean weaponFound = false;
-
+        ItemStack weapon = ItemStack.EMPTY;
+        AmmoSource ammoSource = targetWeapon.getTrigger().getAmmoSource();
         for (int s = 0; s < invCrafting.getSizeInventory(); s++)
         {
             ItemStack stack = invCrafting.getStackInSlot(s);
             if (stack.isEmpty()) continue;
             if (stack.getItem() == this.targetWeapon)
             {
-                if (stack.getItemDamage() == 0) return false;// Already full
-                if (!weaponFound) weaponFound = true;
+                if (ammoSource.getAmmo(stack) >= ammoSource.getAmmoCapacity(stack))
+                    return false;// Already full
+                if (weapon.isEmpty())
+                    weapon = stack;
                 else return false; // Cannot reload two weapons at the same time
             }
         }
@@ -56,7 +60,7 @@ public class RecipeLoadAmmo extends IForgeRegistryEntry.Impl<IRecipe> implements
             }
             if (componentCount < component.getMin()) return false;
         }
-        return weaponFound;
+        return !weapon.isEmpty();
     }
 
     @Override
@@ -73,6 +77,8 @@ public class RecipeLoadAmmo extends IForgeRegistryEntry.Impl<IRecipe> implements
                 weapon = stack.copy();
             }
         }
+
+        AmmoSource ammoSource = ((Weapon) weapon.getItem()).getTrigger().getAmmoSource();
         for (s = 0; s < invCrafting.getSizeInventory(); s++)
         {
             ItemStack stack = invCrafting.getStackInSlot(s);
@@ -81,8 +87,10 @@ public class RecipeLoadAmmo extends IForgeRegistryEntry.Impl<IRecipe> implements
             {
                 if (component.getIngredient().apply(stack))
                 {
+                    if (stack.getItem() instanceof AmmoMagazine)
+                        NBTags.getOrCreate(weapon).removeTag("magazineless");
                     int ammoValue = component.getAmmoValue(stack);
-                    weapon.setItemDamage(weapon.getItemDamage() - ammoValue);
+                    ammoSource.addAmmo(weapon, ammoValue);
                     break;
                 }
             }

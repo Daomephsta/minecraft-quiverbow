@@ -4,8 +4,10 @@ import java.util.List;
 
 import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.config.WeaponProperties;
+import com.domochevsky.quiverbow.weapons.base.ammosource.AmmoSource;
 import com.domochevsky.quiverbow.weapons.base.trigger.Trigger;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -15,10 +17,7 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 
 public final class Weapon extends Item
@@ -134,15 +133,36 @@ public final class Weapon extends Item
     }
 
     @Override
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
+    {
+        if (this.isInCreativeTab(tab))
+        {
+            AmmoSource ammoSource = getTrigger().getAmmoSource();
+            ItemStack stack = new ItemStack(this);
+            int capacity = ammoSource.getAmmoCapacity(stack);
+            ammoSource.addAmmo(stack, capacity);
+            items.add(stack);
+        }
+    }
+
+    @Override
     public boolean isBookEnchantable(ItemStack stack, ItemStack book)
     {
         return false;
     }
 
     @Override
+    public double getDurabilityForDisplay(ItemStack stack)
+    {
+        AmmoSource ammoSource = getTrigger().getAmmoSource();
+        return (double) (ammoSource.getAmmoCapacity(stack) - ammoSource.getAmmo(stack)) /
+            (double) ammoSource.getAmmoCapacity(stack);
+    }
+
+    @Override
     public boolean showDurabilityBar(ItemStack stack)
     {
-        return true;
+        return getTrigger().getAmmoSource().getAmmoCapacity(stack) != -1;
     }
 
     @Override

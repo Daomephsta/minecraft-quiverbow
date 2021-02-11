@@ -9,19 +9,14 @@ import net.minecraft.world.World;
 
 public class SolarAmmoSource extends SimpleAmmoSource
 {
-    public SolarAmmoSource(int max)
-    {
-        super(max);
-    }
-
     @Override
     public void weaponTick(World world, EntityLivingBase user, ItemStack stack, WeaponProperties properties)
     {
         //Don't process on client because sky light calculations are stupid
-        if (stack.getItemDamage() <= 0 || world.isRemote) return;
+        if (getAmmo(stack) >= properties.getInt(AMMO_CAPACITY) || world.isRemote) return;
 
         int light = world.getLightFor(EnumSkyBlock.SKY, user.getPosition()) - world.getSkylightSubtracted();
         if (light >= properties.getInt("minLight"))
-            stack.setItemDamage(stack.getItemDamage() - 1);
+            addAmmo(stack, 1);
     }
 }

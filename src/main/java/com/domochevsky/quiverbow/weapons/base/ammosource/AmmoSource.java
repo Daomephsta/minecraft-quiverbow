@@ -1,6 +1,10 @@
 package com.domochevsky.quiverbow.weapons.base.ammosource;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 import com.domochevsky.quiverbow.config.WeaponProperties;
+import com.domochevsky.quiverbow.util.NBTags;
 import com.domochevsky.quiverbow.weapons.base.Weapon;
 
 import net.minecraft.entity.EntityLivingBase;
@@ -28,4 +32,23 @@ public interface AmmoSource
     {
         return false;
     }
+
+    public default int getAmmo(ItemStack stack)
+    {
+        return NBTags.getOrCreate(stack).getInteger("ammo");
+    }
+
+    public default void addAmmo(ItemStack stack, int increment)
+    {
+        NBTags.getOrCreate(stack).setInteger("ammo",
+            min(getAmmo(stack) + increment, getAmmoCapacity(stack)));
+    }
+
+    public default void removeAmmo(ItemStack stack, int increment)
+    {
+
+        NBTags.getOrCreate(stack).setInteger("ammo", max(0, getAmmo(stack) - increment));
+    }
+
+    public int getAmmoCapacity(ItemStack stack);
 }

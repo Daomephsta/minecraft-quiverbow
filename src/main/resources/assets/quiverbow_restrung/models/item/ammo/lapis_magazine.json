@@ -6,43 +6,43 @@
     "overrides": [
         {
             "predicate": {
-                "damage": 0.0
+                "quiverbow_restrung:ammo": 0.0
             },
             "model": "quiverbow_restrung:item/ammo/lapis_magazine_6"
         },
 		{
             "predicate": {
-                "damage": 0.16
+                "quiverbow_restrung:ammo": 0.16
             },
             "model": "quiverbow_restrung:item/ammo/lapis_magazine_5"
         },
 		{
             "predicate": {
-                "damage": 0.33
+                "quiverbow_restrung:ammo": 0.33
             },
             "model": "quiverbow_restrung:item/ammo/lapis_magazine_4"
         },
 		{
             "predicate": {
-                "damage": 0.5
+                "quiverbow_restrung:ammo": 0.5
             },
             "model": "quiverbow_restrung:item/ammo/lapis_magazine_3"
         },
 		{
             "predicate": {
-                "damage": 0.66
+                "quiverbow_restrung:ammo": 0.66
             },
             "model": "quiverbow_restrung:item/ammo/lapis_magazine_2"
         },
 		{
             "predicate": {
-                "damage": 0.83
+                "quiverbow_restrung:ammo": 0.83
             },
             "model": "quiverbow_restrung:item/ammo/lapis_magazine_1"
         },
 		{
             "predicate": {
-                "damage": 1.0
+                "quiverbow_restrung:ammo": 1.0
             },
             "model": "quiverbow_restrung:item/ammo/lapis_magazine"
         }
