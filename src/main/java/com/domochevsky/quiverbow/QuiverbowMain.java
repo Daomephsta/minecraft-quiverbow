@@ -419,8 +419,9 @@ public class QuiverbowMain
                             {
                                 BlockPos pos = target.getBlockPos();
                                 IBlockState toMine = world.getBlockState(pos);
-                                if (toMine.getBlockHardness(world, pos) <= 2 ||
-                                    toMine.getBlock().getHarvestLevel(toMine) <= 0)
+                                if (toMine.getBlockHardness(world, pos) != -1 &&
+                                    (toMine.getBlockHardness(world, pos) <= 2 ||
+                                    toMine.getBlock().getHarvestLevel(toMine) <= 0))
                                 {
                                     Helper.breakBlock(world, user, pos);
                                     for (int i = 0; i < 4; i++)
