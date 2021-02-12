@@ -19,7 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
 public class ListenerClient
 {
@@ -29,7 +29,7 @@ public class ListenerClient
     private float fovModifierHand, fovModifierHandLastTick;
 
     @SubscribeEvent
-    public void onClientTick(ClientTickEvent event)
+    public void onClientTick(PlayerTickEvent event)
     {
         handleZoom();
         Minecraft mc = Minecraft.getMinecraft();
