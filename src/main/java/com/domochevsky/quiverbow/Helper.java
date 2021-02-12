@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 import com.domochevsky.quiverbow.config.QuiverbowConfig;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.projectiles.ProjectileBase;
-import com.domochevsky.quiverbow.weapons.base.Weapon;
 
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -20,10 +19,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EntitySelectors;
@@ -37,10 +34,11 @@ public class Helper
 {
     private static final ItemStack ARROW_STACK = new ItemStack(Items.ARROW);
 
-    /** Kicks the passed in entity backwards, relative to the passed in strength
-      * Needs to be done both on client and server, because the server doesn't
-      * inform clients about small movement changes
-      * This is the server-side part **/
+    /**
+     * Applies knockback with server-client syncing
+     * @param target entity to knock back
+     * @param strength force of knockback
+     */
     public static void knockUserBack(Entity user, int strength)
     {
         user.motionZ += -MathHelper.cos((user.rotationYaw) * (float) Math.PI / 180.0F) * (strength * 0.08F);
@@ -53,53 +51,30 @@ public class Helper
     *   Used for throwable entities **/
     public static void setThrownPickup(EntityLivingBase entity, ProjectileBase shot)
     {
-        if (entity instanceof EntityPlayer) // Is a player
+        if (entity instanceof EntityPlayer)
         {
-            // Creative mode?
             EntityPlayer player = (EntityPlayer) entity;
-
-            if (player.capabilities.isCreativeMode)
-            {
-                shot.canBePickedUp = false;
-            } // In creative mode, no drop
-            else
-            {
-                shot.canBePickedUp = true;
-            } // Not in creative, so dropping is permitted
-
+            shot.canBePickedUp = !player.capabilities.isCreativeMode;
         }
         else
         {
             shot.canBePickedUp = false;
-        } // Not a player, so not dropping anything
+        }
     }
 
-    // Unified appliance of potion effects
-    public static void applyPotionEffect(EntityLivingBase entitylivingbase, PotionEffect effect)
+    /**
+     * Applies a potion effect, extending any existing instance
+     * @param entitylivingbase entity to apply effect to
+     * @param effect effect to apply
+     */
+    public static void applyPotionEffectExtending(EntityLivingBase entitylivingbase, PotionEffect effect)
     {
-        if (entitylivingbase == null)
-        {
-            return;
-        } // Not a valid entity, for some reason
-
-        if (effect == null)
-        {
-            return;
-        } // Nothing to apply
-
-        PotionEffect potion = entitylivingbase.getActivePotionEffect(effect.getPotion());
-        if (potion != null) // Already exists. Extending it
-        {
-            int dur = potion.getDuration();
-
-            entitylivingbase.addPotionEffect(
-                    new PotionEffect(effect.getPotion(), effect.getDuration() + dur, effect.getAmplifier() - 1));
-        }
-        else
-        {
-            entitylivingbase.addPotionEffect(
-                    new PotionEffect(effect.getPotion(), effect.getDuration(), effect.getAmplifier() - 1));
-        } // Fresh
+        int duration = effect.getDuration();
+        PotionEffect existing = entitylivingbase.getActivePotionEffect(effect.getPotion());
+        if (existing != null)
+            duration += existing.getDuration();
+        entitylivingbase.addPotionEffect(
+            new PotionEffect(effect.getPotion(), duration, effect.getAmplifier()));
     }
 
     // Time to make a mess!
@@ -204,55 +179,13 @@ public class Helper
         world.destroyBlock(pos, true);
     }
 
+    // Unused, but it's useful
     public static boolean canEdit(World world, EntityLivingBase editor, BlockPos pos)
     {
         if (editor instanceof EntityPlayer)
-        {
-            EntityPlayer player = (EntityPlayer) editor;
-            return world.isBlockModifiable(player, pos);
-        }
+            return world.isBlockModifiable((EntityPlayer) editor, pos);
         else
             return world.getGameRules().getBoolean("mobGriefing");
-    }
-
-    // Does the weapon have a custom name or other upgrades? If so then we're
-    // transfering that to the new item
-    public static void copyProps(IInventory craftMatrix, ItemStack newItem)
-    {
-        // Step 1, find the actual item (It's possible that this is not a
-        // reloading action, meaning there is no weapon to copy the name from)
-
-        int slot = 0;
-
-        while (slot < 9)
-        {
-            ItemStack stack = craftMatrix.getStackInSlot(slot);
-
-            if (!stack.isEmpty() && stack.getItem() instanceof Weapon) // Found it. Does it have a name tag?
-            {
-                if (stack.hasDisplayName() && !newItem.hasDisplayName())
-                {
-                    newItem.setStackDisplayName(stack.getDisplayName());
-                }
-                // else, has no custom display name or the new item already has
-                // one. Fine with me either way.
-
-                // Upgrades
-                if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("hasEmeraldMuzzle"))
-                {
-                    if (!newItem.hasTagCompound())
-                    {
-                        newItem.setTagCompound(new NBTTagCompound());
-                    }
-                    newItem.getTagCompound().setBoolean("hasEmeraldMuzzle", true); // Keeping
-                }
-
-                return; // Either way, we're done here
-            }
-            // else, either doesn't exist or not what I'm looking for
-
-            slot += 1;
-        }
     }
 
     public static boolean canEntityBeSeen(World world, Entity observer, Entity entity)

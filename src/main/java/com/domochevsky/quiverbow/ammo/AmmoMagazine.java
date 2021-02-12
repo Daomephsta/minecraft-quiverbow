@@ -9,6 +9,7 @@ import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry.ComponentData;
 import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry.ReloadSpecification;
+import com.domochevsky.quiverbow.miscitems.QuiverBowItem;
 import com.domochevsky.quiverbow.util.InventoryHelper;
 import com.domochevsky.quiverbow.util.NBTags;
 
@@ -21,7 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 
-public class AmmoMagazine extends AmmoBase
+public class AmmoMagazine extends QuiverBowItem
 {
     // How much should this magazine attempt to fill when sneak-clicked?
     private int sneakFillQuantity;

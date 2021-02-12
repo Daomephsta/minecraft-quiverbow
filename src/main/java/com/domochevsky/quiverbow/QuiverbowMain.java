@@ -8,7 +8,6 @@ import java.util.function.Function;
 import org.apache.logging.log4j.Logger;
 
 import com.domochevsky.quiverbow.accessor.BlockAccessors;
-import com.domochevsky.quiverbow.ammo.AmmoBase;
 import com.domochevsky.quiverbow.ammo.AmmoMagazine;
 import com.domochevsky.quiverbow.ammo.LapisMagazine;
 import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry;
@@ -102,7 +101,7 @@ public class QuiverbowMain
     public static Logger logger;
 
     public static ArrayList<Weapon> weapons = new ArrayList<>();
-    public static ArrayList<AmmoBase> ammo = new ArrayList<AmmoBase>();
+    public static ArrayList<QuiverBowItem> ammo = new ArrayList<>();
 
     public static CreativeTabs QUIVERBOW_TAB = new CreativeTabs(QuiverbowMain.MODID)
     {
@@ -908,14 +907,15 @@ public class QuiverbowMain
 
         private static void registerAmmo(IForgeRegistry<Item> registry)
         {
-            registry.registerAll(addAmmo("arrow_bundle", new AmmoBase()), addAmmo("cold_iron_clip", new AmmoBase()),
-                    addAmmo("rocket_bundle", new AmmoBase()), addAmmo("large_rocket", new AmmoBase()),
-                    addAmmo("box_of_flint_dust", new AmmoBase()));
+            registry.registerAll(addAmmo("arrow_bundle", new QuiverBowItem()), addAmmo("cold_iron_clip", new QuiverBowItem()),
+                    addAmmo("rocket_bundle", new QuiverBowItem()), addAmmo("large_rocket", new QuiverBowItem()),
+                    addAmmo("box_of_flint_dust", new QuiverBowItem()));
         }
 
-        private static <A extends AmmoBase> A addAmmo(String name, A ammo)
+        private static <A extends QuiverBowItem> A addAmmo(String name, A ammo)
         {
             QuiverbowMain.ammo.add(ammo);
+            ammo.setMaxStackSize(16);
             ammo.setUnlocalizedName(QuiverbowMain.MODID + ".ammo." + name);
             ammo.setRegistryName(QuiverbowMain.MODID + ":" + name);
             return ammo;
@@ -982,7 +982,7 @@ public class QuiverbowMain
         @SubscribeEvent
         public static void registerModels(ModelRegistryEvent e)
         {
-            for (AmmoBase ammunition : ammo)
+            for (Item ammunition : ammo)
             {
                     ModelLoader.setCustomModelResourceLocation(ammunition, 0,
                         new ModelResourceLocation(ResourceLocationExt.prefixPath(ammunition.getRegistryName(), "ammo/"), "inventory"));

@@ -19,9 +19,6 @@ public class QuiverBowItem extends Item
         tooltip.add(I18n.format(getUnlocalizedName() + ".description"));
     }
 
-    public void addRecipes()
-    {} // Called once after all items have been registered and initialized
-
     @Override
     public CreativeTabs getCreativeTab()
     {

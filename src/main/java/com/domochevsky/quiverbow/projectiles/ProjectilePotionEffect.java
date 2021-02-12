@@ -28,7 +28,7 @@ public abstract class ProjectilePotionEffect extends ProjectileBase
         {
             EntityLivingBase entitylivingbase = (EntityLivingBase) hitPos.entityHit;
             for (PotionEffect effect : effects)
-                Helper.applyPotionEffect(entitylivingbase, effect);
+                Helper.applyPotionEffectExtending(entitylivingbase, effect);
         }
     }
 }

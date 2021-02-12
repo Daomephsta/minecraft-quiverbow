@@ -9,7 +9,6 @@ import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.net.NetHelper;
 import com.domochevsky.quiverbow.weapons.base.CommonProperties;
 
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -69,47 +68,39 @@ public class ProxyThorn extends ProjectileBase
 
         else // Hit the terrain
         {
-            if (Helper.tryBlockBreak(this.world, this, movPos.getBlockPos(), 1))
+            IBlockState stuckState = this.world.getBlockState(movPos.getBlockPos());
+            this.stuckBlock = stuckState.getBlock();
+            // Only make an impact sound if the block this is stuck in has changed
+            if (stuckBlockX != movPos.getBlockPos().getX() || stuckBlockY != movPos.getBlockPos().getY()
+                    || stuckBlockZ != movPos.getBlockPos().getZ())
             {
-                // this.goBoom();
+                this.playSound(SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON, 1.0F, 0.3F);
+                NetHelper.sendParticleMessageToAllPlayers(this.world, this,
+                        EnumParticleTypes.SMOKE_NORMAL, (byte) 4);
             }
-            else // Didn't manage to break that block, so we're stuck now for a short while
+            stuckBlockX = movPos.getBlockPos().getX();
+            stuckBlockY = movPos.getBlockPos().getY();
+            stuckBlockZ = movPos.getBlockPos().getZ();
+
+            this.motionX = movPos.hitVec.x - this.posX;
+            this.motionY = movPos.hitVec.y - this.posY;
+            this.motionZ = movPos.hitVec.z - this.posZ;
+
+            this.hitSide = movPos.sideHit;
+
+            float distance = MathHelper.sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
+
+            this.posX -= this.motionX / distance * 0.05000000074505806D;
+            this.posY -= this.motionY / distance * 0.05000000074505806D;
+            this.posZ -= this.motionZ / distance * 0.05000000074505806D;
+
+            this.inGround = true;
+
+            this.arrowShake = 7;
+
+            if (!stuckState.getBlock().isAir(stuckState, world, movPos.getBlockPos()))
             {
-                IBlockState stuckState = this.world.getBlockState(movPos.getBlockPos());
-                this.stuckBlock = stuckState.getBlock();
-                // Only make an impact sound if the block this is stuck in has changed
-                if (stuckBlockX != movPos.getBlockPos().getX() || stuckBlockY != movPos.getBlockPos().getY()
-                        || stuckBlockZ != movPos.getBlockPos().getZ())
-                {
-                    this.playSound(SoundEvents.BLOCK_STONE_BUTTON_CLICK_ON, 1.0F, 0.3F);
-                    NetHelper.sendParticleMessageToAllPlayers(this.world, this,
-                            EnumParticleTypes.SMOKE_NORMAL, (byte) 4);
-                }
-                stuckBlockX = movPos.getBlockPos().getX();
-                stuckBlockY = movPos.getBlockPos().getY();
-                stuckBlockZ = movPos.getBlockPos().getZ();
-
-                this.motionX = movPos.hitVec.x - this.posX;
-                this.motionY = movPos.hitVec.y - this.posY;
-                this.motionZ = movPos.hitVec.z - this.posZ;
-
-                this.hitSide = movPos.sideHit;
-
-                float distance = MathHelper
-                        .sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
-
-                this.posX -= this.motionX / distance * 0.05000000074505806D;
-                this.posY -= this.motionY / distance * 0.05000000074505806D;
-                this.posZ -= this.motionZ / distance * 0.05000000074505806D;
-
-                this.inGround = true;
-
-                this.arrowShake = 7;
-
-                if (stuckState.getMaterial() != Material.AIR)
-                {
-                    this.stuckBlock.onEntityCollidedWithBlock(this.world, movPos.getBlockPos(), stuckState, this);
-                }
+                this.stuckBlock.onEntityCollidedWithBlock(this.world, movPos.getBlockPos(), stuckState, this);
             }
 
             this.setEntityBoundingBox(new AxisAlignedBB(-0.2d, 0.0d, -0.2d, 0.2d, 0.2d, 0.2d)); // Attackable
@@ -222,13 +213,9 @@ public class ProxyThorn extends ProjectileBase
     private void fireThorn()
     {
         // Random dir
-        int thornYaw = this.world.rand.nextInt(360) + 1; // Range will be between 1 and 360
-        thornYaw -= 180; // Range between -180 and 180
-
-        int thornPitch = this.world.rand.nextInt(360) + 1; // Range will be between 1 and 360
-        thornPitch -= 180; // Range between -180 and 180
-
-        int dmg = this.world.rand.nextInt(2) + 1; // Range will be between 1 and 2
+        int thornYaw = Helper.randomIntInRange(world.rand, -180, 180);
+        int thornPitch = Helper.randomIntInRange(world.rand, -180, 180);
+        int dmg = Helper.randomIntInRange(world.rand, 1, 2);
 
         // Firing
         Thorn projectile = new Thorn(this.world, this, (float) this.thornSpeed, thornYaw, thornPitch);

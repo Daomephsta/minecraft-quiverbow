@@ -97,27 +97,9 @@ public class FenLight extends BlockDirectional
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighbourType, BlockPos neighbor)
     {
         // Break if host block side is no longer solid
-        switch (state.getValue(FACING))
-        {
-        case DOWN :
-            if (!world.isSideSolid(pos.offset(EnumFacing.UP), EnumFacing.DOWN)) world.destroyBlock(pos, false);
-            break;
-        case EAST :
-            if (!world.isSideSolid(pos.offset(EnumFacing.WEST), EnumFacing.EAST)) world.destroyBlock(pos, false);
-            break;
-        case NORTH :
-            if (!world.isSideSolid(pos.offset(EnumFacing.SOUTH), EnumFacing.NORTH)) world.destroyBlock(pos, false);
-            break;
-        case SOUTH :
-            if (!world.isSideSolid(pos.offset(EnumFacing.NORTH), EnumFacing.SOUTH)) world.destroyBlock(pos, false);
-            break;
-        case UP :
-            if (!world.isSideSolid(pos.offset(EnumFacing.DOWN), EnumFacing.UP)) world.destroyBlock(pos, false);
-            break;
-        case WEST :
-            if (!world.isSideSolid(pos.offset(EnumFacing.EAST), EnumFacing.WEST)) world.destroyBlock(pos, false);
-            break;
-        }
+        EnumFacing facing = state.getValue(FACING);
+        if (!world.isSideSolid(pos.offset(facing.getOpposite()), state.getValue(FACING)))
+            world.destroyBlock(pos, false);
     }
 
     @Override
