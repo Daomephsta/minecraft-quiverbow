@@ -48,8 +48,6 @@ public class Seed extends ProjectileBase
 
             if (state.getBlock() == Blocks.FARMLAND && stateAbove.getMaterial() == Material.AIR)
             {
-                // Hit a farmland block and the block above is free. Planting a
-                // melon seed now
                 this.world.setBlockState(target.getBlockPos().up(), Blocks.MELON_STEM.getDefaultState(), 3);
             }
         }

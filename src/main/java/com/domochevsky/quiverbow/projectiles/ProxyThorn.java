@@ -64,26 +64,20 @@ public class ProxyThorn extends ProjectileBase
             movPos.entityHit.hurtResistantTime = 0; // No immunity frames
 
             this.goBoom();
-            this.setDead(); // We've hit something, so begone with the
-            // projectile
+            this.setDead(); // We've hit something, so begone with the // projectile
         }
 
         else // Hit the terrain
         {
-            if (Helper.tryBlockBreak(this.world, this, movPos.getBlockPos(), 1)) // Going
-            // straight
-            // through a
-            // thing
+            if (Helper.tryBlockBreak(this.world, this, movPos.getBlockPos(), 1))
             {
                 // this.goBoom();
             }
-            else // Didn't manage to break that block, so we're stuck now for a
-            // short while
+            else // Didn't manage to break that block, so we're stuck now for a short while
             {
                 IBlockState stuckState = this.world.getBlockState(movPos.getBlockPos());
                 this.stuckBlock = stuckState.getBlock();
-                // Only make an impact sound if the block this is stuck in has
-                // changed
+                // Only make an impact sound if the block this is stuck in has changed
                 if (stuckBlockX != movPos.getBlockPos().getX() || stuckBlockY != movPos.getBlockPos().getY()
                         || stuckBlockZ != movPos.getBlockPos().getZ())
                 {
@@ -99,8 +93,7 @@ public class ProxyThorn extends ProjectileBase
                 this.motionY = movPos.hitVec.y - this.posY;
                 this.motionZ = movPos.hitVec.z - this.posZ;
 
-                this.hitSide = movPos.sideHit; // Keeping track of the side we
-                // hit, for when we go boom
+                this.hitSide = movPos.sideHit;
 
                 float distance = MathHelper
                         .sqrt(this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ);
@@ -160,9 +153,7 @@ public class ProxyThorn extends ProjectileBase
 
             potentialEntity = (Entity) list.get(counter);
 
-            if (potentialEntity instanceof EntityPlayer) // Not triggering for
-            // creative mode
-            // players
+            if (potentialEntity instanceof EntityPlayer) // Not triggering for creative mode players
             {
                 EntityPlayer player = (EntityPlayer) potentialEntity;
                 if (player.capabilities.isCreativeMode)
@@ -171,16 +162,7 @@ public class ProxyThorn extends ProjectileBase
                 }
             }
 
-            if (!skip && Helper.canEntityBeSeen(this.world, this, potentialEntity)) // Only
-            // if
-            // we
-            // have
-            // a
-            // line
-            // of
-            // sight
-            // to
-            // them
+            if (!skip && Helper.canEntityBeSeen(this.world, this, potentialEntity))
             {
                 this.goBoom(); // We can see them! Boom time!
                 return;
@@ -240,16 +222,13 @@ public class ProxyThorn extends ProjectileBase
     private void fireThorn()
     {
         // Random dir
-        int thornYaw = this.world.rand.nextInt(360) + 1; // Range will be
-        // between 1 and 360
+        int thornYaw = this.world.rand.nextInt(360) + 1; // Range will be between 1 and 360
         thornYaw -= 180; // Range between -180 and 180
 
-        int thornPitch = this.world.rand.nextInt(360) + 1; // Range will be
-        // between 1 and 360
+        int thornPitch = this.world.rand.nextInt(360) + 1; // Range will be between 1 and 360
         thornPitch -= 180; // Range between -180 and 180
 
-        int dmg = this.world.rand.nextInt(2) + 1; // Range will be between 1 and
-        // 2
+        int dmg = this.world.rand.nextInt(2) + 1; // Range will be between 1 and 2
 
         // Firing
         Thorn projectile = new Thorn(this.world, this, (float) this.thornSpeed, thornYaw, thornPitch);

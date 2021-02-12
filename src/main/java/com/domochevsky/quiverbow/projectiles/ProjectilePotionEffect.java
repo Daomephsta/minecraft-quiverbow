@@ -24,8 +24,7 @@ public abstract class ProjectilePotionEffect extends ProjectileBase
         hitPos.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, getShooter()),
                 this.damage);
         hitPos.entityHit.hurtResistantTime = 0; // No immunity frames
-        if (hitPos.entityHit instanceof EntityLivingBase) // We hit a LIVING
-        // living thing!
+        if (hitPos.entityHit instanceof EntityLivingBase) // We hit a LIVING living thing!
         {
             EntityLivingBase entitylivingbase = (EntityLivingBase) hitPos.entityHit;
             for (PotionEffect effect : effects)

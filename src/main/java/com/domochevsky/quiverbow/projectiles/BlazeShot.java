@@ -41,8 +41,7 @@ public class BlazeShot extends ProjectileBase
     {
         if (hitPos.entityHit != null)
         {
-            // Setting fire to the target here ...except for endermen? First
-            // fire, then damage
+            // Setting fire to the target here ...except for endermen? First fire, then damage
             if (!(hitPos.entityHit instanceof EntityEnderman))
             {
                 hitPos.entityHit.setFire(this.fireDuration);
@@ -64,11 +63,9 @@ public class BlazeShot extends ProjectileBase
             if (!(hitPos.entityHit instanceof EntityEnderman))
             {
                 this.setDead();
-            } // We've hit an entity (that's not an enderman), so begone with
-                // the projectile
+            } // We've hit an entity (that's not an enderman), so begone with the projectile
 
-            this.playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.5F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F)); // Sizzling
-            // along...
+            this.playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.5F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
         }
         else
         {
@@ -86,8 +83,7 @@ public class BlazeShot extends ProjectileBase
             {
                 this.targetsHit += 1;
             } // Going straight through most things
-            else // Either didn't manage to break that block or we already hit 4
-            // things
+            else // Either didn't manage to break that block or we already hit 4 things
             {
 
                 this.stuckBlockX = hitPos.getBlockPos().getX();
@@ -137,8 +133,7 @@ public class BlazeShot extends ProjectileBase
     {
         NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SMOKE_NORMAL,
                 (byte) 1);
-        this.playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.1F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F)); // Sizzling
-        // along...
+        this.playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.1F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
 
         this.targetsHit += 1; // Dissipating in strength each tick?
     }
@@ -163,8 +158,7 @@ public class BlazeShot extends ProjectileBase
     }
 
     @Override
-    public void onCollideWithPlayer(EntityPlayer player) // Burning while stuck
-    // in the ground
+    public void onCollideWithPlayer(EntityPlayer player) // Burning while stuck in the ground
     {
         if (this.world.isRemote)
         {
@@ -180,7 +174,6 @@ public class BlazeShot extends ProjectileBase
         } // Not... done shaking?
 
         // Ready to hurt someone!
-        player.setFire(this.fireDuration / 2); // Half burn time. Let's be
-        // lenient here
+        player.setFire(this.fireDuration / 2);
     }
 }

@@ -18,8 +18,7 @@ public class EnderShot extends ProjectileBase
     public static final Pair<String, String> BONUS_DAMAGE = Pair.of("bonusDamage", "How much extra damage the projectile does for every tick in flight");
 
     private int damageMax; // How much damage we can deal, tops
-    private double damageIncrease; // By how much we increase our current
-    // damage, each tick
+    private double damageIncrease; // Damage bonus per tick in flight
 
     public EnderShot(World world)
     {

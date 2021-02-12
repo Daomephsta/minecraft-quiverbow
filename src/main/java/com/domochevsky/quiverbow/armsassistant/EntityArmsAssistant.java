@@ -161,11 +161,8 @@ public class EntityArmsAssistant extends EntityCreature implements IEntityAdditi
         // Equip weapon
         else if (playerHandStack.getItem() instanceof Weapon)
         {
-            // Take weapon from player
             if (!player.capabilities.isCreativeMode) player.setHeldItem(hand, ItemStack.EMPTY);
 
-            // Put it on the first rail, unless the player is sneaking and the
-            // turret has a second rail
             if (player.isSneaking() && upgrades.contains(UpgradeRegistry.EXTRA_WEAPON))
                 replaceWeapon(EnumHand.OFF_HAND, playerHandStack);
             else

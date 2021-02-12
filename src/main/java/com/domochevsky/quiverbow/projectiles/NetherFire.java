@@ -118,6 +118,5 @@ public class NetherFire extends ProjectileBase
                 0.0D);
 
         this.setDead(); // We've hit something, so begone with the projectile.
-        // hitting glass only once
     }
 }

@@ -6,9 +6,8 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 
 public class PositionMessage implements IMessage
 {
-    public PositionMessage()
-    {} // this constructor is required otherwise you'll get errors (used
-        // somewhere in fml through reflection)
+    // Forge mandated, called reflectively
+    public PositionMessage() {}
 
     int entityID;
     double posX;

@@ -89,8 +89,7 @@ public class SmallRocket extends ProjectileBase
             else
             {
                 this.setDead();
-            } // else, either we didn't break that block or we already hit one
-                // entity
+            } // else, either we didn't break that block or we already hit one entity
 
             // Let's ignite TNT explicitly here.
             if (state == Blocks.TNT)
@@ -102,10 +101,7 @@ public class SmallRocket extends ProjectileBase
                         target.getBlockPos().getY() + 0.5F,
                         target.getBlockPos().getZ() + 0.5F, getShooter());
 
-                this.world.spawnEntity(entitytntprimed); // This is TNT, so
-                // begone with that
-                // block and replace it
-                // with primed TNT
+                this.world.spawnEntity(entitytntprimed);
 
                 entitytntprimed.playSound(SoundEvents.ENTITY_TNT_PRIMED, 1.0F, 1.0F);
             }
@@ -118,24 +114,15 @@ public class SmallRocket extends ProjectileBase
 
             if (getShooter() instanceof EntityPlayer)
             {
-                griefing = this.dmgTerrain; // It's up to player settings to
-                // allow/forbid this
+                griefing = this.dmgTerrain; // It's up to player settings to allow/forbid this
             }
             else
             {
-                griefing = this.world.getGameRules().getBoolean("mobGriefing"); // Are
-                // we
-                // allowed
-                // to
-                // break
-                // things?
+                griefing = this.world.getGameRules().getBoolean("mobGriefing");
             }
 
             if (!world.isRemote)
                 this.world.createExplosion(this, this.posX, this.posY, this.posZ, this.explosionSize, griefing);
-            // 4.0F is TNT, false is for "not flaming"
-            // Editchevsky: Actually, false is double-used for "don't damage
-            // terrain"
         }
     }
 

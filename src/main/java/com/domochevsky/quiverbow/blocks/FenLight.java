@@ -96,8 +96,7 @@ public class FenLight extends BlockDirectional
     @Override
     public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighbourType, BlockPos neighbor)
     {
-        // Checking here to see if the block we're attached to is valid (and
-        // breaking if it isn't)
+        // Break if host block side is no longer solid
         switch (state.getValue(FACING))
         {
         case DOWN :
@@ -124,8 +123,7 @@ public class FenLight extends BlockDirectional
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random rand)
     {
-        // If this gets called then someone wants the light to turn back into
-        // air, since the timer ran out
+        // Despawn interval elapsed, self destruct
         if (!world.isRemote)
         {
             world.destroyBlock(pos, false);

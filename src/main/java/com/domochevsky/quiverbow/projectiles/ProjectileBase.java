@@ -45,8 +45,7 @@ public class ProjectileBase extends Entity implements IProjectile, IEntityAdditi
     private int ticksInAir;
     protected int ticksInAirMax;
 
-    protected boolean inGround; // Turns true if we hit a block and are stuck in
-    // them
+    protected boolean inGround;
 
     protected int damage;
     protected int knockbackStrength;
@@ -57,14 +56,11 @@ public class ProjectileBase extends Entity implements IProjectile, IEntityAdditi
 
     protected int arrowShake;
 
-    protected int targetsHit; // The number of targets we've hit so far. Relevant
-    // for breaking through glass
+    protected int targetsHit;
 
-    private int netCooldown; // This decreases until it has reached 0, after
-    // which it'll send a position update packet and
-    // then resets itself to max
-    public int netCooldownMax = 10; // Time in ticks until we send another
-    // position update packet
+    // Position update packet cooldown
+    private int netCooldown;
+    public int netCooldownMax = 10;
 
     public ProjectileBase(World world)
     {
@@ -189,8 +185,7 @@ public class ProjectileBase extends Entity implements IProjectile, IEntityAdditi
 
             if (potentialAABB != null && potentialAABB.contains(new Vec3d(this.posX, this.posY, this.posZ)))
             {
-                this.inGround = true; // Hit a non-air block, so we're now stuck
-                // in the ground
+                this.inGround = true;
             }
         }
 
@@ -203,17 +198,10 @@ public class ProjectileBase extends Entity implements IProjectile, IEntityAdditi
         {
             doInGroundSFX(); // Stuck in the ground, so ground SFX is go
 
-            if (this.netCooldown <= 0) // Time to send an update again
+            if (this.netCooldown <= 0)
             {
-                NetHelper.sendPositionMessageToPlayersInRange(this.world, this, this.posX, this.posY, this.posZ); // Explicitly
-                // making
-                // our
-                // position
-                // known,
-                // for
-                // precision
-                this.netCooldown = this.netCooldownMax; // Every X ticks, so
-                // resetting that now
+                NetHelper.sendPositionMessageToPlayersInRange(this.world, this, this.posX, this.posY, this.posZ);
+                this.netCooldown = this.netCooldownMax;
             }
             else // It's not time yet
             {
@@ -254,8 +242,7 @@ public class ProjectileBase extends Entity implements IProjectile, IEntityAdditi
 
             RayTraceResult hitPos = this.world.rayTraceBlocks(currentVec3d, futureVec3d, false, true, false);
 
-            // This seems to require a reset, since getRayTrace messes with
-            // them?
+            // This seems to require a reset, since getRayTrace messes with them?
             currentVec3d = new Vec3d(this.posX, this.posY, this.posZ);
             futureVec3d = new Vec3d(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 
@@ -309,8 +296,7 @@ public class ProjectileBase extends Entity implements IProjectile, IEntityAdditi
                 if (entityplayer.capabilities.disableDamage || getShooter() instanceof EntityPlayer
                         && !((EntityPlayer) getShooter()).canAttackPlayer(entityplayer))
                 {
-                    hitPos = null; // Either his entity can't be damaged in
-                    // general or we can't attack them
+                    hitPos = null; // Either this entity can't be damaged in general or we can't attack them
                 }
             }
 

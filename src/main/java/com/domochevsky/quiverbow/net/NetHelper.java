@@ -33,7 +33,6 @@ public class NetHelper
         // else, not a player we're trying to send this to
     }
 
-    // Same as below, but sends it to all players
     public static void sendPositionMessageToAllPlayers(World world, Entity entity, double x, double y, double z)
     {
         // Server-use only
@@ -41,8 +40,6 @@ public class NetHelper
         PacketHandler.net.sendToDimension(new PositionMessage(entity, x, y, z), world.provider.getDimension());
     }
 
-    // Same as above, but tries to save bandwidth by only sending packets to
-    // players who actually have a chance to see this event
     public static void sendPositionMessageToPlayersInRange(World world, Entity entity, double x, double y, double z)
     {
         // Server-use only

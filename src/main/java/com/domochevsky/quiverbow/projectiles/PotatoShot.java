@@ -51,9 +51,7 @@ public class PotatoShot extends ProjectileBase
             // Glass breaking
             Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 1);
 
-            if (this.shouldDrop && this.canBePickedUp) // If we can be picked up
-            // then we're dropping
-            // now
+            if (this.shouldDrop && this.canBePickedUp)
             {
                 ItemStack nuggetStack = new ItemStack(Items.BAKED_POTATO);
                 EntityItem entityitem = new EntityItem(this.world, target.getBlockPos().getX(),

@@ -41,10 +41,9 @@ public class HelperClient
     // Informing the client about the fact that my inventory has changed
     public static void setTurretInventory(EntityArmsAssistant turret, ItemStack stack, int itemSlot)
     {
-        // Received a slot that is higher than what we got, so assuming that
-        // this turret has a storage upgrade
+        /* Received a slot that is higher than what we got, 
+         * so assuming that this turret has a storage upgrade */
         IItemHandler inv = turret.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-
         if (itemSlot >= inv.getSlots())
         {
             turret.applyUpgrade(UpgradeRegistry.STORAGE);

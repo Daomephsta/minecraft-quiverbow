@@ -14,26 +14,9 @@ public class AITargeting
 
         double playerX = player.prevPosX + (player.posX - player.prevPosX) * f;
         double playerY = player.prevPosY + (player.posY - player.prevPosY) * f
-                + (world.isRemote ? player.getEyeHeight() - player.getDefaultEyeHeight() : player.getEyeHeight()); // isRemote
-        // check
-        // to
-        // revert
-        // changes
-        // to
-        // ray
-        // trace
-        // position
-        // due
-        // to
-        // adding
-        // the
-        // eye
-        // height
-        // clientside
-        // and
-        // player
-        // yOffset
-        // differences
+                + (world.isRemote ? player.getEyeHeight() - player.getDefaultEyeHeight() : player.getEyeHeight());
+        /* check to revert changes to ray trace position due to adding 
+         * the eye height clientside and player yOffset differences */
         double playerZ = player.prevPosZ + (player.posZ - player.prevPosZ) * f;
 
         Vec3d vecPlayer = new Vec3d(playerX, playerY, playerZ);
@@ -49,8 +32,6 @@ public class AITargeting
 
         Vec3d vecTarget = vecPlayer.addVector(f7 * maxDistance, f6 * maxDistance, f8 * maxDistance);
 
-        return world.rayTraceBlocks(vecPlayer, vecTarget, false, false, true); // false,
-        // true,
-        // false
+        return world.rayTraceBlocks(vecPlayer, vecTarget, false, false, true);
     }
 }

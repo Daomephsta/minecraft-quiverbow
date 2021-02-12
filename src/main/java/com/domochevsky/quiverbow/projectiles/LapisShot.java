@@ -53,20 +53,16 @@ public class LapisShot extends ProjectilePotionEffect
         {
             super.onImpact(movPos);
 
-            this.setDead(); // We've hit something, so begone with the
-            // projectile
+            this.setDead(); // We've hit something, so begone with the projectile
         }
 
         else // Hit the terrain
         {
-            // Helper.tryBlockBreak(this.world, this, movPos, 1);
-
             if (Helper.tryBlockBreak(this.world, this, movPos.getBlockPos(), 1))
             {
                 this.setDead();
             } // Going straight through a thing
-            else // Didn't manage to break that block, so we're stuck now for a
-            // short while
+            else // Didn't manage to break that block, so we're stuck now for a short while
             {
 
                 this.stuckBlockX = movPos.getBlockPos().getX();

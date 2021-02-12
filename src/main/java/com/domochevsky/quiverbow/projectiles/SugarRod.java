@@ -35,8 +35,7 @@ public class SugarRod extends ProjectileBase
         }
         else // Hit the terrain
         {
-            Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 1); // Glass
-                                                                                // breaking
+            Helper.tryBlockBreak(this.world, this, target.getBlockPos(), 1);
         }
 
         // SFX

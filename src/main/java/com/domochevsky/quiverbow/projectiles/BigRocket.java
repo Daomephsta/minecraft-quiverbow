@@ -43,17 +43,11 @@ public class BigRocket extends ProjectileBase
 
         if (getShooter() instanceof EntityPlayer)
         {
-            griefing = this.dmgTerrain; // It's up to player settings to
-            // allow/forbid this
+            griefing = this.dmgTerrain; // It's up to player settings to allow/forbid this
         }
         else
         {
-            griefing = this.world.getGameRules().getBoolean("mobGriefing"); // Are
-            // we
-            // allowed
-            // to
-            // break
-            // things?
+            griefing = this.world.getGameRules().getBoolean("mobGriefing");
         }
 
         if (!world.isRemote)
@@ -73,59 +67,42 @@ public class BigRocket extends ProjectileBase
 
                 if (getShooter() instanceof EntityPlayer)
                 {
-                    griefing = this.dmgTerrain; // It's up to player settings to
-                    // allow/forbid this
+                    griefing = this.dmgTerrain; // It's up to player settings to allow/forbid this
                 }
                 else
                 {
-                    griefing = this.world.getGameRules().getBoolean("mobGriefing"); // Are
-                    // we
-                    // allowed
-                    // to
-                    // break
-                    // things?
+                    griefing = this.world.getGameRules().getBoolean("mobGriefing");
                 }
 
                 if (!world.isRemote)
                     this.world.createExplosion(this, this.posX, this.posY, this.posZ, this.explosionSize, griefing); // Bewm
 
-                this.setDead(); // We've hit something, so begone with the
-                // projectile
+                this.setDead(); // We've hit something, so begone with the projectile
             }
         }
         NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.FIREWORKS_SPARK, (byte) 8);
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource source, float par2) // Big
-    // rockets
-    // can be
-    // swatted
-    // out of
-    // the way
-    // with a
-    // bit of
-    // expertise
+    public boolean attackEntityFrom(DamageSource source, float par2) 
     {
         if (this.isEntityInvulnerable(source))
         {
             return false;
         }
-        else // Not invulnerable
+        else // Big rockets can be swatted out of the way with a bit of expertise
         {
             this.markVelocityChanged();
 
             if (source.getTrueSource() != null) // Damaged by a entity
             {
-                Vec3d vec3 = source.getTrueSource().getLookVec(); // Which is
-                // looking that
-                // way...
+                Vec3d look = source.getTrueSource().getLookVec(); 
 
-                if (vec3 != null)
+                if (look != null)
                 {
-                    this.motionX = vec3.x;
-                    this.motionY = vec3.y;
-                    this.motionZ = vec3.z;
+                    this.motionX = look.x;
+                    this.motionY = look.y;
+                    this.motionZ = look.z;
                 }
 
                 if (source.getTrueSource() instanceof EntityLivingBase)

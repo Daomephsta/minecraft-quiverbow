@@ -76,8 +76,6 @@ public class SabotRocket extends ProjectileBase
         this.world.spawnEntity(rocket);
     }
 
-
-    //Big rockets can be swatted out of the way with a bit of expertise
     @Override
     public boolean attackEntityFrom(DamageSource source, float par2)
     {
@@ -85,21 +83,18 @@ public class SabotRocket extends ProjectileBase
         {
             return false;
         }
-        else // Not invulnerable
+        else //Big rockets can be swatted out of the way with a bit of expertise
         {
             this.markVelocityChanged();
 
             if (source.getTrueSource() != null) // Damaged by a entity
             {
-                Vec3d vec3 = source.getTrueSource().getLookVec(); // Which is
-                // looking that
-                // way...
-
-                if (vec3 != null)
+                Vec3d look = source.getTrueSource().getLookVec();
+                if (look != null)
                 {
-                    this.motionX = vec3.x;
-                    this.motionY = vec3.y;
-                    this.motionZ = vec3.z;
+                    this.motionX = look.x;
+                    this.motionY = look.y;
+                    this.motionZ = look.z;
                 }
 
                 if (source.getTrueSource() instanceof EntityLivingBase)

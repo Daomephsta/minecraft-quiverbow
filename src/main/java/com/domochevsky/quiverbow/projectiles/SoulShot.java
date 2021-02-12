@@ -68,8 +68,7 @@ public class SoulShot extends ProjectileBase
             NetHelper.sendParticleMessageToAllPlayers(this.world, this, EnumParticleTypes.SMOKE_LARGE,
                     (byte) 4);
 
-            this.setDead(); // We've hit something, so begone with the
-            // projectile
+            this.setDead(); // We've hit something, so begone with the projectile
         }
         else // Hit the terrain
         {
