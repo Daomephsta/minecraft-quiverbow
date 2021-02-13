@@ -876,7 +876,7 @@ public class QuiverbowMain
                                 target.entityHit.attackEntityFrom(DamageSource.LIGHTNING_BOLT,
                                     properties.generateDamage(world.rand));
                                 target.entityHit.hurtResistantTime = 0;
-                                if (world.rand.nextFloat() <= properties.getFloat("lightningChance"))
+                                if (!world.isRemote && world.rand.nextFloat() <= properties.getFloat("lightningChance"))
                                 {
                                     world.addWeatherEffect(new EntityLightningBolt(world,
                                         target.hitVec.x, target.hitVec.y, target.hitVec.z, false));
