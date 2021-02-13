@@ -11,10 +11,10 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
@@ -29,14 +29,14 @@ public class ListenerClient
     private float fovModifierHand, fovModifierHandLastTick;
 
     @SubscribeEvent
-    public void onClientTick(PlayerTickEvent event)
+    public void onClientPlayerTick(PlayerTickEvent event)
     {
-        handleZoom();
+        handleZoom(event.player);
         Minecraft mc = Minecraft.getMinecraft();
         if (mc.pointedEntity != null
-            && !InventoryHelper.findItemInHands(mc.player, ItemRegistry.AA_TARGET_ASSISTANT).isEmpty())
+            && !InventoryHelper.findItemInHands(event.player, ItemRegistry.AA_TARGET_ASSISTANT).isEmpty())
         {
-            mc.player.sendStatusMessage(new TextComponentString(
+            event.player.sendStatusMessage(new TextComponentString(
                 EntityList.getKey(mc.pointedEntity.getClass()).toString()), true);
         }
     }
@@ -48,14 +48,8 @@ public class ListenerClient
             event.setFOV(currentZoomFovModifier);
     }
 
-    private void handleZoom()
+    private void handleZoom(EntityPlayer player)
     {
-        //Check that the Minecraft singleton is instantiated
-        if (Minecraft.getMinecraft() == null) return;
-        //Check that a world is loaded
-        if (Minecraft.getMinecraft().world == null) return;
-        EntityPlayerSP player = Minecraft.getMinecraft().player;
-
         updateFovModifierHand();
 
         boolean holdingWeapon = false;
