@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.config.WeaponProperties;
 import com.domochevsky.quiverbow.renderer.RenderBeam;
+import com.domochevsky.quiverbow.util.Raytrace;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
@@ -42,8 +42,8 @@ public class BeamFireShape implements FireShape
             ? properties.getInt(BeamFireShape.PIERCING) : 1;
         if (pierceCount > 1) // Piercing
         {
-            List<RayTraceResult> results = new ArrayList<>(pierceCount);
-            Helper.raytraceAll(results, world, shooter, eyeVec, rayEndVec);
+            List<RayTraceResult> results = Raytrace.all(new ArrayList<>(pierceCount),
+                world, shooter, eyeVec, rayEndVec);
             if (results.isEmpty()) return RenderBeam.updateOrCreateBeam(shooter, maxRange, colour);
             // Sort the list in ascending order of distance from the shooter
             results.sort((resultA, resultB) ->
@@ -61,7 +61,7 @@ public class BeamFireShape implements FireShape
         }
         else // Non-piercing
         {
-            RayTraceResult result = Helper.raytraceClosestObject(world, shooter, eyeVec, rayEndVec);
+            RayTraceResult result = Raytrace.closest(world, shooter, eyeVec, rayEndVec);
             if (result != null)
             {
                 effect.apply(stack, world, shooter, result, properties);

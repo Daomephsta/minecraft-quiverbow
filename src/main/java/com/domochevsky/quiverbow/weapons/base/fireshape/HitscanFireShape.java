@@ -2,8 +2,8 @@ package com.domochevsky.quiverbow.weapons.base.fireshape;
 
 import java.util.ArrayList;
 
-import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.config.WeaponProperties;
+import com.domochevsky.quiverbow.util.Raytrace;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,7 +35,7 @@ public class HitscanFireShape implements FireShape
         Vec3d endVec = eyeVec.add(shooter.getLookVec().scale(shooter.getEntityAttribute(EntityPlayer.REACH_DISTANCE).getAttributeValue()));
         if (piercing > 0)
         {
-            for (RayTraceResult result : Helper.raytraceAll(new ArrayList<>(), world, shooter, eyeVec, endVec))
+            for (RayTraceResult result : Raytrace.all(new ArrayList<>(), world, shooter, eyeVec, endVec))
             {
                 if (!processRay(world, shooter, properties, result))
                     return false;
@@ -43,7 +43,7 @@ public class HitscanFireShape implements FireShape
             return true;
         }
         else
-            return processRay(world, shooter, properties, Helper.raytraceClosestObject(world, shooter, eyeVec, endVec));
+            return processRay(world, shooter, properties, Raytrace.closest(world, shooter, eyeVec, endVec));
     }
 
     private boolean processRay(World world, EntityLivingBase shooter, WeaponProperties properties, RayTraceResult result)

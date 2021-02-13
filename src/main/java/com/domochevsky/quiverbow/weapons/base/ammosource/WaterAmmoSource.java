@@ -2,6 +2,7 @@ package com.domochevsky.quiverbow.weapons.base.ammosource;
 
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.config.WeaponProperties;
+import com.domochevsky.quiverbow.util.Raytrace;
 
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
@@ -34,7 +35,7 @@ public class WaterAmmoSource extends SimpleAmmoSource
     {
         Vec3d eyeVec = user.getPositionVector().addVector(0.0D, user.getEyeHeight(), 0.0D);
         Vec3d rayEndVec = eyeVec.add(user.getLookVec().scale(8.0D));
-        RayTraceResult target = world.rayTraceBlocks(eyeVec, rayEndVec, true);
+        RayTraceResult target = Raytrace.closest(world, user, eyeVec, rayEndVec, Raytrace.LIQUID | Raytrace.BLOCK);
         if (MinecraftForge.EVENT_BUS.post(new FillBucketEvent(user, stack, world, target)) || target == null)
             return;
 

@@ -1,9 +1,6 @@
 package com.domochevsky.quiverbow;
 
-import java.util.List;
 import java.util.Random;
-
-import javax.annotation.Nullable;
 
 import com.domochevsky.quiverbow.config.QuiverbowConfig;
 import com.domochevsky.quiverbow.net.NetHelper;
@@ -23,9 +20,10 @@ import net.minecraft.item.ItemArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EntitySelectors;
 import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
@@ -204,60 +202,6 @@ public class Helper
     public static EntityArrow createArrow(World world, EntityLivingBase shooter)
     {
         return ((ItemArrow) Items.ARROW).createArrow(world, ARROW_STACK, shooter);
-    }
-
-    public static RayTraceResult raytraceClosestObject(World world, @Nullable Entity exclude, Vec3d startVec, Vec3d endVec)
-    {
-        RayTraceResult result = world.rayTraceBlocks(startVec, endVec);
-        double blockHitDistance = 0.0D; // The distance to the block that was hit
-        if (result != null) blockHitDistance = result.hitVec.distanceTo(startVec);
-
-        // Encloses the entire area where entities that could collide with this ray exist
-        AxisAlignedBB entitySearchArea = new AxisAlignedBB(startVec.x, startVec.y, startVec.z,
-                endVec.x, endVec.y, endVec.z);
-        Entity hitEntity = null; // The closest entity that was hit
-        double entityHitDistance = 0.0D; // The squared distance to the closest entity that was hit
-        for (Entity entity : world.getEntitiesInAABBexcluding(exclude, entitySearchArea,
-                EntitySelectors.NOT_SPECTATING))
-        {
-            // The collision AABB of the entity expanded by the collision border size
-            AxisAlignedBB collisionBB = entity.getEntityBoundingBox().grow(entity.getCollisionBorderSize());
-            RayTraceResult intercept = collisionBB.calculateIntercept(startVec, endVec);
-            if (intercept != null)
-            {
-                double distance = startVec.distanceTo(intercept.hitVec);
-
-                if ((distance < blockHitDistance || blockHitDistance == 0)
-                        && (distance < entityHitDistance || entityHitDistance == 0.0D))
-                {
-                    entityHitDistance = distance;
-                    hitEntity = entity;
-                }
-            }
-        }
-
-        if (hitEntity != null) result = new RayTraceResult(hitEntity, hitEntity.getPositionVector());
-
-        return result;
-    }
-
-    public static List<RayTraceResult> raytraceAll(List<RayTraceResult> results, World world, @Nullable Entity exclude, Vec3d startVec, Vec3d endVec)
-    {
-        RayTraceResult blockRaytrace = world.rayTraceBlocks(startVec, endVec);
-        if (blockRaytrace != null) results.add(blockRaytrace);
-
-        // Encloses the entire area where entities that could collide with this ray exist
-        AxisAlignedBB entitySearchArea = new AxisAlignedBB(startVec.x, startVec.y, startVec.z,
-                endVec.x, endVec.y, endVec.z);
-        for (Entity entity : world.getEntitiesInAABBexcluding(exclude, entitySearchArea,
-                EntitySelectors.NOT_SPECTATING))
-        {
-            // The collision AABB of the entity expanded by the collision border size
-            AxisAlignedBB collisionBB = entity.getEntityBoundingBox().grow(entity.getCollisionBorderSize());
-            RayTraceResult intercept = collisionBB.calculateIntercept(startVec, endVec);
-            if (intercept != null) results.add(new RayTraceResult(entity, intercept.hitVec));
-        }
-        return results;
     }
 
     public static int randomIntInRange(Random random, int min, int max)
