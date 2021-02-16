@@ -207,8 +207,8 @@ item.quiverbow_restrung.weapon.nether_bellows.ammostatus=§9Netherrack: %d / %d
 item.quiverbow_restrung.weapon.nether_bellows.loadtext=§eCraft with a Large Netherrack Magazine to reload.
 item.quiverbow_restrung.weapon.nether_bellows.description=Vague whispers of torment can be heard.
 
-item.quiverbow_restrung.weapon.splinter_rifle.name=Obsidian Splinter Rifle
-item.quiverbow_restrung.weapon.splinter_rifle.ammostatus=§9Splints: %d / %d
+item.quiverbow_restrung.weapon.splinter_rifle.name=Obsidian Shard Rifle
+item.quiverbow_restrung.weapon.splinter_rifle.ammostatus=§9Shards: %d / %d
 item.quiverbow_restrung.weapon.splinter_rifle.loadtext=§eCraft with an Obsidian Magazine to reload.
 item.quiverbow_restrung.weapon.splinter_rifle.description=Deceptively cold to the touch.
 item.quiverbow_restrung.weapon.splinter_rifle.cooldown=§cCOOLING DOWN (%s secs)
