@@ -1,0 +1,25 @@
+{
+    "name": "Flint Duster",
+    "icon": "quiverbow_restrung:flint_duster",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/flint_duster",
+			"text": 
+			"Flint ground into dust makes a extremely coarse powder that can be used to break softer blocks. It’s not strong enough though to get through the tougher blocks, like various ores."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:flint_duster"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/internal_storage",
+			"specification": "quiverbow_restrung:flint_duster"
+		},
+		{
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:ammo/box_of_flint_dust"
+        }
+    ]
+}

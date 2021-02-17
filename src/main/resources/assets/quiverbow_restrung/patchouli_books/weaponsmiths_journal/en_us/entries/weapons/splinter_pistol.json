@@ -1,0 +1,26 @@
+{
+    "name": "Obsidian Splinter Pistol",
+    "icon": "quiverbow_restrung:splinter_pistol",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/splinter_pistol_empty",
+			"text": 
+			"A smaller, faster firing variant of the Obsidian Shard Rifle. Fires obsidian splinters that additionally apply the wither effect."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:splinter_pistol"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/magazine",
+			"weapon": "quiverbow_restrung:splinter_pistol",
+			"magazine": "quiverbow_restrung:obsidian_magazine"
+		},
+		{
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:ammo/obsidian_magazine_empty"
+        }
+    ]
+}

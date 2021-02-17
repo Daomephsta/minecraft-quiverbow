@@ -1,0 +1,17 @@
+{
+    "name": "Seedling",
+    "icon": "quiverbow_restrung:seedling",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/seedling_loaded",
+			"text": 
+			"The Seedling is made mostly of renewable materials, but cannot be reloaded. When empty it breaks, returning the non-renewable components."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:seedling"
+		}
+    ]
+}

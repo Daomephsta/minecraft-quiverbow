@@ -1,0 +1,25 @@
+{
+    "name": "Lightning Red",
+    "icon": "quiverbow_restrung:lightning_red",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/lightning_red",
+			"text":  "Nether quartz rails guide a concentrated redstone bolt along their length towards the target. The charge is strong enough to punch through multiple targets and even terrain before dissipating."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:lightning_red"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/magazine",
+			"weapon": "quiverbow_restrung:lightning_red",
+			"magazine": "quiverbow_restrung:redstone_magazine"
+		},
+		{
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:ammo/redstone_magazine_empty"
+        }
+    ]
+}

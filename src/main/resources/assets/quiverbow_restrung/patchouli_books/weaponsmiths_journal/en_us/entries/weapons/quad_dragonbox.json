@@ -1,0 +1,21 @@
+{
+    "name": "Four-headed Dragonbox",
+    "icon": "quiverbow_restrung:quad_dragonbox",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/quad_dragonbox_empty",
+			"text": 
+			"In a bout of madness I put up four Dragonboxes on a weapon rack and noticed that they could be modified to make one weapon."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:quad_dragonbox"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/internal_storage",
+			"specification": "quiverbow_restrung:quad_dragonbox"
+		}
+    ]
+}

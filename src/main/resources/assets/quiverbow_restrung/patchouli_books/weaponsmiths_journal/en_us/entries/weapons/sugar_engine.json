@@ -1,0 +1,31 @@
+{
+    "name": "Sugar Engine",
+    "icon": "quiverbow_restrung:sugar_engine",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/sugar_engine_empty",
+			"text": 
+			"Launches sugar cane-reinforced sticks rapid-fire, after a short spinup time. The force of firing results in low accuracy and strong recoil."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:sugar_engine"
+		},
+		{
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:part_sugar_engine_barrel",
+            "recipe2": "quiverbow_restrung:part_sugar_engine_body"
+        },
+		{
+			"type": "quiverbow_restrung:weapon_loading/magazine",
+			"weapon": "quiverbow_restrung:sugar_engine",
+			"magazine": "quiverbow_restrung:sugar_magazine"
+		},
+		{
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:ammo/sugar_magazine_empty"
+        }
+    ]
+}

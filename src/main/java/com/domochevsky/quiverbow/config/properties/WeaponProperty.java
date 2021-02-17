@@ -17,8 +17,8 @@ public abstract class WeaponProperty
     public String getPropertyName()
     {
         return propertyName;
-    }        
-    
+    }
+
     public String getComment()
     {
         return comment;
@@ -29,15 +29,17 @@ public abstract class WeaponProperty
         this.ignore = true;
         return this;
     }
-    
+
     public boolean shouldIgnore()
     {
         return ignore;
     }
 
     public abstract void reset();
-    
+
     public abstract void loadFromConfig(Property configProp);
-    
+
     public abstract Property createDefaultForgeConfigProperty();
+
+    public abstract String getValueAsString();
 }

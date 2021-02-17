@@ -1,0 +1,12 @@
+{
+	"components": 
+	[
+		{
+			"type": "text",
+			"text": "#properties#",
+			"x": 0,
+			"y": 0
+		}
+	],
+	"processor": "com.domochevsky.quiverbow.integration.patchouli.WeaponPropertiesComponentProcessor"
+}

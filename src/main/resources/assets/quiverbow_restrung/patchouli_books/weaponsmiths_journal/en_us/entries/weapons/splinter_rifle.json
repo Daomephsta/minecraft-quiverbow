@@ -1,0 +1,26 @@
+{
+    "name": "Obsidian Shard Rifle",
+    "icon": "quiverbow_restrung:splinter_rifle",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/splinter_rifle_empty",
+			"text": 
+			"Pistons provide spring power to propel projectiles. Gunpowder does the same. What happens if you combine the two? The Obsidian Shard Rifle fires obsidian shards that additionally apply the wither effect."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:splinter_rifle"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/magazine",
+			"weapon": "quiverbow_restrung:splinter_rifle",
+			"magazine": "quiverbow_restrung:obsidian_magazine"
+		},
+		{
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:ammo/obsidian_magazine_empty"
+        }
+    ]
+}

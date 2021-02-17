@@ -12,7 +12,7 @@ public class BooleanProperty extends WeaponProperty
         super(propertyName, comment);
         this.defaultValue = this.value = defaultValue;
     }
-    
+
     public static BooleanProperty createIgnored(String name)
     {
         return (BooleanProperty) new BooleanProperty(name, "", false).ignore();
@@ -36,6 +36,12 @@ public class BooleanProperty extends WeaponProperty
     public boolean getValue()
     {
         return value;
+    }
+
+    @Override
+    public String getValueAsString()
+    {
+        return Boolean.toString(value);
     }
 
     @Override

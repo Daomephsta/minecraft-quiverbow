@@ -1,0 +1,36 @@
+{
+    "name": "Ender Rail Accelerator",
+    "icon": "quiverbow_restrung:ender_rail_accelerator",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "text",
+			"text": 
+			"Ender Chests allow accelerating an iron ingot over 27 blocks, resulting in massive damage to the impact site. Unfortunately the muzzle shock is extremely dangerous to the user, as such the basic ERA is useful only as a last resort. The high velocity also damages the rails, they require repairs after every shot."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:ender_rail_accelerator"
+		},
+		{
+            "type": "crafting",
+            "title": "Ender Rail Accelerator",
+			"recipe": "quiverbow_restrung:weapons/incomplete_ender_rail_accelerator",
+			"text": 
+			"A newly crafted Ender Rail Accelerator requires an internal rail before it can be fired. To install it, use the ERA while holding 27 powered rails in your other hand."
+        },
+		{
+            "type": "crafting",
+            "title": "Muzzle Shock Dampener",
+			"recipe": "quiverbow_restrung:weapons/ender_rail_accelerator_improved",
+			"text": 
+			"Eliminates the muzzle shock, rendering the ERA safe(ish) to use."
+        },
+		{
+            "type": "crafting",
+            "title": "Repair",
+			"recipe": "quiverbow_restrung:weapons/ender_rail_accelerator_repair",
+			"recipe2": "quiverbow_restrung:weapons/ender_rail_accelerator_improved_repair"
+        }
+    ]
+}

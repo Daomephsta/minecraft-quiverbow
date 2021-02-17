@@ -1,0 +1,21 @@
+{
+    "name": "Rocket Launcher",
+    "icon": "quiverbow_restrung:rocket_launcher",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/rocket_launcher_empty",
+			"text": 
+			"An alteration of the Dragonbox concept. Instead of holding a whole stack of small rockets it just holds one giant one. Unfortunately firing damages it too much to reload in the field."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:rocket_launcher"
+		},
+		{
+			"type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/rocket_launcher_loaded"
+		}
+    ]
+}

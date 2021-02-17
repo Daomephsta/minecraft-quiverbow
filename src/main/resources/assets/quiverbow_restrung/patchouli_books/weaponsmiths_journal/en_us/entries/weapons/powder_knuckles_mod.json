@@ -1,0 +1,22 @@
+{
+    "name": "Modified Powder Knuckles",
+    "icon": "quiverbow_restrung:powder_knuckles_mod",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/powder_knuckles_mod_empty",
+			"title": "Mod. Powder Knuckles",
+			"text": 
+			"Playing around with obsidian and the previous Powder Knuckle model has lead to a mining focused variant. Directing the blast avoids injuring the user, and curiously, results in a Silk Touch-like effect."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:powder_knuckles_mod"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/internal_storage",
+			"specification": "quiverbow_restrung:powder_knuckles_mod"
+		}
+    ]
+}

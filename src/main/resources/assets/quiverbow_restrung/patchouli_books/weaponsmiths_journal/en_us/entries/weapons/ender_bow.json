@@ -1,0 +1,17 @@
+{
+    "name": "Ender Bow",
+    "icon": "quiverbow_restrung:ender_bow",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/ender_bow_loaded",
+			"text": 
+			"An \"Ender Scope\" attached to a regular bow allows the the wielder to see the impact point of their arrow. There is no integrated quiver, ammo is drawn from your inventory. Sneak to look down the scope."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:ender_bow"
+		}
+    ]
+}

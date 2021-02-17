@@ -1,0 +1,26 @@
+{
+    "name": "Lapis Coil",
+    "icon": "quiverbow_restrung:lapis_coil",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/lapis_coil_empty",
+			"text": 
+			"Recently I discovered that Lapis Lazuli is highly toxic. I adapted the coin tosser design to create a rapid-firing gun that does low damage, but weakens, nauseates, and tires the target."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:lapis_coil"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/magazine",
+			"weapon": "quiverbow_restrung:lapis_coil",
+			"magazine": "quiverbow_restrung:lapis_magazine"
+		},
+		{
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:ammo/lapis_magazine_empty"
+        }
+    ]
+}

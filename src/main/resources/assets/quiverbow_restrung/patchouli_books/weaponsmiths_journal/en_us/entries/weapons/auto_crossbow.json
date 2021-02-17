@@ -1,0 +1,21 @@
+{
+    "name": "Auto-Crossbow",
+    "icon": "quiverbow_restrung:autoloader_crossbow",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/auto_crossbow_empty",
+			"text": 
+			"Good news! Through idle musings on how to improve existing weapons I have come up with a way to make the auto-crossbow fully automatic. I also added a second feeder, for weight balance, effectively doubling the arrow capacity."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:auto_crossbow"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/internal_storage",
+			"specification": "quiverbow_restrung:auto_crossbow"
+		}
+    ]
+}

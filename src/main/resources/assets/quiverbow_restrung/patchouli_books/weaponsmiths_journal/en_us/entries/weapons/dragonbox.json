@@ -1,0 +1,21 @@
+{
+    "name": "Dragonbox",
+    "icon": "quiverbow_restrung:dragonbox",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/dragonbox_empty",
+			"text": 
+			"While rummaging through old gear I remembered that fireworks are a thing. I call it the Dragonbox. It’s a crank-powered firing mechanism for firework rockets."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:dragonbox"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/internal_storage",
+			"specification": "quiverbow_restrung:dragonbox"
+		}
+    ]
+}

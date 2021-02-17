@@ -1,0 +1,21 @@
+{
+    "name": "Arrow Mortar",
+    "icon": "quiverbow_restrung:arrow_mortar",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/arrow_mortar_empty",
+			"text": 
+			"Y’know? That is not enough arrows. We need more arrows! Cue the Arrow Mortar! With a longer barrel and three pistons we now have the push to launch entire arrow bundles, which scatter on impact."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:arrow_mortar"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/internal_storage",
+			"specification": "quiverbow_restrung:arrow_mortar"
+		}
+    ]
+}

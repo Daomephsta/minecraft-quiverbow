@@ -1,0 +1,27 @@
+{
+    "name": "Nether Bellows",
+    "icon": "quiverbow_restrung:nether_bellows",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/nether_bellows_empty",
+			"text": 
+			"The Nether Bellows spray out streams of burning netherrack dust, coating everything they hit in cleansing fire."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:nether_bellows"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/magazine",
+			"weapon": "quiverbow_restrung:nether_bellows",
+			"magazine": "quiverbow_restrung:large_netherrack_magazine"
+		},
+		{
+            "type": "crafting",
+            "title": "L. Netherrack Magazine",
+			"recipe": "quiverbow_restrung:ammo/large_netherrack_magazine_empty"
+        }
+    ]
+}

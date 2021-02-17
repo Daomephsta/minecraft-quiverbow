@@ -1,0 +1,26 @@
+{
+    "name": "Proximity Thorn Thrower",
+    "icon": "quiverbow_restrung:proximity_thorn_thrower",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/proximity_thorn_thrower_empty",
+			"text": 
+			"This is an experiment for a thought of sorts, “Hurt them, even if you’re not nearby”. The PTT places charged thorn packages when fired, which explode into shrapnel when something comes near them. "
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:proximity_thorn_thrower"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/magazine",
+			"weapon": "quiverbow_restrung:proximity_thorn_thrower",
+			"magazine": "quiverbow_restrung:thorn_magazine"
+		},
+		{
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:ammo/thorn_magazine_empty"
+        }
+    ]
+}

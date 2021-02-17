@@ -1,0 +1,21 @@
+{
+    "name": "Snow Cannon",
+    "icon": "quiverbow_restrung:snow_cannon",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/snow_cannon_empty",
+			"text": 
+			"Shoveling snow the other day gave me an idea: Why not compress and shoot snow? The Snow Cannon fires a spread of snowballs, slowing whatever they hit."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:snow_cannon"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/internal_storage",
+			"specification": "quiverbow_restrung:snow_cannon"
+		}
+    ]
+}

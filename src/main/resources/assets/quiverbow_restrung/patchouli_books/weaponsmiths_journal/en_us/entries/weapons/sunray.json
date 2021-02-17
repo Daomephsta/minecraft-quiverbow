@@ -1,0 +1,17 @@
+{
+    "name": "Sunray",
+    "icon": "quiverbow_restrung:sunray",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/sunray",
+			"text": 
+			"Fires a scorching beam of light. Instead of using ammunition, it recharges when there is enough light."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:sunray"
+		}
+    ]
+}

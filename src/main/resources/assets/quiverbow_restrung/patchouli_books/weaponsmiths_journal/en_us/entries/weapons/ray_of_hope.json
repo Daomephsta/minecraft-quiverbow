@@ -1,0 +1,21 @@
+{
+    "name": "Ray Of Hope",
+    "icon": "quiverbow_restrung:ray_of_hope",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/ray_of_hope",
+			"text": 
+			"Fires a beam of health regenerating energy."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:ray_of_hope"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/internal_storage",
+			"specification": "quiverbow_restrung:ray_of_hope"
+		}
+    ]
+}

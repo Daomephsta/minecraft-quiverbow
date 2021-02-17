@@ -14,7 +14,7 @@ public class FloatProperty extends RangedProperty
         this.minValue = minValue;
         this.maxValue = maxValue;
     }
-    
+
     public static FloatProperty createIgnored(String name)
     {
         return (FloatProperty) new FloatProperty(name, "", 0.0F, 0.0F, 0.0F).ignore();
@@ -38,6 +38,12 @@ public class FloatProperty extends RangedProperty
     public float getValue()
     {
         return value;
+    }
+
+    @Override
+    public String getValueAsString()
+    {
+        return Float.toString(value);
     }
 
     @Override

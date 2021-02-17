@@ -1,0 +1,26 @@
+{
+    "name": "Redstone Sprayer",
+    "icon": "quiverbow_restrung:redstone_sprayer",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/redstone_sprayer_empty",
+			"text": 
+			"Cribbing from the design of the Lapis Coil, this weapon forces a block of redstone gradually through a metal mesh, pulverizing it and spraying (highly toxic) dust all over the place."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:redstone_sprayer"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/magazine",
+			"weapon": "quiverbow_restrung:redstone_sprayer",
+			"magazine": "quiverbow_restrung:large_redstone_magazine"
+		},
+		{
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:ammo/large_redstone_magazine_empty"
+        }
+    ]
+}

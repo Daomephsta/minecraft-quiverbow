@@ -1,0 +1,21 @@
+{
+    "name": "Potatosser",
+    "icon": "quiverbow_restrung:potatosser",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/potatosser_empty",
+			"text": 
+			"The Potatosser bakes and shoots out potatoes, dealing a surprising amount of damage. "
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:potatosser"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/internal_storage",
+			"specification": "quiverbow_restrung:potatosser"
+		}
+    ]
+}

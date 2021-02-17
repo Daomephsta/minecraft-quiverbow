@@ -1,0 +1,10 @@
+{
+	"components": 
+	[
+		{
+			"type": "custom",
+			"class": "com.domochevsky.quiverbow.integration.patchouli.WeaponLoadingComponent",
+			"specification": "#specification"
+		}
+	]
+}

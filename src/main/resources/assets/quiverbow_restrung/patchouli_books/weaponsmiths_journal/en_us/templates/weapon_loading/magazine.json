@@ -1,0 +1,16 @@
+{
+	"components": 
+	[
+		{
+			"type": "custom",
+			"class": "com.domochevsky.quiverbow.integration.patchouli.WeaponLoadingComponent",
+			"specification": "#weapon"
+		},
+		{
+			"type": "custom",
+			"class": "com.domochevsky.quiverbow.integration.patchouli.WeaponLoadingComponent",
+			"specification": "#magazine",
+			"y": 28
+		}
+	]
+}

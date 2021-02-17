@@ -1,0 +1,26 @@
+{
+    "name": "Hidden Ender Pistol",
+    "icon": "quiverbow_restrung:hidden_ender_pistol",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/hidden_ender_pistol_empty",
+			"text": 
+			"Teleports and shatters quartz coated ender pearls inside targets. As a side effect, the target is unaware of the attacker's identity."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:hidden_ender_pistol"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/magazine",
+			"weapon": "quiverbow_restrung:hidden_ender_pistol",
+			"magazine": "quiverbow_restrung:ender_quartz_magazine"
+		},
+		{
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:ammo/ender_quartz_magazine_empty"
+        }
+    ]
+}

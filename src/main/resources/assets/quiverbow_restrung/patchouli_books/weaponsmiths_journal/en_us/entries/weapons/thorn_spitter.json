@@ -1,0 +1,26 @@
+{
+    "name": "Thorn Spitter",
+    "icon": "quiverbow_restrung:thorn_spitter",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/thorn_spitter_empty",
+			"text": 
+			"Experimentation with naturally growing ammunition has shown that cactus thorns are effective in large amounts. This weapon shoots thorns in rapid-fire bursts."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:thorn_spitter"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/magazine",
+			"weapon": "quiverbow_restrung:thorn_spitter",
+			"magazine": "quiverbow_restrung:thorn_magazine"
+		},
+		{
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:ammo/thorn_magazine_empty"
+        }
+    ]
+}

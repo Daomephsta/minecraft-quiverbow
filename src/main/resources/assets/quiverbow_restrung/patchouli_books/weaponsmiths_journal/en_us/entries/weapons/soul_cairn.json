@@ -1,0 +1,21 @@
+{
+    "name": "Soul Cairn",
+    "icon": "quiverbow_restrung:soul_cairn",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/soul_cairn_empty",
+			"text": 
+			"Exploits the unique properties of end stone to transform the victim into a spawn egg."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:soul_cairn"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/internal_storage",
+			"specification": "quiverbow_restrung:soul_cairn"
+		}
+    ]
+}

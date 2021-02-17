@@ -1,0 +1,26 @@
+{
+    "name": "Modified Coin Tosser",
+    "icon": "quiverbow_restrung:coin_tosser_mod",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/coin_tosser_empty_alt",
+			"text": 
+			"Modified to reduce spread and projectile count. Less damage, but better accuracy and ammo efficiency."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:coin_tosser_mod"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/magazine",
+			"weapon": "quiverbow_restrung:coin_tosser_mod",
+			"magazine": "quiverbow_restrung:gold_magazine"
+		},
+		{
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:ammo/gold_magazine_empty"
+        }
+    ]
+}

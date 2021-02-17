@@ -14,7 +14,7 @@ public class IntProperty extends RangedProperty
         this.minValue = minValue;
         this.maxValue = maxValue;
     }
-    
+
     public static IntProperty createIgnored(String name)
     {
         return (IntProperty) new IntProperty(name, "", 0, 0, 0).ignore();
@@ -38,6 +38,12 @@ public class IntProperty extends RangedProperty
     public int getValue()
     {
         return value;
+    }
+
+    @Override
+    public String getValueAsString()
+    {
+        return Integer.toString(value);
     }
 
     @Override

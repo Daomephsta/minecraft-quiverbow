@@ -1,0 +1,21 @@
+{
+    "name": "Ender Rifle",
+    "icon": "quiverbow_restrung:ender_rifle",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/ender_rifle_empty",
+			"text": 
+			"Another application of the Ender Scope, the Ender Rifle fires iron ingots via a double-piston spring-loader. In-flight friction heating increases projectile damage with flight time, up to the maximum damage."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:ender_rifle"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/internal_storage",
+			"specification": "quiverbow_restrung:ender_rifle"
+		}
+    ]
+}

@@ -1,0 +1,26 @@
+{
+    "name": "Seed Sweeper",
+    "icon": "quiverbow_restrung:seed_sweeper",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/seed_sweeper_empty",
+			"text": 
+			"A simple design, based on the Coin Tosser, but modified to scatter seeds instead. Not as dangerous or far reaching as the other weaponry, but quite cheap and certainly better than the Seedling."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:seed_sweeper"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/magazine",
+			"weapon": "quiverbow_restrung:seed_sweeper",
+			"magazine": "quiverbow_restrung:seed_jar"
+		},
+		{
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:ammo/seed_jar_empty"
+        }
+    ]
+}

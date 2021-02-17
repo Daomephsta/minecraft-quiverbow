@@ -1,0 +1,25 @@
+{
+    "name": "Bow with Quiver",
+    "icon": "quiverbow_restrung:quiverbow",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/quiverbow_empty",
+			"text": 
+			"This quivered bow behaves like a regular bow, except it can hold 4 stacks worth of arrows without taking up any additional space."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:quiverbow"
+		},
+		{
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:ammo/arrow_bundle"
+        },
+		{
+			"type": "quiverbow_restrung:weapon_loading/internal_storage",
+			"specification": "quiverbow_restrung:quiverbow"
+		}
+    ]
+}

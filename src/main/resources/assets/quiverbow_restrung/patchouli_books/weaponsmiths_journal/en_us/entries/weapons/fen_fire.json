@@ -1,0 +1,21 @@
+{
+    "name": "Fen Fire",
+    "icon": "quiverbow_restrung:fen_fire",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/fen_fire_empty",
+			"text": 
+			"Launches glowstone wads capable of sticking to most surfaces."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:fen_fire"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/internal_storage",
+			"specification": "quiverbow_restrung:fen_fire"
+		}
+    ]
+}

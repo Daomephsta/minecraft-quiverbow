@@ -1,0 +1,26 @@
+{
+    "name": "Obsidian Wither Rifle",
+    "icon": "quiverbow_restrung:wither_rifle",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/wither_rifle_empty",
+			"text": 
+			"A profoundly evil weapon that deals magic and applies Wither, in addition to mundane damage. No further research down this line will be pursued in the forseeable future."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:wither_rifle"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/magazine",
+			"weapon": "quiverbow_restrung:wither_rifle",
+			"magazine": "quiverbow_restrung:obsidian_magazine"
+		},
+		{
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:ammo/obsidian_magazine_empty"
+        }
+    ]
+}

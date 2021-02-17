@@ -1,6 +1,7 @@
 package com.domochevsky.quiverbow.config;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 import java.util.function.Consumer;
@@ -25,7 +26,7 @@ import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
-public class WeaponProperties
+public class WeaponProperties implements Iterable<WeaponProperty>
 {
     public static final Pair<String, String>
         ENABLED = Pair.of("enabled", "Enables crafting this weapon if true"),
@@ -160,6 +161,11 @@ public class WeaponProperties
         return getBoolean(MOB_USABLE);
     }
 
+    public boolean hasSubProjectileProperties()
+    {
+        return subProjectileProperties != null;
+    }
+
     public WeaponProperties getSubProjectileProperties()
     {
         if (subProjectileProperties == null)
@@ -207,6 +213,13 @@ public class WeaponProperties
         return getPropertyAndCheck(name, FloatProperty.class).getValue();
     }
 
+    public String getAsString(String name)
+    {
+        WeaponProperty property = properties.get(name);
+        if (property == null) throw new IllegalArgumentException("No property named " + name + " exists");
+        return properties.get(name).getValueAsString();
+    }
+
     @SuppressWarnings("unchecked")
     private <T extends WeaponProperty> T getPropertyAndCheck(String name, Class<T> expectedClass)
     {
@@ -216,6 +229,12 @@ public class WeaponProperties
             throw new IllegalArgumentException(String.format("Expected %s named %s, not %s",
                     expectedClass.getSimpleName(), name, property.getClass().getSimpleName()));
         return (T) property;
+    }
+
+    @Override
+    public Iterator<WeaponProperty> iterator()
+    {
+        return properties.values().iterator();
     }
 
     public static class Builder

@@ -1,0 +1,26 @@
+{
+    "name": "Improved Rocket Launcher",
+    "icon": "quiverbow_restrung:rocket_launcher_imp",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/rocket_launcher_imp_empty",
+			"title": "Imp. Rocket Launcher",
+			"text": 
+			"After long nights of testing the properties of obsidian a breakthrough for the rocket launcher has finally been achieved. This upgrade can fire pre-made rockets without losing any effectiveness. "
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:rocket_launcher"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/internal_storage",
+			"specification": "quiverbow_restrung:rocket_launcher_imp"
+		},
+		{
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:ammo/large_rocket"
+        }
+    ]
+}

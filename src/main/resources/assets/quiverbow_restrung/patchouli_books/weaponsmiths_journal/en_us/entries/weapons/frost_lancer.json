@@ -1,0 +1,27 @@
+{
+    "name": "Frost Lancer",
+    "icon": "quiverbow_restrung:frost_lancer",
+    "category": "quiverbow_restrung:weapons",
+    "pages": [
+        {
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:weapons/frost_lancer_empty",
+			"text": 
+			"The big brother of the Ender Rifle; heavier, stronger and unfortunately slower. The extra set of pistons increases its power quite considerably, but not as much as I’d have hoped."
+        },
+		{
+			"type": "quiverbow_restrung:weapon_properties",
+			"weapon": "quiverbow_restrung:frost_lancer"
+		},
+		{
+			"type": "quiverbow_restrung:weapon_loading/internal_storage",
+			"specification": "quiverbow_restrung:frost_lancer"
+		},
+		{
+            "type": "crafting",
+			"recipe": "quiverbow_restrung:ammo/cold_iron_clip",
+			"text": 
+			""
+        }
+    ]
+}
