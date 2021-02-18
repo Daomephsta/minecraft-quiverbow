@@ -87,7 +87,7 @@ public class WeaponLoadingComponent implements ICustomComponent
             int tooltipX = 84, tooltipY = 31;
             GlStateManager.translate(-tooltipX, -tooltipY, 0);
             context.getGui().drawHoveringText(I18n.format(translationKey), mouseX, mouseY);
-            GlStateManager.color(1, 1, 1, 1); // Revert colour change from text renderer
+            GlStateManager.disableLighting(); // Revert change caused by text renderer
             GlStateManager.translate(tooltipX, tooltipY, 0);
         }
 
