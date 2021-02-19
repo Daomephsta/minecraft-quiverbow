@@ -109,10 +109,7 @@ public class QuiverbowMain
         @Override
         public ItemStack getTabIconItem()
         {
-            ItemStack icon = new ItemStack(ItemRegistry.QUIVERBOW);
-            AmmoSource ammoSource = ((Weapon) icon.getItem()).getTrigger().getAmmoSource();
-            ammoSource.addAmmo(icon, ammoSource.getAmmoCapacity(icon));
-            return icon;
+            return ((Weapon) ItemRegistry.QUIVERBOW).createFull();
         }
     };
 
@@ -268,8 +265,8 @@ public class QuiverbowMain
             );
             Effect breakIfEmpty = (world, shooter, stack, properties) ->
             {
-                AmmoSource ammoSource = ((Weapon) stack.getItem()).getTrigger().getAmmoSource();
-                if (!ammoSource.hasAmmo(shooter, stack, properties))
+                Weapon weapon = (Weapon) stack.getItem();
+                if (!weapon.hasAmmo(shooter, stack, properties))
                 {
                     shooter.renderBrokenItemStack(stack);
                     stack.setCount(0);
@@ -1025,8 +1022,8 @@ public class QuiverbowMain
            ModelBakery.registerItemVariants(crossbow, empty, unchambered, chambered);
            ModelLoader.setCustomMeshDefinition(crossbow, stack ->
            {
-               AmmoSource ammoSource = ((Weapon) stack.getItem()).getTrigger().getAmmoSource();
-               if (ammoSource.getAmmo(stack) >= 0) return empty;
+               Weapon weapon = (Weapon) stack.getItem();
+               if (weapon.getAmmo(stack) >= 0) return empty;
                if (!AutoLoadingTrigger.isLoaded(stack)) return unchambered;
                return chambered;
            });

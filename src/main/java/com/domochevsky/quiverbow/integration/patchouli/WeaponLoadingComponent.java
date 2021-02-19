@@ -34,12 +34,17 @@ public class WeaponLoadingComponent implements ICustomComponent
         this.componentY = componentY;
         Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(specification));
         if (item instanceof Weapon)
+        {
             this.specificationObj = ReloadSpecificationRegistry.INSTANCE.getSpecification((Weapon) item);
+            this.output = ((Weapon) item).createFull();
+        }
         else if (item instanceof AmmoMagazine)
+        {
             this.specificationObj = ReloadSpecificationRegistry.INSTANCE.getSpecification((AmmoMagazine) item);
+            this.output = ((AmmoMagazine) item).createFull();
+        }
         else
             throw new IllegalArgumentException("Unknown weapon or magazine" + new ResourceLocation(specification));
-        this.output = new ItemStack(item);
     }
 
     @Override

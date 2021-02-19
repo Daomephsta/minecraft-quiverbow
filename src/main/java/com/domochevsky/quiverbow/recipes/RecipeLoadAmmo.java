@@ -6,7 +6,6 @@ import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry.ComponentData;
 import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry.ReloadSpecification;
 import com.domochevsky.quiverbow.util.NBTags;
 import com.domochevsky.quiverbow.weapons.base.Weapon;
-import com.domochevsky.quiverbow.weapons.base.ammosource.AmmoSource;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -31,14 +30,13 @@ public class RecipeLoadAmmo extends IForgeRegistryEntry.Impl<IRecipe> implements
     public boolean matches(InventoryCrafting invCrafting, World world)
     {
         ItemStack weapon = ItemStack.EMPTY;
-        AmmoSource ammoSource = targetWeapon.getTrigger().getAmmoSource();
         for (int s = 0; s < invCrafting.getSizeInventory(); s++)
         {
             ItemStack stack = invCrafting.getStackInSlot(s);
             if (stack.isEmpty()) continue;
             if (stack.getItem() == this.targetWeapon)
             {
-                if (ammoSource.getAmmo(stack) >= ammoSource.getAmmoCapacity(stack))
+                if (targetWeapon.getAmmo(stack) >= targetWeapon.getAmmoCapacity(stack))
                     return false;// Already full
                 if (weapon.isEmpty())
                     weapon = stack;
@@ -78,7 +76,6 @@ public class RecipeLoadAmmo extends IForgeRegistryEntry.Impl<IRecipe> implements
             }
         }
 
-        AmmoSource ammoSource = ((Weapon) weapon.getItem()).getTrigger().getAmmoSource();
         for (s = 0; s < invCrafting.getSizeInventory(); s++)
         {
             ItemStack stack = invCrafting.getStackInSlot(s);
@@ -90,7 +87,7 @@ public class RecipeLoadAmmo extends IForgeRegistryEntry.Impl<IRecipe> implements
                     if (stack.getItem() instanceof AmmoMagazine)
                         NBTags.getOrCreate(weapon).removeTag("magazineless");
                     int ammoValue = component.getAmmoValue(stack);
-                    ammoSource.addAmmo(weapon, ammoValue);
+                    ((Weapon) weapon.getItem()).addAmmo(weapon, ammoValue);
                     break;
                 }
             }

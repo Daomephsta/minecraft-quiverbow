@@ -2,9 +2,9 @@ package com.domochevsky.quiverbow.weapons.base;
 
 import java.util.List;
 
+import com.domochevsky.quiverbow.AmmoContainer;
 import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.config.WeaponProperties;
-import com.domochevsky.quiverbow.weapons.base.ammosource.AmmoSource;
 import com.domochevsky.quiverbow.weapons.base.trigger.Trigger;
 
 import net.minecraft.client.resources.I18n;
@@ -20,7 +20,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 
-public final class Weapon extends Item
+public final class Weapon extends Item implements AmmoContainer
 {
     private final WeaponProperties properties;
     private final Trigger trigger;
@@ -121,9 +121,7 @@ public final class Weapon extends Item
     @Override
     public void addInformation(ItemStack stack, World world, List<String> list, ITooltipFlag flags)
     {
-        AmmoSource ammoSource = getTrigger().getAmmoSource();
-        list.add(I18n.format(getUnlocalizedName() + ".ammostatus",
-            ammoSource.getAmmo(stack), ammoSource.getAmmoCapacity(stack)));
+        list.add(I18n.format(getUnlocalizedName() + ".ammostatus", getAmmo(stack), getAmmoCapacity(stack)));
     }
 
     @Override
@@ -138,13 +136,7 @@ public final class Weapon extends Item
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
     {
         if (this.isInCreativeTab(tab))
-        {
-            AmmoSource ammoSource = getTrigger().getAmmoSource();
-            ItemStack stack = new ItemStack(this);
-            int capacity = ammoSource.getAmmoCapacity(stack);
-            ammoSource.addAmmo(stack, capacity);
-            items.add(stack);
-        }
+            items.add(createFull());
     }
 
     @Override
@@ -156,15 +148,13 @@ public final class Weapon extends Item
     @Override
     public double getDurabilityForDisplay(ItemStack stack)
     {
-        AmmoSource ammoSource = getTrigger().getAmmoSource();
-        return (double) (ammoSource.getAmmoCapacity(stack) - ammoSource.getAmmo(stack)) /
-            (double) ammoSource.getAmmoCapacity(stack);
+        return (double) (getAmmoCapacity(stack) - getAmmo(stack)) / (double) getAmmoCapacity(stack);
     }
 
     @Override
     public boolean showDurabilityBar(ItemStack stack)
     {
-        return getTrigger().getAmmoSource().getAmmoCapacity(stack) != -1;
+        return true;
     }
 
     @Override
@@ -215,6 +205,39 @@ public final class Weapon extends Item
         this.useAction = action;
         this.maxUseTicks = maxUseTicks;
         return this;
+    }
+
+    public boolean hasAmmo(EntityLivingBase shooter, ItemStack stack, WeaponProperties properties)
+    {
+        return trigger.getAmmoSource().hasAmmo(shooter, stack, properties);
+    }
+
+    public int getAmmo(ItemStack stack)
+    {
+        return trigger.getAmmoSource().getAmmo(stack);
+    }
+
+    public void addAmmo(ItemStack stack, int increment)
+    {
+        trigger.getAmmoSource().addAmmo(stack, increment);
+    }
+
+    public void removeAmmo(ItemStack stack, int increment)
+    {
+        trigger.getAmmoSource().removeAmmo(stack, increment);
+    }
+
+    public int getAmmoCapacity(ItemStack stack)
+    {
+        return trigger.getAmmoSource().getAmmoCapacity(stack);
+    }
+
+    @Override
+    public ItemStack createFull()
+    {
+        ItemStack stack = new ItemStack(this);
+        addAmmo(stack, getAmmoCapacity(stack));
+        return stack;
     }
 
     public static interface Effect

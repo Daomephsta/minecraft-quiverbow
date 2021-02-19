@@ -11,7 +11,6 @@ import org.apache.commons.io.FilenameUtils;
 import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.util.Resources;
 import com.domochevsky.quiverbow.weapons.base.Weapon;
-import com.google.common.collect.Iterables;
 import com.google.gson.*;
 
 import net.minecraft.item.Item;
@@ -104,9 +103,14 @@ public class ReloadSpecificationRegistry
         return specsByWeapon.keySet();
     }
 
-    public Iterable<Entry<? extends Item, ReloadSpecification>> getSpecifications()
+    public Set<Entry<Weapon, ReloadSpecification>> getWeaponSpecifications()
     {
-        return Iterables.concat(specsByWeapon.entrySet(), specsByMagazine.entrySet());
+        return specsByWeapon.entrySet();
+    }
+
+    public Set<Entry<AmmoMagazine, ReloadSpecification>> getMagazineSpecifications()
+    {
+        return specsByMagazine.entrySet();
     }
 
     public static class ReloadSpecification

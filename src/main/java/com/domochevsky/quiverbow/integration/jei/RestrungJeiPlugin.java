@@ -24,12 +24,18 @@ import net.minecraftforge.oredict.OreDictionary;
 @JEIPlugin
 public class RestrungJeiPlugin implements IModPlugin
 {
+    private IJeiHelpers jeiHelpers;
+    private IStackHelper stackHelper;
+
     @Override
     public void register(IModRegistry registry)
     {
-        IJeiHelpers jeiHelpers = registry.getJeiHelpers();
-        IStackHelper stackHelper = jeiHelpers.getStackHelper();
-        Collection<?> reloadRecipes = Streams.stream(ReloadSpecificationRegistry.INSTANCE.getSpecifications())
+        this.jeiHelpers = registry.getJeiHelpers();
+        this.stackHelper = jeiHelpers.getStackHelper();
+
+        Collection<?> reloadRecipes = Streams.concat(
+            ReloadSpecificationRegistry.INSTANCE.getWeaponSpecifications().stream(),
+            ReloadSpecificationRegistry.INSTANCE.getMagazineSpecifications().stream())
             .map(entry -> new RecipeLoadAmmoCategory.Wrapper(entry.getKey(), entry.getValue(), jeiHelpers))
             .collect(Collectors.toList());
         registry.addRecipes(reloadRecipes, RecipeLoadAmmoCategory.ID);

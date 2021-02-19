@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.domochevsky.quiverbow.AmmoContainer;
 import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.ammo.AmmoMagazine;
 import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry.ComponentData;
@@ -26,7 +27,6 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.IStackHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
@@ -81,9 +81,9 @@ public class RecipeLoadAmmoCategory implements IRecipeCategory<RecipeLoadAmmoCat
         private static IDrawable craftIcon, useMagazineIcon;
         private final IStackHelper stackHelper;
 
-        public Wrapper(Item target, ReloadSpecification wrapped, IJeiHelpers jeiHelpers)
+        public Wrapper(AmmoContainer target, ReloadSpecification wrapped, IJeiHelpers jeiHelpers)
         {
-            this.target = new ItemStack(target);
+            this.target = target.createFull();
             this.components = new ArrayList<>(wrapped.getComponents());
             if (craftIcon == null) //Shared between all instances, instead of created every time
             {

@@ -5,6 +5,7 @@ import static java.lang.Math.min;
 
 import java.util.List;
 
+import com.domochevsky.quiverbow.AmmoContainer;
 import com.domochevsky.quiverbow.Helper;
 import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry.ComponentData;
@@ -22,7 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 
-public class AmmoMagazine extends QuiverBowItem
+public class AmmoMagazine extends QuiverBowItem implements AmmoContainer
 {
     // How much should this magazine attempt to fill when sneak-clicked?
     private int sneakFillQuantity;
@@ -120,7 +121,7 @@ public class AmmoMagazine extends QuiverBowItem
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems)
     {
         if (!isInCreativeTab(tab)) return;
-        subItems.add(withAmmo(new ItemStack(this), getAmmoCapacity()));
+        subItems.add(createFull());
         subItems.add(withAmmo(new ItemStack(this), 0));
     }
 
@@ -158,6 +159,12 @@ public class AmmoMagazine extends QuiverBowItem
     {
         this.ammoCapacity = ammoCapacity;
         return this;
+    }
+
+    @Override
+    public ItemStack createFull()
+    {
+        return withAmmo(new ItemStack(this), getAmmoCapacity());
     }
 
     @Override

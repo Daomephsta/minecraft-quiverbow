@@ -45,10 +45,7 @@ public class SimpleAmmoSource implements AmmoSource
     @Override
     public void adjustItemProperties(Weapon weapon)
     {
-        weapon.addPropertyOverride(new ResourceLocation(QuiverbowMain.MODID, "ammo"), (stack, world, entity) ->
-        {
-            AmmoSource ammoSource = weapon.getTrigger().getAmmoSource();
-            return 1.0F - (float) ammoSource.getAmmo(stack) / (float) ammoSource.getAmmoCapacity(stack);
-        });
+        weapon.addPropertyOverride(new ResourceLocation(QuiverbowMain.MODID, "ammo"),
+            (stack, world, entity) -> 1.0F - (float) weapon.getAmmo(stack) / (float) weapon.getAmmoCapacity(stack));
     }
 }
