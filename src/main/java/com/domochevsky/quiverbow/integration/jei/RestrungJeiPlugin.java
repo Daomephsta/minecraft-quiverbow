@@ -1,10 +1,14 @@
 package com.domochevsky.quiverbow.integration.jei;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
+import static java.util.stream.Collectors.toList;
 
+import java.util.Collection;
+import java.util.Map.Entry;
+
+import com.domochevsky.quiverbow.AmmoContainer;
 import com.domochevsky.quiverbow.QuiverbowMain;
 import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry;
+import com.domochevsky.quiverbow.ammo.ReloadSpecificationRegistry.ReloadSpecification;
 import com.domochevsky.quiverbow.items.ItemRegistry;
 import com.domochevsky.quiverbow.recipes.RecipeArmsAssistantUpgrade;
 import com.domochevsky.quiverbow.weapons.base.Weapon;
@@ -36,11 +40,11 @@ public class RestrungJeiPlugin implements IModPlugin
         Collection<?> reloadRecipes = Streams.concat(
             ReloadSpecificationRegistry.INSTANCE.getWeaponSpecifications().stream(),
             ReloadSpecificationRegistry.INSTANCE.getMagazineSpecifications().stream())
-            .map(entry -> new RecipeLoadAmmoCategory.Wrapper(entry.getKey(), entry.getValue(), jeiHelpers))
-            .collect(Collectors.toList());
+            .map(this::wrapReloadSpecification)
+            .collect(toList());
         registry.addRecipes(reloadRecipes, RecipeLoadAmmoCategory.ID);
-        registry.handleRecipes(RecipeArmsAssistantUpgrade.class,
-            recipe -> wrapAAUpgradeRecipe(recipe, stackHelper), VanillaRecipeCategoryUid.CRAFTING);
+        registry.handleRecipes(RecipeArmsAssistantUpgrade.class, this::wrapAAUpgradeRecipe,
+            VanillaRecipeCategoryUid.CRAFTING);
         registry.addIngredientInfo(new ItemStack(ItemRegistry.ENDER_RAIL_ACCELERATOR), VanillaTypes.ITEM,
             ItemRegistry.ENDER_RAIL_ACCELERATOR.getUnlocalizedName() + ".jei_description");
 
@@ -52,7 +56,12 @@ public class RestrungJeiPlugin implements IModPlugin
         }
     }
 
-    private IRecipeWrapper wrapAAUpgradeRecipe(RecipeArmsAssistantUpgrade recipe, IStackHelper stackHelper)
+    private IRecipeWrapper wrapReloadSpecification(Entry<? extends AmmoContainer, ReloadSpecification> entry)
+    {
+        return new RecipeLoadAmmoCategory.Wrapper(entry.getKey(), entry.getValue(), jeiHelpers);
+    }
+
+    private IRecipeWrapper wrapAAUpgradeRecipe(RecipeArmsAssistantUpgrade recipe)
     {
         if (recipe.isShaped())
         {
@@ -66,7 +75,7 @@ public class RestrungJeiPlugin implements IModPlugin
     @Override
     public void registerCategories(IRecipeCategoryRegistration registry)
     {
-        IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
+        IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
         registry.addRecipeCategories(new RecipeLoadAmmoCategory(guiHelper));
     }
 }
