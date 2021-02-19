@@ -33,7 +33,6 @@
   },
   "type": "minecraft:crafting_shaped",
   "result": {
-    "item": "quiverbow_restrung:flint_duster",
-    "data": 256
+    "item": "quiverbow_restrung:flint_duster"
   }
 }

@@ -23,7 +23,6 @@
   },
   "type": "minecraft:crafting_shaped",
   "result": {
-    "item": "quiverbow_restrung:seed_sweeper",
-    "data": 512
+    "item": "quiverbow_restrung:seed_sweeper"
   }
 }

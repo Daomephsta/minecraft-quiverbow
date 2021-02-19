@@ -13,13 +13,11 @@
       "item": "minecraft:repeater"
     },
     {
-      "item": "quiverbow_restrung:compact_crossbow",
-      "data": 1
+      "item": "quiverbow_restrung:compact_crossbow"
     }
   ],
   "type": "minecraft:crafting_shapeless",
   "result": {
-    "item": "quiverbow_restrung:double_crossbow",
-    "data": 2
+    "item": "quiverbow_restrung:double_crossbow"
   }
 }

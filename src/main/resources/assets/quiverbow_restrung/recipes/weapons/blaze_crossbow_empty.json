@@ -15,8 +15,7 @@
       "item": "minecraft:blaze_powder"
     },
     "c": {
-      "item": "quiverbow_restrung:compact_crossbow",
-      "data": 1
+      "item": "quiverbow_restrung:compact_crossbow"
     },
     "i": {
       "item": "minecraft:iron_ingot"
@@ -24,7 +23,6 @@
   },
   "type": "minecraft:crafting_shaped",
   "result": {
-    "item": "quiverbow_restrung:blaze_crossbow",
-    "data": 1
+    "item": "quiverbow_restrung:blaze_crossbow"
   }
 }

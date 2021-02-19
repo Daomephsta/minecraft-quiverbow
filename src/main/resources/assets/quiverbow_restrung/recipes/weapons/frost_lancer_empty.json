@@ -18,8 +18,7 @@
       "item": "minecraft:quartz"
     },
     "r": {
-      "item": "quiverbow_restrung:ender_rifle",
-      "data": 8
+      "item": "quiverbow_restrung:ender_rifle"
     },
     "s": {
       "item": "minecraft:sticky_piston"
@@ -33,7 +32,6 @@
   },
   "type": "minecraft:crafting_shaped",
   "result": {
-    "item": "quiverbow_restrung:frost_lancer",
-    "data": 4
+    "item": "quiverbow_restrung:frost_lancer"
   }
 }

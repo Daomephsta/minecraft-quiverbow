@@ -7,8 +7,7 @@
   ],
   "ingredients": [
     {
-      "item": "quiverbow_restrung:coin_tosser",
-      "data": 72
+      "item": "quiverbow_restrung:coin_tosser"
     },
     {
       "item": "minecraft:sticky_piston"
@@ -25,7 +24,6 @@
   ],
   "type": "minecraft:crafting_shapeless",
   "result": {
-    "item": "quiverbow_restrung:coin_tosser_mod",
-    "data": 72
+    "item": "quiverbow_restrung:coin_tosser_mod"
   }
 }

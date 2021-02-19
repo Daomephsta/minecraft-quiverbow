@@ -29,7 +29,6 @@
   },
   "type": "minecraft:crafting_shaped",
   "result": {
-    "item": "quiverbow_restrung:ray_of_hope",
-    "data": 320
+    "item": "quiverbow_restrung:ray_of_hope"
   }
 }

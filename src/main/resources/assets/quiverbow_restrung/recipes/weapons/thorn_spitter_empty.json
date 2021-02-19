@@ -32,7 +32,6 @@
   },
   "type": "minecraft:crafting_shaped",
   "result": {
-    "item": "quiverbow_restrung:thorn_spitter",
-    "data": 64
+    "item": "quiverbow_restrung:thorn_spitter"
   }
 }

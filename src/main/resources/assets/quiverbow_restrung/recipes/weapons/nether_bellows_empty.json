@@ -32,7 +32,6 @@
   },
   "type": "minecraft:crafting_shaped",
   "result": {
-    "item": "quiverbow_restrung:nether_bellows",
-    "data": 200
+    "item": "quiverbow_restrung:nether_bellows"
   }
 }

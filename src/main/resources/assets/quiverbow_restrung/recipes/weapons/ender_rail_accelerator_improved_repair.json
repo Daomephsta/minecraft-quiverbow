@@ -17,8 +17,7 @@
     "e": {
       "type": "minecraft:item_nbt",
       "item": "quiverbow_restrung:ender_rail_accelerator",
-      "nbt": {"hasEmeraldMuzzle": true},
-      "data": 1
+      "nbt": {"hasEmeraldMuzzle": true}
     },
     "i": {
       "item": "minecraft:iron_ingot"
@@ -30,7 +29,6 @@
   "type": "minecraft:crafting_shaped",
   "result": {
     "item": "quiverbow_restrung:ender_rail_accelerator",
-    "nbt": {"hasEmeraldMuzzle": true},
-    "data": 0
+    "nbt": {"hasEmeraldMuzzle": true}
   }
 }

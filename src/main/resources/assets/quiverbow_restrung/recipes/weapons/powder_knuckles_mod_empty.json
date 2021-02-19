@@ -12,8 +12,7 @@
   ],
   "key": {
     "c": {
-      "item": "quiverbow_restrung:powder_knuckles",
-      "data": 8
+      "item": "quiverbow_restrung:powder_knuckles"
     },
     "i": {
       "item": "minecraft:iron_ingot"
@@ -24,7 +23,6 @@
   },
   "type": "minecraft:crafting_shaped",
   "result": {
-    "item": "quiverbow_restrung:powder_knuckles_mod",
-    "data": 8
+    "item": "quiverbow_restrung:powder_knuckles_mod"
   }
 }

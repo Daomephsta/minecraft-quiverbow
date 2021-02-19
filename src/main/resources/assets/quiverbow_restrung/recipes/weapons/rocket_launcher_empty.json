@@ -24,7 +24,6 @@
   },
   "type": "minecraft:crafting_shaped",
   "result": {
-    "item": "quiverbow_restrung:rocket_launcher",
-    "data": 1
+    "item": "quiverbow_restrung:rocket_launcher"
   }
 }

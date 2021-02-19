@@ -26,7 +26,6 @@
   },
   "type": "minecraft:crafting_shaped",
   "result": {
-    "item": "quiverbow_restrung:hidden_ender_pistol",
-    "data": 8
+    "item": "quiverbow_restrung:hidden_ender_pistol"
   }
 }
