@@ -38,6 +38,3 @@ hs_err_pid*
 /Model Tools/*
 /Misc Changes.txt
 /Misc Notes.txt
-
-# Ignore while models are ported
-src/main/java/com/domochevsky/quiverbow/models/*
