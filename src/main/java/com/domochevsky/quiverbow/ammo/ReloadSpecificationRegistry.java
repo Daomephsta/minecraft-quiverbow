@@ -53,7 +53,7 @@ public class ReloadSpecificationRegistry
                 JsonArray components = JsonUtils.getJsonArray(root, "components");
                 for (JsonElement component : components)
                 {
-                    if (JsonUtils.isString(component))
+                    if (component.isJsonPrimitive() && component.getAsJsonPrimitive().isString())
                     {
                         Item magazine = JsonUtils.getItem(component, "magazine");
                         if (magazine instanceof AmmoMagazine)

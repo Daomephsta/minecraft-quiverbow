@@ -15,8 +15,9 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
-@Mod.EventBusSubscriber(modid = QuiverbowMain.MODID)
+@Mod.EventBusSubscriber(modid = QuiverbowMain.MODID, value = Side.CLIENT)
 public class RenderBeam
 {
     private static final Map<EntityLivingBase, Beam> beams = new MapMaker().weakKeys().makeMap();

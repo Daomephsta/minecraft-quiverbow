@@ -23,8 +23,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
-@Mod.EventBusSubscriber(modid = QuiverbowMain.MODID)
+@Mod.EventBusSubscriber(modid = QuiverbowMain.MODID, value = Side.CLIENT)
 public class EnderBowPredictionRenderer
 {
     private static float lastPitch = Float.NaN,

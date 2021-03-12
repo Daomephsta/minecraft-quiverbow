@@ -5,6 +5,7 @@ import com.domochevsky.quiverbow.client.render.EnderBowPredictionRenderer;
 import com.domochevsky.quiverbow.models.AATransformsMetadataSerialiser;
 import com.domochevsky.quiverbow.models.WeaponModel;
 import com.domochevsky.quiverbow.models.WeaponModelOld;
+import com.domochevsky.quiverbow.net.*;
 import com.domochevsky.quiverbow.projectiles.*;
 import com.domochevsky.quiverbow.renderer.RenderAA;
 import com.domochevsky.quiverbow.renderer.RenderCross;
@@ -21,6 +22,7 @@ import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class ClientProxy extends CommonProxy
 {
@@ -33,6 +35,11 @@ public class ClientProxy extends CommonProxy
         ModelLoaderRegistry.registerLoader(WeaponModel.Loader.INSTANCE);
         ((MetadataSerializer) ObfuscationReflectionHelper.getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), "field_110452_an"))
         .registerMetadataSectionType(AATransformsMetadataSerialiser.INSTANCE, AATransformsMetadataSerialiser.AATransforms.class);
+
+        PacketHandler.registerMessage(ParticleMessageHandler.class, ParticleMessage.class, Side.CLIENT);
+        PacketHandler.registerMessage(PositionMessageHandler.class, PositionMessage.class, Side.CLIENT);
+        PacketHandler.registerMessage(KickbackMessageHandler.class, KickbackMessage.class, Side.CLIENT);
+        PacketHandler.registerMessage(TurretInventoryMessageHandler.class, TurretInventoryMessage.class, Side.CLIENT);
     }
 
     public void registerRenderers()

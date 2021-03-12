@@ -21,7 +21,6 @@ import com.domochevsky.quiverbow.miscitems.IncompleteEnderRailAccelerator;
 import com.domochevsky.quiverbow.miscitems.PackedUpAA;
 import com.domochevsky.quiverbow.miscitems.QuiverBowItem;
 import com.domochevsky.quiverbow.net.NetHelper;
-import com.domochevsky.quiverbow.net.PacketHandler;
 import com.domochevsky.quiverbow.projectiles.*;
 import com.domochevsky.quiverbow.recipes.RecipeLoadAmmo;
 import com.domochevsky.quiverbow.util.RegistryHelper;
@@ -118,7 +117,6 @@ public class QuiverbowMain
     {
         QuiverbowConfig.load(event.getModConfigurationDirectory());
         logger = event.getModLog();
-        PacketHandler.initPackets();
         if (QuiverbowConfig.allowTurret)
         {
             EntityRegistry.registerModEntity(new ResourceLocation(QuiverbowMain.MODID, "turret"),
