@@ -117,3 +117,56 @@ compileJava {
 	if (!options.forkOptions.javaHome)
 		ant.fail('Could not find Java 8 JDK')
 }
+
+task manualChecks(type: PromptTask) {
+    prompts = [
+        'Launches On Dedicated Server': 'N'
+    ]
+    processor { responses ->
+        if (!responses['Launches On Dedicated Server'].equalsIgnoreCase("Y"))
+            throw new IllegalArgumentException('Mod has not been tested on a dedicated server')
+    }
+}
+extractMcpMappings.dependsOn manualChecks //Run very early
+
+import java.util.Properties
+class PromptTask extends DefaultTask {
+    @Input
+    Map<String, String> prompts = [:]
+    Action<Properties> processor = null
+
+    def processor(Action<Properties> processor)
+    {
+        this.processor = processor
+    }
+
+    private String pickEditor() {
+        def osName = System.getProperty("os.name").toLowerCase(Locale.ROOT)
+        if (osName.contains("windows"))
+            return "notepad";
+        else if (osName.contains("linux"))
+            return "nano";
+        else if (osName.contains("mac os"))
+            return "open"
+        else
+            throw new IllegalArgumentException("Unknown OS ${System.getProperty("os.name")}")
+    }
+
+    @TaskAction
+    def doPrompt() {
+        def promptsFile = File.createTempFile("manualChecks", ".txt", temporaryDir)
+        promptsFile.deleteOnExit();
+
+        def prompts = new Properties();
+        this.prompts.each prompts.&setProperty
+        promptsFile.withWriter {prompts.store(it, "Edit properties and close editor")}
+
+        def editorProcess = new ProcessBuilder(pickEditor(), promptsFile.path)
+            .directory(temporaryDir)
+            .inheritIO()
+            .start()
+        editorProcess.waitFor()
+        promptsFile.withReader prompts.&load
+        processor.execute prompts
+    }
+}
