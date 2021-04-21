@@ -88,9 +88,12 @@ jar {
             into 'com/domochevsky/quiverbow/shadow/'
         }
     }
-    //Include licenses
+    //Include project license
+	from('LICENSE') {
+		rename { "${it}_${project.archivesBaseName}"}
+	}
+    //Include dependency licenses
     from('.') {
-        include 'LICENSE.md'
 		include 'NOTICE.txt'
 		include 'licenses/**'
     }
