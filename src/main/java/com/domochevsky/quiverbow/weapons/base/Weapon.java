@@ -20,7 +20,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 
-public final class Weapon extends Item implements AmmoContainer
+/**
+ * Composition-style weapon class that delegates functionality to reusable
+ * components such as triggers, fire effects, cooldown effects, etc.
+ * Should be considered final, but extension is allowed if it more cleanly
+ * solves an issue.
+ * @author Daomephsta
+ */
+public class Weapon extends Item implements AmmoContainer
 {
     private final WeaponProperties properties;
     private final Trigger trigger;

@@ -27,6 +27,7 @@ import com.domochevsky.quiverbow.util.RegistryHelper;
 import com.domochevsky.quiverbow.util.ResourceLocationExt;
 import com.domochevsky.quiverbow.weapons.AATargeter;
 import com.domochevsky.quiverbow.weapons.base.CommonProperties;
+import com.domochevsky.quiverbow.weapons.base.EnderRailAccelerator;
 import com.domochevsky.quiverbow.weapons.base.Weapon;
 import com.domochevsky.quiverbow.weapons.base.Weapon.Effect;
 import com.domochevsky.quiverbow.weapons.base.ammosource.*;
@@ -613,20 +614,21 @@ public class QuiverbowMain
                         }, 0xCD5CAB)))
                     .fireEffects(new PlaySound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.7F, 1.4F))
             );
-            registry.register(addWeapon("ender_rail_accelerator",
-                builder -> builder.minimumDamage(120).maximumDamage(150)
+            registry.register(addWeapon(new EnderRailAccelerator("ender_rail_accelerator",
+                WeaponProperties.builder().minimumDamage(120).maximumDamage(150)
                     .projectileSpeed(5.0F).kickback(30)
                     .floatProperty(EnderAccelerator.SELF_EXPLOSION_SIZE,4.0F)
                     .floatProperty(CommonProperties.EXPLOSION_SIZE, 8.0F)
                     .booleanProperty(CommonProperties.DAMAGE_TERRAIN, true)
                     .intProperty(SimpleAmmoSource.AMMO_CONSUMPTION, 1)
-                    .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 1),
-                new ERATrigger(new SimpleAmmoSource(),
-                    new SingleShotFireShape(EnderAccelerator::new)))
+                    .intProperty(SimpleAmmoSource.AMMO_CAPACITY, 1)
+                    .booleanProperty(WeaponProperties.ENABLED, true),
+                new EnderRailAccelerator.TriggerImpl(new SimpleAmmoSource(),
+                    new SingleShotFireShape(EnderAccelerator::new))))
                 .fireEffects(new Knockback(),
                     (world, user, stack, properties) ->
                     {
-                        if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("hasEmeraldMuzzle"))
+                        if (EnderRailAccelerator.isReinforced(stack))
                         {
                             Helper.causeSelfDamage(user, 15.0F);
                             Helper.playSoundAtEntityPos(user,
@@ -896,7 +898,11 @@ public class QuiverbowMain
             WeaponProperties.Builder builder = WeaponProperties.builder();
             builder.booleanProperty(WeaponProperties.ENABLED, true);
             propertiesBuilder.accept(builder);
-            Weapon weapon = new Weapon(name, builder, trigger);
+            return addWeapon(new Weapon(name, builder, trigger));
+        }
+
+        private static Weapon addWeapon(Weapon weapon)
+        {
             QuiverbowMain.weapons.add(weapon);
             return weapon;
         }
