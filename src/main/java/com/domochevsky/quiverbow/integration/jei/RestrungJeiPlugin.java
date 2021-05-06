@@ -75,7 +75,7 @@ public class RestrungJeiPlugin implements IModPlugin
     @Override
     public void registerCategories(IRecipeCategoryRegistration registry)
     {
-        IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+        IGuiHelper guiHelper = registry.getJeiHelpers().getGuiHelper();
         registry.addRecipeCategories(new RecipeLoadAmmoCategory(guiHelper));
     }
 }
