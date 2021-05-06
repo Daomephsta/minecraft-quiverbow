@@ -11,13 +11,16 @@ import com.domochevsky.quiverbow.weapons.base.trigger.Trigger;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 
 public class EnderRailAccelerator extends Weapon
@@ -36,6 +39,18 @@ public class EnderRailAccelerator extends Weapon
             list.add(I18n.format(getUnlocalizedName() + ".reinforced_muzzle"));
         else
             list.add(I18n.format(getUnlocalizedName() + ".warning"));
+    }
+
+    @Override
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
+    {
+        if (this.isInCreativeTab(tab))
+        {
+            items.add(createFull());
+            ItemStack reinforced = createFull();
+            reinforced.setTagInfo(REINFORCED, new NBTTagByte((byte) 1));
+            items.add(reinforced);
+        }
     }
 
     public static boolean isReinforced(ItemStack stack)
